@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<h1>Lista de Palpites</h1>
+<table>
+    <tr>
+        <th>Nome</th>
+        <th>Time 1</th>
+        <th>Time 2</th>
+        <th>Gols Time 1</th>
+        <th>Gols Time 2</th>
+        <th>Resultado</th>
+    </tr>
+    {% for palpite in palpites %}
+    <tr>
+        <td>{{ palpite['nome'] }}</td>
+        <td>{{ palpite['time1'] }}</td>
+        <td>{{ palpite['time2'] }}</td>
+        <td>{{ palpite['gol_time1'] }}</td>
+        <td>{{ palpite['gol_time2'] }}</td>
+        <td>{{ palpite['resultado'] }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}
