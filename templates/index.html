@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lista de Palpites</title>
+    <title>Tabela de Pontuação</title>
     <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
-    <link rel="stylesheet" href="{{ url_for('static', filename='palpites.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <header>
-        <h1>Sistema de Palpites</h1>
+        
+        <h1 class="bar">Sistema de Palpites 🏆</h1>
         <nav>
             <a href="{{ url_for('index') }}">Pontuação</a>
             <a href="{{ url_for('exibir_palpites') }}">Palpites</a>
@@ -18,29 +19,28 @@
     </header>
 
     <main>
-        <h1>Lista de Palpites</h1>
+        <h1>Tabela de Pontuação</h1>
         <table>
             <tr>
+                <th>Posição</th>
                 <th>Nome</th>
-                <th>Casa</th>
-                <th>Placar</th>
-                <th>Fora</th>
-                <th>Placar</th>
-                <th>Resultado</th>
+                <th>Pontos</th>
+                <th>Acertos</th>
+                <th>Erros</th>
             </tr>
-            {% for palpite in palpites %}
+            {% for jogador in pontuacao %}
             <tr>
-                <td>{{ palpite['nome'] }}</td>
-                <td>{{ palpite['time1'] }}</td>
-                <td>{{ palpite['gol_time1'] }}</td>
-                <td>{{ palpite['time2'] }}</td>
-                <td>{{ palpite['gol_time2'] }}</td>
-                <td>{{ palpite['resultado'] }}</td>
+                <td>{{ jogador['posicao'] }}º</td>
+                <td>{{ jogador['nome'] }}</td>
+                <td>{{ jogador['pontos'] }}</td>
+                <td>{{ jogador['acertos'] }}</td>
+                <td>{{ jogador['erros'] }}</td>
             </tr>
             {% endfor %}
         </table>
     </main>
 
+    <h2>Resultado do jogos</h2>
     <footer>
         <p>© 2024 Sistema de Palpites</p>
     </footer>

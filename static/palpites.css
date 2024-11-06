@@ -47,29 +47,11 @@ main {
     text-align: center;
 }
 
-.bar {
-    color: #ffffff;
-    font-size: 1.8em;
-    margin-bottom: 20px;
-    text-transform: uppercase;
-    text-align: center;
-
-}
-
-h1{
+h1 {
     color: #006400;
     font-size: 1.8em;
     margin-bottom: 20px;
     text-transform: uppercase;
-    text-align: center;
-}
-
-h2 {
-    color: #006400;
-    font-size: 1.8em;
-    margin-bottom: 20px;
-    text-transform: uppercase;
-    text-align: center;
 }
 
 /* Estilo da Tabela */

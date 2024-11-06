@@ -47,29 +47,11 @@ main {
     text-align: center;
 }
 
-.bar {
-    color: #ffffff;
-    font-size: 1.8em;
-    margin-bottom: 20px;
-    text-transform: uppercase;
-    text-align: center;
-
-}
-
-h1{
+h1 {
     color: #006400;
     font-size: 1.8em;
     margin-bottom: 20px;
     text-transform: uppercase;
-    text-align: center;
-}
-
-h2 {
-    color: #006400;
-    font-size: 1.8em;
-    margin-bottom: 20px;
-    text-transform: uppercase;
-    text-align: center;
 }
 
 /* Estilo da Tabela */
@@ -113,11 +95,85 @@ tr:hover td {
 footer {
     background-color: #333;
     color: #fff;
-    padding: 10px 0;
+    padding: 5px;
     text-align: center;
     position: fixed;
     bottom: 0;
     width: 100%;
     font-size: 0.9em;
     box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.2);
+}
+
+.form-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Estilo do grupo de entrada */
+.form-group {
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.form-group label {
+    font-size: 1em;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.form-group input[type="text"],
+.form-group input[type="number"] {
+    width: 100%;
+    padding: 10px;
+    font-size: 1em;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+}
+
+.form-group input[type="text"]:focus,
+.form-group input[type="number"]:focus {
+    border-color: #006400;
+    outline: none;
+}
+
+/* Botão de enviar */
+button[type="submit"] {
+    background-color: #006400;
+    color: #fff;
+    font-size: 1em;
+    font-weight: bold;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+    width: 100%;
+}
+
+button[type="submit"]:hover {
+    background-color: #004d00;
+}
+
+/* Alinhamento do main */
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Ajuste no título */
+main h1 {
+    margin-bottom: 20px;
+    color: #006400;
+    font-weight: bold;
+    text-align: auto;
 }

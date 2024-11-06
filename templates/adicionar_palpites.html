@@ -1,26 +1,63 @@
-{% extends "layout.html" %}
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adicionar Palpite</title>
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+    <link rel="stylesheet" href="{{ url_for('static', filename='adipalpites.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Sistema de Palpites</h1>
+        <nav>
+            <a href="{{ url_for('index') }}">Pontuação</a>
+            <a href="{{ url_for('exibir_palpites') }}">Palpites</a>
+            <a href="{{ url_for('adicionar_palpites') }}">Adicionar Palpite</a>
+        </nav>
+    </header>
 
-{% block content %}
-<h1>Adicionar Palpite</h1>
-<form action="{{ url_for('adicionar_palpites') }}" method="POST">
-    <label for="nome">Nome:</label>
-    <input type="text" id="nome" name="nome" required>
+    <main>
+        <h1>Adicionar Novo Palpite</h1>
+        <div class="form-container">
+            <form action="{{ url_for('adicionar_palpites') }}" method="POST">
+                <div class="form-group">
+                    <label for="nome">Nome:</label>
+                    <input type="text" id="nome" name="nome" required>
+                </div>
+    
+                <div class="form-group">
+                    <label for="time1">Casa:</label>
+                    <input type="text" id="time1" name="time1" required>
+                </div>
+    
+                <div class="form-group">
+                    <label for="time2">Placar:</label>
+                    <input type="number" id="gol_time1" name="gol_time1" required>
+                </div>
+    
+                <div class="form-group">
+                    <label for="gol_time1">Fora:</label>
+                    <input type="text" id="time2" name="time2" required>
+                </div>
+    
+                <div class="form-group">
+                    <label for="gol_time2">Placar:</label>
+                    <input type="number" id="gol_time2" name="gol_time2" required>
+                </div>
+    
+                <div class="form-group">
+                    <label for="resultado">Resultado:</label>
+                    <input type="text" id="resultado" name="resultado" required>
+                </div>
+    
+                <button type="submit">Adicionar Palpite</button>
+            </form>
+        </div>
+    </main>
 
-    <label for="time1">Time 1:</label>
-    <input type="text" id="time1" name="time1" required>
-
-    <label for="time2">Time 2:</label>
-    <input type="text" id="time2" name="time2" required>
-
-    <label for="gol_time1">Gols Time 1:</label>
-    <input type="number" id="gol_time1" name="gol_time1" required>
-
-    <label for="gol_time2">Gols Time 2:</label>
-    <input type="number" id="gol_time2" name="gol_time2" required>
-
-    <label for="resultado">Resultado:</label>
-    <input type="text" id="resultado" name="resultado" required>
-
-    <button type="submit">Adicionar Palpite</button>
-</form>
-{% endblock %}
+    <footer>
+        <p>© 2024 Sistema de Palpites</p>
+    </footer>
+</body>
+</html>

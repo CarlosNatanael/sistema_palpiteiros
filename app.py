@@ -37,25 +37,21 @@ def init_db():
 
 init_db()
 
-@app.route('/pontuacao')
-def exibir_pontuacao():
+@app.route('/')
+def index():
     conn = get_db_connection()
-    cursor = conn.cursor()
-    cursor.execute("SELECT * FROM pontuacao ORDER BY posicao ASC")
-    pontuacao = cursor.fetchall()
+    pontuacao = conn.execute("SELECT * FROM pontuacao ORDER BY posicao ASC").fetchall()
     conn.close()
-    return render_template('pontuacao.html', pontuacao=pontuacao)
+    return render_template('index.html', pontuacao=pontuacao)
 
 @app.route('/palpites')
 def exibir_palpites():
     conn = get_db_connection()
-    cursor = conn.cursor()
-    cursor.execute("SELECT * FROM palpites")
-    palpites = cursor.fetchall()
+    palpites = conn.execute("SELECT * FROM palpites").fetchall()
     conn.close()
     return render_template('palpites.html', palpites=palpites)
 
-@app.route('/palpites', methods=['GET', 'POST'])
+@app.route('/adicionar_palpites', methods=['GET', 'POST'])
 def adicionar_palpites():
     if request.method == 'POST':
         nome = request.form['nome']
@@ -109,7 +105,7 @@ def atualizar_pontuacao():
 
     conn.commit()
     conn.close()
-    return redirect('/pontuacao')
+    return redirect('/')
 
-if __name__ == '__main__':
-    app.run(host="0.0.0.0", port=5000, debug=True)
+if __name__ == "__main__":
+    app.run(debug=True)
