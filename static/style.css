@@ -44,7 +44,7 @@ nav a:hover {
 /* Estilo principal */
 main {
     padding: 30px;
-    text-align: center;
+    padding-bottom: 60px;
 }
 
 .bar {
@@ -70,6 +70,11 @@ h2 {
     margin-bottom: 20px;
     text-transform: uppercase;
     text-align: center;
+}
+
+h3 {
+    margin-bottom: 20px;
+    text-transform: uppercase;
 }
 
 /* Estilo da Tabela */
@@ -115,8 +120,7 @@ footer {
     color: #fff;
     padding: 10px 0;
     text-align: center;
-    position: fixed;
-    bottom: 0;
+    position: relative; /* Change from fixed to relative */
     width: 100%;
     font-size: 0.9em;
     box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.2);
@@ -128,11 +132,18 @@ footer {
     display: flex;
     justify-content: center;
     padding-top: 50px;
-
+    flex-direction: column; /* Altere para exibir verticalmente */
+    align-items: center; /* Centraliza o conteúdo */
 }
 .table-container {
     width: 600px;
     border-collapse: collapse;
+}
+
+.table-container h3 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #006400; /* Ajuste a cor se necessário */
 }
 
 .table-container, .table-container th, .table-container td {
