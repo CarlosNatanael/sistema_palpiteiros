@@ -121,3 +121,52 @@ footer {
     font-size: 0.9em;
     box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.2);
 }
+
+
+.jo {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    padding-top: 50px;
+
+}
+.table-container {
+    width: 600px;
+    border-collapse: collapse;
+}
+
+.table-container, .table-container th, .table-container td {
+    border: 1px solid #444;
+}
+
+.table-container th, .table-container td {
+    padding: 10px;
+    text-align: center;
+}
+
+.table-container th {
+    background-color: #333;
+}
+
+.match-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px;
+    border-bottom: 1px solid #444;
+}
+
+.team {
+    display: flex;
+    align-items: center;
+}
+
+.team img {
+    width: 20px;
+    height: 20px;
+    margin-right: 8px;
+}
+
+.date-time {
+    font-weight: bold;
+    color: #333;
+}

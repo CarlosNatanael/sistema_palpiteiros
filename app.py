@@ -1,6 +1,9 @@
 from flask import Flask, render_template, request, redirect
 import sqlite3
 
+API_BASE_URL = "http://apifutebol.footstats.com.br/3.1"
+API_TOKEN = "Bearer_client_token"
+
 app = Flask(__name__)
 app.secret_key = 'chave_secreta_para_sessao'
 
@@ -76,11 +79,12 @@ def adicionar_palpites():
 def atualizar_pontuacao():
     conn = get_db_connection()
     cursor = conn.cursor()
+    
     resultados_reais = {
-        ('COR', 'PAL'): (2, 1),
+        ('COR', 'PAL'): (3, 0),  
     }
 
-    cursor.execute("UPDATE pontuacao SET acertos = 0, erros = 0")
+    cursor.execute("UPDATE pontuacao SET pontos = 0, acertos = 0, erros = 0")
 
     cursor.execute("SELECT * FROM palpites")
     palpites = cursor.fetchall()
@@ -92,14 +96,19 @@ def atualizar_pontuacao():
         gol_time1 = palpite['gol_time1']
         gol_time2 = palpite['gol_time2']
 
-
         resultado_real = resultados_reais.get((time1, time2))
         if resultado_real:
             gol_real_time1, gol_real_time2 = resultado_real
 
-
             if gol_time1 == gol_real_time1 and gol_time2 == gol_real_time2:
                 cursor.execute("UPDATE pontuacao SET pontos = pontos + 3, acertos = acertos + 1 WHERE nome = ?", (nome,))
+
+            elif gol_time1 == gol_real_time1 or gol_time2 == gol_real_time2:
+                cursor.execute("UPDATE pontuacao SET pontos = pontos + 2, acertos = acertos + 1 WHERE nome = ?", (nome,))
+
+            elif (gol_real_time1 > gol_real_time2 and gol_time1 > gol_time2) or (gol_real_time1 < gol_real_time2 and gol_time1 < gol_time2):
+                cursor.execute("UPDATE pontuacao SET pontos = pontos + 1, acertos = acertos + 1 WHERE nome = ?", (nome,))
+
             else:
                 cursor.execute("UPDATE pontuacao SET erros = erros + 1 WHERE nome = ?", (nome,))
 
@@ -107,5 +116,5 @@ def atualizar_pontuacao():
     conn.close()
     return redirect('/')
 
-if __name__ == "__main__":
-    app.run(debug=True)
+if __name__ == '__main__':
+    app.run(host="0.0.0.0", port=5000, debug=True)

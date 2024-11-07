@@ -177,3 +177,12 @@ main h1 {
     font-weight: bold;
     text-align: auto;
 }
+
+.bar {
+    color: #ffffff;
+    font-size: 1.8em;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    text-align: center;
+
+}
