@@ -74,7 +74,8 @@ h2 {
 
 h3 {
     margin-bottom: 20px;
-    text-transform: uppercase;
+    flex-direction: column;
+    text-align: center;
 }
 
 /* Estilo da Tabela */
@@ -217,4 +218,8 @@ footer {
     max-width: 800px;
     margin: 0 auto;
     text-align: center;
+}
+
+.rui {
+    color: red;
 }
