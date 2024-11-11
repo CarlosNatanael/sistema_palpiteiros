@@ -1,0 +1,110 @@
+/* Arquivo: static/style.css */
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f9; /* Fundo suave */
+}
+
+.bar {
+    color: #ffffff;
+    font-size: 1.8em;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    text-align: center;
+
+}
+
+/* Cabeçalho */
+header {
+    background-color: #006400;
+    color: #fff;
+    padding: 20px 0;
+    text-align: center;
+}
+
+header .bar {
+    font-size: 2em;
+    margin: 0;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+nav {
+    margin-top: 10px;
+}
+
+nav a {
+    color: #fff;
+    font-weight: bold;
+    text-decoration: none;
+    margin: 0 15px;
+    padding: 10px 15px;
+    background-color: #228B22;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+nav a:hover {
+    background-color: #004d00;
+}
+
+/* Estilo principal */
+main {
+    padding: 30px;
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.statistics-section {
+    margin-top: 20px;
+}
+
+h1 {
+    color: #006400;
+    font-size: 2em;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+}
+
+/* Cartões de estatísticas */
+.stat-card {
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    transition: transform 0.2s ease;
+}
+
+.stat-card h2 {
+    color: #006400;
+    font-size: 1.5em;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+}
+
+.stat-card p {
+    font-size: 1.2em;
+    margin: 5px 0;
+    color: #333;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+}
+
+/* Rodapé */
+footer {
+    background-color: #333;
+    color: #fff;
+    padding: 10px 0;
+    text-align: center;
+    font-size: 0.9em;
+    box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.2);
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}

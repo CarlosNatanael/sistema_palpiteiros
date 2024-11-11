@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estatísticas - Sistema de Palpites</title>
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+    <link rel="stylesheet" href="{{ url_for('static', filename='esta.css') }}">
+</head>
+<body>
+    <header>
+        <h1 class="bar">Sistema de Palpites 🏆</h1>
+        <nav>
+            <a href="{{ url_for('index') }}">Pontuação</a>
+            <a href="{{ url_for('exibir_palpites') }}">Palpites</a>
+            <a href="{{ url_for('adicionar_palpites') }}">Adicionar Palpite</a>
+            <a href="{{ url_for('estatisticas') }}">Estatísticas</a>
+        </nav>
+    </header>
+    <main>
+        <section class="statistics-section">
+            <h1>Estatísticas do Palpites</h1>
+
+            <div class="stat-card">
+                <h2>Maior Pontuador</h2>
+                <p><strong>Nome: </strong>Carlos</p>
+                <p><strong>Pontos: </strong>7</p>
+            </div>
+
+            <div class="stat-card">
+                <h2>Quem Acertou Mais</h2>
+                <p><strong>Nome: </strong>Lucas</p>
+                <p><strong>Acertos: </strong>4</p>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <p>© Desenvolvido por Carlos Natanael</p>
+    </footer>
+</body>
+</html>

@@ -15,6 +15,7 @@
             <a href="{{ url_for('index') }}">Pontuação</a>
             <a href="{{ url_for('exibir_palpites') }}">Palpites</a>
             <a href="{{ url_for('adicionar_palpites') }}">Adicionar Palpite</a>
+            <a href="{{ url_for('estatisticas') }}">Estatísticas</a>
         </nav>
     </header>
 
@@ -29,51 +30,33 @@
                     <th>Erros</th>
                 </tr>
             </thead>
-            <!-- <tbody>
-                <tr>
-                    <td>1º</td>
-                    <td>Tutu</td>
-                    <td>3</td>
-                    <td>1</td>
-                    <td>0</td>
-                </tr>
-            </tbody>
             <tbody>
                 <tr>
                     <td>1º</td>
                     <td>Carlos</td>
+                    <td>7</td>
                     <td>3</td>
-                    <td>1</td>
-                    <td>0</td>
+                    <td>2</td>
                 </tr>
             </tbody>
             <tbody>
                 <tr>
                     <td>2º</td>
                     <td>Lucas</td>
-                    <td>2</td>
+                    <td>6</td>
+                    <td>4</td>
                     <td>1</td>
-                    <td>0</td>
                 </tr>
             </tbody>
             <tbody>
                 <tr>
                     <td>3º</td>
-                    <td>Ariel</td>
+                    <td>Celso</td>
                     <td>2</td>
-                    <td>1</td>
-                    <td>0</td>
+                    <td>2</td>
+                    <td>3</td>
                 </tr>
             </tbody>
-            <tbody>
-                <tr>
-                    <td>4º</td>
-                    <td>Gabriel</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>1</td>
-                </tr>
-            </tbody> -->
         </table>
     </main>
     <h2>Jogos da Semana</h2>
@@ -81,43 +64,54 @@
         <div class="table-container">
             <div class="match-row">
                 <div class="team">
-                    <img src="https://ssl.gstatic.com/onebox/media/sports/logos/7spurne-xDt2p6C0imYYNA_48x48.png" alt="Palmeiras">
-                    Palmeiras
+                    <img src="https://ssl.gstatic.com/onebox/media/sports/logos/orE554NToSkH6nuwofe7Yg_48x48.png" alt="Flamengo">
+                    Flamengo
                 </div>
-                <div class="date-time">Hoje, 21:30</div>
+                <div class="date-time">Qua., 13/11, 20:00</div>
                 <div class="team">
-                    <img src="https://ssl.gstatic.com/onebox/media/sports/logos/Ku-73v_TW9kpex-IEGb0ZA_48x48.png" alt="Grêmio">
-                    Grêmio
+                    <img src="https://ssl.gstatic.com/onebox/media/sports/logos/q9fhEsgpuyRq58OgmSndcQ_48x48.png" alt="Atlético-MG">
+                    Atlético-MG
                 </div>
             </div>
             <div class="match-row">
-                <div class="team">
-                    <img src="https://ssl.gstatic.com/onebox/media/sports/logos/LHSM6VchpkI4NIptoSTHOg_48x48.png" alt="Vitória">
-                    EC Vitória
-                </div>
-                <div class="date-time">Amanhã., 09/11, 16:30</div>
                 <div class="team">
                     <img src="https://ssl.gstatic.com/onebox/media/sports/logos/tCMSqgXVHROpdCpQhzTo1g_48x48.png" alt="Corinthians">
                     Corinthians
                 </div>
+                <div class="date-time">Qua., 20/11, 11:00</div>
+                <div class="team">
+                    <img src="https://ssl.gstatic.com/onebox/media/sports/logos/Tcv9X__nIh-6wFNJPMwIXQ_48x48.png" alt="Cruzeiro">
+                    Cruzeiro
+                </div>
             </div>
             <div class="match-row">
                 <div class="team">
-                    <img src="https://ssl.gstatic.com/onebox/media/sports/logos/KLDWYp-H8CAOT9H_JgizRg_48x48.png" alt="Botafogo">
-                    Botafogo
+                    <img src="https://ssl.gstatic.com/onebox/media/sports/logos/u_L7Mkp33uNmFTv3uUlXeQ_48x48.png" alt="Criciúma">
+                    Criciúma
                 </div>
-                <div class="date-time">Amanhã., 09/11, 16:30</div>
+                <div class="date-time">Qua., 20/11, 16:30</div>
+                <div class="team">
+                    <img src="https://ssl.gstatic.com/onebox/media/sports/logos/LHSM6VchpkI4NIptoSTHOg_48x48.png" alt="Vitória">
+                    EC Vitória
+                </div>
+            </div>
+            <div class="match-row">
                 <div class="team">
                     <img src="https://ssl.gstatic.com/onebox/media/sports/logos/j6U8Rgt_6yyf0Egs9nREXw_48x48.png" alt="Cuiabá">
                     Cuiabá
                 </div>
+                <div class="date-time">Qua., 20/11, 19:00</div>
+                <div class="team">
+                    <img src="https://ssl.gstatic.com/onebox/media/sports/logos/orE554NToSkH6nuwofe7Yg_48x48.png" alt="Flamengo">
+                    Flamengo
+                </div>
             </div>
             <div class="match-row">
                 <div class="team">
-                    <img src="https://ssl.gstatic.com/onebox/media/sports/logos/me10ephzRxdj45zVq1Risg_48x48.png" alt="Fortaleza">
-                    Fortaleza
+                    <img src="https://ssl.gstatic.com/onebox/media/sports/logos/nIdbR6qIUDyZUBO9vojSPw_48x48.png" alt="Bahia">
+                    Bahia
                 </div>
-                <div class="date-time">Amanhã., 09/11, 19:00</div>
+                <div class="date-time">Qua., 20/11, 20:00</div>
                 <div class="team">
                     <img src="https://ssl.gstatic.com/onebox/media/sports/logos/hHwT8LwRmYCAGxQ-STLxYA_48x48.png" alt="Vasco">
                     Vasco
@@ -128,21 +122,21 @@
                     <img src="https://ssl.gstatic.com/onebox/media/sports/logos/q9fhEsgpuyRq58OgmSndcQ_48x48.png" alt="Atlético-MG">
                     Atlético-MG
                 </div>
-                <div class="date-time">Dom., 10/11, 20:00</div>
+                <div class="date-time">Qua., 20/11, 21:30</div>
                 <div class="team">
-                    <img src="https://ssl.gstatic.com/onebox/media/sports/logos/orE554NToSkH6nuwofe7Yg_48x48.png" alt="Flamengo">
-                    Flamengo
+                    <img src="https://ssl.gstatic.com/onebox/media/sports/logos/KLDWYp-H8CAOT9H_JgizRg_48x48.png" alt="Botafogo">
+                    Botafogo
                 </div>
             </div>
             <div class="match-row">
                 <div class="team">
-                    <img src="https://ssl.gstatic.com/onebox/media/sports/logos/orE554NToSkH6nuwofe7Yg_48x48.png" alt="Flamengo">
-                    Flamengo
+                    <img src="https://ssl.gstatic.com/onebox/media/sports/logos/fCMxMMDF2AZPU7LzYKSlig_48x48.png" alt="Fluminense">
+                    Fluminense
                 </div>
-                <div class="date-time">Qua., 13/11, 20:00</div>
+                <div class="date-time">Sex., 22/11, 21:30</div>
                 <div class="team">
-                    <img src="https://ssl.gstatic.com/onebox/media/sports/logos/q9fhEsgpuyRq58OgmSndcQ_48x48.png" alt="Atlético-MG">
-                    Atlético-MG
+                    <img src="https://ssl.gstatic.com/onebox/media/sports/logos/me10ephzRxdj45zVq1Risg_48x48.png" alt="Fortaleza">
+                    Fortaleza
                 </div>
             </div>
     </main>
@@ -154,7 +148,7 @@
                     <img src="https://ssl.gstatic.com/onebox/media/sports/logos/7spurne-xDt2p6C0imYYNA_48x48.png" alt="Palmeiras">
                     Palmeiras
                 </div>
-                <div class="date-time">Hoje, 21:30</div>
+                <div class="date-time">[ 1 ] X [ 0 ]</div>
                 <div class="team">
                     <img src="https://ssl.gstatic.com/onebox/media/sports/logos/Ku-73v_TW9kpex-IEGb0ZA_48x48.png" alt="Grêmio">
                     Grêmio
@@ -165,7 +159,7 @@
                     <img src="https://ssl.gstatic.com/onebox/media/sports/logos/LHSM6VchpkI4NIptoSTHOg_48x48.png" alt="Vitória">
                     EC Vitória
                 </div>
-                <div class="date-time">Amanhã., 09/11, 16:30</div>
+                <div class="date-time">[ 1 ] X [ 2 ]</div>
                 <div class="team">
                     <img src="https://ssl.gstatic.com/onebox/media/sports/logos/tCMSqgXVHROpdCpQhzTo1g_48x48.png" alt="Corinthians">
                     Corinthians
@@ -176,7 +170,7 @@
                     <img src="https://ssl.gstatic.com/onebox/media/sports/logos/KLDWYp-H8CAOT9H_JgizRg_48x48.png" alt="Botafogo">
                     Botafogo
                 </div>
-                <div class="date-time">Amanhã., 09/11, 16:30</div>
+                <div class="date-time">[ 0 ] X [ 0 ]</div>
                 <div class="team">
                     <img src="https://ssl.gstatic.com/onebox/media/sports/logos/j6U8Rgt_6yyf0Egs9nREXw_48x48.png" alt="Cuiabá">
                     Cuiabá
@@ -187,7 +181,7 @@
                     <img src="https://ssl.gstatic.com/onebox/media/sports/logos/me10ephzRxdj45zVq1Risg_48x48.png" alt="Fortaleza">
                     Fortaleza
                 </div>
-                <div class="date-time">Amanhã., 09/11, 19:00</div>
+                <div class="date-time">[ 3 ] X [ 0 ]</div>
                 <div class="team">
                     <img src="https://ssl.gstatic.com/onebox/media/sports/logos/hHwT8LwRmYCAGxQ-STLxYA_48x48.png" alt="Vasco">
                     Vasco
@@ -198,21 +192,10 @@
                     <img src="https://ssl.gstatic.com/onebox/media/sports/logos/q9fhEsgpuyRq58OgmSndcQ_48x48.png" alt="Atlético-MG">
                     Atlético-MG
                 </div>
-                <div class="date-time">Dom., 10/11, 20:00</div>
+                <div class="date-time"> 1 [ 0 ] X [ 1 ] 4</div>
                 <div class="team">
                     <img src="https://ssl.gstatic.com/onebox/media/sports/logos/orE554NToSkH6nuwofe7Yg_48x48.png" alt="Flamengo">
                     Flamengo
-                </div>
-            </div>
-            <div class="match-row">
-                <div class="team">
-                    <img src="https://ssl.gstatic.com/onebox/media/sports/logos/orE554NToSkH6nuwofe7Yg_48x48.png" alt="Flamengo">
-                    Flamengo
-                </div>
-                <div class="date-time">Qua., 13/11, 20:00</div>
-                <div class="team">
-                    <img src="https://ssl.gstatic.com/onebox/media/sports/logos/q9fhEsgpuyRq58OgmSndcQ_48x48.png" alt="Atlético-MG">
-                    Atlético-MG
                 </div>
             </div>
     </main>

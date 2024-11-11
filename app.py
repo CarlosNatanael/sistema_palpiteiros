@@ -75,6 +75,16 @@ def adicionar_palpites():
         return redirect('/palpites')
     return render_template('adicionar_palpites.html')
 
+@app.route('/estatisticas')
+def estatisticas():
+    conn = sqlite3.connect('seu_banco_de_dados.db')
+
+    conn.commit()
+    conn.close()
+
+    return render_template('estatisticas.html')
+
+
 @app.route('/atualizar_pontuacao')
 def atualizar_pontuacao():
     conn = get_db_connection()
