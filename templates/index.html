@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
+    <!-- Navegador -->
     <header>
         
         <h1 class="bar">Sistema de Palpites 🏆</h1>
@@ -18,6 +19,7 @@
             <a href="{{ url_for('adicionar_palpites') }}">Adicionar Palpite</a>
         </nav>
     </header>
+    <!-- Tabela palpiteiros -->
     <main>
         <table>
             <thead>
@@ -40,7 +42,7 @@
             </tbody>
             <tbody>
                 <tr>
-                    <td><strong>2º</strong></td>
+                    <td><strong class="seg">2º</strong></td>
                     <td><strong>Lucas</strong></td>
                     <td><strong>6</strong></td>
                     <td><strong>4</strong></td>
@@ -49,15 +51,25 @@
             </tbody>
             <tbody>
                 <tr>
-                    <td><strong class="ter">3º</strong></td>
+                    <td><strong>3º</strong></td>
                     <td><strong>Celso</strong></td>
                     <td><strong>2</strong></td>
                     <td><strong>2</strong></td>
                     <td><strong>3</strong></td>
                 </tr>
             </tbody>
+            <tbody>
+                <tr>
+                    <td><strong class="ter">4º</strong></td>
+                    <td><strong>Ariel</strong></td>
+                    <td><strong>0</strong></td>
+                    <td><strong>0</strong></td>
+                    <td><strong>0</strong></td>
+                </tr>
+            </tbody>
         </table>
     </main>
+    <!-- Jogos da semana -->
     <h2>Jogos da Semana</h2>
     <main class="jo">
         <div class="table-container">
@@ -140,6 +152,7 @@
                 </div>
             </div>
     </main>
+    <!-- Resultado da semana -->
     <h2>Resultados dos Jogos</h2>
     <main class="jo">
         <div class="table-container">
@@ -201,6 +214,7 @@
                 </div>
             </div>
     </main>
+    <!-- Regras -->
     <main class="car">
         <section class="statistics-section">
             <div class="stat-card">
