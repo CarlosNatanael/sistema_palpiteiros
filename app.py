@@ -32,7 +32,8 @@ def init_db():
         time2 TEXT,
         gol_time1 INTEGER,
         gol_time2 INTEGER,
-        resultado TEXT
+        resultado TEXT,
+        status TEXT
     )''')
     
     conn.commit()

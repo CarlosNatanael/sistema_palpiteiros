@@ -28,6 +28,7 @@
                 <th>Fora</th>
                 <th>Placar</th>
                 <th>Resultado</th>
+                <th>Status</th>
             </tr>
             {% for palpite in palpites %}
             <tr>
@@ -37,6 +38,7 @@
                 <td>{{ palpite['time2'] }}</td>
                 <td>{{ palpite['gol_time2'] }}</td>
                 <td>{{ palpite['resultado'] }}</td>
+                <td>{{ palpite['status'] }}</td>
             </tr>
             {% endfor %}
         </table>
