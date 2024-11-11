@@ -201,3 +201,18 @@ footer p {
     margin: 0 auto; /* Garante centralização */
     text-align: center; /* Opcional: Centraliza o texto dentro do campo */
 }
+
+select {
+    padding: 10px;
+    font-size: 1em;
+    margin-bottom: 10px;
+    width: 100%;
+    box-sizing: border-box;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+}
+
+select:focus {
+    outline: none;
+    border-color: #006400;
+}
