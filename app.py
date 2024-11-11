@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, url_for
 import sqlite3
 
 API_BASE_URL = "http://apifutebol.footstats.com.br/3.1"

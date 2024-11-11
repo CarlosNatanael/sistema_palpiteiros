@@ -23,23 +23,22 @@ header h1 {
 }
 
 nav {
-    margin-top: 15px;
+    margin-top: 10px;
 }
 
 nav a {
     color: #fff;
     font-weight: bold;
     text-decoration: none;
-    margin: 0 10px;
-    padding: 8px 15px;
-    background-color: #228B22;
+    margin: 0 15px;
+    padding: 10px 15px;
+    background-color: #228B22; 
     border-radius: 5px;
-    transition: background-color 0.3s, transform 0.3s;
+    transition: background-color 0.3s;
 }
 
 nav a:hover {
-    background-color: #004d00;
-    transform: scale(1.05);
+    background-color: #004d00; 
 }
 
 
