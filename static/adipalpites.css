@@ -93,7 +93,7 @@ h1 {
 }
 
 input[type="text"], input[type="number"] {
-    width: 100%;
+    width: 40%;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
