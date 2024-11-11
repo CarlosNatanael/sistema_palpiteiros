@@ -77,7 +77,7 @@ def adicionar_palpites():
 
 @app.route('/estatisticas')
 def estatisticas():
-    conn = sqlite3.connect('seu_banco_de_dados.db')
+    conn = sqlite3.connect('palpites.db')
 
     conn.commit()
     conn.close()
