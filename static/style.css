@@ -4,12 +4,12 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #e0e0e0; /* Fundo mais neutro */
+    background-color: #e0e0e0; 
 }
 
-/* Cabeçalho */
+
 header {
-    background-color: #006400; /* Verde escuro, cor tradicional de campo */
+    background-color: #006400;
     color: #fff;
     padding: 20px 0;
     text-align: center;
@@ -23,25 +23,26 @@ header h1 {
 }
 
 nav {
-    margin-top: 10px;
+    margin-top: 15px;
 }
 
 nav a {
     color: #fff;
     font-weight: bold;
     text-decoration: none;
-    margin: 0 15px;
-    padding: 10px 15px;
-    background-color: #228B22; /* Verde mais claro para os botões de navegação */
+    margin: 0 10px;
+    padding: 8px 15px;
+    background-color: #228B22;
     border-radius: 5px;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s, transform 0.3s;
 }
 
 nav a:hover {
-    background-color: #004d00; /* Efeito de hover mais escuro */
+    background-color: #004d00;
+    transform: scale(1.05);
 }
 
-/* Estilo principal */
+
 main {
     padding: 30px;
     padding-bottom: 60px;
@@ -79,7 +80,7 @@ h3 {
     text-align: center;
 }
 
-/* Estilo da Tabela */
+
 table {
     width: 100%;
     border-collapse: collapse;
@@ -100,7 +101,7 @@ th, td {
 }
 
 th {
-    background-color: #006400; /* Verde para o cabeçalho da tabela */
+    background-color: #006400;
     color: #ffffff;
 }
 
@@ -109,20 +110,19 @@ td {
 }
 
 tr:nth-child(even) td {
-    background-color: #e0e0e0; /* Listras na tabela */
+    background-color: #e0e0e0;
 }
 
 tr:hover td {
-    background-color: #c0ffc0; /* Destaque ao passar o mouse */
+    background-color: #c0ffc0; 
 }
 
-/* Estilo do Rodapé */
 footer {
     background-color: #333;
     color: #fff;
     padding: 10px 0;
     text-align: center;
-    position: relative; /* Change from fixed to relative */
+    position: relative; 
     width: 100%;
     font-size: 0.9em;
     box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.2);
@@ -134,8 +134,8 @@ footer {
     display: flex;
     justify-content: center;
     padding-top: 50px;
-    flex-direction: column; /* Altere para exibir verticalmente */
-    align-items: center; /* Centraliza o conteúdo */
+    flex-direction: column;
+    align-items: center; 
 }
 .table-container {
     width: 600px;
@@ -145,7 +145,7 @@ footer {
 .table-container h3 {
     text-align: center;
     margin-bottom: 20px;
-    color: #006400; /* Ajuste a cor se necessário */
+    color: #006400; 
 }
 
 .table-container, .table-container th, .table-container td {

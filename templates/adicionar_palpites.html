@@ -22,37 +22,35 @@
         <h1>Adicionar Novo Palpite</h1>
         <div class="form-container">
             <form action="{{ url_for('adicionar_palpites') }}" method="POST">
-                <div class="form-group">
-                    <label for="nome">Nome:</label>
-                    <input type="text" id="nome" name="nome" required>
+                <div class="game-prediction">
+                    <div class="form-group">
+                        <label for="nome">Nome:</label>
+                        <input type="text" id="nome" name="nome" required>
+                    </div>
+
+                    <div class="teams">
+                        <div class="team">
+                            <label for="time1">Casa:</label>
+                            <input type="text" id="time1" name="time1" class="team-name" required />
+                        </div>
+
+                        <input type="number" id="gol_time1" name="gol_time1" class="score-input" min="0" max="99" required />
+                        <span class="separator">x</span>
+                        <input type="number" id="gol_time2" name="gol_time2" class="score-input" min="0" max="99" required />
+
+                        <div class="team">
+                            <label for="time2">Fora:</label>
+                            <input type="text" id="time2" name="time2" class="team-name" required />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="resultado">Resultado:</label>
+                        <input type="text" id="resultado" name="resultado" required />
+                    </div>
+
+                    <button type="submit">Adicionar Palpite</button>
                 </div>
-    
-                <div class="form-group">
-                    <label for="time1">Casa:</label>
-                    <input type="text" id="time1" name="time1" required>
-                </div>
-    
-                <div class="form-group">
-                    <label for="time2">Placar:</label>
-                    <input type="number" id="gol_time1" name="gol_time1" required>
-                </div>
-    
-                <div class="form-group">
-                    <label for="gol_time1">Fora:</label>
-                    <input type="text" id="time2" name="time2" required>
-                </div>
-    
-                <div class="form-group">
-                    <label for="gol_time2">Placar:</label>
-                    <input type="number" id="gol_time2" name="gol_time2" required>
-                </div>
-    
-                <div class="form-group">
-                    <label for="resultado">Resultado:</label>
-                    <input type="text" id="resultado" name="resultado" required>
-                </div>
-    
-                <button type="submit">Adicionar Palpite</button>
             </form>
         </div>
     </main>

@@ -1,18 +1,20 @@
-/* Arquivo: static/style.css */
+/* Arquivo: static/adipalpites.css */
 
+/* Estilos Globais */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #e0e0e0; /* Fundo mais neutro */
+    background-color: #f4f4f9;
 }
 
 /* Cabeçalho */
 header {
-    background-color: #006400; /* Verde escuro, cor tradicional de campo */
+    background-color: #006400;
     color: #fff;
     padding: 20px 0;
     text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 header h1 {
@@ -22,168 +24,180 @@ header h1 {
     text-transform: uppercase;
 }
 
+/* Navegação */
 nav {
-    margin-top: 10px;
+    margin-top: 15px;
 }
 
 nav a {
     color: #fff;
     font-weight: bold;
     text-decoration: none;
-    margin: 0 15px;
-    padding: 10px 15px;
-    background-color: #228B22; /* Verde mais claro para os botões de navegação */
+    margin: 0 10px;
+    padding: 8px 15px;
+    background-color: #228B22;
     border-radius: 5px;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s, transform 0.3s;
 }
 
 nav a:hover {
-    background-color: #004d00; /* Efeito de hover mais escuro */
+    background-color: #004d00;
+    transform: scale(1.05);
 }
 
-/* Estilo principal */
+/* Conteúdo Principal */
 main {
-    padding: 30px;
+    padding: 40px;
     text-align: center;
 }
 
 h1 {
     color: #006400;
-    font-size: 1.8em;
+    font-size: 2em;
     margin-bottom: 20px;
     text-transform: uppercase;
-    font-style: italic;
+    font-weight: bold;
 }
 
-/* Estilo da Tabela */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    background-color: #ffffff;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    overflow: hidden;
-}
-
-table, th, td {
-    border: 1px solid #ddd;
-}
-
-th, td {
-    padding: 15px;
-    text-align: center;
-    font-size: 1.1em;
-}
-
-th {
-    background-color: #006400; /* Verde para o cabeçalho da tabela */
-    color: #ffffff;
-}
-
-td {
-    background-color: #f9f9f9;
-}
-
-tr:nth-child(even) td {
-    background-color: #e0e0e0; /* Listras na tabela */
-}
-
-tr:hover td {
-    background-color: #c0ffc0; /* Destaque ao passar o mouse */
-}
-
-/* Estilo do Rodapé */
-footer {
-    background-color: #333;
-    color: #fff;
-    padding: 5px;
-    text-align: center;
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    font-size: 0.9em;
-    box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.2);
-}
-
+/* Formulário */
 .form-container {
+    margin: 20px auto;
     max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
+    padding: 30px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
     background-color: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
 }
 
-/* Estilo do grupo de entrada */
-.form-group {
-    margin-bottom: 15px;
+.game-prediction {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    gap: 20px;
+    align-items: center;
+}
+
+/* Grupo do Formulário */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centraliza os campos Nome e Resultado */
+    width: 100%;
 }
 
 .form-group label {
-    font-size: 1em;
+    font-weight: bold;
     color: #333;
+    display: block;
     margin-bottom: 5px;
 }
 
-.form-group input[type="text"],
-.form-group input[type="number"] {
+input[type="text"], input[type="number"] {
     width: 100%;
     padding: 10px;
-    font-size: 1em;
     border: 1px solid #ccc;
     border-radius: 5px;
+    font-size: 1em;
     box-sizing: border-box;
-    transition: border-color 0.3s ease;
+    transition: border-color 0.3s;
 }
 
-.form-group input[type="text"]:focus,
-.form-group input[type="number"]:focus {
+input[type="text"]:focus, input[type="number"]:focus {
     border-color: #006400;
     outline: none;
 }
 
-/* Botão de enviar */
-button[type="submit"] {
-    background-color: #006400;
-    color: #fff;
-    font-size: 1em;
-    font-weight: bold;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    margin-top: 10px;
-    width: 100%;
+/* Seção de Times */
+.teams {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    justify-content: center;
 }
 
-button[type="submit"]:hover {
-    background-color: #004d00;
-}
-
-/* Alinhamento do main */
-main {
+.team {
     display: flex;
     flex-direction: column;
     align-items: center;
+    text-align: center;
 }
 
-/* Ajuste no título */
-main h1 {
-    margin-bottom: 20px;
-    color: #006400;
+.team-name {
+    width: 80px; /* Aumente o valor conforme necessário */
+    font-size: 1.1em;
+}
+
+/* Entrada de Placar */
+.score-input {
+    width: 10px;
+    height: 50px;
+    text-align: center;
+    font-size: 1.2em;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+}
+
+.score-input:focus {
+    border-color: #006400;
+    outline: none;
+    transform: scale(1.05);
+}
+
+.separator {
+    font-size: 1.5em;
     font-weight: bold;
-    text-align: auto;
+    color: #333;
 }
 
+/* Botão de Submissão */
+button {
+    padding: 12px 25px;
+    font-size: 1.1em;
+    color: #fff;
+    background-color: #006400;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+button:hover {
+    background-color: #004d00;
+    transform: translateY(-2px);
+}
+
+button:active {
+    transform: scale(0.98);
+}
+
+/* Rodapé */
+footer {
+    background-color: #333;
+    color: #fff;
+    padding: 15px 0;
+    text-align: center;
+    width: 100%;
+    font-size: 0.9em;
+    box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.2);
+    bottom: 0;
+}
+
+footer p {
+    margin: 0;
+}
+
+/* Barra Superior */
 .bar {
     color: #ffffff;
     font-size: 1.8em;
-    margin-bottom: 20px;
     text-transform: uppercase;
-    text-align: center;
+}
 
+#nome, #resultado {
+    width: 70%; /* Ajuste conforme necessário */
+    max-width: 300px;
+    margin: 0 auto; /* Garante centralização */
+    text-align: center; /* Opcional: Centraliza o texto dentro do campo */
 }
