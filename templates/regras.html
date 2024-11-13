@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estatísticas - Sistema de Palpites</title>
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+    <link rel="stylesheet" href="{{ url_for('static', filename='regra.css') }}">
+</head>
+<body>
+    <header>
+        <h1 class="bar">Sistema de Palpites 🏆</h1>
+        <nav>
+            <a href="{{ url_for('index') }}">Pontuação</a>
+            <a href="{{ url_for('estatisticas') }}">Estatísticas</a>
+            <a href="{{ url_for('exibir_palpites') }}">Palpites</a>
+            <a href="{{ url_for('adicionar_palpites') }}">Adicionar Palpite</a>
+            <a href="{{ url_for('regra') }}">Regras</a>
+        </nav>
+    </header>
+    <main>
+        <section class="statistics-section">
+            <h1>Regras do Jogo</h1>
+            <section class="statistics-section">
+                <div class="stat-card">
+                    <h2>Regras de Puntuação</h2>
+                    <p><strong>Acerto do Placar + Resultado com Especificação = </strong><strong>4 pts</strong></p>
+                    <p><strong>Acerto do Placar + Resultado geral = </strong><strong>3 pts</strong></p>
+                    <p><strong>Acerto do Placar = </strong><strong>2 pts</strong></p>
+                    <p><strong>Resultado com Especificação = </strong><strong>2 pts</strong></p>
+                    <p><strong>Resultado geral (vitória, empate ou derrota) = </strong><strong>1 pts</strong></p>
+                    <p><strong>Bônus de Consistência = 2 pts</strong></p>
+                    <p><strong>Bônus por Finais de Competições = 2 pts</strong></p>
+                </div>
+
+                <div class="stat-card">
+                    <h2>Bonus Pontuação</h2>
+                    <p><strong>Bônus de Consistência: Quem acertar o placar em todas as partidas de uma rodada ganha pontos adicionais.</strong></p>
+                    <p><strong>Bônus por Finais de Competições: Para finais de campeonatos importantes quem acertar o resultado exato ganha pontos adicionais.</strong></p>
+                </div>
+
+                <div class="stat-card">
+                    <h2>Regras dos Palpites</h2>
+                    <p><strong>Os palpites desaparecerão da tela 2 dias antes da próxima rodada.</strong></p>
+                    <p><strong>Palpites já feitos não podem ser alterados.</strong></p>
+                    <p><strong>Palpites feitos após o início dos jogos não serão contabilizados.</strong></p>
+                    <p><strong>As estatísticas serão atualizadas ao final de cada rodada.</strong></p>
+                    <p><strong></strong></p>
+                </div>
+
+                <div class="stat-card">
+                    <h2>👑 Premiação 👑</h2>
+                    <p><strong>Prêmio para o Top 2:</strong></p>
+                    <p><strong>1º Lugar: Um prêmio em dinheiro ou duas torres de choop.</strong></p>
+                    <p><strong>2º Lugar: Uma camiseta do time favorito</strong></p>
+                </div>
+
+            </section>
+        </section>
+    </main>
+    <footer>
+        <p>© Desenvolvido por Carlos Natanael</p>
+    </footer>
+</body>
+</html>

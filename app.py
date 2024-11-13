@@ -85,6 +85,11 @@ def estatisticas():
 
     return render_template('estatisticas.html')
 
+@app.route('/regras')
+def regra():
+    
+    return render_template('regras.html')
+
 
 @app.route('/atualizar_pontuacao')
 def atualizar_pontuacao():

@@ -15,6 +15,7 @@
             <a href="{{ url_for('estatisticas') }}">Estatísticas</a>
             <a href="{{ url_for('exibir_palpites') }}">Palpites</a>
             <a href="{{ url_for('adicionar_palpites') }}">Adicionar Palpite</a>
+            <a href="{{ url_for('regra') }}">Regras</a>
         </nav>
     </header>
 
@@ -64,7 +65,16 @@
 
                     <div class="form-group">
                         <label for="resultado">Resultado:</label>
-                        <input type="text" id="resultado" name="resultado" required />
+                        <select type="text" id="resultado" name="resultado" required>
+                            <option value="" disabled selected>Selecione resultado</option>
+                            <option value="Vitória (Casa)">Vitória (Casa)</option>
+                            <option value="Derrota (Fora)">Derrota (Fora)</option>
+                            <option value="Vitória (Fora)">Vitória (Fora)</option>
+                            <option value="Derrota (Casa)">Derrota (Casa)</option>
+                            <option value="Empate">Empate</option>
+                            <option value="Derrota">Derrota</option>
+                            <option value="Vitória">Vitória</option>
+                        </select>
                     </div>
 
                     <button type="submit">Adicionar Palpite</button>
