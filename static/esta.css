@@ -106,3 +106,9 @@ footer {
     bottom: 0;
     width: 100%;
 }
+
+h3{
+    color: #006400;
+    margin-bottom: 20px;
+    text-align: center;
+}
