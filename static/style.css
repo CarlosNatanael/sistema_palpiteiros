@@ -190,18 +190,24 @@ footer {
 }
 
 .date-time {
-    font-weight: bold;
-    color: #333;
+    text-align: center; /* Centraliza o texto horizontalmente */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: black;
+    /* width: 100px; Defina uma largura fixa se necessário */
 }
 
-.resultado{
+.resultado {
     font-weight: bold;
     color: black;
-    font-size: 1.3em;
-    margin-bottom: 20px;
-    text-transform: uppercase;
-    text-align: auto;
-
+    font-size: 1.2em;
+    width: 80px; 
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 10px;
 }
 
 .stat-card {

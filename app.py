@@ -53,7 +53,15 @@ def exibir_palpites():
     conn = get_db_connection()
     palpites = conn.execute("SELECT * FROM palpites").fetchall()
     conn.close()
-    return render_template('palpites.html', palpites=palpites)
+
+    palpites_agrupados = {}
+    for palpite in palpites:
+        nome = palpite['nome']
+        if nome not in palpites_agrupados:
+            palpites_agrupados[nome] = []
+        palpites_agrupados[nome].append(palpite)
+
+    return render_template('palpites.html', palpites_agrupados=palpites_agrupados)
 
 @app.route('/adicionar_palpites', methods=['GET', 'POST'])
 def adicionar_palpites():

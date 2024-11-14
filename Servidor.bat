@@ -9,4 +9,4 @@ REM Define o ambiente como development para habilitar o modo debug
 set FLASK_ENV=development
 
 REM Inicia o servidor Flask no IP e porta especificados
-flask run --host=192.168.0.238 --port=5000
+flask run --host=192.168.0.238 --port=3000
