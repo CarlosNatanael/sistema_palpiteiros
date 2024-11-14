@@ -129,7 +129,16 @@ footer {
 }
 
 
-.jo {
+.jogosSemana {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    padding-top: 50px;
+    flex-direction: column;
+    align-items: center; 
+}
+
+.resultadoJogo {
     font-family: Arial, sans-serif;
     display: flex;
     justify-content: center;
@@ -171,6 +180,7 @@ footer {
 .team {
     display: flex;
     align-items: center;
+    font-weight: bold;
 }
 
 .team img {
@@ -182,6 +192,16 @@ footer {
 .date-time {
     font-weight: bold;
     color: #333;
+}
+
+.resultado{
+    font-weight: bold;
+    color: black;
+    font-size: 1.3em;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    text-align: auto;
+
 }
 
 .stat-card {
