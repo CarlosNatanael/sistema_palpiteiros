@@ -1,3 +1,4 @@
+<!-- Arquivo: templates/adicionar_palpites.html -->
 <!DOCTYPE html>
 <html lang="pt">
 <head>
@@ -8,6 +9,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='adipalpites.css') }}">
 </head>
 <body>
+    <!-- Navegador -->
     <header>
         <h1 class="bar">Sistema de Palpites 🏆</h1>
         <nav>
@@ -18,7 +20,7 @@
             <a href="{{ url_for('regra') }}">Regras</a>
         </nav>
     </header>
-
+    <!-- Adicionar palpites -->
     <main>
         <h1>Adicionar Novo Palpite</h1>
         <div class="form-container">
@@ -82,7 +84,6 @@
             </form>
         </div>
     </main>
-
     <footer>
         <p>© Desenvolvido por Carlos Natanael</p>
     </footer>

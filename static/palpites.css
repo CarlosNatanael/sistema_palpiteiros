@@ -1,4 +1,4 @@
-/* Arquivo: static/style.css */
+/* Arquivo: static/palpites.css */
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -6,7 +6,6 @@ body {
     padding: 0;
     background-color: #e0e0e0; 
 }
-
 
 header {
     background-color: #006400; 
@@ -61,8 +60,6 @@ h2 {
     text-transform: uppercase;
 }
 
-
-
 table {
     width: 100%;
     border-collapse: collapse;
@@ -98,7 +95,6 @@ tr:nth-child(even) td {
 tr:hover td {
     background-color: #c0ffc0; 
 }
-
 
 footer {
     background-color: #333;
