@@ -52,8 +52,15 @@ h1 {
     font-size: 1.8em;
     margin-bottom: 20px;
     text-transform: uppercase;
-    font-style: italic;
 }
+
+h2 {
+    color: #006400;
+    font-size: 1.8em;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+}
+
 
 
 table {
