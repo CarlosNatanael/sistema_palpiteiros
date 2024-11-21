@@ -100,11 +100,10 @@ footer {
     color: #fff;
     padding: 10px 0;
     text-align: center;
+    position: relative; 
+    width: 100%;
     font-size: 0.9em;
     box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.2);
-    position: fixed;
-    bottom: 0;
-    width: 100%;
 }
 
 h3{
