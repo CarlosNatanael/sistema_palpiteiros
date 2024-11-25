@@ -87,16 +87,37 @@ def adicionar_palpites():
 @app.route('/estatisticas')
 def estatisticas():
     conn = sqlite3.connect('palpites.db')
-
     conn.commit()
     conn.close()
-
     return render_template('estatisticas.html')
 
 @app.route('/regras')
 def regra():
-    
     return render_template('regras.html')
+
+@app.route('/rodadas')
+def exibir_rodadas():
+     
+     rodadas = [f"Rodada {i}" for i in range(1, 4)]
+     return render_template('rodadas.html', rodadas=rodadas)
+
+@app.route('/rodada/<int:numero>')
+def exibir_rodada(numero):
+
+    nome_banco = f"rodada_{numero}.db"
+
+    import os
+    if not os.path.exists(nome_banco):
+        return f"Banco de dados para a rodada {numero} não encontrado.", 404
+
+    conn = sqlite3.connect(nome_banco)
+    conn.row_factory = sqlite3.Row
+
+    palpites = conn.execute("SELECT * FROM palpites").fetchall()
+    conn.close()
+
+    return render_template('rodada.html', rodada=numero, palpites=palpites)
+
 
 
 @app.route('/atualizar_pontuacao')
@@ -141,4 +162,4 @@ def atualizar_pontuacao():
     return redirect('/')
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", port=8000, debug=True)
+    app.run(host="0.0.0.0", port=3000, debug=True)

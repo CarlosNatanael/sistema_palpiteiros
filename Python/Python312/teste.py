@@ -1,0 +1,5 @@
+print("Coloque seu nome: ")
+nome = input()
+print("Escreva seu sobrenome: ")
+sobrenome = input()
+print(nome,sobrenome)

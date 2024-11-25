@@ -1,12 +1,13 @@
-<!-- Arquivo: templates/estatisticas.html -->
+<!-- Arquivo: templates/rodadas.html -->
 <!DOCTYPE html>
 <html lang="pt">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Estatísticas - Sistema de Palpites</title>
+    <title>Rodada {{ rodada }}</title>
     <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
-    <link rel="stylesheet" href="{{ url_for('static', filename='esta.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='palpites.css') }}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
     <!-- Navegador -->
@@ -21,26 +22,16 @@
             <a href="{{ url_for('regra') }}">Regras</a>
         </nav>
     </header>
-    <!-- Estatiticas -->
+
     <main>
-        <section class="statistics-section">
-            <h1>Estatísticas do Palpites</h1>
-
-            <div class="stat-card">
-                <h2>Maior Pontuador</h2>
-                <h3>Rodada 2</h3>
-                <p><strong>Nome: Carlos</strong><strong></strong></p>
-                <p><strong>Pontos: 10</strong><strong></strong></p>
-            </div>
-
-            <div class="stat-card">
-                <h2>Quem Acertou Mais</h2>
-                <h3>Rodada 2</h3>
-                <p><strong>Nome: Lucas/Carlos/Ariel</strong><strong></strong></p>
-                <p><strong>Acertos: 4</strong><strong></strong></p>
-            </div>
-        </section>
+        <h2>Escolha a Rodada</h2>
+        <ul>
+            {% for rodada in rodadas %}
+            <li><a href="{{ url_for('exibir_rodada', numero=loop.index) }}">{{ rodada }}</a></li>
+            {% endfor %}
+        </ul>
     </main>
+
     <footer>
         <p>© Desenvolvido por Carlos Natanael</p>
     </footer>

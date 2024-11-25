@@ -16,6 +16,7 @@
             <a href="{{ url_for('index') }}">Pontuação</a>
             <a href="{{ url_for('estatisticas') }}">Estatísticas</a>
             <a href="{{ url_for('exibir_palpites') }}">Palpites</a>
+            <a href="{{ url_for('exibir_rodadas') }}">Rodadas</a>
             <a href="{{ url_for('adicionar_palpites') }}">Adicionar Palpite</a>
             <a href="{{ url_for('regra') }}">Regras</a>
         </nav>
@@ -28,7 +29,14 @@
                 <div class="game-prediction">
                     <div class="form-group">
                         <label for="nome">Nome:</label>
-                        <input type="text" id="nome" name="nome" required>
+                        <select type="text" id="nome" name="nome" required>
+                            <option value="" disabled selected>Selecione o nome</option>
+                            <option value="Ariel">Ariel</option>
+                            <option value="Carlos">Carlos</option>
+                            <option value="Celso">Celso</option>
+                            <option value="Gabriel">Gabriel</option>
+                            <option value="Lucas">Lucas</option>
+                        </select>
                     </div>
 
                     <div class="teams">
@@ -39,7 +47,7 @@
                                 <option value="FOR">Fortaleza</option>
                                 <option value="PAL">Palmeiras</option>
                                 <option value="CRI">Criciúma</option>
-                                <option value="Vasco">Vasco</option>
+                                <option value="VAS">Vasco</option>
                                 <option value="GRE">Grêmio</option>
                                 <option value="FLA">Flamengo</option>
                                 <option value="CAP">Atlético-PR</option>

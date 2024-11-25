@@ -1,0 +1,56 @@
+<!-- Arquivo: templates/rodada.html -->
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rodada {{ rodada }}</title>
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+    <link rel="stylesheet" href="{{ url_for('static', filename='palpites.css') }}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <!-- Navegador -->
+    <header>
+        <h1 class="bar">Sistema de Palpites 🏆</h1>
+        <nav>
+            <a href="{{ url_for('index') }}">Pontuação</a>
+            <a href="{{ url_for('estatisticas') }}">Estatísticas</a>
+            <a href="{{ url_for('exibir_palpites') }}">Palpites</a>
+            <a href="{{ url_for('exibir_rodadas') }}">Rodadas</a>
+            <a href="{{ url_for('adicionar_palpites') }}">Adicionar Palpite</a>
+            <a href="{{ url_for('regra') }}">Regras</a>
+        </nav>
+    </header>
+    <main>
+        <h2>Palpites da Rodada {{ rodada }}</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Casa</th>
+                    <th>Placar</th>
+                    <th>Fora</th>
+                    <th>Placar</th>
+                    <th>Resultado</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for palpite in palpites %}
+                <tr>
+                    <td>{{ palpite['nome'] }}</td>
+                    <td>{{ palpite['time1'] }}</td>
+                    <td>{{ palpite['gol_time1'] }}</td>
+                    <td>{{ palpite['time2'] }}</td>
+                    <td>{{ palpite['gol_time2'] }}</td>
+                    <td>{{ palpite['resultado'] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </main>
+    <footer>
+        <p>© Desenvolvido por Carlos Natanael</p>
+    </footer>
+</body>
+</html>
