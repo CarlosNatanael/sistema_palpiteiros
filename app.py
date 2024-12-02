@@ -103,20 +103,34 @@ def exibir_rodadas():
 
 @app.route('/rodada/<int:numero>')
 def exibir_rodada(numero):
-
     nome_banco = f"rodada_{numero}.db"
 
     import os
     if not os.path.exists(nome_banco):
         return f"Banco de dados para a rodada {numero} não encontrado.", 404
 
+    # Conecte ao banco da rodada específica
     conn = sqlite3.connect(nome_banco)
     conn.row_factory = sqlite3.Row
-
     palpites = conn.execute("SELECT * FROM palpites").fetchall()
     conn.close()
 
-    return render_template('rodada.html', rodada=numero, palpites=palpites)
+    # Agrupando palpites por nome
+    palpites_agrupados = {}
+    for palpite in palpites:
+        nome = palpite['nome']
+        if nome not in palpites_agrupados:
+            palpites_agrupados[nome] = []
+        palpites_agrupados[nome].append({
+            'time1': palpite['time1'],
+            'gol_time1': palpite['gol_time1'],
+            'time2': palpite['time2'],
+            'gol_time2': palpite['gol_time2'],
+            'resultado': palpite['resultado'],
+            'status': palpite['status']
+        })
+
+    return render_template('rodada.html', rodada=numero, palpites_agrupados=palpites_agrupados)
 
 
 

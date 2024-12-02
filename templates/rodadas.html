@@ -24,11 +24,13 @@
     </header>
     <main>
         <h2>Escolha a Rodada</h2>
-        <ul>
+        <div class="rodadas-container">
             {% for rodada in rodadas %}
-            <li><a href="{{ url_for('exibir_rodada', numero=loop.index) }}">{{ rodada }}</a></li>
+            <div class="rodada-item">
+                <a href="{{ url_for('exibir_rodada', numero=loop.index) }}">{{ rodada }}</a>
+            </div>
             {% endfor %}
-        </ul>
+        </div>
     </main>
     <footer>
         <p>© Desenvolvido por Carlos Natanael</p>

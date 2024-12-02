@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rodada {{ rodada }}</title>
     <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
-    <link rel="stylesheet" href="{{ url_for('static', filename='palpites.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='rodada.css') }}">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
@@ -22,33 +22,54 @@
             <a href="{{ url_for('regra') }}">Regras</a>
         </nav>
     </header>
-    <main>
+    <main class="container">
         <h2>Palpites da Rodada {{ rodada }}</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Nome</th>
-                    <th>Casa</th>
-                    <th>Placar</th>
-                    <th>Fora</th>
-                    <th>Placar</th>
-                    <th>Resultado</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for palpite in palpites %}
-                <tr>
-                    <td>{{ palpite['nome'] }}</td>
-                    <td>{{ palpite['time1'] }}</td>
-                    <td>{{ palpite['gol_time1'] }}</td>
-                    <td>{{ palpite['time2'] }}</td>
-                    <td>{{ palpite['gol_time2'] }}</td>
-                    <td>{{ palpite['resultado'] }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+        <div class="accordion" id="accordionPalpites">
+            {% for nome, palpites_por_nome in palpites_agrupados.items() %}
+            <div class="card">
+                <div class="card-header" id="heading{{ loop.index }}">
+                    <h2 class="mb-0">
+                        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse{{ loop.index }}" aria-expanded="true" aria-controls="collapse{{ loop.index }}">
+                            {{ nome }}
+                        </button>
+                    </h2>
+                </div>
+
+                <div id="collapse{{ loop.index }}" class="collapse" aria-labelledby="heading{{ loop.index }}" data-parent="#accordionPalpites">
+                    <div class="card-body">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Casa</th>
+                                    <th>Placar</th>
+                                    <th>Fora</th>
+                                    <th>Placar</th>
+                                    <th>Resultado</th>
+                                    <th>Pontos</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for palpite in palpites_por_nome %}
+                                <tr>
+                                    <td>{{ palpite['time1'] }}</td>
+                                    <td>{{ palpite['gol_time1'] }}</td>
+                                    <td>{{ palpite['time2'] }}</td>
+                                    <td>{{ palpite['gol_time2'] }}</td>
+                                    <td>{{ palpite['resultado'] }}</td>
+                                    <td>{{ palpite['status'] }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
     </main>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.4.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <footer>
         <p>© Desenvolvido por Carlos Natanael</p>
     </footer>
