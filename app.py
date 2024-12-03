@@ -98,7 +98,7 @@ def regra():
 @app.route('/rodadas')
 def exibir_rodadas():
      
-     rodadas = [f"Rodada {i}" for i in range(1, 4)]
+     rodadas = [f"Rodada {i}" for i in range(1, 5)]
      return render_template('rodadas.html', rodadas=rodadas)
 
 @app.route('/rodada/<int:numero>')
