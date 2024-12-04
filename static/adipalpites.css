@@ -70,6 +70,14 @@ h1 {
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
 }
 
+h2 {
+    color: #006400;
+    font-size: 1.8em;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+}
+
+
 .game-prediction {
     display: flex;
     flex-direction: column;
