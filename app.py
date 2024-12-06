@@ -98,7 +98,7 @@ def regra():
 @app.route('/rodadas')
 def exibir_rodadas():
      
-     rodadas = [f"Rodada {i}" for i in range(1, 5)]
+     rodadas = [f"Rodada {i}" for i in range(1, 6)]
      return render_template('rodadas.html', rodadas=rodadas)
 
 @app.route('/rodada/<int:numero>')
@@ -109,13 +109,11 @@ def exibir_rodada(numero):
     if not os.path.exists(nome_banco):
         return f"Banco de dados para a rodada {numero} não encontrado.", 404
 
-    # Conecte ao banco da rodada específica
     conn = sqlite3.connect(nome_banco)
     conn.row_factory = sqlite3.Row
     palpites = conn.execute("SELECT * FROM palpites").fetchall()
     conn.close()
 
-    # Agrupando palpites por nome
     palpites_agrupados = {}
     for palpite in palpites:
         nome = palpite['nome']
