@@ -25,10 +25,11 @@
     <main>
         <h1>Adicionar Novo Palpite</h1>
         <div class="form-container">
-            <h2>Rodada 4 Fechada</h2>
+            <h2>Rodada 4 Fechada</h2> 
+            <!--
             <form action="{{ url_for('adicionar_palpites') }}" method="POST">
-                <!--
                 <div class="game-prediction">
+                    <label class="color"><strong>Rodada 5</strong></label>
                     <div class="form-group">
                         <label for="nome">Nome:</label>
                         <select type="text" id="nome" name="nome" required>
@@ -46,15 +47,14 @@
                             <label for="time1"><strong>CASA:</strong></label>
                             <select id="time1" name="time1" required>
                                 <option value="" disabled selected>Selecione o time de Casa</option>
-                                <option value="COR">Corinthians</option>
-                                <option value="VAS">Vasco</option>
-                                <option value="VIT">Vitória</option>
-                                <option value="CRI">Criciúma</option>
-                                <option value="SAO">São Paulo</option>
-                                <option value="ACG">Atlético-GO</option>
-                                <option value="INT">Internacional</option>
-                                <option value="CRU">Cruzeiro</option>
-                                <option value="FLU">Fluminense</option>
+                                <option value="FOR">Fortaleza</option>
+                                <option value="FLA">Flamengo</option>
+                                <option value="RBB">Bragantino</option>
+                                <option value="CAM">Atlético-MG</option>
+                                <option value="BOT">Botafogo</option>
+                                <option value="CUI">Cuiabá</option>
+                                <option value="PAL">Palmeiras</option>
+                                <option value="GRE">Grêmio</option>
                             </select>
                         </div>
 
@@ -66,19 +66,17 @@
                             <label for="time2"><strong>FORA:</strong></label>
                             <select id="time2" name="time2" required>
                                 <option value="" disabled selected>Selecione o time de Fora</option>
-                                <option value="BAH">Bahia</option>
-                                <option value="CAM">Atlético-MG</option>
-                                <option value="GRE">Grêmio</option>
-                                <option value="FLA">Flamengo</option>
-                                <option value="JUV">Juventude</option>
-                                <option value="FOR">Fortaleza</option>
-                                <option value="BOT">Botafogo</option>
-                                <option value="PAL">Palmeiras</option>
-                                <option value="CUI">Cuiabá</option>
+                                <option value="INT">Internacional</option>
+                                <option value="VIT">Vitória</option>
+                                <option value="CRI">Criciúma</option>
+                                <option value="CAP">Atlético-PR</option>
+                                <option value="SAO">São Paulo</option>
+                                <option value="VAS">Vasco</option>
+                                <option value="FLU">Fluminense</option>
+                                <option value="COR">Corinthians</option>
                             </select>
                         </div>
                     </div>
-
                     <div class="form-group">
                         <label for="resultado">Resultado:</label>
                         <select type="text" id="resultado" name="resultado" required>
@@ -92,11 +90,10 @@
                             <option value="Vitória">Vitória</option>
                         </select>
                     </div>
-
                     <button type="submit">Adicionar Palpite</button>
                 </div>
-                -->
             </form>
+            -->
         </div>
     </main>
     <footer>

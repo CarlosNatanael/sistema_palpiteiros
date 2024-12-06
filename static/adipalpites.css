@@ -224,3 +224,8 @@ select:focus {
     outline: none;
     border-color: #006400;
 }
+
+.color {
+    color: #006400;
+    text-transform: uppercase;
+}
