@@ -13,7 +13,7 @@ def get_db_connection():
     return conn
 
 def init_db():
-    conn = get_db_connection()  
+    conn = get_db_connection()
     conn.execute('''
     CREATE TABLE IF NOT EXISTS pontuacao (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -98,7 +98,7 @@ def regra():
 @app.route('/rodadas')
 def exibir_rodadas():
      
-     rodadas = [f"Rodada {i}" for i in range(1, 6)]
+     rodadas = [f"Rodada {i}" for i in range(1, 1)]
      return render_template('rodadas.html', rodadas=rodadas)
 
 @app.route('/rodada/<int:numero>')
