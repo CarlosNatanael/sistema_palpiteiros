@@ -4,7 +4,8 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #e0e0e0;
+    background-color: #f4f4f9;
+    color: #333;
 }
 
 .bar {
@@ -13,18 +14,18 @@ body {
     margin-bottom: 20px;
     text-transform: uppercase;
     text-align: center;
-
 }
 
 header {
-    background-color: #006400; 
+    background-color: #006400;
     color: #fff;
     padding: 20px 0;
     text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 header h1 {
-    font-size: 2em;
+    font-size: 2.2em;
     margin: 0;
     font-weight: bold;
     text-transform: uppercase;
@@ -32,17 +33,20 @@ header h1 {
 
 nav {
     margin-top: 15px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
 }
 
 nav a {
     color: #fff;
     font-weight: bold;
     text-decoration: none;
-    margin: 0 10px;
-    padding: 8px 15px;
+    margin: 5px 10px;
+    padding: 10px 20px;
     background-color: #228B22;
     border-radius: 5px;
-    transition: background-color 0.3s, transform 0.3s;
+    transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 nav a:hover {
@@ -51,63 +55,153 @@ nav a:hover {
 }
 
 main {
-    padding: 30px;
-    max-width: 800px;
-    margin: 0 auto;
-    text-align: center;
+    padding: 40px 20px;
+    max-width: 900px;
+    margin: 20px auto;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
 }
 
-.statistics-section {
+.statistics-section { /* Esta classe está sendo usada como um contêiner geral */
     margin-top: 20px;
+}
+
+.rules-section { /* Nova classe para os cards de regras */
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px; /* Espaço entre os cards */
 }
 
 h1 {
     color: #006400;
     font-size: 2em;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
     text-transform: uppercase;
+    text-align: center;
+    border-bottom: 2px solid #228B22;
+    padding-bottom: 10px;
+    width: 100%;
 }
 
 .stat-card {
     background-color: #ffffff;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    padding: 20px;
+    border-radius: 10px;
+    padding: 25px;
     margin-bottom: 20px;
-    transition: transform 0.2s ease;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    flex: 1;
+    min-width: 280px;
+    max-width: 400px;
+    text-align: center;
+    border: 1px solid #eee;
 }
 
 .stat-card h2 {
     color: #006400;
-    font-size: 1.5em;
-    margin-bottom: 10px;
+    font-size: 1.6em;
+    margin-bottom: 15px;
     text-transform: uppercase;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 10px;
 }
 
 .stat-card p {
-    font-size: 1.2em;
-    margin: 5px 0;
+    font-size: 1.1em; /* Ajustado para caber mais texto */
+    margin: 8px 0;
     color: #333;
+    line-height: 1.5; /* Espaçamento entre linhas */
+}
+
+.stat-card strong {
+    color: #004d00;
 }
 
 .stat-card:hover {
     transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
-
 
 footer {
     background-color: #333;
     color: #fff;
-    padding: 10px 0;
+    padding: 15px 0;
     text-align: center;
-    position: relative; 
     width: 100%;
     font-size: 0.9em;
-    box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.2);
+    margin-top: 30px;
 }
 
-h3{
+h3 { /* Estilo para o h3 dentro do stat-card, se usado. */
     color: #006400;
     margin-bottom: 20px;
     text-align: center;
+}
+
+/* Media Queries para Responsividade */
+@media (max-width: 768px) {
+    header h1 {
+        font-size: 1.8em;
+    }
+
+    nav {
+        flex-direction: column;
+    }
+
+    nav a {
+        margin: 5px auto;
+        width: 80%;
+    }
+
+    main {
+        padding: 20px 10px;
+        max-width: 95%;
+    }
+
+    h1 {
+        font-size: 1.6em;
+        margin-bottom: 20px;
+    }
+
+    .rules-section {
+        flex-direction: column; /* Empilha os cards em telas menores */
+        gap: 20px;
+        align-items: center;
+    }
+
+    .stat-card {
+        width: 90%;
+        min-width: unset;
+        max-width: unset;
+    }
+
+    .stat-card p {
+        font-size: 1em;
+    }
+}
+
+@media (max-width: 480px) {
+    header h1 {
+        font-size: 1.5em;
+    }
+
+    nav a {
+        font-size: 0.9em;
+        padding: 8px 15px;
+    }
+
+    h1 {
+        font-size: 1.4em;
+    }
+
+    .stat-card {
+        padding: 20px;
+    }
+
+    .stat-card h2 {
+        font-size: 1.4em;
+    }
 }

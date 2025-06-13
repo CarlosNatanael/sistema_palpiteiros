@@ -4,7 +4,8 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #e0e0e0;
+    background-color: #f4f4f9;
+    color: #333;
 }
 
 .bar {
@@ -13,18 +14,18 @@ body {
     margin-bottom: 20px;
     text-transform: uppercase;
     text-align: center;
-
 }
 
 header {
-    background-color: #006400; 
+    background-color: #006400;
     color: #fff;
     padding: 20px 0;
     text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 header h1 {
-    font-size: 2em;
+    font-size: 2.2em;
     margin: 0;
     font-weight: bold;
     text-transform: uppercase;
@@ -32,17 +33,20 @@ header h1 {
 
 nav {
     margin-top: 15px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
 }
 
 nav a {
     color: #fff;
     font-weight: bold;
     text-decoration: none;
-    margin: 0 10px;
-    padding: 8px 15px;
+    margin: 5px 10px;
+    padding: 10px 20px;
     background-color: #228B22;
     border-radius: 5px;
-    transition: background-color 0.3s, transform 0.3s;
+    transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 nav a:hover {
@@ -51,63 +55,150 @@ nav a:hover {
 }
 
 main {
-    padding: 30px;
-    max-width: 800px;
-    margin: 0 auto;
-    text-align: center;
+    padding: 40px 20px;
+    max-width: 900px; /* Aumentado para acomodar melhor os cards */
+    margin: 20px auto;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
 }
 
 .statistics-section {
     margin-top: 20px;
+    display: flex; /* Para alinhar os cards lado a lado (em telas maiores) */
+    flex-wrap: wrap; /* Permite que os cards quebrem a linha */
+    justify-content: center; /* Centraliza os cards */
+    gap: 30px; /* Espaço entre os cards */
 }
 
 h1 {
     color: #006400;
     font-size: 2em;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
     text-transform: uppercase;
+    text-align: center;
+    border-bottom: 2px solid #228B22;
+    padding-bottom: 10px;
+    width: 100%; /* Garante que o título ocupe a largura total */
 }
 
 .stat-card {
     background-color: #ffffff;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    padding: 20px;
+    border-radius: 10px; /* Bordas mais arredondadas */
+    padding: 25px; /* Mais padding */
     margin-bottom: 20px;
-    transition: transform 0.2s ease;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    flex: 1; /* Permite que o card cresça e ocupe o espaço */
+    min-width: 280px; /* Largura mínima para cada card */
+    max-width: 400px; /* Largura máxima para cada card */
+    text-align: center;
+    border: 1px solid #eee; /* Borda suave */
 }
 
 .stat-card h2 {
     color: #006400;
-    font-size: 1.5em;
-    margin-bottom: 10px;
+    font-size: 1.6em; /* Tamanho da fonte um pouco maior */
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    border-bottom: 1px solid #ccc; /* Linha de separação no título do card */
+    padding-bottom: 10px;
+}
+
+.stat-card h3 {
+    color: #228B22; /* Verde para a rodada */
+    font-size: 1.2em;
+    margin-bottom: 15px;
     text-transform: uppercase;
 }
 
 .stat-card p {
-    font-size: 1.2em;
-    margin: 5px 0;
+    font-size: 1.3em; /* Tamanho da fonte maior para o conteúdo */
+    margin: 10px 0;
     color: #333;
+}
+
+.stat-card strong {
+    color: #004d00; /* Verde escuro para o negrito */
 }
 
 .stat-card:hover {
     transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Sombra mais intensa no hover */
 }
-
 
 footer {
     background-color: #333;
     color: #fff;
-    padding: 10px 0;
+    padding: 15px 0;
     text-align: center;
-    position: relative; 
     width: 100%;
     font-size: 0.9em;
-    box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.2);
+    margin-top: 30px;
 }
 
-h3{
-    color: #006400;
-    margin-bottom: 20px;
-    text-align: center;
+/* Media Queries para Responsividade */
+@media (max-width: 768px) {
+    header h1 {
+        font-size: 1.8em;
+    }
+
+    nav {
+        flex-direction: column;
+    }
+
+    nav a {
+        margin: 5px auto;
+        width: 80%;
+    }
+
+    main {
+        padding: 20px 10px;
+        max-width: 95%;
+    }
+
+    h1 {
+        font-size: 1.6em;
+        margin-bottom: 20px;
+    }
+
+    .statistics-section {
+        flex-direction: column; /* Empilha os cards em telas menores */
+        gap: 20px;
+        align-items: center;
+    }
+
+    .stat-card {
+        width: 90%; /* Ocupa a maior parte da largura */
+        min-width: unset;
+        max-width: unset;
+    }
+}
+
+@media (max-width: 480px) {
+    header h1 {
+        font-size: 1.5em;
+    }
+
+    nav a {
+        font-size: 0.9em;
+        padding: 8px 15px;
+    }
+
+    h1 {
+        font-size: 1.4em;
+    }
+
+    .stat-card {
+        padding: 20px;
+    }
+
+    .stat-card h2 {
+        font-size: 1.4em;
+    }
+
+    .stat-card p {
+        font-size: 1.1em;
+    }
 }

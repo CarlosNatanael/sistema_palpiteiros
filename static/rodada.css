@@ -1,71 +1,117 @@
-/* Arquivo: static/palpites.css */
+/* Arquivo: static/rodada.css */
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #e0e0e0; 
+    background-color: #f4f4f9; /* Fundo cinza claro */
+    color: #333;
 }
 
 header {
-    background-color: #006400; 
+    background-color: #006400; /* Verde escuro */
     color: #fff;
     padding: 20px 0;
     text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 header h1 {
-    font-size: 2em;
+    font-size: 2.2em;
     margin: 0;
     font-weight: bold;
     text-transform: uppercase;
 }
 
 nav {
-    margin-top: 10px;
+    margin-top: 15px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
 }
 
 nav a {
     color: #fff;
     font-weight: bold;
     text-decoration: none;
-    margin: 0 15px;
-    padding: 10px 15px;
-    background-color: #228B22; 
+    margin: 5px 10px;
+    padding: 10px 20px;
+    background-color: #228B22; /* Verde mais claro */
     border-radius: 5px;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 nav a:hover {
-    background-color: #004d00; 
+    background-color: #004d00;
+    transform: scale(1.05);
 }
-
 
 main {
-    padding: 30px;
+    padding: 40px 20px;
     text-align: center;
+    max-width: 1000px; /* Limite de largura para o conteúdo principal */
+    margin: 20px auto;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
 }
 
-h1 {
+h1, h2 {
     color: #006400;
-    font-size: 1.8em;
-    margin-bottom: 20px;
+    font-size: 2em;
+    margin-bottom: 25px;
     text-transform: uppercase;
+    text-align: center;
+    border-bottom: 2px solid #228B22;
+    padding-bottom: 10px;
+    width: 100%;
 }
 
-h2 {
+/* Estilos da Tabela e Acordeão */
+.accordion {
+    margin-top: 30px;
+}
+
+.card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.card-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #ddd;
+    padding: 0;
+}
+
+.card-header h2 button {
+    width: 100%;
+    text-align: left;
+    padding: 15px 20px;
+    font-size: 1.2em;
     color: #006400;
-    font-size: 1.8em;
-    margin-bottom: 20px;
-    text-transform: uppercase;
+    font-weight: bold;
+    text-decoration: none;
+    background-color: transparent;
+    border: none;
+    transition: background-color 0.3s ease;
+}
+
+.card-header h2 button:hover {
+    background-color: #e9ecef;
+}
+
+.card-body {
+    padding: 20px;
+    background-color: #ffffff;
 }
 
 table {
-    width: 90%; /* Ajusta o tamanho da tabela para evitar ocupar toda a largura */
-    margin: 20px auto; /* Adiciona espaçamento entre as tabelas e centraliza */
+    width: 100%;
     border-collapse: collapse;
     background-color: #ffffff;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
     overflow: hidden;
 }
@@ -75,37 +121,45 @@ table, th, td {
 }
 
 th, td {
-    padding: 15px;
-    text-align: column;
-    font-size: 1.1em;
+    padding: 12px 10px;
+    text-align: center;
+    font-size: 1em;
 }
 
 th {
-    background-color: #006400; 
+    background-color: #006400;
     color: #ffffff;
+    text-transform: uppercase;
 }
 
 td {
     background-color: #f9f9f9;
 }
 
+/* Nova regra para o texto da célula de status */
+td:nth-child(6) { /* Seleciona a sexta coluna (onde o status está) */
+    color: #1a1a1a; /* Cor preta escura para o texto do status */
+    font-weight: bold;
+}
+
+
 tr:nth-child(even) td {
-    background-color: #e0e0e0; 
+    background-color: #e0e0e0;
 }
 
 tr:hover td {
-    background-color: #c0ffc0; 
+    background-color: #c0ffc0;
 }
 
 footer {
     background-color: #333;
     color: #fff;
-    padding: 10px 0;
+    padding: 15px 0;
     text-align: center;
-    position: relative; 
     width: 100%;
     font-size: 0.9em;
-    box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.2);
+    margin-top: 30px;
 }
 
 .bar {
@@ -114,15 +168,13 @@ footer {
     margin-bottom: 20px;
     text-transform: uppercase;
     text-align: center;
-
 }
 
-
 .rodadas-container {
-    display: flex; /* Alinhamento flexível */
-    flex-direction: column; /* Alinha os itens verticalmente */
-    align-items: center; /* Centraliza os itens */
-    gap: 15px; /* Espaçamento entre as rodadas */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
     margin-top: 20px;
 }
 
@@ -131,12 +183,71 @@ footer {
     font-weight: bold;
     color: #006400;
     background-color: #f0f0f0;
-    padding: 10px 20px;
-    border-radius: 5px;
+    padding: 12px 25px; /* Aumentado padding para botões de rodada */
+    border-radius: 8px; /* Bordas mais arredondadas */
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    transition: background-color 0.3s;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    display: block; /* Para o link ocupar todo o espaço do item */
+    width: 200px; /* Largura fixa para os botões de rodada */
+    text-align: center;
 }
 
 .rodada-item a:hover {
     background-color: #d0ffd0;
+    transform: translateY(-2px);
+}
+
+/* Media Queries para Responsividade */
+@media (max-width: 768px) {
+    header h1 {
+        font-size: 1.8em;
+    }
+
+    nav {
+        flex-direction: column;
+    }
+
+    nav a {
+        margin: 5px auto;
+        width: 80%;
+    }
+
+    main {
+        padding: 20px 10px;
+        max-width: 95%;
+    }
+
+    h1, h2 {
+        font-size: 1.6em;
+        margin-bottom: 20px;
+    }
+
+    th, td {
+        padding: 8px 5px;
+        font-size: 0.9em;
+    }
+
+    .rodada-item a {
+        width: 90%; /* Ajusta a largura do botão em telas menores */
+    }
+}
+
+@media (max-width: 480px) {
+    header h1 {
+        font-size: 1.5em;
+    }
+
+    nav a {
+        font-size: 0.9em;
+        padding: 8px 15px;
+    }
+
+    h1, h2 {
+        font-size: 1.4em;
+    }
+
+    th, td {
+        font-size: 0.8em;
+        padding: 5px;
+    }
 }

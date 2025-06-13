@@ -1,4 +1,3 @@
-<!-- Arquivo: templates/adicionar_palpites.html -->
 <!DOCTYPE html>
 <html lang="pt">
 <head>
@@ -9,9 +8,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='adipalpites.css') }}">
 </head>
 <body>
-    <!-- Navegador -->
     <header>
-        <h1 class="bar">Sistema de Palpites 🏆</h1>
         <nav>
             <a href="{{ url_for('index') }}">Pontuação</a>
             <a href="{{ url_for('estatisticas') }}">Estatísticas</a>
@@ -21,25 +18,22 @@
             <a href="{{ url_for('regra') }}">Regras</a>
         </nav>
     </header>
-    <!-- Adicionar palpites -->
     <main>
         <h1>Adicionar Novo Palpite</h1>
         <div class="form-container">
-            <h2>Rodada 1 Fechada</h2>
-             <!--
-            <form action="{{ url_for('adicionar_palpites') }}" method="POST">
+            <h2>Rodada 1 - Mundial de Clubes</h2> <form action="{{ url_for('adicionar_palpites') }}" method="POST">
                 <div class="game-prediction">
-                    <label class="color"><strong>Rodada 5</strong></label>
+                    <label class="color"><strong>Seu Palpite</strong></label>
                     <div class="form-group">
                         <label for="nome">Nome:</label>
-                        <select type="text" id="nome" name="nome" required>
+                        <select id="nome" name="nome" required>
                             <option value="" disabled selected>Selecione o nome</option>
                             <option value="Ariel">Ariel</option>
                             <option value="Carlos">Carlos</option>
                             <option value="Celso">Celso</option>
                             <option value="Gabriel">Gabriel</option>
                             <option value="Lucas">Lucas</option>
-                        </select>
+                            </select>
                     </div>
 
                     <div class="teams">
@@ -47,14 +41,9 @@
                             <label for="time1"><strong>CASA:</strong></label>
                             <select id="time1" name="time1" required>
                                 <option value="" disabled selected>Selecione o time de Casa</option>
-                                <option value="FOR">Fortaleza</option>
-                                <option value="FLA">Flamengo</option>
-                                <option value="RBB">Bragantino</option>
-                                <option value="CAM">Atlético-MG</option>
-                                <option value="BOT">Botafogo</option>
-                                <option value="CUI">Cuiabá</option>
-                                <option value="PAL">Palmeiras</option>
-                                <option value="GRE">Grêmio</option>
+                                {% for team in teams %}
+                                <option value="{{ team.name }}">{{ team.name }}</option>
+                                {% endfor %}
                             </select>
                         </div>
 
@@ -66,34 +55,24 @@
                             <label for="time2"><strong>FORA:</strong></label>
                             <select id="time2" name="time2" required>
                                 <option value="" disabled selected>Selecione o time de Fora</option>
-                                <option value="INT">Internacional</option>
-                                <option value="VIT">Vitória</option>
-                                <option value="CRI">Criciúma</option>
-                                <option value="CAP">Atlético-PR</option>
-                                <option value="SAO">São Paulo</option>
-                                <option value="VAS">Vasco</option>
-                                <option value="FLU">Fluminense</option>
-                                <option value="COR">Corinthians</option>
+                                {% for team in teams %}
+                                <option value="{{ team.name }}">{{ team.name }}</option>
+                                {% endfor %}
                             </select>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="resultado">Resultado:</label>
-                        <select type="text" id="resultado" name="resultado" required>
-                            <option value="" disabled selected>Selecione resultado</option>
+                        <select id="resultado" name="resultado" required>
+                            <option value="" disabled selected>Selecione o resultado</option>
                             <option value="Vitória (Casa)">Vitória (Casa)</option>
-                            <option value="Derrota (Fora)">Derrota (Fora)</option>
-                            <option value="Vitória (Fora)">Vitória (Fora)</option>
-                            <option value="Derrota (Casa)">Derrota (Casa)</option>
                             <option value="Empate">Empate</option>
-                            <option value="Derrota">Derrota</option>
-                            <option value="Vitória">Vitória</option>
-                        </select>
+                            <option value="Vitória (Fora)">Vitória (Fora)</option>
+                            </select>
                     </div>
                     <button type="submit">Adicionar Palpite</button>
                 </div>
             </form>
-            -->
         </div>
     </main>
     <footer>

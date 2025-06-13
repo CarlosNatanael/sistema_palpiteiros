@@ -1,18 +1,13 @@
-<!-- Arquivo: templates/rodadas.html -->
 <!DOCTYPE html>
 <html lang="pt">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rodada {{ rodada }}</title>
-    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
-    <link rel="stylesheet" href="{{ url_for('static', filename='palpites.css') }}">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <title>Rodadas</title> <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+    <link rel="stylesheet" href="{{ url_for('static', filename='rodada.css') }}"> <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
-    <!-- Navegador -->
     <header>
-        <h1 class="bar">Sistema de Palpites 🏆</h1>
         <nav>
             <a href="{{ url_for('index') }}">Pontuação</a>
             <a href="{{ url_for('estatisticas') }}">Estatísticas</a>
@@ -25,9 +20,8 @@
     <main>
         <h2>Escolha a Rodada</h2>
         <div class="rodadas-container">
-            {% for rodada in rodadas %}
-            <div class="rodada-item">
-                <a href="{{ url_for('exibir_rodada', numero=loop.index) }}">{{ rodada }}</a>
+            {% for rodada_num in rodadas %} <div class="rodada-item">
+                <a href="{{ url_for('exibir_rodada', numero=loop.index) }}">{{ rodada_num }}</a>
             </div>
             {% endfor %}
         </div>

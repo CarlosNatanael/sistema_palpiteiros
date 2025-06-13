@@ -1,17 +1,14 @@
-<!-- Arquivo: templates/estatisticas.html -->
 <!DOCTYPE html>
 <html lang="pt">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Estatísticas</title>
+    <title>Estatísticas - Sistema de Palpites</title>
     <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
     <link rel="stylesheet" href="{{ url_for('static', filename='esta.css') }}">
 </head>
 <body>
-    <!-- Navegador -->
     <header>
-        <h1 class="bar">Sistema de Palpites 🏆</h1>
         <nav>
             <a href="{{ url_for('index') }}">Pontuação</a>
             <a href="{{ url_for('estatisticas') }}">Estatísticas</a>
@@ -21,23 +18,48 @@
             <a href="{{ url_for('regra') }}">Regras</a>
         </nav>
     </header>
-    <!-- Estatiticas -->
     <main>
         <section class="statistics-section">
-            <h1>Estatísticas do Palpites</h1>
+            <h1>Estatísticas dos Palpites</h1>
 
             <div class="stat-card">
                 <h2>Maior Pontuador</h2>
-                <h3>Rodada 1</h3>
-                <p><strong>Nome: -</strong><strong></strong></p>
-                <p><strong>Pontos: -</strong><strong></strong></p>
+                <h3>Rodada Atual</h3> <p>
+                    <strong>Nome: </strong>
+                    {% if maior_pontuador %}
+                        <span>{{ maior_pontuador.nome }}</span>
+                    {% else %}
+                        <span>-</span>
+                    {% endif %}
+                </p>
+                <p>
+                    <strong>Pontos: </strong>
+                    {% if maior_pontuador %}
+                        <span>{{ maior_pontuador.pontos }}</span>
+                    {% else %}
+                        <span>-</span>
+                    {% endif %}
+                </p>
             </div>
 
             <div class="stat-card">
                 <h2>Quem Acertou Mais</h2>
-                <h3>Rodada 1</h3>
-                <p><strong>Nome: -</strong><strong></strong></p>
-                <p><strong>Acertos: -</strong><strong></strong></p>
+                <h3>Rodada Atual</h3> <p>
+                    <strong>Nome: </strong>
+                    {% if quem_acertou_mais %}
+                        <span>{{ quem_acertou_mais.nome }}</span>
+                    {% else %}
+                        <span>-</span>
+                    {% endif %}
+                </p>
+                <p>
+                    <strong>Acertos: </strong>
+                    {% if quem_acertou_mais %}
+                        <span>{{ quem_acertou_mais.acertos }}</span>
+                    {% else %}
+                        <span>-</span>
+                    {% endif %}
+                </p>
             </div>
         </section>
     </main>

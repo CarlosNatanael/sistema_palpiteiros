@@ -1,4 +1,3 @@
-<!-- Arquivo: templates/index.html -->
 <!DOCTYPE html>
 <html lang="pt">
 <head>
@@ -9,10 +8,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <!-- Navegador -->
     <header>
-        
-        <h1 class="bar">Sistema de Palpites 🏆</h1>
         <nav>
             <a href="{{ url_for('index') }}">Pontuação</a>
             <a href="{{ url_for('estatisticas') }}">Estatísticas</a>
@@ -22,8 +18,8 @@
             <a href="{{ url_for('regra') }}">Regras</a>
         </nav>
     </header>
-    <!-- Tabela palpiteiros -->
     <main>
+        <h1>Tabela de Pontuação</h1>
         <table>
             <thead>
                 <tr>
@@ -35,58 +31,33 @@
                 </tr>
             </thead>
             <tbody>
+                {% for jogador in pontuacao %}
                 <tr>
-                    <td><strong class="pri">1º</strong></td>
-                    <td><strong>Ariel <strong class="nd">–</strong></strong></td>
-                    <td><strong>0</strong></td>
-                    <td><strong>0</strong></td>
-                    <td><strong>0</strong></td>
+                    <td>
+                        {% if loop.index == 1 %}
+                            <strong class="pri">{{ loop.index }}º</strong>
+                        {% elif loop.index == 2 %}
+                            <strong class="seg">{{ loop.index }}º</strong>
+                        {% elif loop.index == 3 %}
+                            <strong class="ter">{{ loop.index }}º</strong>
+                        {% else %}
+                            <strong>{{ loop.index }}º</strong>
+                        {% endif %}
+                    </td>
+                    <td><strong>{{ jogador.nome }} <strong class="nd">–</strong></strong></td>
+                    <td><strong>{{ jogador.acertos }}</strong></td>
+                    <td><strong>{{ jogador.erros }}</strong></td>
+                    <td><strong>{{ jogador.pontos }}</strong></td>
                 </tr>
-            </tbody>
-            <tbody>
-                <tr>
-                    <td><strong class="seg">2º</strong></td>
-                    <td><strong>Carlos <strong class="nd">–</strong></strong></td>
-                    <td><strong>0</strong></td>
-                    <td><strong>0</strong></td>
-                    <td><strong>0</strong></td>
-                </tr>
-            </tbody>
-            <tbody>
-                <tr>
-                    <td><strong>3º</strong></td>
-                    <td><strong>Celso <strong class="nd">–</strong></strong></td>
-                    <td><strong>0</strong></td>
-                    <td><strong>0</strong></td>
-                    <td><strong>0</strong></td>
-                </tr>
-            </tbody>
-            <tbody>
-                <tr>
-                    <td><strong >4º</strong></td>
-                    <td><strong>Gabriel <strong class="nd">–</strong></strong></td>
-                    <td><strong>0</strong></td>
-                    <td><strong>0</strong></td>
-                    <td><strong>0</strong></td>
-                </tr>
-            </tbody>
-            <tbody>
-                <tr>
-                    <td><strong class="ter">5º</strong></td>
-                    <td><strong>Lucas <strong class="nd">–</strong></strong></td>
-                    <td><strong>0</strong></td>
-                    <td><strong>0</strong></td>
-                    <td><strong>0</strong></td>
-                </tr>
+                {% endfor %}
             </tbody>
         </table>
     </main>
-    <!-- Jogos da semana -->
-    <h2>Jogos da Semana</h2>
+    <h2>Jogos da Semana - Mundial de Clubes</h2>
     <h2>Rodada 1</h2>
     <main class="jogosSemana">
         <div class="table-container">
-                        <div class="match-row">
+            <div class="match-row">
                 <div class="team">
                     <img src="https://ssl.gstatic.com/onebox/media/sports/logos/JdNbaaw7JlDHvPHZaX2V2A_48x48.png" alt="Al Ahly">
                     Al Ahly
@@ -264,104 +235,6 @@
             </div>
         </div>
     </main>
-    <!-- Resultado da semana -->
-    <!--
-    <h2>Resultados dos Jogos</h2>
-    <h2>Rodada 5</h2>
-    <main class="resultadoJogo">
-        <div class="table-container">
-            <h3>Brasileirão</h3>
-            <div class="match-row">
-                <div class="team">
-                    <img src="https://ssl.gstatic.com/onebox/media/sports/logos/me10ephzRxdj45zVq1Risg_48x48.png" alt="Fortaleza">
-                    Fortaleza
-                </div>
-                <div class="resultado">3  X  0</div>
-                <div class="team">
-                    <img src="https://ssl.gstatic.com/onebox/media/sports/logos/OWVFKuHrQuf4q2Wk0hEmSA_48x48.png" alt="Internacional">
-                    Internacional
-                </div>
-            </div>
-            <div class="match-row">
-                <div class="team">
-                    <img src="https://ssl.gstatic.com/onebox/media/sports/logos/orE554NToSkH6nuwofe7Yg_48x48.png" alt="Flamengo">
-                    Flamengo
-                </div>
-                <div class="resultado">2  X  2</div>
-                <div class="team">
-                    <img src="https://ssl.gstatic.com/onebox/media/sports/logos/LHSM6VchpkI4NIptoSTHOg_48x48.png" alt="Vitória">
-                    Vitória
-                </div>
-            </div>
-            <div class="match-row">
-                <div class="team">
-                    <img src="https://ssl.gstatic.com/onebox/media/sports/logos/lMyw2zn1Z4cdkaxKJWnsQw_48x48.png" alt="Bragantino">
-                    Bragantino
-                </div>
-                <div class="resultado">5  X  1</div>
-                <div class="team">
-                    <img src="https://ssl.gstatic.com/onebox/media/sports/logos/u_L7Mkp33uNmFTv3uUlXeQ_48x48.png" alt="Criciúma">
-                    Criciúma
-                </div>
-            </div>
-            <div class="match-row">
-                <div class="team">
-                    <img src="https://ssl.gstatic.com/onebox/media/sports/logos/q9fhEsgpuyRq58OgmSndcQ_48x48.png" alt="Atlético-MG">
-                    Atlético-MG
-                </div>
-                <div class="resultado">1  X  0</div>
-                <div class="team">
-                    <img src="https://ssl.gstatic.com/onebox/media/sports/logos/9LkdBR4L5plovKM8eIy7nQ_48x48.png" alt="Atlético-PR">
-                    Atlético-PR
-                </div>
-            </div>
-            <div class="match-row">
-                <div class="team">
-                    <img src="https://ssl.gstatic.com/onebox/media/sports/logos/KLDWYp-H8CAOT9H_JgizRg_48x48.png" alt="Botafogo">
-                    Botafogo
-                </div>
-                <div class="resultado">2  X  1</div>
-                <div class="team">
-                    <img src="https://ssl.gstatic.com/onebox/media/sports/logos/4w2Z97Hf9CSOqICK3a8AxQ_48x48.png" alt="São Paulo">
-                    São Paulo
-                </div>
-            </div>
-            <div class="match-row">
-                <div class="team">
-                    <img src="https://ssl.gstatic.com/onebox/media/sports/logos/j6U8Rgt_6yyf0Egs9nREXw_48x48.png" alt="Cuiabá">
-                    Cuiabá
-                </div>
-                <div class="resultado">1  X  2</div>
-                <div class="team">
-                    <img src="https://ssl.gstatic.com/onebox/media/sports/logos/hHwT8LwRmYCAGxQ-STLxYA_48x48.png" alt="Vasco">
-                    Vasco
-                </div>
-            </div>
-            <div class="match-row">
-                <div class="team">
-                    <img src="https://ssl.gstatic.com/onebox/media/sports/logos/7spurne-xDt2p6C0imYYNA_48x48.png" alt="Palmeiras">
-                    Palmeiras
-                </div>
-                <div class="resultado">0  X  1</div>
-                <div class="team">
-                    <img src="https://ssl.gstatic.com/onebox/media/sports/logos/fCMxMMDF2AZPU7LzYKSlig_48x48.png" alt="Fluminense">
-                    Fluminense
-                </div>
-            </div>
-            <div class="match-row">
-                <div class="team">
-                    <img src="https://ssl.gstatic.com/onebox/media/sports/logos/Ku-73v_TW9kpex-IEGb0ZA_48x48.png" alt="Grêmio">
-                    Grêmio
-                </div>
-                <div class="resultado">0  X  3</div>
-                <div class="team">
-                    <img src="https://ssl.gstatic.com/onebox/media/sports/logos/tCMSqgXVHROpdCpQhzTo1g_48x48.png" alt="Corinthians">
-                    Corinthians
-                </div>
-            </div>
-        </div>
-    </main>
-    -->
     <footer>
         <p>© 2024 Sistema de Palpites</p>
     </footer>
