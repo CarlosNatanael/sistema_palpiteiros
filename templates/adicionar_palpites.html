@@ -6,6 +6,8 @@
     <title>Adicionar Palpite</title>
     <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
     <link rel="stylesheet" href="{{ url_for('static', filename='adipalpites.css') }}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
 </head>
 <body>
     <header>
@@ -21,62 +23,67 @@
     <main>
         <h1>Adicionar Novo Palpite</h1>
         <div class="form-container">
-            <h2>Rodada 1 - Mundial de Clubes</h2> <form action="{{ url_for('adicionar_palpites') }}" method="POST">
+            <form action="{{ url_for('adicionar_palpites') }}" method="POST">
                 <div class="game-prediction">
-                    <label class="color"><strong>Seu Palpite</strong></label>
                     <div class="form-group">
-                        <label for="nome">Nome:</label>
-                        <select id="nome" name="nome" required>
+                        <label for="nome">Nome</label> <select id="nome" name="nome" class="selectpicker" data-live-search="true" data-style="btn-dark" required>
                             <option value="" disabled selected>Selecione o nome</option>
                             <option value="Ariel">Ariel</option>
                             <option value="Carlos">Carlos</option>
                             <option value="Celso">Celso</option>
                             <option value="Gabriel">Gabriel</option>
                             <option value="Lucas">Lucas</option>
-                            </select>
+                        </select>
                     </div>
 
                     <div class="teams">
-                        <div class="team">
-                            <label for="time1"><strong>CASA:</strong></label>
-                            <select id="time1" name="time1" required>
+                        <div class="team-select-wrapper"> <label for="time1">Casa</label> <select id="time1" name="time1" class="selectpicker" data-live-search="true" data-style="btn-dark" required>
                                 <option value="" disabled selected>Selecione o time de Casa</option>
                                 {% for team in teams %}
-                                <option value="{{ team.name }}">{{ team.name }}</option>
+                                <option value="{{ team.name }}" data-content="<img src='{{ team.img_src }}' class='team-icon'/> {{ team.name }}">{{ team.name }}</option>
                                 {% endfor %}
                             </select>
                         </div>
 
-                        <input type="number" id="gol_time1" name="gol_time1" class="score-input" min="0" max="99" required />
-                        <span class="separator">x</span>
-                        <input type="number" id="gol_time2" name="gol_time2" class="score-input" min="0" max="99" required />
+                        <div class="score-inputs"> <input type="number" id="gol_time1" name="gol_time1" class="score-input" min="0" max="99" required />
+                            <span class="separator">x</span>
+                            <input type="number" id="gol_time2" name="gol_time2" class="score-input" min="0" max="99" required />
+                        </div>
 
-                        <div class="team">
-                            <label for="time2"><strong>FORA:</strong></label>
-                            <select id="time2" name="time2" required>
+                        <div class="team-select-wrapper"> <label for="time2">Fora</label> <select id="time2" name="time2" class="selectpicker" data-live-search="true" data-style="btn-dark" required>
                                 <option value="" disabled selected>Selecione o time de Fora</option>
                                 {% for team in teams %}
-                                <option value="{{ team.name }}">{{ team.name }}</option>
+                                <option value="{{ team.name }}" data-content="<img src='{{ team.img_src }}' class='team-icon'/> {{ team.name }}">{{ team.name }}</option>
                                 {% endfor %}
                             </select>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="resultado">Resultado:</label>
-                        <select id="resultado" name="resultado" required>
+                        <label for="resultado">Resultado</label> <select id="resultado" name="resultado" class="selectpicker" data-style="btn-dark" required>
                             <option value="" disabled selected>Selecione o resultado</option>
                             <option value="Vitória (Casa)">Vitória (Casa)</option>
                             <option value="Empate">Empate</option>
                             <option value="Vitória (Fora)">Vitória (Fora)</option>
-                            </select>
+                        </select>
                     </div>
-                    <button type="submit">Adicionar Palpite</button>
-                </div>
+                    <button type="submit">Adicionar</button> </div>
             </form>
         </div>
     </main>
     <footer>
         <p>© Desenvolvido por Carlos Natanael</p>
     </footer>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('.selectpicker').selectpicker();
+        });
+    </script>
 </body>
 </html>

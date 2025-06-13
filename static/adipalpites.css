@@ -5,7 +5,8 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f9;
+    background-color: #e0e0e0;
+    color: #333;
 }
 
 /* Cabeçalho */
@@ -15,6 +16,7 @@ header {
     padding: 20px 0;
     text-align: center;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-bottom: none;
 }
 
 header h1 {
@@ -22,44 +24,60 @@ header h1 {
     margin: 0;
     font-weight: bold;
     text-transform: uppercase;
+    letter-spacing: normal;
 }
 
 /* Navegação */
 nav {
     margin-top: 15px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
 }
 
 nav a {
     color: #fff;
     font-weight: bold;
     text-decoration: none;
-    margin: 0 10px;
+    margin: 5px 10px;
     padding: 8px 15px;
     background-color: #228B22;
     border-radius: 5px;
     transition: background-color 0.3s, transform 0.3s;
+    box-shadow: none;
 }
 
 nav a:hover {
     background-color: #004d00;
     transform: scale(1.05);
+    color: #fff;
 }
 
 /* Conteúdo Principal */
 main {
-    padding: 40px;
+    padding: 30px;
     text-align: center;
+    background-color: transparent;
+    max-width: 800px;
+    margin: 0 auto;
+    border-radius: 0;
+    box-shadow: none;
+    color: #333;
 }
 
-h1 {
+h1 { /* Título "Adicionar Novo Palpite" */
     color: #006400;
     font-size: 2em;
     margin-bottom: 20px;
     text-transform: uppercase;
     font-weight: bold;
+    border-bottom: none;
+    padding-bottom: 0;
+    letter-spacing: normal;
+    max-width: none;
 }
 
-/* Formulário */
+/* Formulário Container (a caixa branca) */
 .form-container {
     margin: 20px auto;
     max-width: 600px;
@@ -68,98 +86,163 @@ h1 {
     border-radius: 10px;
     background-color: #ffffff;
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    padding-top: 50px;
+    padding-bottom: 50px;
+    position: relative;
 }
 
-h2 {
-    color: #006400;
-    font-size: 1.8em;
-    margin-bottom: 20px;
-    text-transform: uppercase;
+/* Remover o h2 interno que foi excluído do HTML */
+.form-container h2 {
+    display: none;
 }
-
 
 .game-prediction {
     display: flex;
     flex-direction: column;
-    gap: 20px;
     align-items: center;
+    width: 100%;
+    gap: 30px;
 }
 
-/* Grupo do Formulário */
+/* Grupo do Formulário (para Nome e Resultado) */
 .form-group {
     display: flex;
     flex-direction: column;
-    align-items: center; /* Centraliza os campos Nome e Resultado */
+    align-items: center;
     width: 100%;
+    max-width: 250px;
 }
 
 .form-group label {
     font-weight: bold;
     color: #333;
     display: block;
-    margin-bottom: 5px;
-}
-
-input[type="text"], input[type="number"] {
-    width: 40%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 1em;
-    box-sizing: border-box;
-    transition: border-color 0.3s;
-}
-
-input[type="text"]:focus, input[type="number"]:focus {
-    border-color: #006400;
-    outline: none;
-}
-
-/* Seção de Times */
-.teams {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    justify-content: center;
-}
-
-.team {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-}
-
-.team-name {
-    width: 80px; /* Aumente o valor conforme necessário */
+    margin-bottom: 8px;
     font-size: 1.1em;
 }
 
-/* Entrada de Placar */
+/* Estilos para o selectpicker geral (nome, resultado) */
+.bootstrap-select .dropdown-toggle {
+    background-color: #f8f9fa !important;
+    color: #333 !important;
+    border: 1px solid #ccc !important;
+    border-radius: 5px !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 10px 15px !important;
+    text-align: center !important;
+    height: auto !important;
+    font-size: 1em !important;
+}
+
+.bootstrap-select .dropdown-menu {
+    background-color: #fff !important;
+    border: 1px solid #ddd !important;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 5px !important;
+}
+
+.bootstrap-select .dropdown-item {
+    color: #333 !important;
+    padding: 8px 15px !important;
+}
+
+.bootstrap-select .dropdown-item.active,
+.bootstrap-select .dropdown-item:active,
+.bootstrap-select .dropdown-item:hover,
+.bootstrap-select .dropdown-item.selected {
+    background-color: #c0ffc0 !important;
+    color: #006400 !important;
+}
+
+.bootstrap-select .bs-caret::before {
+    color: #555 !important;
+}
+
+/* Estilo para a caixa de busca */
+.bootstrap-select .bs-searchbox input.form-control {
+    background-color: #f8f9fa !important;
+    color: #333 !important;
+    border: 1px solid #ccc !important;
+}
+
+.bootstrap-select .bs-searchbox input.form-control:focus {
+    border-color: #006400 !important;
+    box-shadow: 0 0 5px rgba(0, 100, 0, 0.3) !important;
+}
+
+/* Seção de Times (Casa x Placar x Fora) */
+.teams {
+    display: flex; /* Mantém flex */
+    align-items: flex-end; /* Alinhar itens pela base para placares */
+    justify-content: center;
+    width: 100%;
+    gap: 15px; /* Espaçamento entre os elementos da linha (selects e placar) */
+    flex-wrap: nowrap; /* <<<<<<< IMPORTANTE: Impedir quebras de linha aqui */
+    margin-bottom: 20px; /* Adicionar espaço abaixo desta linha */
+}
+
+.team-select-wrapper { /* Wrapper para os selects de time (Casa e Fora) */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* Ajuste de flex-basis e max-width para que caibam lado a lado */
+    flex-basis: 200px; /* Largura um pouco menor para cada seletor de time */
+    max-width: 200px;
+    flex-grow: 1; /* Permite crescer se houver espaço */
+    flex-shrink: 1; /* Permite encolher se necessário */
+}
+
+.team-select-wrapper label {
+    font-weight: bold;
+    color: #333;
+    display: block;
+    margin-bottom: 8px;
+    font-size: 1.1em;
+}
+
+.score-inputs { /* Agrupar inputs de placar e o "x" */
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0; /* Não encolhe os inputs de placar */
+    margin-bottom: 0; /* Remover margem inferior para alinhamento */
+    /* Adicionar um flex-basis se precisar controlar o tamanho total deste grupo */
+}
+
 .score-input {
-    width: 10px;
-    height: 50px;
+    width: 60px;
+    height: 60px;
     text-align: center;
-    font-size: 1.2em;
+    font-size: 1.8em;
     border: 1px solid #ddd;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s;
+    transition: transform 0.2s ease;
+    background-color: #f9f9f9;
+    color: #333;
+    appearance: textfield;
+    -moz-appearance: textfield;
 }
 
 .score-input:focus {
     border-color: #006400;
     outline: none;
     transform: scale(1.05);
+    box-shadow: 0 0 8px rgba(0, 100, 0, 0.4);
 }
 
 .separator {
-    font-size: 1.5em;
+    font-size: 2em;
     font-weight: bold;
     color: #333;
+    margin: 0;
 }
 
-/* Botão de Submissão */
+/* Botão de Adicionar */
 button {
     padding: 12px 25px;
     font-size: 1.1em;
@@ -169,11 +252,14 @@ button {
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s, transform 0.2s;
+    margin-top: 0;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 button:hover {
     background-color: #004d00;
     transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
 button:active {
@@ -189,43 +275,113 @@ footer {
     width: 100%;
     font-size: 0.9em;
     box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.2);
-    bottom: 0;
+    margin-top: 30px;
 }
 
-footer p {
-    margin: 0;
+/* Ícones dos times nos seletores */
+.team-icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 8px;
+    vertical-align: middle;
+    border-radius: 50%;
+    object-fit: contain;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
 }
 
-/* Barra Superior */
-.bar {
-    color: #ffffff;
-    font-size: 1.8em;
-    text-transform: uppercase;
+/* Media Queries para Responsividade */
+@media (max-width: 768px) {
+    header h1 {
+        font-size: 1.8em;
+    }
+
+    nav {
+        flex-direction: column;
+    }
+
+    nav a {
+        margin: 5px auto;
+        width: 80%;
+    }
+
+    main {
+        padding: 20px 10px;
+    }
+
+    h1 {
+        font-size: 1.6em;
+        margin-bottom: 20px;
+    }
+
+    .form-container {
+        padding: 20px;
+        max-width: 95%;
+        gap: 20px;
+    }
+
+    .form-group {
+        max-width: 90%;
+    }
+
+    .teams {
+        flex-direction: column; /* Empilha os elementos em telas menores */
+        gap: 15px;
+        align-items: center;
+        flex-wrap: wrap; /* Permitir quebra de linha novamente em telas pequenas */
+    }
+
+    .team-select-wrapper {
+        width: 90%;
+        max-width: 90%;
+        flex-basis: auto;
+    }
+
+    .score-inputs {
+        flex-direction: row;
+        gap: 10px;
+        margin-top: 10px;
+    }
+
+    .score-input {
+        width: 50px;
+        height: 50px;
+        font-size: 1.5em;
+    }
+
+    .separator {
+        font-size: 1.8em;
+    }
+
+    button {
+        width: 80%;
+    }
 }
 
-#nome, #resultado {
-    width: 70%; /* Ajuste conforme necessário */
-    max-width: 300px;
-    margin: 0 auto; /* Garante centralização */
-    text-align: center; /* Opcional: Centraliza o texto dentro do campo */
-}
+@media (max-width: 480px) {
+    header h1 {
+        font-size: 1.5em;
+    }
 
-select {
-    padding: 10px;
-    font-size: 1em;
-    margin-bottom: 10px;
-    width: 100%;
-    box-sizing: border-box;
-    border-radius: 10px;
-    border: 1px solid #ddd;
-}
+    nav a {
+        font-size: 0.9em;
+        padding: 8px 15px;
+    }
 
-select:focus {
-    outline: none;
-    border-color: #006400;
-}
+    h1 {
+        font-size: 1.4em;
+    }
 
-.color {
-    color: #006400;
-    text-transform: uppercase;
+    .form-container {
+        padding: 15px;
+    }
+
+    .score-input {
+        width: 45px;
+        height: 45px;
+        font-size: 1.4em;
+    }
+
+    .separator {
+        font-size: 1.6em;
+    }
 }
