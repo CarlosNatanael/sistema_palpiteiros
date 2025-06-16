@@ -5,71 +5,105 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Adicionar Palpite</title>
     <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
-    <link rel="stylesheet" href="{{ url_for('static', filename='adipalpites.css') }}">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='adipalpites.css') }}">
 </head>
 <body>
     <header>
-        <nav>
-            <a href="{{ url_for('index') }}">Pontuação</a>
-            <a href="{{ url_for('estatisticas') }}">Estatísticas</a>
-            <a href="{{ url_for('exibir_palpites') }}">Palpites</a>
-            <a href="{{ url_for('exibir_rodadas') }}">Rodadas</a>
-            <a href="{{ url_for('adicionar_palpites') }}">Adicionar Palpite</a>
-            <a href="{{ url_for('regra') }}">Regras</a>
+        <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('index') }}">Pontuação</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('estatisticas') }}">Estatísticas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('exibir_palpites') }}">Palpites</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('exibir_rodadas') }}">Rodadas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('adicionar_palpites') }}">Adicionar Palpite</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('regra') }}">Regras</a>
+                    </li>
+                </ul>
+            </div>
         </nav>
     </header>
-    <main>
-        <h1>Adicionar Novo Palpite</h1>
+
+    <main style="padding-top: 80px;"> <h1>ADICIONAR NOVO PALPITE</h1>
         <div class="form-container">
             <form action="{{ url_for('adicionar_palpites') }}" method="POST">
-                <div class="game-prediction">
-                    <div class="form-group">
-                        <label for="nome">Nome</label> <select id="nome" name="nome" class="selectpicker" data-live-search="true" data-style="btn-dark" required>
-                            <option value="" disabled selected>Selecione o nome</option>
-                            <option value="Ariel">Ariel</option>
-                            <option value="Carlos">Carlos</option>
-                            <option value="Celso">Celso</option>
-                            <option value="Gabriel">Gabriel</option>
-                            <option value="Lucas">Lucas</option>
-                        </select>
-                    </div>
+                <div class="form-group">
+                    <label for="nome">Nome</label>
+                    <select id="nome" name="nome" class="selectpicker" data-live-search="true" data-style="btn-light" required>
+                        <option value="" disabled selected>Selecione seu nome</option>
+                        {% for palpiteiro in palpiteiros %}
+                        <option value="{{ palpiteiro }}">{{ palpiteiro }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
 
-                    <div class="teams">
-                        <div class="team-select-wrapper"> <label for="time1">Casa</label> <select id="time1" name="time1" class="selectpicker" data-live-search="true" data-style="btn-dark" required>
-                                <option value="" disabled selected>Selecione o time de Casa</option>
-                                {% for team in teams %}
-                                <option value="{{ team.name }}" data-content="<img src='{{ team.img_src }}' class='team-icon'/> {{ team.name }}">{{ team.name }}</option>
-                                {% endfor %}
+                <div class="form-group">
+                    <label for="rodada_selecionada">Selecione a Rodada</label>
+                    <select id="rodada_selecionada" name="rodada_selecionada" class="selectpicker" data-style="btn-light" required>
+                        <option value="" disabled {% if not rodada_selecionada %}selected{% endif %}>Escolha a rodada</option>
+                        {% for rodada_num in rodadas %}
+                        <option value="{{ rodada_num }}" {% if rodada_num == rodada_selecionada %}selected{% endif %}>{{ rodada_num }}ª Rodada</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                {% if jogos %}
+                <h2>Rodada {{ rodada_selecionada }}</h2>
+                <div class="games-list">
+                    {% for jogo in jogos %}
+                    <div class="game-card">
+                        <p class="game-info">{{ jogo.data_hora }} | {{ jogo.local }}</p>
+                        <div class="match-details">
+                            <div class="team-display">
+                                <img src="{{ jogo.time1_img }}" alt="{{ jogo.time1_nome }}" class="team-logo"/>
+                                <span class="team-sigla">{{ jogo.time1_sigla }}</span>
+                            </div>
+                            <div class="score-input-group">
+                                <input type="number" name="gol_time1_{{ jogo.id }}" class="score-input" min="0" max="99" placeholder="-" required />
+                                <span class="separator">x</span>
+                                <input type="number" name="gol_time2_{{ jogo.id }}" class="score-input" min="0" max="99" placeholder="-" required />
+                            </div>
+                            <div class="team-display">
+                                <span class="team-sigla">{{ jogo.time2_sigla }}</span>
+                                <img src="{{ jogo.time2_img }}" alt="{{ jogo.time2_nome }}" class="team-logo"/>
+                            </div>
+                        </div>
+                        <div class="result-prediction-group">
+                            <label for="resultado_{{ jogo.id }}">Resultado</label>
+                            <select id="resultado_{{ jogo.id }}" name="resultado_{{ jogo.id }}" class="selectpicker" data-style="btn-light" required>
+                                <option value="" disabled selected>Selecione o resultado</option>
+                                <option value="Vitória (Casa)">Vitória (Casa)</option>
+                                <option value="Empate">Empate</option>
+                                <option value="Vitória (Fora)">Vitória (Fora)</option>
                             </select>
                         </div>
-
-                        <div class="score-inputs"> <input type="number" id="gol_time1" name="gol_time1" class="score-input" min="0" max="99" required />
-                            <span class="separator">x</span>
-                            <input type="number" id="gol_time2" name="gol_time2" class="score-input" min="0" max="99" required />
-                        </div>
-
-                        <div class="team-select-wrapper"> <label for="time2">Fora</label> <select id="time2" name="time2" class="selectpicker" data-live-search="true" data-style="btn-dark" required>
-                                <option value="" disabled selected>Selecione o time de Fora</option>
-                                {% for team in teams %}
-                                <option value="{{ team.name }}" data-content="<img src='{{ team.img_src }}' class='team-icon'/> {{ team.name }}">{{ team.name }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="resultado">Resultado</label> <select id="resultado" name="resultado" class="selectpicker" data-style="btn-dark" required>
-                            <option value="" disabled selected>Selecione o resultado</option>
-                            <option value="Vitória (Casa)">Vitória (Casa)</option>
-                            <option value="Empate">Empate</option>
-                            <option value="Vitória (Fora)">Vitória (Fora)</option>
-                        </select>
-                    </div>
-                    <button type="submit">Adicionar</button> </div>
+                    {% endfor %}
+                </div>
+                <button type="submit">Enviar Palpites da Rodada</button>
+                {% else %}
+                <p class="no-games-message">Selecione uma rodada para ver os jogos e adicionar palpites.</p>
+                {% endif %}
             </form>
         </div>
     </main>
+
     <footer>
         <p>© Desenvolvido por Carlos Natanael</p>
     </footer>
@@ -82,7 +116,18 @@
 
     <script type="text/javascript">
         $(document).ready(function() {
+            // Inicializa todos os selectpickers na página
             $('.selectpicker').selectpicker();
+            
+            // Script para submeter o formulário ao mudar a rodada
+            // Adicionado um pequeno atraso para o selectpicker processar a seleção
+            $('#rodada_selecionada').change(function() {
+                var selectedRodada = $(this).val();
+                if (selectedRodada) {
+                    // Mudar para GET para recarregar a página com a rodada selecionada
+                    window.location.href = "{{ url_for('adicionar_palpites') }}?rodada=" + selectedRodada;
+                }
+            });
         });
     </script>
 </body>

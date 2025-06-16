@@ -4,56 +4,67 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f9; /* Fundo cinza claro */
+    background-color: #e0e0e0;
     color: #333;
 }
 
 header {
-    background-color: #006400; /* Verde escuro */
-    color: #fff;
-    padding: 20px 0;
-    text-align: center;
+    padding: 0;
+    box-shadow: none;
+    border-bottom: none;
+}
+/* Ocultar elementos antigos */
+header h1, nav { display: none; }
+
+/* Estilos para o Navbar do Bootstrap */
+.navbar {
+    background-color: #006400 !important;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-bottom: none;
+    padding: 10px 20px;
+    z-index: 1030;
 }
 
-header h1 {
-    font-size: 2.2em;
-    margin: 0;
+.navbar-brand {
+    color: #fff !important;
+    font-size: 1.8em;
     font-weight: bold;
     text-transform: uppercase;
+    letter-spacing: normal;
 }
 
-nav {
-    margin-top: 15px;
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
+.navbar-toggler {
+    border-color: rgba(255, 255, 255, 0.3) !important;
 }
 
-nav a {
-    color: #fff;
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(255, 255, 255, 0.8)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E") !important;
+}
+
+.navbar-nav .nav-item .nav-link {
+    color: #fff !important;
     font-weight: bold;
-    text-decoration: none;
-    margin: 5px 10px;
-    padding: 10px 20px;
-    background-color: #228B22; /* Verde mais claro */
+    padding: 8px 15px !important;
+    margin: 0 5px;
     border-radius: 5px;
-    transition: background-color 0.3s ease, transform 0.3s ease;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    background-color: #228B22;
 }
 
-nav a:hover {
-    background-color: #004d00;
-    transform: scale(1.05);
+.navbar-nav .nav-item .nav-link:hover {
+    background-color: #004d00 !important;
+    color: #fff !important;
 }
 
 main {
     padding: 40px 20px;
     text-align: center;
-    max-width: 1000px; /* Limite de largura para o conteúdo principal */
+    max-width: 1000px;
     margin: 20px auto;
-    background-color: #ffffff;
-    border-radius: 8px;
+    background-color: #ffffff; /* Fundo branco */
+    border-radius: 10px;
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    color: #333;
 }
 
 h1, h2 {
@@ -64,7 +75,7 @@ h1, h2 {
     text-align: center;
     border-bottom: 2px solid #228B22;
     padding-bottom: 10px;
-    width: 100%;
+    letter-spacing: normal;
 }
 
 /* Estilos da Tabela e Acordeão */
@@ -73,17 +84,18 @@ h1, h2 {
 }
 
 .card {
-    border: 1px solid #ddd;
+    border: 1px solid #ddd; /* Borda original */
     border-radius: 8px;
     margin-bottom: 15px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    overflow: hidden; /* Garante que o border-radius funcione */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sombra original */
+    overflow: hidden;
+    background-color: #f9f9f9; /* Fundo claro para o card */
 }
 
 .card-header {
-    background-color: #f8f9fa; /* Cor de fundo para o cabeçalho do card */
+    background-color: #f8f9fa; /* Fundo claro para o cabeçalho do card */
     border-bottom: 1px solid #ddd;
-    padding: 0; /* Remover padding padrão para o botão preencher */
+    padding: 0;
 }
 
 .card-header h2 button {
@@ -91,7 +103,7 @@ h1, h2 {
     text-align: left;
     padding: 15px 20px;
     font-size: 1.2em;
-    color: #006400; /* Cor do texto do botão */
+    color: #333; /* Texto escuro para o botão */
     font-weight: bold;
     text-decoration: none;
     background-color: transparent;
@@ -100,18 +112,19 @@ h1, h2 {
 }
 
 .card-header h2 button:hover {
-    background-color: #e9ecef; /* Cor de hover para o botão */
+    background-color: #e9ecef; /* Cor de hover mais clara */
+    color: #006400; /* Texto verde escuro no hover */
 }
 
 .card-body {
     padding: 20px;
-    background-color: #ffffff;
+    background-color: #ffffff; /* Fundo branco para o corpo do card */
 }
 
 table {
     width: 100%;
     border-collapse: collapse;
-    background-color: #ffffff;
+    background-color: #ffffff; /* Fundo branco */
     border-radius: 8px;
     overflow: hidden;
 }
@@ -121,102 +134,114 @@ table, th, td {
 }
 
 th, td {
-    padding: 12px 10px; /* Reduzido um pouco para mais espaço em telas menores */
+    padding: 12px 10px;
     text-align: center;
-    font-size: 1em; /* Reduzido um pouco */
+    font-size: 1em;
+    color: #333; /* Texto escuro */
 }
 
 th {
-    background-color: #006400;
+    background-color: #006400; /* Verde escuro */
     color: #ffffff;
     text-transform: uppercase;
 }
 
 td {
-    background-color: #f9f9f9;
+    background-color: #f9f9f9; /* Fundo claro */
 }
 
 /* Nova regra para o texto da célula de status */
 td:nth-child(6) { /* Seleciona a sexta coluna (onde o status está) */
-    color: #1a1a1a; /* Cor preta escura para o texto do status */
+    color: #333; /* Cor preta para o texto do status */
     font-weight: bold;
 }
-
 
 tr:nth-child(even) td {
     background-color: #e0e0e0;
 }
 
 tr:hover td {
-    background-color: #c0ffc0;
+    background-color: #c0ffc0; /* Verde claro no hover */
 }
 
 footer {
     background-color: #333;
     color: #fff;
-    padding: 15px 0;
+    padding: 10px 0;
     text-align: center;
     width: 100%;
     font-size: 0.9em;
-    box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.2);
     margin-top: 30px;
 }
 
-.bar {
-    color: #ffffff;
-    font-size: 1.8em;
-    margin-bottom: 20px;
-    text-transform: uppercase;
-    text-align: center;
+/* Media Queries para Responsividade do Navbar e outros elementos */
+@media (max-width: 991.98px) {
+    .navbar-collapse {
+        background-color: #006400;
+        border-top: 1px solid #228B22;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        z-index: 1000;
+        padding-bottom: 10px;
+    }
+    .navbar-nav {
+        flex-direction: column !important;
+        align-items: center;
+        width: 100%;
+    }
+    .navbar-nav .nav-item {
+        width: 90%;
+        margin: 5px 0;
+    }
+    .navbar-nav .nav-item .nav-link {
+        text-align: center;
+        background-color: #228B22;
+        border-radius: 5px;
+        margin: 2px 0;
+        padding: 10px 15px !important;
+    }
+    .navbar-nav .nav-item .nav-link:hover {
+        background-color: #004d00 !important;
+        color: #fff !important;
+    }
 }
 
-/* Media Queries para Responsividade */
 @media (max-width: 768px) {
-    header h1 {
-        font-size: 1.8em;
-    }
-
-    nav {
-        flex-direction: column;
-    }
-
-    nav a {
-        margin: 5px auto;
-        width: 80%;
-    }
-
     main {
-        padding: 20px 10px;
+        padding: 25px 15px;
         max-width: 95%;
     }
 
     h1, h2 {
-        font-size: 1.6em;
+        font-size: 1.8em;
         margin-bottom: 20px;
     }
 
     th, td {
-        padding: 8px 5px;
+        padding: 10px 5px;
         font-size: 0.9em;
     }
 }
 
 @media (max-width: 480px) {
-    header h1 {
+    .navbar-brand {
         font-size: 1.5em;
     }
 
-    nav a {
+    .navbar-nav .nav-item .nav-link {
         font-size: 0.9em;
-        padding: 8px 15px;
+        padding: 8px 15px !important;
     }
 
     h1, h2 {
-        font-size: 1.4em;
+        font-size: 1.5em;
     }
 
     th, td {
         font-size: 0.8em;
-        padding: 5px;
+        padding: 8px;
     }
 }

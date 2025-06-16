@@ -5,21 +5,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tabela de Pontuação</title>
     <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <header>
-        <nav>
-            <a href="{{ url_for('index') }}">Pontuação</a>
-            <a href="{{ url_for('estatisticas') }}">Estatísticas</a>
-            <a href="{{ url_for('exibir_palpites') }}">Palpites</a>
-            <a href="{{ url_for('exibir_rodadas') }}">Rodadas</a>
-            <a href="{{ url_for('adicionar_palpites') }}">Adicionar Palpite</a>
-            <a href="{{ url_for('regra') }}">Regras</a>
+        <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('index') }}">Pontuação</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('estatisticas') }}">Estatísticas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('exibir_palpites') }}">Palpites</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('exibir_rodadas') }}">Rodadas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('adicionar_palpites') }}">Adicionar Palpite</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('regra') }}">Regras</a>
+                    </li>
+                </ul>
+            </div>
         </nav>
     </header>
-    <main>
-        <h1>Tabela de Pontuação</h1>
+
+    <main style="padding-top: 80px;">
+        <h1>TABELA DE PONTUAÇÃO</h1>
         <table>
             <thead>
                 <tr>
@@ -52,191 +73,64 @@
                 {% endfor %}
             </tbody>
         </table>
-    </main>
-    <h2>Jogos da Semana - Mundial de Clubes</h2>
-    <h2>Rodada 1</h2>
-    <main class="jogosSemana">
-        <div class="table-container">
-            <div class="match-row">
-                <div class="team">
-                    <img src="https://ssl.gstatic.com/onebox/media/sports/logos/JdNbaaw7JlDHvPHZaX2V2A_48x48.png" alt="Al Ahly">
-                    Al Ahly
+
+        {% if jogos_futuros %}
+        <h2>PRÓXIMOS JOGOS</h2>
+        <div class="jogosSemana">
+            <div class="table-container">
+                {% for jogo in jogos_futuros %}
+                <div class="match-row">
+                    <div class="team">
+                        <img src="{{ jogo.time1_img }}" alt="{{ jogo.time1_nome }}">
+                        {{ jogo.time1_nome }}
+                    </div>
+                    <div class="date-time">{{ jogo.data_hora.split(' ')[0] | format_date_br }} - {{ jogo.data_hora.split(' ')[1] }}</div>
+                    <div class="team">
+                        <img src="{{ jogo.time2_img }}" alt="{{ jogo.time2_nome }}">
+                        {{ jogo.time2_nome }}
+                    </div>
                 </div>
-                <div class="date-time">Amanhã, 21:00</div>
-                <div class="team">
-                    <img src="https://ssl.gstatic.com/onebox/media/sports/logos/dn0bMtTbbpx7v3Ieq6TZtQ_48x48.png" alt="Inter Miami">
-                    Inter Miami
-                </div>
-            </div>
-            <div class="match-row">
-                <div class="team">
-                    <img src="https://ssl.gstatic.com/onebox/media/sports/logos/-_cmntP5q_pHL7g5LfkRiw_96x96.png" alt="Bayern">
-                    Bayern
-                </div>
-                <div class="date-time">Dom., 15/06, 13:00</div>
-                <div class="team">
-                    <img src="https://ssl.gstatic.com/onebox/media/sports/logos/ydlyVc6hUPBXoaT3wR_lFg_96x96.png" alt="Auckland City">
-                    Auckland City
-                </div>
-            </div>
-            <div class="match-row">
-                <div class="team">
-                    <img src="https://ssl.gstatic.com/onebox/media/sports/logos/mcpMspef1hwHwi9qrfp4YQ_48x48.png" alt="PSG">
-                    PSG
-                </div>
-                <div class="date-time">Dom., 15/06, 16:00</div>
-                <div class="team">
-                    <img src="https://ssl.gstatic.com/onebox/media/sports/logos/pEqmA7CL-VRo4Llq3rwIPA_48x48.png" alt="Atlético Madrid">
-                    Atlético Madrid
-                </div>
-            </div>
-            <div class="match-row">
-                <div class="team">
-                    <img src="https://ssl.gstatic.com/onebox/media/sports/logos/7spurne-xDt2p6C0imYYNA_48x48.png" alt="Palmeiras">
-                    Palmeiras
-                </div>
-                <div class="date-time">Dom., 15/06, 19:00</div>
-                <div class="team">
-                    <img src="https://ssl.gstatic.com/onebox/media/sports/logos/QkkllEKwkj60jEVtOEZWAg_48x48.png" alt="Porto">
-                    Porto
-                </div>
-            </div>
-            <div class="match-row">
-                <div class="team">
-                    <img src="https://ssl.gstatic.com/onebox/media/sports/logos/KLDWYp-H8CAOT9H_JgizRg_48x48.png" alt="Botafogo">
-                    Botafogo
-                </div>
-                <div class="date-time">Dom., 15/06, 23:00</div>
-                <div class="team">
-                    <img src="https://ssl.gstatic.com/onebox/media/sports/logos/k6m3hoy4Rn3KRrMYSYDjog_48x48.png" alt="Seattle Sounders">
-                    Seattle Sounder
-                </div>
-            </div>
-            <div class="match-row">
-                <div class="team">
-                    <img src="https://ssl.gstatic.com/onebox/media/sports/logos/fhBITrIlbQxhVB6IjxUO6Q_48x48.png" alt="Chelsea">
-                    Chelse
-                </div>
-                <div class="date-time">Seg., 16/06, 16:00</div>
-                <div class="team">
-                    <img src="https://ssl.gstatic.com/onebox/media/sports/logos/waD0z1CWx6_r4UT_hgb7nA_96x96.png" alt="LAFC">
-                    LAFC
-                </div>
-            </div>
-            <div class="match-row">
-                <div class="team">
-                    <img src="https://ssl.gstatic.com/onebox/media/sports/logos/YO1impuFJT2hex6wvCd9Pw_48x48.png" alt="Boca Juniors">
-                    Boca Juniors
-                </div>
-                <div class="date-time">Seg., 16/06, 19:00</div>
-                <div class="team">
-                    <img src="https://ssl.gstatic.com/onebox/media/sports/logos/nFwABZ-4n_A3BGXT9A7Adg_48x48.png" alt="Benfica">
-                    Benfica
-                </div>
-            </div>
-            <div class="match-row">
-                <div class="team">
-                    <img src="https://ssl.gstatic.com/onebox/media/sports/logos/orE554NToSkH6nuwofe7Yg_48x48.png" alt="Flamengo">
-                    Flamengo
-                </div>
-                <div class="date-time">Seg., 16/06, 22:00</div>
-                <div class="team">
-                    <img src="https://ssl.gstatic.com/onebox/media/sports/logos/Kf32x8gh5SCMEqvKjVGLfg_48x48.png" alt="Espérance">
-                    Espérance
-                </div>
-            </div>
-            <div class="match-row">
-                <div class="team">
-                    <img src="https://ssl.gstatic.com/onebox/media/sports/logos/fCMxMMDF2AZPU7LzYKSlig_48x48.png" alt="Fluminense">
-                    Fluminense
-                </div>
-                <div class="date-time">Ter., 17/06, 13:00</div>
-                <div class="team">
-                    <img src="https://ssl.gstatic.com/onebox/media/sports/logos/FZnTSH2rbHFos4BnlWAItw_48x48.png" alt="Borussia">
-                    Borussia
-                </div>
-            </div>
-            <div class="match-row">
-                <div class="team">
-                    <img src="https://ssl.gstatic.com/onebox/media/sports/logos/700Mj6lUNkbBdvOVEbjC3g_48x48.png" alt="River Plate">
-                    River Plate
-                </div>
-                <div class="date-time">Ter., 17/06, 16:00</div>
-                <div class="team">
-                    <img src="https://ssl.gstatic.com/onebox/media/sports/logos/F-09rxdgECid61-Rj8Uxrw_48x48.png" alt="Urawa Reds">
-                    Urawa Reds
-                </div>
-            </div>
-            <div class="match-row">
-                <div class="team">
-                    <img src="https://ssl.gstatic.com/onebox/media/sports/logos/-K1h8OOTItUmjKqR2g5Nnw_48x48.png" alt="Ulsan Hyundai">
-                    Ulsan Hyundai
-                </div>
-                <div class="date-time">Ter., 17/06, 19:00</div>
-                <div class="team">
-                    <img src="https://ssl.gstatic.com/onebox/media/sports/logos/Lmp8fUABWWKRwNrHf71m5w_48x48.png" alt="Sundowns">
-                    Sundowns
-                </div>
-            </div>
-            <div class="match-row">
-                <div class="team">
-                    <img src="https://ssl.gstatic.com/onebox/media/sports/logos/LXZ8fEgzf0_FwSyq15buPw_48x48.png" alt="Monterrey">
-                    Monterrey
-                </div>
-                <div class="date-time">Ter., 17/06, 22:00</div>
-                <div class="team">
-                    <img src="https://ssl.gstatic.com/onebox/media/sports/logos/l2-icwsMhIvsbRw8AwC1yg_48x48.png" alt="Inter">
-                    Inter
-                </div>
-            </div>
-            <div class="match-row">
-                <div class="team">
-                    <img src="https://ssl.gstatic.com/onebox/media/sports/logos/z44l-a0W1v5FmgPnemV6Xw_48x48.png" alt="City">
-                    City
-                </div>
-                <div class="date-time">Qua., 18/06, 13:00</div>
-                <div class="team">
-                    <img src="https://ssl.gstatic.com/onebox/media/sports/logos/JxwBeJ9HrjZX_vRqTPwY6A_48x48.png" alt="Wydad AC">
-                    Wydad AC
-                </div>
-            </div>
-            <div class="match-row">
-                <div class="team">
-                    <img src="https://ssl.gstatic.com/onebox/media/sports/logos/Th4fAVAZeCJWRcKoLW7koA_48x48.png" alt="Real Madrid">
-                    Real Madrid
-                </div>
-                <div class="date-time">Qua., 18/06, 16:00</div>
-                <div class="team">
-                    <img src="https://ssl.gstatic.com/onebox/media/sports/logos/HGVsnyWvMiGVotxhgicdSQ_48x48.png" alt="Al-Hilal">
-                    Al-Hilal
-                </div>
-            </div>
-            <div class="match-row">
-                <div class="team">
-                    <img src="https://ssl.gstatic.com/onebox/media/sports/logos/9dscoX8iYhzbjSNxXVp2gQ_48x48.png" alt="Pachuca">
-                    Pachuca
-                </div>
-                <div class="date-time">Qua., 18/06, 19:00</div>
-                <div class="team">
-                    <img src="https://ssl.gstatic.com/onebox/media/sports/logos/vQhr4NoE_4Yg1IhUZvbRNw_48x48.png" alt="RB Salzburg">
-                    RB Salzburg
-                </div>
-            </div>
-            <div class="match-row">
-                <div class="team">
-                    <img src="https://ssl.gstatic.com/onebox/media/sports/logos/vA9sLyDeHX3q7pn8QTmoeQ_48x48.png" alt="Al Ain">
-                    Al Ain
-                </div>
-                <div class="date-time">Qua., 18/06, 22:00</div>
-                <div class="team">
-                    <img src="https://ssl.gstatic.com/onebox/media/sports/logos/6lal-0xwWtos5HI99HRvuQ_48x48.png" alt="Juventus">
-                    Juventus
-                </div>
+                {% endfor %}
             </div>
         </div>
+        {% else %}
+        <p class="no-games-message">Não há próximos jogos agendados.</p>
+        {% endif %}
+
+        {% if jogos_passados %}
+        <br>
+        <h2>ÚLTIMOS RESULTADOS</h2>
+        <div class="resultadoJogo">
+            <div class="table-container">
+                {% for jogo in jogos_passados %}
+                <div class="match-row">
+                    <div class="team">
+                        <img src="{{ jogo.time1_img }}" alt="{{ jogo.time1_nome }}">
+                        {{ jogo.time1_nome }}
+                    </div>
+                    <div class="resultado">
+                        {{ jogo.placar_time1 }} X {{ jogo.placar_time2 }}
+                    </div>
+                    <div class="team">
+                        <img src="{{ jogo.time2_img }}" alt="{{ jogo.time2_nome }}">
+                        {{ jogo.time2_nome }}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% else %}
+        <p class="no-games-message">Nenhum resultado de jogo passado disponível.</p>
+        {% endif %}
     </main>
+
     <footer>
         <p>© 2024 Sistema de Palpites</p>
     </footer>
-</body>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    </body>
 </html>

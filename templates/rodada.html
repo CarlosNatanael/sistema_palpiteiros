@@ -1,4 +1,3 @@
-<!-- Arquivo: templates/rodada.html -->
 <!DOCTYPE html>
 <html lang="pt">
 <head>
@@ -6,55 +5,95 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rodada {{ rodada }}</title>
     <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
-    <link rel="stylesheet" href="{{ url_for('static', filename='rodada.css') }}">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='rodada.css') }}">
 </head>
 <body>
-    <!-- Navegador -->
     <header>
-        <nav>
-            <a href="{{ url_for('index') }}">Pontuação</a>
-            <a href="{{ url_for('estatisticas') }}">Estatísticas</a>
-            <a href="{{ url_for('exibir_palpites') }}">Palpites</a>
-            <a href="{{ url_for('exibir_rodadas') }}">Rodadas</a>
-            <a href="{{ url_for('adicionar_palpites') }}">Adicionar Palpite</a>
-            <a href="{{ url_for('regra') }}">Regras</a>
+        <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('index') }}">Pontuação</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('estatisticas') }}">Estatísticas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('exibir_palpites') }}">Palpites</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('exibir_rodadas') }}">Rodadas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('adicionar_palpites') }}">Adicionar Palpite</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('regra') }}">Regras</a>
+                    </li>
+                </ul>
+            </div>
         </nav>
     </header>
-    <main class="container">
-        <h2>Palpites da Rodada {{ rodada }}</h2>
+
+    <main class="container" style="padding-top: 80px;">
+        <h2>PALPITES DA RODADA {{ rodada }}</h2>
         <div class="accordion" id="accordionPalpites">
             {% for nome, palpites_por_nome in palpites_agrupados.items() %}
             <div class="card">
                 <div class="card-header" id="heading{{ loop.index }}">
                     <h2 class="mb-0">
-                        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse{{ loop.index }}" aria-expanded="true" aria-controls="collapse{{ loop.index }}">
+                        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse{{ loop.index }}" aria-expanded="{% if loop.first %}true{% else %}false{% endif %}" aria-controls="collapse{{ loop.index }}">
                             {{ nome }}
                         </button>
                     </h2>
                 </div>
 
-                <div id="collapse{{ loop.index }}" class="collapse" aria-labelledby="heading{{ loop.index }}" data-parent="#accordionPalpites">
+                <div id="collapse{{ loop.index }}" class="collapse {% if loop.first %}show{% endif %}" aria-labelledby="heading{{ loop.index }}" data-parent="#accordionPalpites">
                     <div class="card-body">
                         <table class="table">
                             <thead>
                                 <tr>
-                                    <th>Casa</th>
-                                    <th>Placar</th>
-                                    <th>Fora</th>
-                                    <th>Placar</th>
-                                    <th>Resultado</th>
-                                    <th>Pontos</th>
+                                    <th>Jogo</th>
+                                    <th>Seu Palpite</th>
+                                    <th>Resultado Real</th>
+                                    <th>Status Palpite</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {% for palpite in palpites_por_nome %}
                                 <tr>
-                                    <td>{{ palpite['time1'] }}</td>
-                                    <td>{{ palpite['gol_time1'] }}</td>
-                                    <td>{{ palpite['time2'] }}</td>
-                                    <td>{{ palpite['gol_time2'] }}</td>
-                                    <td>{{ palpite['resultado'] }}</td>
+                                    <td>
+                                        {% set jogo_info = none %}
+                                        {% for j in jogos_da_rodada %}
+                                            {% if j.id == palpite.game_id %}
+                                                {% set jogo_info = j %}
+                                                {# REMOVIDO: {% break %} #}
+                                            {% endif %}
+                                        {% endfor %}
+                                        {% if jogo_info %}
+                                            <div class="game-matchup">
+                                                <img src="{{ jogo_info.time1_img }}" alt="{{ jogo_info.time1_nome }}" class="team-logo-small"/>
+                                                {{ jogo_info.time1_sigla }} vs {{ jogo_info.time2_sigla }}
+                                                <img src="{{ jogo_info.time2_img }}" alt="{{ jogo_info.time2_nome }}" class="team-logo-small"/>
+                                                <br>
+                                                <small>{{ jogo_info.data_hora.split(' ')[0] | format_date_br }} {{ jogo_info.data_hora.split(' ')[1] }}</small>
+                                            </div>
+                                        {% else %}
+                                            {{ palpite['time1'] }} vs {{ palpite['time2'] }}
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ palpite['gol_time1'] }} x {{ palpite['gol_time2'] }} ({{ palpite['resultado'] }})</td>
+                                    <td>
+                                        {% if jogo_info and jogo_info.placar_time1 is not none %}
+                                            {{ jogo_info.placar_time1 }} x {{ jogo_info.placar_time2 }}
+                                        {% else %}
+                                            Aguardando Resultado
+                                        {% endif %}
+                                    </td>
                                     <td>{{ palpite['status'] }}</td>
                                 </tr>
                                 {% endfor %}
@@ -66,11 +105,13 @@
             {% endfor %}
         </div>
     </main>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.4.4/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
     <footer>
         <p>© Desenvolvido por Carlos Natanael</p>
     </footer>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

@@ -5,26 +5,48 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Estatísticas - Sistema de Palpites</title>
     <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='esta.css') }}">
 </head>
 <body>
     <header>
-        <nav>
-            <a href="{{ url_for('index') }}">Pontuação</a>
-            <a href="{{ url_for('estatisticas') }}">Estatísticas</a>
-            <a href="{{ url_for('exibir_palpites') }}">Palpites</a>
-            <a href="{{ url_for('exibir_rodadas') }}">Rodadas</a>
-            <a href="{{ url_for('adicionar_palpites') }}">Adicionar Palpite</a>
-            <a href="{{ url_for('regra') }}">Regras</a>
+        <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('index') }}">Pontuação</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('estatisticas') }}">Estatísticas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('exibir_palpites') }}">Palpites</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('exibir_rodadas') }}">Rodadas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('adicionar_palpites') }}">Adicionar Palpite</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('regra') }}">Regras</a>
+                    </li>
+                </ul>
+            </div>
         </nav>
     </header>
-    <main>
+
+    <main style="padding-top: 80px;">
         <section class="statistics-section">
-            <h1>Estatísticas dos Palpites</h1>
+            <h1>ESTATÍSTICAS DOS PALPITES</h1>
 
             <div class="stat-card">
                 <h2>Maior Pontuador</h2>
-                <h3>Rodada Atual</h3> <p>
+                <h3>Rodada Atual</h3>
+                <p>
                     <strong>Nome: </strong>
                     {% if maior_pontuador %}
                         <span>{{ maior_pontuador.nome }}</span>
@@ -44,7 +66,8 @@
 
             <div class="stat-card">
                 <h2>Quem Acertou Mais</h2>
-                <h3>Rodada Atual</h3> <p>
+                <h3>Rodada Atual</h3>
+                <p>
                     <strong>Nome: </strong>
                     {% if quem_acertou_mais %}
                         <span>{{ quem_acertou_mais.nome }}</span>
@@ -66,5 +89,9 @@
     <footer>
         <p>© Desenvolvido por Carlos Natanael</p>
     </footer>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
