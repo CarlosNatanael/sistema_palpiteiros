@@ -371,7 +371,7 @@ MUNDIAL_JOGOS_POR_RODADA = {
             'time2_nome': 'Borussia',
             'time2_sigla': 'BVB',
             'time2_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/FZnTSH2rbHFos4BnlWAItw_48x48.png',
-            'data_hora': '2025-06-17 16:00',
+            'data_hora': '2025-06-17 13:00',
             'local': 'MetLife Stadium'
         },
         {
@@ -404,7 +404,7 @@ MUNDIAL_JOGOS_POR_RODADA = {
             'time2_nome': 'Juventus',
             'time2_sigla': 'JUV',
             'time2_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/6lal-0xwWtos5HI99HRvuQ_48x48.png',
-            'data_hora': '2025-06-17 22:00',
+            'data_hora': '2025-06-18 22:00',
             'local': 'Audi Field'
         },
         {
@@ -415,7 +415,7 @@ MUNDIAL_JOGOS_POR_RODADA = {
             'time2_nome': 'Al-Hilal',
             'time2_sigla': 'HIL',
             'time2_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/HGVsnyWvMiGVotxhgicdSQ_48x48.png',
-            'data_hora': '2025-06-17 16:00',
+            'data_hora': '2025-06-18 16:00',
             'local': 'Hard Rock Stadium'
         },
         {
@@ -426,7 +426,7 @@ MUNDIAL_JOGOS_POR_RODADA = {
             'time2_nome': 'RB Salzburg',
             'time2_sigla': 'SLZ',
             'time2_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/vQhr4NoE_4Yg1IhUZvbRNw_48x48.png',
-            'data_hora': '2025-06-17 19:00',
+            'data_hora': '2025-06-18 19:00',
             'local': 'TQL Stadium'
         },
     ],
