@@ -1,0 +1,269 @@
+============= PALMEIRAS ======================
+'time1_nome': 'Palmeiras',
+'time1_sigla': 'PAL',
+'time1_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/7spurne-xDt2p6C0imYYNA_48x48.png',
+
+'time2_nome': 'Palmeiras',
+'time2_sigla': 'PAL',
+'time2_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/7spurne-xDt2p6C0imYYNA_48x48.png',
+
+============= AL AHLY ======================
+'time1_nome': 'Al Ahly',
+'time1_sigla': 'ALA',
+'time1_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/JdNbaaw7JlDHvPHZaX2V2A_48x48.png',
+
+'time2_nome': 'Al Ahly',
+'time2_sigla': 'ALA',
+'time2_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/JdNbaaw7JlDHvPHZaX2V2A_48x48.png',
+
+============= INTER MIAMI ======================
+'time1_nome': 'Inter Miami',
+'time1_sigla': 'INT',
+'time1_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/dn0bMtTbbpx7v3Ieq6TZtQ_48x48.png',
+
+'time2_nome': 'Inter Miami',
+'time2_sigla': 'INT',
+'time2_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/dn0bMtTbbpx7v3Ieq6TZtQ_48x48.png',
+
+============= PORTO ======================
+'time1_nome': 'Porto',
+'time1_sigla': 'POT',
+'time1_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/QkkllEKwkj60jEVtOEZWAg_48x48.png',
+
+'time2_nome': 'Porto',
+'time2_sigla': 'POT',
+'time2_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/QkkllEKwkj60jEVtOEZWAg_48x48.png',
+
+============= SEATTLE SOUNDERS ======================
+'time1_nome': 'Seattle Sounders',
+'time1_sigla': 'SES',
+'time1_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/k6m3hoy4Rn3KRrMYSYDjog_48x48.png',
+
+'time2_nome': 'Seattle Sounders',
+'time2_sigla': 'SES',
+'time2_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/k6m3hoy4Rn3KRrMYSYDjog_48x48.png',
+
+============= ATLÉTICO DE MADRID ======================
+'time1_nome': 'Atlético de Madrid',
+'time1_sigla': 'ATM',
+'time1_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/pEqmA7CL-VRo4Llq3rwIPA_48x48.png',
+
+'time2_nome': 'Atlético de Madrid',
+'time2_sigla': 'ATM',
+'time2_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/pEqmA7CL-VRo4Llq3rwIPA_48x48.png',
+
+============= BOTAFOGO ======================
+'time1_nome': 'Botafogo',
+'time1_sigla': 'BOT',
+'time1_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/KLDWYp-H8CAOT9H_JgizRg_48x48.png',
+
+'time2_nome': 'Botafogo',
+'time2_sigla': 'BOT',
+'time2_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/KLDWYp-H8CAOT9H_JgizRg_48x48.png',
+
+============= PSG ======================
+'time1_nome': 'PSG',
+'time1_sigla': 'PSG',
+'time1_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/mcpMspef1hwHwi9qrfp4YQ_48x48.png',
+
+'time2_nome': 'PSG',
+'time2_sigla': 'PSG',
+'time2_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/mcpMspef1hwHwi9qrfp4YQ_48x48.png',
+
+============= BENFICA ======================
+'time1_nome': 'Benfica',
+'time1_sigla': 'BEN',
+'time1_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/nFwABZ-4n_A3BGXT9A7Adg_48x48.png',
+
+'time2_nome': 'Benfica',
+'time2_sigla': 'BEN',
+'time2_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/nFwABZ-4n_A3BGXT9A7Adg_48x48.png',
+
+============= AUCKLAND CITY ======================
+'time1_nome': 'Auckland City',
+'time1_sigla': 'ACC',
+'time1_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/ydlyVc6hUPBXoaT3wR_lFg_96x96.png',
+
+'time2_nome': 'Auckland City',
+'time2_sigla': 'ACC',
+'time2_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/ydlyVc6hUPBXoaT3wR_lFg_96x96.png',
+
+============= FLAMENGO ======================
+'time1_nome': 'Flamengo',
+'time1_sigla': 'FLA',
+'time1_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/orE554NToSkH6nuwofe7Yg_48x48.png',
+
+'time2_nome': 'Flamengo',
+'time2_sigla': 'FLA',
+'time2_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/orE554NToSkH6nuwofe7Yg_48x48.png',
+
+============= CHELSEA ======================
+'time1_nome': 'Chelsea',
+'time1_sigla': 'CFC',
+'time1_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/fhBITrIlbQxhVB6IjxUO6Q_48x48.png',
+
+'time2_nome': 'Chelsea',
+'time2_sigla': 'CFC',
+'time2_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/fhBITrIlbQxhVB6IjxUO6Q_48x48.png',
+
+============= LAFC ======================
+'time1_nome': 'LAFC',
+'time1_sigla': 'LOS',
+'time1_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/waD0z1CWx6_r4UT_hgb7nA_96x96.png',
+
+'time2_nome': 'LAFC',
+'time2_sigla': 'LOS',
+'time2_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/waD0z1CWx6_r4UT_hgb7nA_96x96.png',
+
+============= ESPÉRANCE ======================
+'time1_nome': 'Espérance',
+'time1_sigla': 'EST',
+'time1_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/Kf32x8gh5SCMEqvKjVGLfg_48x48.png',
+
+'time2_nome': 'Espérance',
+'time2_sigla': 'EST',
+'time2_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/Kf32x8gh5SCMEqvKjVGLfg_48x48.png',
+
+============= BAYERN ======================
+'time1_nome': 'Bayern',
+'time1_sigla': 'BAY',
+'time1_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/-_cmntP5q_pHL7g5LfkRiw_96x96.png',
+
+'time2_nome': 'Bayern',
+'time2_sigla': 'BAY',
+'time2_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/-_cmntP5q_pHL7g5LfkRiw_96x96.png',
+
+============= BOCA JUNIORS ======================
+'time1_nome': 'Boca Juniors',
+'time1_sigla': 'BOC',
+'time1_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/YO1impuFJT2hex6wvCd9Pw_48x48.png',
+
+'time2_nome': 'Boca Juniors',
+'time2_sigla': 'BOC',
+'time2_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/YO1impuFJT2hex6wvCd9Pw_48x48.png',
+
+============= SUNDOWNS ======================
+'time1_nome': 'Sundowns',
+'time1_sigla': 'MSM',
+'time1_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/Lmp8fUABWWKRwNrHf71m5w_48x48.png',
+
+'time2_nome': 'Sundowns',
+'time2_sigla': 'MSM',
+'time2_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/Lmp8fUABWWKRwNrHf71m5w_48x48.png',
+
+============= BORUSSIA ======================
+'time1_nome': 'Borussia',
+'time1_sigla': 'BVB',
+'time1_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/FZnTSH2rbHFos4BnlWAItw_48x48.png',
+
+'time2_nome': 'Borussia',
+'time2_sigla': 'BVB',
+'time2_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/FZnTSH2rbHFos4BnlWAItw_48x48.png',
+
+============= INTER ======================
+'time1_nome': 'Inter',
+'time1_sigla': 'INT',
+'time1_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/l2-icwsMhIvsbRw8AwC1yg_48x48.png',
+
+'time2_nome': 'Inter',
+'time2_sigla': 'INT',
+'time2_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/l2-icwsMhIvsbRw8AwC1yg_48x48.png',
+
+============= URAWA REDS ======================
+'time1_nome': 'Urawa Reds',
+'time1_sigla': 'URD',
+'time1_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/F-09rxdgECid61-Rj8Uxrw_48x48.png',
+
+'time2_nome': 'Urawa Reds',
+'time2_sigla': 'URD',
+'time2_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/F-09rxdgECid61-Rj8Uxrw_48x48.png',
+
+============= FLUMINENSE ======================
+'time1_nome': 'Fluminense',
+'time1_sigla': 'FLU',
+'time1_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/fCMxMMDF2AZPU7LzYKSlig_48x48.png',
+
+'time2_nome': 'Fluminense',
+'time2_sigla': 'FLU',
+'time2_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/fCMxMMDF2AZPU7LzYKSlig_48x48.png',
+
+============= ULSAN HYUNDAI ======================
+'time1_nome': 'Ulsan Hyundai',
+'time1_sigla': 'ULH',
+'time1_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/-K1h8OOTItUmjKqR2g5Nnw_48x48.png',
+
+'time2_nome': 'Ulsan Hyundai',
+'time2_sigla': 'ULH',
+'time2_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/-K1h8OOTItUmjKqR2g5Nnw_48x48.png',
+
+============= RIVER PLATE ======================
+'time1_nome': 'River Plate',
+'time1_sigla': 'RIV',
+'time1_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/700Mj6lUNkbBdvOVEbjC3g_48x48.png',
+
+'time2_nome': 'River Plate',
+'time2_sigla': 'RIV',
+'time2_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/700Mj6lUNkbBdvOVEbjC3g_48x48.png',
+
+============= MONTERREY ======================
+'time1_nome': 'Monterrey',
+'time1_sigla': 'MTR',
+'time1_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/LXZ8fEgzf0_FwSyq15buPw_48x48.png',
+
+'time2_nome': 'Monterrey',
+'time2_sigla': 'MTR',
+'time2_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/LXZ8fEgzf0_FwSyq15buPw_48x48.png',
+
+============= JUVENTUS ======================
+'time1_nome': 'Juventus',
+'time1_sigla': 'JUV',
+'time1_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/6lal-0xwWtos5HI99HRvuQ_48x48.png',
+
+'time2_nome': 'Juventus',
+'time2_sigla': 'JUV',
+'time2_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/6lal-0xwWtos5HI99HRvuQ_48x48.png',
+
+============= WYDAD AC ======================
+'time1_nome': 'Wydad AC',
+'time1_sigla': 'WYD',
+'time1_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/JxwBeJ9HrjZX_vRqTPwY6A_48x48.png',
+
+'time2_nome': 'Wydad AC',
+'time2_sigla': 'WYD',
+'time2_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/JxwBeJ9HrjZX_vRqTPwY6A_48x48.png',
+
+============= REAL MADRID ======================
+'time1_nome': 'Real Madrid',
+'time1_sigla': 'RMA',
+'time1_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/Th4fAVAZeCJWRcKoLW7koA_48x48.png',
+
+'time2_nome': 'Real Madrid',
+'time2_sigla': 'RMA',
+'time2_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/Th4fAVAZeCJWRcKoLW7koA_48x48.png',
+
+============= PACHUCA ======================
+'time1_nome': 'Pachuca',
+'time1_sigla': 'PCH',
+'time1_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/9dscoX8iYhzbjSNxXVp2gQ_48x48.png',
+
+'time2_nome': 'Pachuca',
+'time2_sigla': 'PCH',
+'time2_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/9dscoX8iYhzbjSNxXVp2gQ_48x48.png',
+
+============= AL HILAL ======================
+'time1_nome': 'Al Hilal',
+'time1_sigla': 'HIL',
+'time1_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/HGVsnyWvMiGVotxhgicdSQ_48x48.png',
+
+'time2_nome': 'Al Hilal',
+'time2_sigla': 'HIL',
+'time2_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/HGVsnyWvMiGVotxhgicdSQ_48x48.png',
+
+============= SALZBURG ======================
+'time1_nome': 'Salzburg',
+'time1_sigla': 'SLZ',
+'time1_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/vQhr4NoE_4Yg1IhUZvbRNw_48x48.png',
+
+'time2_nome': 'Salzburg',
+'time2_sigla': 'SLZ',
+'time2_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/vQhr4NoE_4Yg1IhUZvbRNw_48x48.png',

@@ -75,188 +75,6 @@ def format_date_br_filter(date_str):
             return date_str
     return ""
 
-
-# Função auxiliar para extrair nomes e URLs de imagens dos times (não usada para jogos agora)
-def get_teams_from_file():
-    teams = []
-    team_data = """
-<img src="https://ssl.gstatic.com/onebox/media/sports/logos/nIdbR6qIUDyZUBO9vojSPw_48x48.png" alt="Bahia">
-Bahia >
-
-<img src="https://ssl.gstatic.com/onebox/media/sports/logos/tCMSqgXVHROpdCpQhzTo1g_48x48.png" alt="Corinthians">
-Corinthians >
-
-<img src="https://ssl.gstatic.com/onebox/media/sports/logos/u_L7Mkp33uNmFTv3uUlXeQ_48x48.png" alt="Criciúma">
-Criciúma >
-
-<img src="https://ssl.gstatic.com/onebox/media/sports/logos/hHwT8LwRmYCAGxQ-STLxYA_48x48.png" alt="Vasco">
-Vasco >
-
-<img src="https://ssl.gstatic.com/onebox/media/sports/logos/9mqMGndwoR9og_Z0uEl2kw_48x48.png" alt="Atlético-GO">
-Atlético-GO >
-
-<img src="https://ssl.gstatic.com/onebox/media/sports/logos/Ku-73v_TW9kpex-IEGb0ZA_48x48.png" alt="Grêmio">
-Grêmio >
-
-<img src="https://ssl.gstatic.com/onebox/media/sports/logos/4w2Z97Hf9CSOqICK3a8AxQ_48x48.png" alt="São Paulo">
-São Paulo >
-
-<img src="https://ssl.gstatic.com/onebox/media/sports/logos/orE554NToSkH6nuwofe7Yg_48x48.png" alt="Flamengo">
-Flamengo >
-
-<img src="https://ssl.gstatic.com/onebox/media/sports/logos/OWVFKuHrQuf4q2Wk0hEmSA_48x48.png" alt="Internacional">
-Internacional >
-
-<img src="https://ssl.gstatic.com/onebox/media/sports/logos/9LkdBR4L5plovKM8eIy7nQ_48x48.png" alt="Atlético-PR">
-Atlético-PR >
-
-<img src="https://ssl.gstatic.com/onebox/media/sports/logos/fCMxMMDF2AZPU7LzYKSlig_48x48.png" alt="Fluminense">
-Fluminense >
-
-<img src="https://ssl.gstatic.com/onebox/media/sports/logos/LHSM6VchpkI4NIptoSTHOg_48x48.png" alt="Vitória">
-Vitória >
-
-<img src="https://ssl.gstatic.com/onebox/media/sports/logos/me10ephzRxdj45zVq1Risg_48x48.png" alt="Fortaleza">
-Fortaleza >
-
-<img src="https://ssl.gstatic.com/onebox/media/sports/logos/q9fhEsgpuyRq58OgmSndcQ_48x48.png" alt="Atlético-MG">
-Atlético-MG >
-
-<img src="https://ssl.gstatic.com/onebox/media/sports/logos/KLDWYp-H8CAOT9H_JgizRg_48x48.png" alt="Botafogo">
-Botafogo >
-
-<img src="https://ssl.gstatic.com/onebox/media/sports/logos/JrXw-m4Dov0gE2Sh6XJQMQ_48x48.png" alt="Juventude">
-Juventude >
-
-<img src="https://ssl.gstatic.com/onebox/media/sports/logos/7spurne-xDt2p6C0imYYNA_48x48.png" alt="Palmeiras">
-Palmeiras >
-
-<img src="https://ssl.gstatic.com/onebox/media/sports/logos/Tcv9X__nIh-6wFNJPMwIXQ_48x48.png" alt="Cruzeiro">
-Cruzeiro >
-
-<img src="https://ssl.gstatic.com/onebox/media/sports/logos/j6U8Rgt_6yyf0Egs9nREXw_48x48.png" alt="Cuiabá">
-Cuiabá >
-
-<img src="https://ssl.gstatic.com/onebox/media/sports/logos/lMyw2zn1Z4cdkaxKJWnsQw_48x48.png" alt="Bragantino">
-Bragantino >
-
-
-=================== Mundial ======================================
-<img src="https://ssl.gstatic.com/onebox/media/sports/logos/7spurne-xDt2p6C0imYYNA_48x48.png" alt="Palmeiras">
-Palmeiras >
-
-<img src="https://ssl.gstatic.com/onebox/media/sports/logos/orE554NToSkH6nuwofe7Yg_48x48.png" alt="Flamengo">
-Flamengo >
-
-<img src="https://ssl.gstatic.com/onebox/media/sports/logos/fCMxMMDF2AZPU7LzYKSlig_48x48.png" alt="Fluminense">
-Fluminense >
-
-<img src="https://ssl.gstatic.com/onebox/media/sports/logos/KLDWYp-H8CAOT9H_JgizRg_48x48.png" alt="Botafogo">
-Botafogo >
-
-<img src="https://ssl.gstatic.com/onebox/media/sports/logos/-_cmntP5q_pHL7g5LfkRiw_96x96.png" alt="Bayern">
-Bayern >
-
-<img src="https://ssl.gstatic.com/onebox/media/sports/logos/ydlyVc6hUPBXoaT3wR_lFg_96x96.png" alt="Auckland City">
-Auckland City >
-
-<img src="https://ssl.gstatic.com/onebox/media/sports/logos/JdNbaaw7JlDHvPHZaX2V2A_48x48.png" alt="Al Ahly">
-Al Ahly >
-
-<img src="https://ssl.gstatic.com/onebox/media/sports/logos/dn0bMtTbbpx7v3Ieq6TZtQ_48x48.png" alt="Inter Miami">
-Inter Miami >
-
-<img src="https://ssl.gstatic.com/onebox/media/sports/logos/QkkllEKwkj60jEVtOEZWAg_48x48.png" alt="Porto">
-Porto >
-
-<img src="https://ssl.gstatic.com/onebox/media/sports/logos/pEqmA7CL-VRo4Llq3rwIPA_48x48.png" alt="Atlético Madrid">
-Atlético Madrid >
-
-<img src="https://ssl.gstatic.com/onebox/media/sports/logos/mcpMspef1hwHwi9qrfp4YQ_48x48.png" alt="PSG">
-PSG >
-
-<img src="https://ssl.gstatic.com/onebox/media/sports/logos/k6m3hoy4Rn3KRrMYSYDjog_48x48.png" alt="Seattle Sounders">
-Seattle Sounders >
-
-<img src="https://ssl.gstatic.com/onebox/media/sports/logos/nFwABZ-4n_A3BGXT9A7Adg_48x48.png" alt="Benfica">
-Benfica >
-
-<img src="https://ssl.gstatic.com/onebox/media/sports/logos/YO1impuFJT2hex6wvCd9Pw_48x48.png" alt="Boca Juniors">
-Boca Juniors >
-
-<img src="https://ssl.gstatic.com/onebox/media/sports/logos/fhBITrIlbQxhVB6IjxUO6Q_48x48.png" alt="Chelsea">
-Chelsea >
-
-<img src="https://ssl.gstatic.com/onebox/media/sports/logos/Kf32x8gh5SCMEqvKjVGLfg_48x48.png" alt="Espérance">
-Espérance >
-
-<img src="https://ssl.gstatic.com/onebox/media/sports/logos/waD0z1CWx6_r4UT_hgb7nA_96x96.png" alt="LAFC">
-LAFC >
-
-<img src="https://ssl.gstatic.com/onebox/media/sports/logos/l2-icwsMhIvsbRw8AwC1yg_48x48.png" alt="Inter">
-Inter >
-
-<img src="https://ssl.gstatic.com/onebox/media/sports/logos/LXZ8fEgzf0_FwSyq15buPw_48x48.png" alt="Monterrey">
-Monterrey >
-
-<img src="https://ssl.gstatic.com/onebox/media/sports/logos/700Mj6lUNkbBdvOVEbjC3g_48x48.png" alt="River Plate">
-River Plate >
-
-<img src="https://ssl.gstatic.com/onebox/media/sports/logos/F-09rxdgECid61-Rj8Uxrw_48x48.png" alt="Urawa Reds">
-Urawa Reds >
-
-<img src="https://ssl.gstatic.com/onebox/media/sports/logos/FZnTSH2rbHFos4BnlWAItw_48x48.png" alt="Borussia">
-Borussia >
-
-<img src="https://ssl.gstatic.com/onebox/media/sports/logos/Lmp8fUABWWKRwNrHf71m5w_48x48.png" alt="Sundowns">
-Sundowns >
-
-<img src="https://ssl.gstatic.com/onebox/media/sports/logos/-K1h8OOTItUmjKqR2g5Nnw_48x48.png" alt="Ulsan Hyundai">
-Ulsan Hyundai >
-
-<img src="https://ssl.gstatic.com/onebox/media/sports/logos/vA9sLyDeHX3q7pn8QTmoeQ_48x48.png" alt="Al Ain">
-Al Ain >
-
-<img src="https://ssl.gstatic.com/onebox/media/sports/logos/6lal-0xwWtos5HI99HRvuQ_48x48.png" alt="Juventus">
-Juventus >
-
-<img src="https://ssl.gstatic.com/onebox/media/sports/logos/z44l-a0W1v5FmgPnemV6Xw_48x48.png" alt="City">
-City >
-
-<img src="https://ssl.gstatic.com/onebox/media/sports/logos/JxwBeJ9HrjZX_vRqTPwY6A_48x48.png" alt="Wydad AC">
-Wydad AC >
-
-<img src="https://ssl.gstatic.com/onebox/media/sports/logos/HGVsnyWvMiGVotxhgicdSQ_48x48.png" alt="Al-Hilal">
-Al-Hilal >
-
-<img src="https://ssl.gstatic.com/onebox/media/sports/logos/9dscoX8iYhzbjSNxXVp2gQ_48x48.png" alt="Pachuca">
-Pachuca >
-
-<img src="https://ssl.gstatic.com/onebox/media/sports/logos/Th4fAVAZeCJWRcKoLW7koA_48x48.png" alt="Real Madrid">
-Real Madrid >
-
-<img src="https://ssl.gstatic.com/onebox/media/sports/logos/vQhr4NoE_4Yg1IhUZvbRNw_48x48.png" alt="RB Salzburg">
-RB Salzburg >
-    """
-    pattern = r'<img src="(.*?)" alt="(.*?)">\s*([^<\n]*?)\s*>'
-    matches = re.findall(pattern, team_data)
-
-    for match in matches:
-        img_src = match[0]
-        alt_text = match[1]
-        team_name_from_text = match[2].strip()
-
-        if team_name_from_text and team_name_from_text != alt_text:
-            team_name = team_name_from_text
-        else:
-            team_name = alt_text
-
-        if team_name.endswith('>'):
-            team_name = team_name[:-1].strip()
-
-        teams.append({'name': team_name, 'img_src': img_src})
-    return teams
-
 # Simulação de jogos do Mundial por rodada
 MUNDIAL_JOGOS_POR_RODADA = {
     1: [
@@ -434,33 +252,235 @@ MUNDIAL_JOGOS_POR_RODADA = {
         },
     ],
     2: [
+        {
+            'id': 201,
+            'time1_nome': 'Palmeiras',
+            'time1_sigla': 'PAL',
+            'time1_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/7spurne-xDt2p6C0imYYNA_48x48.png',
+            'time2_nome': 'Al Ahly',
+            'time2_sigla': 'ALA',
+            'time2_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/JdNbaaw7JlDHvPHZaX2V2A_48x48.png',
+            'data_hora': '2025-06-19 13:00',
+            'local': 'MetLife Stadium'
+        },
+        {
+            'id': 202,
+            'time1_nome': 'Inter Miami',
+            'time1_sigla': 'INT',
+            'time1_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/dn0bMtTbbpx7v3Ieq6TZtQ_48x48.png',
+            'time2_nome': 'Porto',
+            'time2_sigla': 'POT',
+            'time2_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/QkkllEKwkj60jEVtOEZWAg_48x48.png',
+            'data_hora': '2025-06-19 16:00',
+            'local': 'Mercedes-Benz Stadium'
+        },
+        {
+            'id': 203,
+            'time1_nome': 'Seattle Sounders',
+            'time1_sigla': 'SES',
+            'time1_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/k6m3hoy4Rn3KRrMYSYDjog_48x48.png',
+            'time2_nome': 'Atlético de Madrid',
+            'time2_sigla': 'ATM',
+            'time2_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/pEqmA7CL-VRo4Llq3rwIPA_48x48.png',
+            'data_hora': '2025-06-19 19:00',
+            'local': 'Lumen Field'
+        },
+        {
+            'id': 204,
+            'time1_nome': 'Botafogo',
+            'time1_sigla': 'BOT',
+            'time1_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/KLDWYp-H8CAOT9H_JgizRg_48x48.png',
+            'time2_nome': 'PSG',
+            'time2_sigla': 'PSG',
+            'time2_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/mcpMspef1hwHwi9qrfp4YQ_48x48.png',
+            'data_hora': '2025-06-19 22:00',
+            'local': 'Rose Bowl'
+        },
+        {
+            'id': 205,
+            'time1_nome': 'Benfica',
+            'time1_sigla': 'BEN',
+            'time1_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/nFwABZ-4n_A3BGXT9A7Adg_48x48.png',
+            'time2_nome': 'Auckland City',
+            'time2_sigla': 'ACC',
+            'time2_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/ydlyVc6hUPBXoaT3wR_lFg_96x96.png',
+            'data_hora': '2025-06-20 13:00',
+            'local': 'Inter Miami CF Stadium'
+        },
+        {
+            'id': 206,
+            'time1_nome': 'Flamengo',
+            'time1_sigla': 'FLA',
+            'time1_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/orE554NToSkH6nuwofe7Yg_48x48.png',
+            'time2_nome': 'Chelsea',
+            'time2_sigla': 'CFC',
+            'time2_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/fhBITrIlbQxhVB6IjxUO6Q_48x48.png',
+            'data_hora': '2025-06-20 15:00',
+            'local': 'Lincoln Financial Field'
+        },
+        {
+            'id': 207,
+            'time1_nome': 'LAFC',
+            'time1_sigla': 'LOS',
+            'time1_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/waD0z1CWx6_r4UT_hgb7nA_96x96.png',
+            'time2_nome': 'Espérance',
+            'time2_sigla': 'EST',
+            'time2_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/Kf32x8gh5SCMEqvKjVGLfg_48x48.png',
+            'data_hora': '2025-06-20 19:00',
+            'local': 'Geodis Park'
+        },
+        {
+            'id': 208,
+            'time1_nome': 'Bayern',
+            'time1_sigla': 'BAY',
+            'time1_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/-_cmntP5q_pHL7g5LfkRiw_96x96.png',
+            'time2_nome': 'Boca Juniors',
+            'time2_sigla': 'BOC',
+            'time2_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/YO1impuFJT2hex6wvCd9Pw_48x48.png',
+            'data_hora': '2025-06-20 22:00',
+            'local': 'Hard Rock Stadium'
+        },
+        {
+            'id': 209,
+            'time1_nome': 'Sundowns',
+            'time1_sigla': 'MSM',
+            'time1_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/Lmp8fUABWWKRwNrHf71m5w_48x48.png',
+            'time2_nome': 'Borussia',
+            'time2_sigla': 'BVB',
+            'time2_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/FZnTSH2rbHFos4BnlWAItw_48x48.png',
+            'data_hora': '2025-06-21 13:00',
+            'local': 'TQL Stadium'
+        },
+        {
+            'id': 210,
+            'time1_nome': 'Inter',
+            'time1_sigla': 'INT',
+            'time1_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/l2-icwsMhIvsbRw8AwC1yg_48x48.png',
+            'time2_nome': 'Urawa Reds',
+            'time2_sigla': 'URD',
+            'time2_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/F-09rxdgECid61-Rj8Uxrw_48x48.png',
+            'data_hora': '2025-06-21 16:00',
+            'local': 'Lumen Field'
+        },
+        {
+            'id': 211,
+            'time1_nome': 'Fluminense',
+            'time1_sigla': 'FLU',
+            'time1_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/fCMxMMDF2AZPU7LzYKSlig_48x48.png',
+            'time2_nome': 'Ulsan Hyundai',
+            'time2_sigla': 'ULH',
+            'time2_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/-K1h8OOTItUmjKqR2g5Nnw_48x48.png',
+            'data_hora': '2025-06-21 19:00',
+            'local': 'MetLife Stadium'
+        },
+        {
+            'id': 212,
+            'time1_nome': 'River Plate',
+            'time1_sigla': 'RIV',
+            'time1_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/700Mj6lUNkbBdvOVEbjC3g_48x48.png',
+            'time2_nome': 'Monterrey',
+            'time2_sigla': 'MTR',
+            'time2_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/LXZ8fEgzf0_FwSyq15buPw_48x48.png',
+            'data_hora': '2025-06-21 22:00',
+            'local': 'Rose Bowl'
+        },
+        {
+            'id': 213,
+            'time1_nome': 'Juventus',
+            'time1_sigla': 'JUV',
+            'time1_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/6lal-0xwWtos5HI99HRvuQ_48x48.png',
+            'time2_nome': 'Wydad AC',
+            'time2_sigla': 'WYD',
+            'time2_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/JxwBeJ9HrjZX_vRqTPwY6A_48x48.png',
+            'data_hora': '2025-06-22 13:00',
+            'local': 'Lincoln Financial Field'
+        },
+        {
+            'id': 214,
+            'time1_nome': 'Real Madrid',
+            'time1_sigla': 'RMA',
+            'time1_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/Th4fAVAZeCJWRcKoLW7koA_48x48.png',
+            'time2_nome': 'Pachuca',
+            'time2_sigla': 'PCH',
+            'time2_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/9dscoX8iYhzbjSNxXVp2gQ_48x48.png',
+            'data_hora': '2025-06-22 16:00',
+            'local': 'Bank of America Stadium'
+        },
+        {
+            'id': 215,
+            'time1_nome': 'Al Hilal',
+            'time1_sigla': 'HIL',
+            'time1_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/HGVsnyWvMiGVotxhgicdSQ_48x48.png',
+            'time2_nome': 'Salzburg',
+            'time2_sigla': 'SLZ',
+            'time2_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/vQhr4NoE_4Yg1IhUZvbRNw_48x48.png',
+            'data_hora': '2025-06-22 19:00',
+            'local': 'Audi Field'
+        },
+        {
+            'id': 216,
+            'time1_nome': 'City',
+            'time1_sigla': 'MNC',
+            'time1_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/z44l-a0W1v5FmgPnemV6Xw_48x48.png',
+            'time2_nome': 'Al Ain',
+            'time2_sigla': 'AIN',
+            'time2_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/vA9sLyDeHX3q7pn8QTmoeQ_48x48.png',
+            'data_hora': '2025-06-22 22:00',
+            'local': 'Mercedes-Benz Stadium'
+        },
     ],
     # Adicione mais rodadas e jogos conforme necessário, seguindo a estrutura
     # Certifique-se de que os IDs dos jogos são únicos em todo o dicionário
 }
 
-
-
 @app.route('/')
 def index():
     conn = get_db_connection()
     pontuacao = conn.execute("SELECT * FROM pontuacao ORDER BY pontos DESC, acertos DESC, erros ASC").fetchall()
-
-    agora_str = datetime.now().strftime('%Y-%m-%d %H:%M')
-
+    
+    agora = datetime.now()
+    rodada_param = request.args.get('rodada', type=int)
+    
+    # Obter todas as rodadas disponíveis
+    rodadas_disponiveis = sorted([r['rodada'] for r in conn.execute("SELECT DISTINCT rodada FROM jogos ORDER BY rodada").fetchall()])
+    
+    # Determinar a rodada ativa
+    if rodada_param and rodada_param in rodadas_disponiveis:
+        rodada_ativa = rodada_param
+    else:
+        rodada_ativa = rodadas_disponiveis[-1]  # Padrão para última rodada
+    
+    # Verificar se há próxima/anterior rodada
+    rodada_index = rodadas_disponiveis.index(rodada_ativa)
+    tem_proxima = rodada_index < len(rodadas_disponiveis) - 1
+    tem_anterior = rodada_index > 0
+    
+    # Filtrar jogos para a rodada ativa
+    agora_str = agora.strftime('%Y-%m-%d %H:%M')
+    
     jogos_futuros = conn.execute(
-        "SELECT id, rodada, time1_nome, time1_img, time1_sigla, time2_nome, time2_img, time2_sigla, data_hora, local, placar_time1, placar_time2 FROM jogos WHERE data_hora > ? ORDER BY data_hora ASC",
-        (agora_str,)
+        "SELECT id, rodada, time1_nome, time1_img, time1_sigla, time2_nome, time2_img, time2_sigla, data_hora, local, placar_time1, placar_time2 FROM jogos WHERE rodada = ? AND data_hora > ? ORDER BY data_hora ASC",
+        (rodada_ativa, agora_str)
     ).fetchall()
-
-    jogos_passados_com_resultados = conn.execute(
-        "SELECT id, rodada, time1_nome, time1_img, time1_sigla, time2_nome, time2_img, time2_sigla, data_hora, local, placar_time1, placar_time2 FROM jogos WHERE data_hora <= ? AND placar_time1 IS NOT NULL AND placar_time2 IS NOT NULL ORDER BY data_hora DESC",
-        (agora_str,)
+    
+    jogos_passados = conn.execute(
+        "SELECT id, rodada, time1_nome, time1_img, time1_sigla, time2_nome, time2_img, time2_sigla, data_hora, local, placar_time1, placar_time2 FROM jogos WHERE rodada = ? AND data_hora <= ? AND placar_time1 IS NOT NULL AND placar_time2 IS NOT NULL ORDER BY data_hora DESC",
+        (rodada_ativa, agora_str)
     ).fetchall()
-
+    
     conn.close()
-
-    return render_template('index.html', pontuacao=pontuacao, jogos_futuros=jogos_futuros, jogos_passados=jogos_passados_com_resultados)
+    
+    return render_template('index.html', 
+        pontuacao=pontuacao,
+        rodada_ativa=rodada_ativa,
+        jogos_futuros=jogos_futuros,
+        jogos_passados=jogos_passados,
+        rodadas_disponiveis=rodadas_disponiveis,
+        tem_proxima=tem_proxima,
+        tem_anterior=tem_anterior,
+        proxima_rodada=rodadas_disponiveis[rodada_index + 1] if tem_proxima else None,
+        anterior_rodada=rodadas_disponiveis[rodada_index - 1] if tem_anterior else None
+    )
 
 @app.route('/palpites')
 def exibir_palpites():
@@ -643,15 +663,10 @@ def set_game_result():
     cursor = conn.cursor()
 
     if request.method == 'POST':
-        # A senha do formulário agora é a senha do admin, não mais a senha fixa no código da rota
-        # A autenticação já é feita pelo @login_required, mas se quiser uma "segunda" senha, pode manter.
-        # No entanto, como @login_required já verifica a sessão, a senha aqui é redundante
-        # se você não tiver um propósito específico para ela.
-        # Por enquanto, vou remover a verificação de senha aqui, confiando no @login_required.
-        # if request.form.get('password') != ADMIN_PASSWORD:
-        #     flash('Senha incorreta!', 'danger')
-        #     conn.close()
-        #     return redirect(url_for('set_game_result'))
+        if request.form.get('password') != ADMIN_PASSWORD:
+            flash('Senha incorreta!', 'danger')
+            conn.close()
+            return redirect(url_for('set_game_result'))
 
         game_id = request.form.get('game_id', type=int)
         placar_time1 = request.form.get('placar_time1', type=int)
@@ -766,8 +781,3 @@ if __name__ == '__main__':
     conn.close()
 
     app.run(host="0.0.0.0", port=3000, debug=True)
-
-
-"""
-Agora, você poderá acessar http://localhost:3000/admin/set_game_result para definir os placares dos jogos no seu banco de dados. Após definir os placares e enviar o formulário, você pode ir para http://localhost:3000/atualizar_pontuacao para que o sistema recalcule a pontuação de todos os palpiteiros com base nos novos resultados.
-"""

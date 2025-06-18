@@ -307,7 +307,6 @@ input[type=number]::-webkit-outer-spin-button {
     color: #333;
     margin: 0;
 }
-
 .result-prediction-group {
     display: flex;
     flex-direction: column;
@@ -515,5 +514,133 @@ footer {
     button[type="submit"] {
         font-size: 1em;
         padding: 10px 20px;
+    }
+}
+
+/* ADICIONE ESTES ESTILOS NO FINAL DO ARQUIVO */
+
+/* Container do jogo para palpites */
+.match-palpite {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-width: 600px;
+    margin: 15px auto;
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* Time 1 (esquerda) */
+.team-palpite-left {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    width: 30%;
+}
+
+/* Time 2 (direita) */
+.team-palpite-right {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 30%;
+}
+
+/* Escudos */
+.team-palpite-logo {
+    width: 36px;
+    height: 36px;
+    object-fit: contain;
+}
+
+/* Siglas */
+.team-palpite-sigla {
+    font-weight: bold;
+    font-size: 1.2em;
+    margin: 0 8px;
+    text-transform: uppercase;
+}
+
+/* Container central para palpites */
+.palpite-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 40%;
+}
+
+/* Grupo de inputs de placar */
+.palpite-input-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+/* Inputs de placar */
+.palpite-input {
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    font-size: 1.4em;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin: 0 5px;
+}
+
+/* Separador "x" */
+.palpite-separator {
+    font-size: 1.4em;
+    margin: 0 5px;
+}
+
+/* Seletor de resultado */
+.palpite-result-select {
+    width: 100%;
+    max-width: 200px;
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+}
+
+/* Informações do jogo */
+.game-info-palpite {
+    font-size: 0.8em;
+    color: #666;
+    text-align: center;
+    margin-top: 5px;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .match-palpite {
+        flex-direction: column;
+        padding: 10px;
+    }
+    
+    .team-palpite-left,
+    .team-palpite-right,
+    .palpite-center {
+        width: 100%;
+        justify-content: center;
+        margin: 5px 0;
+    }
+    
+    .team-palpite-left {
+        order: 1;
+    }
+    
+    .palpite-center {
+        order: 2;
+    }
+    
+    .team-palpite-right {
+        order: 3;
+    }
+    
+    .game-info-palpite {
+        order: 4;
     }
 }

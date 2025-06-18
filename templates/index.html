@@ -65,7 +65,7 @@
                             <strong>{{ loop.index }}º</strong>
                         {% endif %}
                     </td>
-                    <td><strong>{{ jogador.nome }}</strong></td>
+                    <td><strong>{{ jogador.nome }} <strong class="nd">–</strong></strong></td>
                     <td><strong>{{ jogador.acertos }}</strong></td>
                     <td><strong>{{ jogador.erros }}</strong></td>
                     <td><strong>{{ jogador.pontos }}</strong></td>
@@ -74,54 +74,93 @@
             </tbody>
         </table>
 
+        <h2>RODADA {{ rodada_ativa_num }}</h2>
+    <div class="rodada-navigation">
+        {% if tem_anterior %}
+            <a href="{{ url_for('index', rodada=anterior_rodada) }}" class="nav-arrow left-arrow">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M15 18l-6-6 6-6"/>
+                </svg>
+                Rodada {{ anterior_rodada }}
+            </a>
+        {% endif %}
+        
+        <div class="rodada-selector">
+            <select onchange="location = this.value;">
+                {% for rodada in rodadas_disponiveis %}
+                    <option value="{{ url_for('index', rodada=rodada) }}" {% if rodada == rodada_ativa %}selected{% endif %}>
+                        Rodada {{ rodada }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        {% if tem_proxima %}
+            <a href="{{ url_for('index', rodada=proxima_rodada) }}" class="nav-arrow right-arrow">
+                Rodada {{ proxima_rodada }}
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9 18l6-6-6-6"/>
+                </svg>
+            </a>
+        {% endif %}
+    </div>
         {% if jogos_futuros %}
-        <h2>PRÓXIMOS JOGOS</h2>
+        <h3>PRÓXIMOS JOGOS</h3>
         <div class="jogosSemana">
             <div class="table-container">
                 {% for jogo in jogos_futuros %}
                 <div class="match-row">
-                    <div class="team">
-                        <img src="{{ jogo.time1_img }}" alt="{{ jogo.time1_nome }}">
-                        {{ jogo.time1_nome }}
+                    <div class="team team-home">
+                        <img class="team-logo" src="{{ jogo.time1_img }}" alt="{{ jogo.time1_nome }}">
+                        <span class="team-sigla">{{ jogo.time1_sigla }}</span>
                     </div>
-                    <div class="date-time">{{ jogo.data_hora.split(' ')[0] | format_date_br }} - {{ jogo.data_hora.split(' ')[1] }}</div>
-                    <div class="team">
-                        <img src="{{ jogo.time2_img }}" alt="{{ jogo.time2_nome }}">
-                        {{ jogo.time2_nome }}
+
+                    <div class="match-center">
+                        <div class="match-date">{{ jogo.data_hora }}</div>
+                    </div>
+
+                    <div class="team team-away">
+                        <span class="team-sigla">{{ jogo.time2_sigla }}</span>
+                        <img class="team-logo" src="{{ jogo.time2_img }}" alt="{{ jogo.time2_nome }}">
                     </div>
                 </div>
                 {% endfor %}
             </div>
         </div>
         {% else %}
-        <p class="no-games-message">Não há próximos jogos agendados.</p>
+        <p class="no-games-message">Não há próximos jogos agendados para a Rodada {{ rodada_ativa_num }}.</p>
         {% endif %}
 
         {% if jogos_passados %}
         <br>
-        <h2>ÚLTIMOS RESULTADOS</h2>
+        <h3>RESULTADOS DA RODADA</h3>
         <div class="resultadoJogo">
             <div class="table-container">
                 {% for jogo in jogos_passados %}
-                <div class="match-row">
-                    <div class="team">
-                        <img src="{{ jogo.time1_img }}" alt="{{ jogo.time1_nome }}">
-                        {{ jogo.time1_nome }}
+                <div class="result-row">
+                    <div class="team team-home">
+                        <img class="team-logo" src="{{ jogo.time1_img }}" alt="{{ jogo.time1_nome }}">
+                        <span class="team-sigla">{{ jogo.time1_sigla }}</span>
                     </div>
-                    <div class="resultado">
-                        {{ jogo.placar_time1 }} X {{ jogo.placar_time2 }}
+                    
+                    <div class="match-center">
+                        <div class="match-score">{{ jogo.placar_time1 }} - {{ jogo.placar_time2 }}</div>
                     </div>
-                    <div class="team">
-                        <img src="{{ jogo.time2_img }}" alt="{{ jogo.time2_nome }}">
-                        {{ jogo.time2_nome }}
+                    
+                    <div class="team team-away">
+                        <span class="team-sigla">{{ jogo.time2_sigla }}</span>
+                        <img class="team-logo" src="{{ jogo.time2_img }}" alt="{{ jogo.time2_nome }}">
                     </div>
                 </div>
                 {% endfor %}
             </div>
         </div>
-        {% else %}
-        <p class="no-games-message">Nenhum resultado de jogo passado disponível.</p>
-        {% endif %}
+        <div class="table-container">
+            {% else %}
+            <br>
+            <h4 class="no-games-message"><strong>Nenhum resultado de jogo disponível para a Rodada {{ rodada_ativa_num }}</strong></h4>
+            {% endif %}
+        </div>
     </main>
 
     <footer>
@@ -131,6 +170,5 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
-    </body>
+</body>
 </html>

@@ -70,18 +70,18 @@
                     <div class="game-card">
                         <p class="game-info">{{ jogo.data_hora }} | {{ jogo.local }}</p>
                         <div class="match-details">
-                            <div class="team-display">
-                                <img src="{{ jogo.time1_img }}" alt="{{ jogo.time1_nome }}" class="team-logo"/>
-                                <span class="team-sigla">{{ jogo.time1_sigla }}</span>
+                            <div class="palpite-input-group">
+                                <img src="{{ jogo.time1_img }}" alt="{{ jogo.time1_nome }}" class="team-palpite-logo"/>
+                                <span class="team-sigla"><strong>{{ jogo.time1_sigla }}</strong></span>
                             </div>
                             <div class="score-input-group">
                                 <input type="number" name="gol_time1_{{ jogo.id }}" class="score-input" min="0" max="99" placeholder="-" required />
                                 <span class="separator">x</span>
                                 <input type="number" name="gol_time2_{{ jogo.id }}" class="score-input" min="0" max="99" placeholder="-" required />
                             </div>
-                            <div class="team-display">
-                                <span class="team-sigla">{{ jogo.time2_sigla }}</span>
-                                <img src="{{ jogo.time2_img }}" alt="{{ jogo.time2_nome }}" class="team-logo"/>
+                            <div class="palpite-input-group">
+                                <span class="team-sigla"><strong>{{ jogo.time2_sigla }}</strong></span>
+                                <img src="{{ jogo.time2_img }}" alt="{{ jogo.time2_nome }}" class="team-palpite-logo"/>
                             </div>
                         </div>
                         <div class="result-prediction-group">

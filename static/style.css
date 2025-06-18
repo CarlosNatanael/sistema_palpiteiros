@@ -84,12 +84,18 @@ h3 {
     color: #333; /* Texto escuro */
 }
 
+h4 {
+    margin-bottom: 20px;
+    text-align: center;
+    color: #333; /* Texto escuro */
+}
+
 /* Tabela de Pontuação */
 table {
     width: 100%;
     border-collapse: collapse;
     margin-bottom: 30px;
-    border-radius: 8px; /* Cantos arredondados originais */
+    border-radius: 15px; /* Cantos arredondados originais */
     overflow: hidden;
     background-color: #ffffff; /* Fundo branco para a tabela */
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra original */
@@ -153,7 +159,7 @@ tr:hover td {
     align-items: center;
     padding: 20px;
     background-color: #ffffff; /* Fundo branco */
-    border-radius: 8px; /* Cantos arredondados originais */
+    border-radius: 10px; /* Cantos arredondados originais */
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra original */
     margin-top: 30px;
 }
@@ -179,7 +185,7 @@ tr:hover td {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 15px; /* Padding original */
+    padding: 25px; /* Padding original */
     border-bottom: 1px solid #ddd; /* Borda original */
     background-color: #ffffff; /* Fundo branco */
     transition: background-color 0.3s ease;
@@ -193,40 +199,127 @@ tr:hover td {
     background-color: #c0ffc0; /* Verde claro no hover */
 }
 
+@media (max-width: 768px) {
+    .match-row {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .team, .team1, .team2 {
+        justify-content: center;
+        width: 100%;
+        margin: 5px 0;
+    }
+    
+    .team1 img {
+        margin-right: 10px;
+        margin-left: 0;
+    }
+    
+    .team2 img {
+        margin-left: 10px;
+        margin-right: 0;
+    }
+    
+    .date-time, .resultado {
+        margin: 10px 0;
+        order: -1; /* Coloca data/placar acima em mobile */
+    }
+}
+
+/* Container principal dos jogos */
+.jogosSemana, .resultadoJogo {
+    width: 100%;
+    max-width: 700px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Linha do jogo - versão simplificada */
+.match-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    margin: 0 10px;
+}
+
+/* Versão para resultados */
+.result-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    margin: 0 10px;
+    border-bottom: 1px solid #eee;
+}
+
+/* Estilo dos times - extremidades */
 .team {
     display: flex;
     align-items: center;
-    font-weight: bold;
-    flex: 1;
-    text-align: left;
-    color: #333; /* Cor do texto do time */
+    width: 120px; /* Largura fixa para alinhamento */
 }
 
-.team:last-child {
-    text-align: right;
+/* Alinhamento do time da casa */
+.team-home {
+    justify-content: flex-start;
+}
+
+/* Alinhamento do time visitante */
+.team-away {
     justify-content: flex-end;
 }
 
-.team img {
-    width: 20px; /* Tamanho original do logo */
-    height: 20px;
-    margin-right: 8px; /* Margem original */
-    object-fit: contain;
-    filter: none; /* Remover sombra */
+/* Estilo das siglas */
+.team-sigla {
+    font-weight: bold;
+    margin: 0 8px;
 }
 
-.team:last-child img {
-    margin-right: 0;
-    margin-left: 8px;
+/* Estilo dos escudos */
+.team-logo {
+    width: 40px;
+    height: 40px;
 }
 
-.date-time {
+/* Container central (data/hora ou placar) */
+.match-center {
+    flex-grow: 1;
     text-align: center;
-    flex-shrink: 0;
-    padding: 0 10px; /* Padding original */
-    color: #555; /* Cor original */
-    font-size: 0.9em; /* Tamanho original */
-    min-width: 100px; /* Largura original */
+    padding: 0 10px;
+}
+
+/* Data/hora */
+.match-date {
+    font-size: 0.9em;
+    color: #555;
+}
+
+/* Placar */
+.match-score {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #1a1a1a; /* Cor preta para o placar */
+}
+
+/* Responsividade */
+@media (max-width: 600px) {
+    .team {
+        width: 100px;
+    }
+    
+    .team-logo {
+        width: 25px;
+        height: 25px;
+    }
+    
+    .match-center {
+        padding: 0 5px;
+    }
 }
 
 .resultado {
@@ -487,4 +580,94 @@ footer {
 .admin-container .bootstrap-select .bs-searchbox input.form-control:focus {
     border-color: #006400 !important;
     box-shadow: 0 0 5px rgba(0, 100, 0, 0.3) !important;
+}
+/* Navegação entre rodadas */
+.rodada-navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 20px 0 30px;
+    padding: 0 20px;
+}
+
+.nav-arrow {
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    background-color: #006400;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.nav-arrow:hover {
+    background-color: #004d00;
+}
+
+.nav-arrow svg {
+    margin: 0 5px;
+}
+
+.left-arrow {
+    margin-right: auto;
+}
+
+.right-arrow {
+    margin-left: auto;
+}
+
+.rodada-selector select {
+    padding: 10px 15px;
+    border-radius: 5px;
+    border: 2px solid #006400;
+    background-color: white;
+    font-weight: bold;
+    color: #006400;
+    cursor: pointer;
+    margin: 0 10px;
+    text-align: center;
+}
+
+.rodada-selector select:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(0, 100, 0, 0.3);
+}
+
+/* Responsividade para navegação */
+@media (max-width: 768px) {
+    .rodada-navigation {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .nav-arrow {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .rodada-selector {
+        order: -1;
+        width: 100%;
+    }
+    
+    .rodada-selector select {
+        width: 100%;
+    }
+}
+
+.resultadoJ {
+    font-weight: bold;
+    color: #1a1a1a; /* Cor preta para o placar */
+    font-size: 1.2em; /* Tamanho original */
+    width: 80px; /* Largura original */
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 10px;
+    background-color: #ffffff; /* Fundo branco */
+    border-radius: 8px; /* Cantos arredondados originais */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra original */
 }
