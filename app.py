@@ -1,14 +1,18 @@
-# sistema_palpiteiros/app.py
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, session
 import sqlite3
 import re
 from datetime import datetime
+from functools import wraps
 
 API_BASE_URL = "http://apifutebol.footstats.com.br/3.1"
 API_TOKEN = "Bearer_client_token"
 
 app = Flask(__name__)
-app.secret_key = 'ALJDHA76797#%*#JKOL' # Mude esta chave! Use algo gerado de forma segura.
+app.secret_key = 'ALJDHA76797#%*#JKOL'
+
+# --- Configurações de Administrador ---
+ADMIN_USERNAME = "admin"
+ADMIN_PASSWORD = "pokemar16#" 
 
 def get_db_connection():
     conn = sqlite3.connect('palpites.db')
@@ -43,7 +47,7 @@ def init_db():
 
     conn.execute('''
     CREATE TABLE IF NOT EXISTS jogos (
-        id INTEGER PRIMARY KEY, -- Mantendo como PK para MUNDIAL_JOGOS_POR_RODADA
+        id INTEGER PRIMARY KEY,
         rodada INTEGER,
         time1_nome TEXT,
         time1_img TEXT,
@@ -51,7 +55,7 @@ def init_db():
         time2_nome TEXT,
         time2_img TEXT,
         time2_sigla TEXT,
-        data_hora TEXT, -- Formato YYYY-MM-DD HH:MM
+        data_hora TEXT,
         local TEXT,
         placar_time1 INTEGER,
         placar_time2 INTEGER
@@ -66,11 +70,10 @@ init_db()
 def format_date_br_filter(date_str):
     if date_str:
         try:
-            # Pega apenas a parte da data (YYYY-MM-DD) e formata
             return datetime.strptime(date_str.split(' ')[0], '%Y-%m-%d').strftime('%d/%m/%Y')
         except ValueError:
-            return date_str # Retorna o original se houver erro de formato
-    return "" # Retorna vazio se a string for None ou vazia
+            return date_str
+    return ""
 
 
 # Função auxiliar para extrair nomes e URLs de imagens dos times (não usada para jogos agora)
@@ -430,8 +433,8 @@ MUNDIAL_JOGOS_POR_RODADA = {
             'local': 'TQL Stadium'
         },
     ],
-    # 2: [
-    # ],
+    2: [
+    ],
     # Adicione mais rodadas e jogos conforme necessário, seguindo a estrutura
     # Certifique-se de que os IDs dos jogos são únicos em todo o dicionário
 }
@@ -595,17 +598,60 @@ def exibir_rodada(numero):
 
     return render_template('rodada.html', rodada=numero, palpites_agrupados=palpites_agrupados, jogos_da_rodada=jogos_da_rodada)
 
+# Decorator para exigir login
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'logged_in' not in session:
+            flash('Você precisa estar logado para acessar esta página.', 'danger')
+            return redirect(url_for('login'))
+        return f(*args, **kwargs)
+    return decorated_function
+
+# Rota de Login
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        if username == ADMIN_USERNAME and password == ADMIN_PASSWORD:
+            session['logged_in'] = True
+            flash('Login realizado com sucesso!', 'success')
+            return redirect(url_for('admin_dashboard')) # Redirecionar para um dashboard admin
+        else:
+            flash('Nome de usuário ou senha incorretos.', 'danger')
+    return render_template('login.html')
+
+# Rota de Logout
+@app.route('/logout')
+def logout():
+    session.pop('logged_in', None)
+    flash('Você foi desconectado.', 'info')
+    return redirect(url_for('index'))
+
+# Dashboard do Administrador (Nova Rota)
+@app.route('/admin_dashboard')
+@login_required
+def admin_dashboard():
+    return render_template('admin_dashboard.html') # Você precisará criar este template
+
+# Rota de Administração para definir resultados dos jogos (PROTEGIDA)
 @app.route('/admin/set_game_result', methods=['GET', 'POST'])
+@login_required # Protege esta rota
 def set_game_result():
-    conn = get_db_connection() # Movido para o início
-    cursor = conn.cursor() # Movido para o início
+    conn = get_db_connection()
+    cursor = conn.cursor()
 
     if request.method == 'POST':
-        admin_password = "pokemar16" # SENHA
-        if request.form.get('password') != admin_password:
-            flash('Senha incorreta!', 'danger')
-            conn.close() # Fechar conexão em caso de erro
-            return redirect(url_for('set_game_result'))
+        # A senha do formulário agora é a senha do admin, não mais a senha fixa no código da rota
+        # A autenticação já é feita pelo @login_required, mas se quiser uma "segunda" senha, pode manter.
+        # No entanto, como @login_required já verifica a sessão, a senha aqui é redundante
+        # se você não tiver um propósito específico para ela.
+        # Por enquanto, vou remover a verificação de senha aqui, confiando no @login_required.
+        # if request.form.get('password') != ADMIN_PASSWORD:
+        #     flash('Senha incorreta!', 'danger')
+        #     conn.close()
+        #     return redirect(url_for('set_game_result'))
 
         game_id = request.form.get('game_id', type=int)
         placar_time1 = request.form.get('placar_time1', type=int)
@@ -625,19 +671,20 @@ def set_game_result():
             conn.rollback()
             flash(f'Erro ao atualizar o resultado: {e}', 'danger')
         finally:
-            conn.close() # Fechar conexão no finally
+            conn.close()
         
         return redirect(url_for('set_game_result'))
 
     # GET request: exibe o formulário
     jogos_disponiveis = conn.execute("SELECT id, time1_nome, time2_nome, data_hora, placar_time1, placar_time2 FROM jogos ORDER BY data_hora").fetchall()
-    conn.close() # Fechar conexão após consulta GET
+    conn.close()
 
     return render_template('set_game_result.html', jogos_disponiveis=jogos_disponiveis)
 
 
-@app.route('/atualizar_pontuacao')
-def atualizar_pontuacao():
+@app.route('/atualizar_pontuacao_admin')
+@login_required # Protege esta rota
+def atualizar_pontuacao_admin():
     conn = get_db_connection()
     cursor = conn.cursor()
 
@@ -681,8 +728,8 @@ def atualizar_pontuacao():
                 cursor.execute("UPDATE pontuacao SET acertos = acertos + 1 WHERE nome = ?", (nome,))
             else:
                 if palpite_resultado_texto == real_resultado_texto:
-                    pontos_ganhos = 2
-                    status_palpite = "Acerto Resultado Específico (2 pts)"
+                    pontos_ganhos = 1
+                    status_palpite = "Acerto Resultado (1 pts)"
                     cursor.execute("UPDATE pontuacao SET acertos = acertos + 1 WHERE nome = ?", (nome,))
                 else:
                     cursor.execute("UPDATE pontuacao SET erros = erros + 1 WHERE nome = ?", (nome,))
@@ -702,7 +749,7 @@ def atualizar_pontuacao():
     conn.commit()
     conn.close()
     flash('Pontuação atualizada com sucesso!', 'info')
-    return redirect('/')
+    return redirect(url_for('admin_dashboard'))
 
 if __name__ == '__main__':
     conn = get_db_connection()

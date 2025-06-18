@@ -8,8 +8,8 @@ body {
     color: #333;
 }
 
-.bar { /* Esta classe pode ser removida se não for mais usada no HTML */
-    color: #333; /* Mantido para compatibilidade, mas pode ser redundante */
+.bar { /* Pode ser removido se não for mais usado no HTML */
+    color: #333;
     font-size: 1.8em;
     margin-bottom: 20px;
     text-transform: uppercase;
@@ -76,10 +76,11 @@ main {
 
 .statistics-section {
     margin-top: 20px;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 30px;
+    display: flex; /* ATIVADO: Para alinhar os cards lado a lado */
+    flex-wrap: wrap; /* ATIVADO: Permite que os cards quebrem a linha */
+    justify-content: center; /* ATIVADO: Centraliza os cards */
+    gap: 30px; /* ATIVADO: Espaço entre os cards */
+    align-items: flex-start; /* Alinhar cards pelo topo */
 }
 
 h1 {
@@ -91,6 +92,7 @@ h1 {
     border-bottom: 2px solid #228B22; /* Linha verde */
     padding-bottom: 10px;
     letter-spacing: normal;
+    width: 100%; /* Garante que o título ocupe a largura total */
 }
 
 .stat-card {
@@ -98,11 +100,11 @@ h1 {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra mais suave */
     border-radius: 10px;
     padding: 25px;
-    margin-bottom: 20px;
+    margin-bottom: 20px; /* Mantido para quando empilhar */
     transition: transform 0.2s ease, box-shadow 0.2s ease;
-    flex: 1;
-    min-width: 280px;
-    max-width: 400px;
+    flex: 1; /* Permite que o card cresça e ocupe o espaço */
+    min-width: 280px; /* Largura mínima para cada card */
+    max-width: 400px; /* Largura máxima para cada card */
     text-align: center;
     border: 1px solid #eee; /* Borda suave */
     color: #333;
@@ -191,13 +193,13 @@ footer {
         max-width: 95%;
     }
 
-    h1, h2 {
+    h1 {
         font-size: 1.8em;
         margin-bottom: 20px;
     }
 
     .statistics-section {
-        flex-direction: column;
+        flex-direction: column; /* Empilha os cards em telas menores */
         gap: 20px;
         align-items: center;
     }
@@ -219,7 +221,7 @@ footer {
         padding: 8px 15px !important;
     }
 
-    h1, h2 {
+    h1 {
         font-size: 1.5em;
     }
 

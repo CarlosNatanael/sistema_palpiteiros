@@ -34,9 +34,18 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url_for('regra') }}">Regras</a>
                     </li>
+                    {% if session.logged_in %} {# Adicionado: Exibir 'Admin' e 'Sair' apenas se logado #}
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('set_game_result') }}">Admin</a>
+                        <a class="nav-link" href="{{ url_for('admin_dashboard') }}">Admin</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('logout') }}">Sair</a>
+                    </li>
+                    {% else %} {# Adicionado: Exibir 'Login' se não logado #}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('login') }}">Login</a>
+                    </li>
+                    {% endif %}
                 </ul>
             </div>
         </nav>
@@ -48,11 +57,9 @@
             <section class="rules-section">
                 <div class="stat-card">
                     <h2>Regras de Pontuação</h2>
-                    <p><strong>Acerto do Placar + Resultado com Especificação = </strong><strong>4 pts</strong></p>
-                    <p><strong>Acerto do Placar + Resultado geral = </strong><strong>3 pts</strong></p>
+                    <p><strong>Acerto do Placar + Acerto Resultado = </strong><strong>4 pts</strong></p>
                     <p><strong>Acerto do Placar = </strong><strong>2 pts</strong></p>
-                    <p><strong>Resultado com Especificação = </strong><strong>2 pts</strong></p>
-                    <p><strong>Resultado geral = </strong><strong>1 pts</strong></p>
+                    <p><strong>Acerto Resultado = </strong><strong>1 pts</strong></p>
                     <p><strong>Bônus de Consistência = 2 pts</strong></p>
                     <p><strong>Bônus por Finais de Competições = 2 pts</strong></p>
                 </div>
@@ -65,16 +72,15 @@
 
                 <div class="stat-card">
                     <h2>Regras dos Palpites</h2>
-                    <p><strong>Os palpites desaparecerão da tela 2 dias antes da próxima rodada.</strong></p>
+                    <p><strong>Os palpites desaparecerão ao começo do horario do jogo.</strong></p>
                     <p><strong>Palpites já feitos não podem ser alterados.</strong></p>
-                    <p><strong>Palpites feitos após o início dos jogos não serão contabilizados.</strong></p>
                     <p><strong>As estatísticas serão atualizadas ao final de cada rodada.</strong></p>
                 </div>
 
                 <div class="stat-card">
                     <h2>👑 Premiação 👑</h2>
                     <p><strong>Prêmio para o Top 2:</strong></p>
-                    <p><strong>1º Lugar:</strong> Um prêmio em dinheiro ou duas torres de choop.</p>
+                    <p><strong>1º Lugar:</strong> Uma torres de choop.</p>
                     <p><strong>2º Lugar:</strong> Uma camiseta do time favorito.</p>
                 </div>
             </section>
