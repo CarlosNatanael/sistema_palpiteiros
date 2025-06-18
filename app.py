@@ -485,8 +485,40 @@ def index():
 @app.route('/palpites')
 def exibir_palpites():
     conn = get_db_connection()
-    palpites = conn.execute("SELECT * FROM palpites").fetchall()
-    conn.close()
+    
+    # Adicionando um parâmetro de rodada opcional para exibir palpites de rodadas específicas
+    rodada_param = request.args.get('rodada', type=int)
+
+    # Lógica para determinar a rodada ativa (se nenhuma for especificada)
+    rodada_para_exibir = None
+    if rodada_param: # Se uma rodada específica for solicitada na URL
+        rodada_para_exibir = rodada_param
+    else: # Se nenhuma rodada for especificada, determina a rodada ativa
+        agora = datetime.now()
+        rodadas_no_db = conn.execute("SELECT DISTINCT rodada FROM jogos ORDER BY rodada ASC").fetchall()
+        
+        rodada_ativa = None
+        for row in rodadas_no_db:
+            num_rodada = row['rodada']
+            ultimo_jogo_da_rodada = conn.execute(
+                "SELECT data_hora FROM jogos WHERE rodada = ? ORDER BY data_hora DESC LIMIT 1", (num_rodada,)
+            ).fetchone()
+            
+            if ultimo_jogo_da_rodada:
+                ultimo_jogo_datetime = datetime.strptime(ultimo_jogo_da_rodada['data_hora'], '%Y-%m-%d %H:%M')
+                if agora < ultimo_jogo_datetime:
+                    rodada_ativa = num_rodada
+                    break
+        
+        if rodada_ativa is None:
+            if rodadas_no_db:
+                rodada_ativa = rodadas_no_db[-1]['rodada']
+            else:
+                rodada_ativa = 1 # Padrão para Rodada 1 se não houver rodadas no DB
+        rodada_para_exibir = rodada_ativa # Define a rodada a ser exibida
+
+    # Agora, buscar os palpites para a rodada determinada
+    palpites = conn.execute("SELECT * FROM palpites WHERE rodada = ? ORDER BY nome", (rodada_para_exibir,)).fetchall()
 
     palpites_agrupados = {}
     for palpite in palpites:
@@ -495,7 +527,35 @@ def exibir_palpites():
             palpites_agrupados[nome] = []
         palpites_agrupados[nome].append(palpite)
 
-    return render_template('palpites.html', palpites_agrupados=palpites_agrupados)
+    # Obter todas as rodadas existentes para a navegação de próxima/anterior e links
+    rodadas_existentes = sorted([r['rodada'] for r in conn.execute("SELECT DISTINCT rodada FROM jogos ORDER BY rodada ASC").fetchall()])
+    
+    idx_rodada = rodadas_existentes.index(rodada_para_exibir) if rodada_para_exibir in rodadas_existentes else -1
+    
+    tem_proxima = False
+    proxima_rodada = None
+    if idx_rodada != -1 and idx_rodada < len(rodadas_existentes) - 1:
+        tem_proxima = True
+        proxima_rodada = rodadas_existentes[idx_rodada + 1]
+
+    tem_anterior = False
+    anterior_rodada = None
+    if idx_rodada > 0:
+        tem_anterior = True
+        anterior_rodada = rodadas_existentes[idx_rodada - 1]
+
+    conn.close() # Mover conn.close() para o final da função
+
+    return render_template(
+        'palpites.html',
+        palpites_agrupados=palpites_agrupados,
+        rodada_exibida_num=rodada_para_exibir,
+        tem_proxima=tem_proxima,
+        proxima_rodada=proxima_rodada,
+        tem_anterior=tem_anterior,
+        anterior_rodada=anterior_rodada,
+        rodadas_disponiveis=rodadas_existentes # Para o Navbar, se necessário
+    )
 
 @app.route('/adicionar_palpites', methods=['GET', 'POST'])
 def adicionar_palpites():
@@ -769,6 +829,9 @@ def atualizar_pontuacao_admin():
 if __name__ == '__main__':
     conn = get_db_connection()
     cursor = conn.cursor()
+    # Adicionando alguns jogos extras para garantir que a rodada ativa mude.
+    # A rodada 1 termina no dia 16/06 14:00. Se a data atual for depois disso, a rodada 2 se torna ativa.
+    # Ajuste as datas para testar as transições.
     for rodada_num, jogos_rodada in MUNDIAL_JOGOS_POR_RODADA.items():
         for jogo in jogos_rodada:
             cursor.execute("SELECT id FROM jogos WHERE id = ?", (jogo['id'],))
