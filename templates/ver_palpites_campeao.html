@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Estatísticas - Sistema de Palpites</title>
+    <title>Tabela de Pontuação</title>
     <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="{{ url_for('static', filename='esta.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <header>
@@ -42,55 +42,32 @@
         </nav>
     </header>
 
-    <main style="padding-top: 80px;">
-        <section class="statistics-section">
-            <h1>ESTATÍSTICAS DOS PALPITES</h1>
+        <div class="container">
+            <h1>PALPITES PARA CAMPEÃO</h1>
 
-            <div class="stat-card">
-                <h2>Maior Pontuador</h2>
-                <h3>Rodada Atual</h3>
-                <p>
-                    <strong>Nome: </strong>
-                    {% if maior_pontuador %}
-                        <span>{{ maior_pontuador.nome }}</span>
-                    {% else %}
-                        <span>-</span>
-                    {% endif %}
-                </p>
-                <p>
-                    <strong>Pontos: </strong>
-                    {% if maior_pontuador %}
-                        <span>{{ maior_pontuador.pontos }}</span>
-                    {% else %}
-                        <span>-</span>
-                    {% endif %}
-                </p>
-            </div>
+            <div class="palpites-list">
+                {% for palpite in palpites %}
+                <div class="palpite-card">
+                    <div class="palpite-header">
+                        <span class="palpite-nome">{{ palpite.nome }}</span>
+                    </div>
 
-            <div class="stat-card">
-                <h2>MAIS ACERTOS</h2>
-                <h3>Rodada Atual</h3>
-                <p>
-                    <strong>Nome: </strong>
-                    {% if quem_acertou_mais %}
-                        <span>{{ quem_acertou_mais.nome }}</span>
-                    {% else %}
-                        <span>-</span>
-                    {% endif %}
-                </p>
-                <p>
-                    <strong>Acertos: </strong>
-                    {% if quem_acertou_mais %}
-                        <span>{{ quem_acertou_mais.acertos }}</span>
-                    {% else %}
-                        <span>-</span>
-                    {% endif %}
-                </p>
+                    <div class="palpite-time">
+                        <img src="{{ palpite.img_campeao or url_for('static', filename='img/unknown.png') }}" 
+                             alt="{{ palpite.time_campeao }}" class="team-logo">
+                        <span>{{ palpite.time_campeao }}</span>
+                    </div>
+
+                    <div class="palpite-footer">
+                        {{ palpite.data_palpite }}
+                    </div>
+                </div>
+                {% endfor %}
             </div>
-        </section>
-    </main>
+        </div>
+
     <footer>
-        <p>© Desenvolvido por Carlos Natanael</p>
+        <p>© 2024 Sistema de Palpites</p>
     </footer>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

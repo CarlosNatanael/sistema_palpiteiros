@@ -34,6 +34,9 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url_for('regra') }}">Regras</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('ver_palpites_campeao') }}">Palpites Campeão</a>
+                    </li>
                     {% if session.logged_in %} {# Adicionado: Exibir 'Admin' e 'Sair' apenas se logado #}
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url_for('admin_dashboard') }}">Admin</a>
@@ -68,6 +71,9 @@
                     <h2>Bônus de Pontuação</h2>
                     <p><strong>Bônus de Consistência:</strong> Quem acertar o placar em todas as partidas de uma rodada ganha pontos adicionais.</p>
                     <p><strong>Bônus por Finais de Competições:</strong> Para finais de campeonatos importantes quem acertar o resultado exato ganha pontos adicionais.</p>
+                    <button type="submit" class="btn-enviar-palpite">
+                        <a class="nav-link" href="{{ url_for('palpite_campeao') }}">Palpite Campeão</a>
+                    </button>
                 </div>
 
                 <div class="stat-card">

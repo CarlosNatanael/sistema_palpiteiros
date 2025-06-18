@@ -60,6 +60,17 @@ def init_db():
         placar_time1 INTEGER,
         placar_time2 INTEGER
     )''')
+
+    conn.execute('''
+    CREATE TABLE IF NOT EXISTS palpites_campeao (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        nome TEXT,
+        time_campeao TEXT,
+        rodada INTEGER,
+        data_palpite TEXT,
+        FOREIGN KEY(nome) REFERENCES pontuacao(nome)
+    )''')
+
     conn.commit()
     conn.close()
 
@@ -825,6 +836,66 @@ def atualizar_pontuacao_admin():
     conn.close()
     flash('Pontuação atualizada com sucesso!', 'info')
     return redirect(url_for('admin_dashboard'))
+
+
+@app.route('/palpite_campeao', methods=['GET', 'POST'])
+def palpite_campeao():
+    if request.method == 'POST':
+        nome = request.form['nome']
+        time_campeao = request.form['time_campeao']
+        rodada_atual = request.form['rodada_atual']
+        
+        conn = get_db_connection()
+        # Verifica se já existe palpite
+        existente = conn.execute(
+            'SELECT id FROM palpites_campeao WHERE nome = ?',
+            (nome,)
+        ).fetchone()
+        
+        if existente:
+            # Atualiza palpite existente
+            conn.execute(
+                'UPDATE palpites_campeao SET time_campeao = ?, rodada = ?, data_palpite = datetime("now") WHERE id = ?',
+                (time_campeao, rodada_atual, existente['id'])
+            )
+        else:
+            # Insere novo palpite
+            conn.execute(
+                'INSERT INTO palpites_campeao (nome, time_campeao, rodada, data_palpite) VALUES (?, ?, ?, datetime("now"))',
+                (nome, time_campeao, rodada_atual)
+            )
+        
+        conn.commit()
+        conn.close()
+        flash('Seu palpite para campeão foi registrado!', 'success')
+        return redirect(url_for('index'))
+    
+    # GET request
+    conn = get_db_connection()
+    times = conn.execute('SELECT DISTINCT time1_nome as nome FROM jogos UNION SELECT DISTINCT time2_nome as nome FROM jogos').fetchall()
+    rodada_atual = conn.execute('SELECT MAX(rodada) FROM jogos').fetchone()[0]
+    conn.close()
+    
+    return render_template('palpite_campeao.html',
+        palpiteiros=["Ariel", "Carlos", "Celso", "Gabriel", "Lucas"],
+        times=times,
+        rodada_atual=rodada_atual
+    )
+
+@app.route('/ver_palpites_campeao')
+def ver_palpites_campeao():
+    conn = get_db_connection()
+    palpites = conn.execute('''
+        SELECT p.nome, p.time_campeao, p.data_palpite, 
+               t1.time1_img as img_campeao, p.rodada
+        FROM palpites_campeao p
+        LEFT JOIN jogos t1 ON p.time_campeao = t1.time1_nome
+        GROUP BY p.nome
+        ORDER BY p.data_palpite DESC
+    ''').fetchall()
+    conn.close()
+    
+    return render_template('ver_palpites_campeao.html', palpites=palpites)
 
 if __name__ == '__main__':
     conn = get_db_connection()

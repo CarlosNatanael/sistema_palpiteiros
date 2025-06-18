@@ -233,3 +233,77 @@ h3 {
         font-size: 1.5em;
     }
 }
+
+/* Estilo do botão no navbar */
+.btn-palpite-campeao {
+    background: linear-gradient(135deg, #006400, #228B22);
+    color: white !important;
+    border-radius: 50px;
+    padding: 8px 20px !important;
+    margin: 0 5px;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 6px rgba(0, 100, 0, 0.2);
+}
+
+.btn-palpite-campeao:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 10px rgba(0, 100, 0, 0.3);
+    background: linear-gradient(135deg, #228B22, #006400);
+}
+
+.btn-palpite-campeao span {
+    margin-left: 8px;
+}
+
+/* Estilo do botão de submit */
+.btn-enviar-palpite {
+    background: linear-gradient(135deg, #d4af37, #f9d423);
+    color: #006400;
+    border: none;
+    border-radius: 50px;
+    padding: 12px 30px;
+    font-size: 1.1em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 20px auto;
+    box-shadow: 0 4px 8px rgba(212, 175, 55, 0.3);
+}
+
+.btn-enviar-palpite:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 15px rgba(212, 175, 55, 0.4);
+    background: linear-gradient(135deg, #f9d423, #d4af37);
+}
+
+.btn-enviar-palpite .btn-text {
+    margin-right: 10px;
+}
+
+.btn-enviar-palpite .btn-icon {
+    font-size: 1.2em;
+}
+
+/* Efeito ao clicar */
+.btn-enviar-palpite:active {
+    transform: translateY(1px);
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .btn-palpite-campeao {
+        padding: 6px 15px !important;
+        font-size: 0.9em;
+    }
+    
+    .btn-enviar-palpite {
+        padding: 10px 25px;
+        font-size: 1em;
+    }
+}
