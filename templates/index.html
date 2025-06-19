@@ -77,7 +77,7 @@
             </tbody>
         </table>
 
-        <h2>RODADA {{ rodada_ativa_num }}</h2>
+        <h2>RODADA {{ rodada_ativa }}</h2>
     <div class="rodada-navigation">
         {% if tem_anterior %}
             <a href="{{ url_for('index', rodada=anterior_rodada) }}" class="nav-arrow left-arrow">
@@ -92,7 +92,7 @@
             <select onchange="location = this.value;">
                 {% for rodada in rodadas_disponiveis %}
                     <option value="{{ url_for('index', rodada=rodada) }}" {% if rodada == rodada_ativa %}selected{% endif %}>
-                        Rodada {{ rodada }}
+                        Rodada {{ rodada_ativa }}
                     </option>
                 {% endfor %}
             </select>
@@ -131,7 +131,7 @@
             </div>
         </div>
         {% else %}
-        <p class="no-games-message">Não há próximos jogos agendados para a Rodada {{ rodada_ativa_num }}.</p>
+        <h4 class="no-games-message"><strong>Não há próximos jogos Agendados</strong></h4>
         {% endif %}
 
         {% if jogos_passados %}
@@ -161,7 +161,7 @@
         <div class="table-container">
             {% else %}
             <br>
-            <h4 class="no-games-message"><strong>Nenhum resultado de jogo disponível para a Rodada {{ rodada_ativa_num }}</strong></h4>
+            <h4 class="no-games-message"><strong>Nenhum resultado de jogo disponível</strong></h4>
             {% endif %}
         </div>
     </main>

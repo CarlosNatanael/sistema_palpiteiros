@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='adipalpites.css') }}">
 </head>
-<body>
+<body class="site-container">
     <header>
         <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -101,7 +101,7 @@
                 </div>
                 <button type="submit">Enviar Palpites da Rodada</button>
                 {% else %}
-                <p class="no-games-message">Selecione uma rodada para ver os jogos e adicionar palpites.</p>
+                <h4 class="no-games-message"><strong>RODADA FECHADA</strong></h4>
                 {% endif %}
             </form>
         </div>

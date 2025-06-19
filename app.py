@@ -61,14 +61,24 @@ def init_db():
         placar_time2 INTEGER
     )''')
 
+    # TABELA PARA PALPITE CAMPEÃO
     conn.execute('''
-    CREATE TABLE IF NOT EXISTS palpites_campeao (
+    CREATE TABLE IF NOT EXISTS palpite_campeao (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        nome TEXT,
+        nome TEXT UNIQUE,
         time_campeao TEXT,
+        time_campeao_img TEXT,
         rodada INTEGER,
-        data_palpite TEXT,
-        FOREIGN KEY(nome) REFERENCES pontuacao(nome)
+        data_palpite TEXT
+    )''')
+
+    # TABELA PARA O CAMPEÃO REAL DO MUNDIAL (Definido pelo Admin)
+    conn.execute('''
+    CREATE TABLE IF NOT EXISTS campeao_mundial (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        time_campeao TEXT,
+        time_campeao_img TEXT,
+        data_definicao TEXT UNIQUE
     )''')
 
     conn.commit()
@@ -85,6 +95,88 @@ def format_date_br_filter(date_str):
         except ValueError:
             return date_str
     return ""
+
+# Função auxiliar para extrair nomes e URLs de imagens dos times (para o palpite campeão)
+def get_all_teams_for_champion_bet():
+    teams = []
+    # Usaremos o conteúdo do Imagems times.txt para popular a lista de times nos selects
+    # Conteúdo de Imagems times.txt (copiado de uma de suas mensagens anteriores)
+    team_data = """
+<img src="https://ssl.gstatic.com/onebox/media/sports/logos/nIdbR6qIUDyZUBO9vojSPw_48x48.png" alt="Bahia"> Bahia >
+<img src="https://ssl.gstatic.com/onebox/media/sports/logos/tCMSqgXVHROpdCpQhzTo1g_48x48.png" alt="Corinthians"> Corinthians >
+<img src="https://ssl.gstatic.com/onebox/media/sports/logos/u_L7Mkp33uNmFTv3uUlXeQ_48x48.png" alt="Criciúma"> Criciúma >
+<img src="https://ssl.gstatic.com/onebox/media/sports/logos/hHwT8LwRmYCAGxQ-STLxYA_48x48.png" alt="Vasco"> Vasco >
+<img src="https://ssl.gstatic.com/onebox/media/sports/logos/9mqMGndwoR9og_Z0uEl2kw_48x48.png" alt="Atlético-GO"> Atlético-GO >
+<img src="https://ssl.gstatic.com/onebox/media/sports/logos/Ku-73v_TW9kpex-IEGb0ZA_48x48.png" alt="Grêmio"> Grêmio >
+<img src="https://ssl.gstatic.com/onebox/media/sports/logos/4w2Z97Hf9CSOqICK3a8AxQ_48x48.png" alt="São Paulo"> São Paulo >
+<img src="https://ssl.gstatic.com/onebox/media/sports/logos/orE554NToSkH6nuwofe7Yg_48x48.png" alt="Flamengo"> Flamengo >
+<img src="https://ssl.gstatic.com/onebox/media/sports/logos/OWVFKuHrQuf4q2Wk0hEmSA_48x48.png" alt="Internacional"> Internacional >
+<img src="https://ssl.gstatic.com/onebox/media/sports/logos/9LkdBR4L5plovKM8eIy7nQ_48x48.png" alt="Atlético-PR"> Atlético-PR >
+<img src="https://ssl.gstatic.com/onebox/media/sports/logos/fCMxMMDF2AZPU7LzYKSlig_48x48.png" alt="Fluminense"> Fluminense >
+<img src="https://ssl.gstatic.com/onebox/media/sports/logos/LHSM6VchpkI4NIptoSTHOg_48x48.png" alt="Vitória"> Vitória >
+<img src="https://ssl.gstatic.com/onebox/media/sports/logos/me10ephzRxdj45zVq1Risg_48x48.png" alt="Fortaleza"> Fortaleza >
+<img src="https://ssl.gstatic.com/onebox/media/sports/logos/q9fhEsgpuyRq58OgmSndcQ_48x48.png" alt="Atlético-MG"> Atlético-MG >
+<img src="https://ssl.gstatic.com/onebox/media/sports/logos/KLDWYp-H8CAOT9H_JgizRg_48x48.png" alt="Botafogo"> Botafogo >
+<img src="https://ssl.gstatic.com/onebox/media/sports/logos/JrXw-m4Dov0gE2Sh6XJQMQ_48x48.png" alt="Juventude"> Juventude >
+<img src="https://ssl.gstatic.com/onebox/media/sports/logos/7spurne-xDt2p6C0imYYNA_48x48.png" alt="Palmeiras"> Palmeiras >
+<img src="https://ssl.gstatic.com/onebox/media/sports/logos/Tcv9X__nIh-6wFNJPMwIXQ_48x48.png" alt="Cruzeiro"> Cruzeiro >
+<img src="https://ssl.gstatic.com/onebox/media/sports/logos/j6U8Rgt_6yyf0Egs9nREXw_48x48.png" alt="Cuiabá"> Cuiabá >
+<img src="https://ssl.gstatic.com/onebox/media/sports/logos/lMyw2zn1Z4cdkaxKJWnsQw_48x48.png" alt="Bragantino"> Bragantino >
+
+
+=================== Mundial ======================================
+<img src="https://ssl.gstatic.com/onebox/media/sports/logos/7spurne-xDt2p6C0imYYNA_48x48.png" alt="Palmeiras"> Palmeiras >
+<img src="https://ssl.gstatic.com/onebox/media/sports/logos/orE554NToSkH6nuwofe7Yg_48x48.png" alt="Flamengo"> Flamengo >
+<img src="https://ssl.gstatic.com/onebox/media/sports/logos/fCMxMMDF2AZPU7LzYKSlig_48x48.png" alt="Fluminense"> Fluminense >
+<img src="https://ssl.gstatic.com/onebox/media/sports/logos/KLDWYp-H8CAOT9H_JgizRg_48x48.png" alt="Botafogo"> Botafogo >
+<img src="https://ssl.gstatic.com/onebox/media/sports/logos/-_cmntP5q_pHL7g5LfkRiw_96x96.png" alt="Bayern"> Bayern >
+<img src="https://ssl.gstatic.com/onebox/media/sports/logos/ydlyVc6hUPBXoaT3wR_lFg_96x96.png" alt="Auckland City"> Auckland City >
+<img src="https://ssl.gstatic.com/onebox/media/sports/logos/JdNbaaw7JlDHvPHZaX2V2A_48x48.png" alt="Al Ahly"> Al Ahly >
+<img src="https://ssl.gstatic.com/onebox/media/sports/logos/dn0bMtTbbpx7v3Ieq6TZtQ_48x48.png" alt="Inter Miami"> Inter Miami >
+<img src="https://ssl.gstatic.com/onebox/media/sports/logos/QkkllEKwkj60jEVtOEZWAg_48x48.png" alt="Porto"> Porto >
+<img src="https://ssl.gstatic.com/onebox/media/sports/logos/pEqmA7CL-VRo4Llq3rwIPA_48x48.png" alt="Atlético Madrid"> Atlético Madrid >
+<img src="https://ssl.gstatic.com/onebox/media/sports/logos/mcpMspef1hwHwi9qrfp4YQ_48x48.png" alt="PSG"> PSG >
+<img src="https://ssl.gstatic.com/onebox/media/sports/logos/k6m3hoy4Rn3KRrMYSYDjog_48x48.png" alt="Seattle Sounders"> Seattle Sounders >
+<img src="https://ssl.gstatic.com/onebox/media/sports/logos/nFwABZ-4n_A3BGXT9A7Adg_48x48.png" alt="Benfica"> Benfica >
+<img src="https://ssl.gstatic.com/onebox/media/sports/logos/YO1impuFJT2hex6wvCd9Pw_48x48.png" alt="Boca Juniors"> Boca Juniors >
+<img src="https://ssl.gstatic.com/onebox/media/sports/logos/fhBITrIlbQxhVB6IjxUO6Q_48x48.png" alt="Chelsea"> Chelsea >
+<img src="https://ssl.gstatic.com/onebox/media/sports/logos/Kf32x8gh5SCMEqvKjVGLfg_48x48.png" alt="Espérance"> Espérance >
+<img src="https://ssl.gstatic.com/onebox/media/sports/logos/waD0z1CWx6_r4UT_hgb7nA_96x96.png" alt="LAFC"> LAFC >
+<img src="https://ssl.gstatic.com/onebox/media/sports/logos/l2-icwsMhIvsbRw8AwC1yg_48x48.png" alt="Inter"> Inter >
+<img src="https://ssl.gstatic.com/onebox/media/sports/logos/LXZ8fEgzf0_FwSyq15buPw_48x48.png" alt="Monterrey"> Monterrey >
+<img src="https://ssl.gstatic.com/onebox/media/sports/logos/700Mj6lUNkbBdvOVEbjC3g_48x48.png" alt="River Plate"> River Plate >
+<img src="https://ssl.gstatic.com/onebox/media/sports/logos/F-09rxdgECid61-Rj8Uxrw_48x48.png" alt="Urawa Reds"> Urawa Reds >
+<img src="https://ssl.gstatic.com/onebox/media/sports/logos/FZnTSH2rbHFos4BnlWAItw_48x48.png" alt="Borussia"> Borussia >
+<img src="https://ssl.gstatic.com/onebox/media/sports/logos/Lmp8fUABWWKRwNrHf71m5w_48x48.png" alt="Sundowns"> Sundowns >
+<img src="https://ssl.gstatic.com/onebox/media/sports/logos/-K1h8OOTItUmjKqR2g5Nnw_48x48.png" alt="Ulsan Hyundai"> Ulsan Hyundai >
+<img src="https://ssl.gstatic.com/onebox/media/sports/logos/vA9sLyDeHX3q7pn8QTmoeQ_48x48.png" alt="Al Ain"> Al Ain >
+<img src="https://ssl.gstatic.com/onebox/media/sports/logos/6lal-0xwWtos5HI99HRvuQ_48x48.png" alt="Juventus"> Juventus >
+<img src="https://ssl.gstatic.com/onebox/media/sports/logos/z44l-a0W1v5FmgPnemV6Xw_48x48.png" alt="City"> City >
+<img src="https://ssl.gstatic.com/onebox/media/sports/logos/JxwBeJ9HrjZX_vRqTPwY6A_48x48.png" alt="Wydad AC"> Wydad AC >
+<img src="https://ssl.gstatic.com/onebox/media/sports/logos/HGVsnyWvMiGVotxhgicdSQ_48x48.png" alt="Al-Hilal"> Al-Hilal >
+<img src="https://ssl.gstatic.com/onebox/media/sports/logos/9dscoX8iYhzbjSNxXVp2gQ_48x48.png" alt="Pachuca"> Pachuca >
+<img src="https://ssl.gstatic.com/onebox/media/sports/logos/Th4fAVAZeCJWRcKoLW7koA_48x48.png" alt="Real Madrid"> Real Madrid >
+<img src="https://ssl.gstatic.com/onebox/media/sports/logos/vQhr4NoE_4Yg1IhUZvbRNw_48x48.png" alt="RB Salzburg"> RB Salzburg >
+    """
+    teams = []
+    pattern = r'<img src="(.*?)" alt="(.*?)">\s*([^<\n]*?)\s*>'
+    matches = re.findall(pattern, team_data)
+
+    for match in matches:
+        img_src = match[0]
+        alt_text = match[1]
+        team_name_from_text = match[2].strip()
+
+        if team_name_from_text and team_name_from_text != alt_text:
+            team_name = team_name_from_text
+        else:
+            team_name = alt_text
+
+        if team_name.endswith('>'):
+            team_name = team_name[:-1].strip()
+
+        teams.append({'name': team_name, 'img_src': img_src})
+    return teams
 
 # Simulação de jogos do Mundial por rodada
 MUNDIAL_JOGOS_POR_RODADA = {
@@ -840,62 +932,128 @@ def atualizar_pontuacao_admin():
 
 @app.route('/palpite_campeao', methods=['GET', 'POST'])
 def palpite_campeao():
+    conn = get_db_connection()
+    # Obter a lista de todos os times que aparecem em 'jogos'
+    all_teams_db = conn.execute('''
+        SELECT DISTINCT time1_nome as name, time1_img as img_src FROM jogos
+        UNION
+        SELECT DISTINCT time2_nome as name, time2_img as img_src FROM jogos
+        ORDER BY name
+    ''').fetchall()
+    
+    palpiteiros = ["Ariel", "Carlos", "Celso", "Gabriel", "Lucas"]
+
+    # Determinar a rodada ativa (esta parte deve estar tanto para GET quanto POST)
+    agora = datetime.now()
+    rodadas_no_db = conn.execute("SELECT DISTINCT rodada FROM jogos ORDER BY rodada ASC").fetchall()
+    rodada_ativa_para_registro = None
+    for row in rodadas_no_db:
+        num_rodada = row['rodada']
+        ultimo_jogo_da_rodada = conn.execute(
+            "SELECT data_hora FROM jogos WHERE rodada = ? ORDER BY data_hora DESC LIMIT 1", (num_rodada,)
+        ).fetchone()
+        if ultimo_jogo_da_rodada:
+            ultimo_jogo_datetime = datetime.strptime(ultimo_jogo_da_rodada['data_hora'], '%Y-%m-%d %H:%M')
+            if agora < ultimo_jogo_datetime:
+                rodada_ativa_para_registro = num_rodada
+                break
+    if rodada_ativa_para_registro is None and rodadas_no_db:
+        rodada_ativa_para_registro = rodadas_no_db[-1]['rodada']
+    elif not rodadas_no_db:
+        rodada_ativa_para_registro = 1
+
     if request.method == 'POST':
         nome = request.form['nome']
         time_campeao = request.form['time_campeao']
-        rodada_atual = request.form['rodada_atual']
         
-        conn = get_db_connection()
-        # Verifica se já existe palpite
+        time_campeao_info = next((team for team in all_teams_db if team['name'] == time_campeao), None)
+        time_campeao_img = time_campeao_info['img_src'] if time_campeao_info else None
+
+        # Verifica se já existe palpite para este palpiteiro
         existente = conn.execute(
-            'SELECT id FROM palpites_campeao WHERE nome = ?',
+            'SELECT id FROM palpite_campeao WHERE nome = ?',
             (nome,)
         ).fetchone()
         
         if existente:
-            # Atualiza palpite existente
             conn.execute(
-                'UPDATE palpites_campeao SET time_campeao = ?, rodada = ?, data_palpite = datetime("now") WHERE id = ?',
-                (time_campeao, rodada_atual, existente['id'])
+                'UPDATE palpite_campeao SET time_campeao = ?, time_campeao_img = ?, rodada = ?, data_palpite = ? WHERE id = ?',
+                (time_campeao, time_campeao_img, rodada_ativa_para_registro, datetime.now().strftime('%Y-%m-%d %H:%M'), existente['id'])
             )
         else:
-            # Insere novo palpite
             conn.execute(
-                'INSERT INTO palpites_campeao (nome, time_campeao, rodada, data_palpite) VALUES (?, ?, ?, datetime("now"))',
-                (nome, time_campeao, rodada_atual)
+                'INSERT INTO palpite_campeao (nome, time_campeao, time_campeao_img, rodada, data_palpite) VALUES (?, ?, ?, ?, ?)',
+                (nome, time_campeao, time_campeao_img, rodada_ativa_para_registro, datetime.now().strftime('%Y-%m-%d %H:%M'))
             )
         
         conn.commit()
         conn.close()
-        flash('Seu palpite para campeão foi registrado!', 'success')
-        return redirect(url_for('index'))
+        flash('Seu palpite para campeão foi registrado/atualizado!', 'success')
+        return redirect(url_for('ver_palpites_campeao'))
     
     # GET request
-    conn = get_db_connection()
-    times = conn.execute('SELECT DISTINCT time1_nome as nome FROM jogos UNION SELECT DISTINCT time2_nome as nome FROM jogos').fetchall()
-    rodada_atual = conn.execute('SELECT MAX(rodada) FROM jogos').fetchone()[0]
     conn.close()
-    
     return render_template('palpite_campeao.html',
-        palpiteiros=["Ariel", "Carlos", "Celso", "Gabriel", "Lucas"],
-        times=times,
-        rodada_atual=rodada_atual
+        palpiteiros=palpiteiros,
+        times=all_teams_db,
+        rodada_atual_display=rodada_ativa_para_registro
     )
 
 @app.route('/ver_palpites_campeao')
 def ver_palpites_campeao():
     conn = get_db_connection()
     palpites = conn.execute('''
-        SELECT p.nome, p.time_campeao, p.data_palpite, 
-               t1.time1_img as img_campeao, p.rodada
-        FROM palpites_campeao p
-        LEFT JOIN jogos t1 ON p.time_campeao = t1.time1_nome
-        GROUP BY p.nome
-        ORDER BY p.data_palpite DESC
+        SELECT p.nome, p.time_campeao, p.data_palpite, p.time_campeao_img, p.rodada
+        FROM palpite_campeao p
+        ORDER BY p.rodada ASC, p.nome ASC
     ''').fetchall()
+    
+    campeao_real = conn.execute('SELECT time_campeao, time_campeao_img, data_definicao FROM campeao_mundial ORDER BY data_definicao DESC LIMIT 1').fetchone()
+
     conn.close()
     
-    return render_template('ver_palpites_campeao.html', palpites=palpites)
+    return render_template('ver_palpites_campeao.html', palpites=palpites, campeao_real=campeao_real)
+
+# Rota para o Admin definir o campeão real
+@app.route('/admin/set_champion', methods=['GET', 'POST'])
+@login_required
+def set_champion():
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    all_teams_db = conn.execute('''
+        SELECT DISTINCT time1_nome as name, time1_img as img_src FROM jogos
+        UNION
+        SELECT DISTINCT time2_nome as name, time2_img as img_src FROM jogos
+        ORDER BY name
+    ''').fetchall()
+
+    if request.method == 'POST':
+        campeao_nome = request.form['campeao_nome']
+        
+        campeao_info = next((team for team in all_teams_db if team['name'] == campeao_nome), None)
+        campeao_img = campeao_info['img_src'] if campeao_info else None
+
+        # Limpa o campeão anterior e insere o novo (assumindo apenas 1 campeão mundial)
+        try:
+            cursor.execute('DELETE FROM campeao_mundial')
+            cursor.execute(
+                'INSERT INTO campeao_mundial (time_campeao, time_campeao_img, data_definicao) VALUES (?, ?, ?)',
+                (campeao_nome, campeao_img, datetime.now().strftime('%Y-%m-%d %H:%M'))
+            )
+            conn.commit()
+            flash(f'Campeão mundial definido como {campeao_nome}!', 'success')
+        except Exception as e:
+            conn.rollback()
+            flash(f'Erro ao definir campeão: {e}', 'danger')
+        finally:
+            conn.close()
+        return redirect(url_for('set_champion'))
+
+    campeao_atual = conn.execute('SELECT time_campeao, time_campeao_img FROM campeao_mundial LIMIT 1').fetchone()
+    conn.close()
+
+    return render_template('set_champion.html', teams=all_teams_db, campeao_atual=campeao_atual)
 
 if __name__ == '__main__':
     conn = get_db_connection()

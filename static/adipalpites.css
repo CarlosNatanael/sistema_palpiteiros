@@ -342,6 +342,36 @@ button[type="submit"]:hover {
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
 }
 
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+h4 {
+    margin-bottom: 20px;
+    text-align: center;
+    color: #333; /* Texto escuro */
+}
+
+@media (min-height: 800px) {
+    .site-content {
+        padding-bottom: 50px;
+    }
+}
+
+.site-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* 100% da viewport height */
+}
+
+.site-content {
+    flex: 1; /* Isso faz o conteúdo ocupar todo o espaço disponível */
+    padding-bottom: 20px; /* Espaço antes do footer */
+}
+
+/* Seu rodapé atualizado */
 footer {
     background-color: #333;
     color: #fff;
@@ -349,8 +379,9 @@ footer {
     text-align: center;
     width: 100%;
     font-size: 0.9em;
-    box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.2);
-    margin-top: 30px;
+    box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.2);
+    /* Remova a margin-top se existir */
+    margin-top: 0;
 }
 
 /* Ícones dos times nos seletores (Bootstrap Select) */

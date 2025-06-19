@@ -3,11 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tabela de Pontuação</title>
+    <title>Palpites de Campeão</title>
     <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='palpites.css') }}"> </head>
 <body>
     <header>
         <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
@@ -42,32 +41,59 @@
         </nav>
     </header>
 
-        <div class="container">
-            <h1>PALPITES PARA CAMPEÃO</h1>
+    <main style="padding-top: 80px;">
+        <h1>PALPITES DE CAMPEÃO</h1>
 
-            <div class="palpites-list">
-                {% for palpite in palpites %}
-                <div class="palpite-card">
-                    <div class="palpite-header">
-                        <span class="palpite-nome">{{ palpite.nome }}</span>
-                    </div>
-
-                    <div class="palpite-time">
-                        <img src="{{ palpite.img_campeao or url_for('static', filename='img/unknown.png') }}" 
-                             alt="{{ palpite.time_campeao }}" class="team-logo">
-                        <span>{{ palpite.time_campeao }}</span>
-                    </div>
-
-                    <div class="palpite-footer">
-                        {{ palpite.data_palpite }}
-                    </div>
-                </div>
-                {% endfor %}
-            </div>
+        {% if campeao_real %}
+        <div class="stat-card" style="max-width: 400px; margin: 30px auto;">
+            <h2>CAMPEÃO REAL DO MUNDIAL</h2>
+            <p style="font-size: 1.5em; font-weight: bold; color: #006400;">
+                <img src="{{ campeao_real.time_campeao_img }}" alt="{{ campeao_real.time_campeao }}" style="width: 40px; height: 40px; vertical-align: middle; margin-right: 10px;"/>
+                {{ campeao_real.time_campeao }}
+            </p>
+            <small>Definido em: {{ campeao_real.data_definicao.split(' ')[0] | format_date_br }}</small>
         </div>
+        {% else %}
+        <div class="stat-card" style="max-width: 400px; margin: 30px auto;">
+            <h2>CAMPEÃO REAL DO MUNDIAL</h2>
+            <p>Ainda não definido pelo Admin.</p>
+        </div>
+        {% endif %}
+
+        {% if palpites %}
+        <div class="table-container" style="max-width: 700px;">
+            <h3>PALPITES DOS USUÁRIOS</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Palpite de Campeão</th>
+                        <th>Data do Palpite</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for palpite in palpites %}
+                    <tr>
+                        <td>{{ palpite.nome }}</td>
+                        <td>
+                            <img src="{{ palpite.time_campeao_img }}" alt="{{ palpite.time_campeao }}" style="width: 24px; height: 24px; vertical-align: middle; margin-right: 8px;"/>
+                            {{ palpite.time_campeao }}
+                        </td>
+                        <td>{{ palpite.data_palpite.split(' ')[0] | format_date_br }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <p class="no-games-message">Nenhum palpite de campeão registrado ainda.</p>
+        {% endif %}
+
+        <p style="margin-top: 20px;"><a href="{{ url_for('palpite_campeao') }}">Adicionar Palpite Campeão</a></p>
+    </main>
 
     <footer>
-        <p>© 2024 Sistema de Palpites</p>
+        <p>© Desenvolvido por Carlos Natanael</p>
     </footer>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

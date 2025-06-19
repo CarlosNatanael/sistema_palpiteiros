@@ -8,6 +8,8 @@ body {
     color: #333; /* Texto principal escuro */
 }
 
+
+
 /* Remover estilos antigos de header */
 header {
     padding: 0;
@@ -337,16 +339,40 @@ tr:hover td {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra original */
 }
 
-/* Rodapé */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.site-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* 100% da viewport height */
+}
+
+.site-content {
+    flex: 1; /* Isso faz o conteúdo ocupar todo o espaço disponível */
+    padding-bottom: 20px; /* Espaço antes do footer */
+}
+
+/* Seu rodapé atualizado */
 footer {
-    background-color: #333; /* Cor original */
-    color: #fff; /* Cor original */
-    padding: 10px 0; /* Padding original */
+    background-color: #333;
+    color: #fff;
+    padding: 15px 0;
     text-align: center;
     width: 100%;
     font-size: 0.9em;
-    box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.2); /* Sombra original */
-    margin-top: 30px; /* Margem original */
+    box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.2);
+    /* Remova a margin-top se existir */
+    margin-top: 0;
+}
+
+@media (min-height: 800px) {
+    .site-content {
+        padding-bottom: 50px;
+    }
 }
 
 /* Media Queries para Responsividade do Navbar e outros elementos */

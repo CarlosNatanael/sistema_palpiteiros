@@ -164,15 +164,40 @@ tr:hover td {
     background-color: #c0ffc0; /* Verde claro no hover */
 }
 
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+@media (min-height: 800px) {
+    .site-content {
+        padding-bottom: 50px;
+    }
+}
+
+.site-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* 100% da viewport height */
+}
+
+.site-content {
+    flex: 1; /* Isso faz o conteúdo ocupar todo o espaço disponível */
+    padding-bottom: 20px; /* Espaço antes do footer */
+}
+
+/* Seu rodapé atualizado */
 footer {
     background-color: #333;
     color: #fff;
-    padding: 10px 0;
+    padding: 15px 0;
     text-align: center;
     width: 100%;
     font-size: 0.9em;
     box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.2);
-    margin-top: 30px;
+    /* Remova a margin-top se existir */
+    margin-top: 0;
 }
 
 /* Media Queries para Responsividade do Navbar e outros elementos */
