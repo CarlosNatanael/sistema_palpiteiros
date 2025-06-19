@@ -551,11 +551,12 @@ def index():
     if rodada_param and rodada_param in rodadas_disponiveis:
         rodada_ativa = rodada_param
     else:
-        rodada_ativa = rodadas_disponiveis[-1]  # Padrão para última rodada
+        # Se não houver rodadas, define um padrão para evitar erro
+        rodada_ativa = rodadas_disponiveis[-1] if rodadas_disponiveis else 1
     
     # Verificar se há próxima/anterior rodada
-    rodada_index = rodadas_disponiveis.index(rodada_ativa)
-    tem_proxima = rodada_index < len(rodadas_disponiveis) - 1
+    rodada_index = rodadas_disponiveis.index(rodada_ativa) if rodada_ativa in rodadas_disponiveis else -1
+    tem_proxima = rodada_index != -1 and rodada_index < len(rodadas_disponiveis) - 1
     tem_anterior = rodada_index > 0
     
     # Filtrar jogos para a rodada ativa
@@ -566,8 +567,9 @@ def index():
         (rodada_ativa, agora_str)
     ).fetchall()
     
+    # ALTERAÇÃO: A consulta agora busca todos os jogos que já começaram (data_hora <= agora), independentemente de terem placar.
     jogos_passados = conn.execute(
-        "SELECT id, rodada, time1_nome, time1_img, time1_sigla, time2_nome, time2_img, time2_sigla, data_hora, local, placar_time1, placar_time2 FROM jogos WHERE rodada = ? AND data_hora <= ? AND placar_time1 IS NOT NULL AND placar_time2 IS NOT NULL ORDER BY data_hora DESC",
+        "SELECT id, rodada, time1_nome, time1_img, time1_sigla, time2_nome, time2_img, time2_sigla, data_hora, local, placar_time1, placar_time2 FROM jogos WHERE rodada = ? AND data_hora <= ? ORDER BY data_hora DESC",
         (rodada_ativa, agora_str)
     ).fetchall()
     

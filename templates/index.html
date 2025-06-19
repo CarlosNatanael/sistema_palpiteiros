@@ -47,11 +47,11 @@
         <table>
             <thead>
                 <tr>
-                    <th>Posição</th>
+                    <th>#</th>
                     <th>Nome</th>
                     <th>Acertos</th>
                     <th>Erros</th>
-                    <th>Pontos</th>
+                    <th>Pts</th>
                 </tr>
             </thead>
             <tbody>
@@ -64,6 +64,8 @@
                             <strong class="seg">{{ loop.index }}º</strong>
                         {% elif loop.index == 3 %}
                             <strong class="ter">{{ loop.index }}º</strong>
+                        {% elif loop.index == 5 %}
+                            <strong class="qui">{{ loop.index }}º</strong>
                         {% else %}
                             <strong>{{ loop.index }}º</strong>
                         {% endif %}
@@ -134,7 +136,7 @@
         <h4 class="no-games-message"><strong>Não há próximos jogos Agendados</strong></h4>
         {% endif %}
 
-        {% if jogos_passados %}
+    {% if jogos_passados %}
         <br>
         <h3>RESULTADOS DA RODADA</h3>
         <div class="resultadoJogo">
@@ -147,7 +149,16 @@
                     </div>
                     
                     <div class="match-center">
-                        <div class="match-score">{{ jogo.placar_time1 }} - {{ jogo.placar_time2 }}</div>
+                        {# --- ALTERAÇÃO INICIA AQUI --- #}
+                        {% if jogo.placar_time1 is not none and jogo.placar_time2 is not none %}
+                            <div class="match-status finished">FIM</div>
+                            <div class="match-score">{{ jogo.placar_time1 }} - {{ jogo.placar_time2 }}</div>
+                        {% else %}
+                            <!-- <div class="match-status live">AO VIVO</div> -->
+                            <div class="match-status intervalo">intervalo</div>
+                            <div class="match-score">0 x 0</div>
+                        {% endif %}
+                        {# --- ALTERAÇÃO TERMINA AQUI --- #}
                     </div>
                     
                     <div class="team team-away">
@@ -158,11 +169,10 @@
                 {% endfor %}
             </div>
         </div>
-        <div class="table-container">
-            {% else %}
+        {% else %}
             <br>
-            <h4 class="no-games-message"><strong>Nenhum resultado de jogo disponível</strong></h4>
-            {% endif %}
+            <h4 class="no-games-message"><strong>Nenhum resultado de jogo disponível para esta rodada.</strong></h4>
+        {% endif %}
         </div>
     </main>
 
