@@ -58,7 +58,8 @@ def init_db():
         data_hora TEXT,
         local TEXT,
         placar_time1 INTEGER,
-        placar_time2 INTEGER
+        placar_time2 INTEGER,
+        status TEXT DEFAULT 'Pendente'
     )''')
 
     # TABELA PARA PALPITE CAMPEÃO
@@ -122,9 +123,6 @@ def get_all_teams_for_champion_bet():
 <img src="https://ssl.gstatic.com/onebox/media/sports/logos/Tcv9X__nIh-6wFNJPMwIXQ_48x48.png" alt="Cruzeiro"> Cruzeiro >
 <img src="https://ssl.gstatic.com/onebox/media/sports/logos/j6U8Rgt_6yyf0Egs9nREXw_48x48.png" alt="Cuiabá"> Cuiabá >
 <img src="https://ssl.gstatic.com/onebox/media/sports/logos/lMyw2zn1Z4cdkaxKJWnsQw_48x48.png" alt="Bragantino"> Bragantino >
-
-
-=================== Mundial ======================================
 <img src="https://ssl.gstatic.com/onebox/media/sports/logos/7spurne-xDt2p6C0imYYNA_48x48.png" alt="Palmeiras"> Palmeiras >
 <img src="https://ssl.gstatic.com/onebox/media/sports/logos/orE554NToSkH6nuwofe7Yg_48x48.png" alt="Flamengo"> Flamengo >
 <img src="https://ssl.gstatic.com/onebox/media/sports/logos/fCMxMMDF2AZPU7LzYKSlig_48x48.png" alt="Fluminense"> Fluminense >
@@ -567,9 +565,8 @@ def index():
         (rodada_ativa, agora_str)
     ).fetchall()
     
-    # ALTERAÇÃO: A consulta agora busca todos os jogos que já começaram (data_hora <= agora), independentemente de terem placar.
     jogos_passados = conn.execute(
-        "SELECT id, rodada, time1_nome, time1_img, time1_sigla, time2_nome, time2_img, time2_sigla, data_hora, local, placar_time1, placar_time2 FROM jogos WHERE rodada = ? AND data_hora <= ? ORDER BY data_hora DESC",
+        "SELECT id, rodada, time1_nome, time1_img, time1_sigla, time2_nome, time2_img, time2_sigla, data_hora, local, placar_time1, placar_time2, status FROM jogos WHERE rodada = ? AND data_hora <= ? ORDER BY data_hora DESC",
         (rodada_ativa, agora_str)
     ).fetchall()
     
@@ -838,18 +835,19 @@ def set_game_result():
         placar_time2 = request.form.get('placar_time2', type=int)
 
         try:
+            # ALTERAÇÃO: Atualiza o placar e define o status como 'Ao Vivo'
             cursor.execute(
-                "UPDATE jogos SET placar_time1 = ?, placar_time2 = ? WHERE id = ?",
+                "UPDATE jogos SET placar_time1 = ?, placar_time2 = ?, status = 'Ao Vivo' WHERE id = ?",
                 (placar_time1, placar_time2, game_id)
             )
             conn.commit()
             if cursor.rowcount == 0:
                 flash(f'Jogo com ID {game_id} não encontrado.', 'warning')
             else:
-                flash(f'Resultado do jogo ID {game_id} atualizado com sucesso para {placar_time1}x{placar_time2}!', 'success')
+                flash(f'Placar ao vivo do jogo ID {game_id} atualizado para {placar_time1}x{placar_time2}!', 'success')
         except Exception as e:
             conn.rollback()
-            flash(f'Erro ao atualizar o resultado: {e}', 'danger')
+            flash(f'Erro ao atualizar o placar ao vivo: {e}', 'danger')
         finally:
             conn.close()
         
@@ -870,6 +868,7 @@ def atualizar_pontuacao_admin():
 
     cursor.execute("UPDATE pontuacao SET pontos = 0, acertos = 0, erros = 0")
 
+    # ALTERAÇÃO: Pega apenas jogos com placar definido para calcular pontos
     jogos_com_resultados = conn.execute("SELECT id, placar_time1, placar_time2 FROM jogos WHERE placar_time1 IS NOT NULL AND placar_time2 IS NOT NULL").fetchall()
     resultados_reais_map = {jogo['id']: (jogo['placar_time1'], jogo['placar_time2']) for jogo in jogos_com_resultados}
 
@@ -918,8 +917,13 @@ def atualizar_pontuacao_admin():
             cursor.execute("UPDATE pontuacao SET pontos = pontos + ? WHERE nome = ?", (pontos_ganhos, nome))
             cursor.execute("UPDATE palpites SET status = ? WHERE id = ?", (status_palpite, palpite_id))
         else:
-            status_palpite = "Pendente" # Garante que o status seja Pendente se o resultado real não foi setado
+            status_palpite = "Pendente"
             cursor.execute("UPDATE palpites SET status = ? WHERE id = ?", (status_palpite, palpite_id))
+    
+    # ALTERAÇÃO: Após calcular os pontos, atualiza o status dos jogos processados para 'Finalizado'
+    if resultados_reais_map:
+        placeholders = ','.join('?' for _ in resultados_reais_map.keys())
+        cursor.execute(f"UPDATE jogos SET status = 'Finalizado' WHERE id IN ({placeholders})", list(resultados_reais_map.keys()))
 
 
     pontuacao_atualizada = conn.execute("SELECT nome, pontos FROM pontuacao ORDER BY pontos DESC, acertos DESC, erros ASC").fetchall()
@@ -928,7 +932,7 @@ def atualizar_pontuacao_admin():
 
     conn.commit()
     conn.close()
-    flash('Pontuação atualizada com sucesso!', 'info')
+    flash('Pontuação atualizada com sucesso! Jogos foram marcados como finalizados.', 'info')
     return redirect(url_for('admin_dashboard'))
 
 
