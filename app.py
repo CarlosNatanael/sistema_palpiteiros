@@ -22,6 +22,7 @@ def get_db_connection():
     return conn
 
 def init_db():
+    print("\n[LOG - init_db]: Verificando e inicializando o banco de dados...")
     conn = get_db_connection()
     conn.execute('''
     CREATE TABLE IF NOT EXISTS pontuacao (
@@ -589,6 +590,9 @@ def index():
     ).fetchall()
     
     conn.close()
+
+    print(f"\n[LOG] Acessando página inicial - Rodada ativa: {rodada_ativa}")
+    print(f"[LOG] Jogos futuros: {len(jogos_futuros)}, Jogos passados: {len(jogos_passados)}\n")
     
     return render_template('index.html', 
         pontuacao=pontuacao,
@@ -613,6 +617,7 @@ def exibir_palpites():
     rodada_para_exibir = None
     if rodada_param: # Se uma rodada específica for solicitada na URL
         rodada_para_exibir = rodada_param
+        print(f"[LOG] Rodada solicitada via parâmetro: {rodada_para_exibir}")
     else: # Se nenhuma rodada for especificada, determina a rodada ativa
         agora = datetime.now()
         rodadas_no_db = conn.execute("SELECT DISTINCT rodada FROM jogos ORDER BY rodada ASC").fetchall()
@@ -679,68 +684,87 @@ def exibir_palpites():
 
 @app.route('/adicionar_palpites', methods=['GET', 'POST'])
 def adicionar_palpites():
-    conn = get_db_connection() # Conexão movida para o início da função
-    cursor = conn.cursor() # Cursor também
+    conn = get_db_connection()
+    cursor = conn.cursor()
 
     if request.method == 'POST':
+        # A lógica de salvar os palpites (POST) continua a mesma
         nome = request.form['nome']
         rodada_selecionada = int(request.form['rodada_selecionada'])
+        print(f"\n[LOG - adicionar_palpites]: Recebido POST de '{nome}' para a rodada {rodada_selecionada}.")
 
         try:
-            cursor.execute("INSERT INTO pontuacao (nome, pontos, acertos, erros, posicao) VALUES (?, ?, ?, ?, ?)", (nome, 0, 0, 0, 99))
+            cursor.execute("INSERT OR IGNORE INTO pontuacao (nome) VALUES (?)", (nome,))
             conn.commit()
         except sqlite3.IntegrityError:
-            pass
+            pass # Ignora se o nome já existe, que é o esperado
 
         agora_str = datetime.now().strftime('%Y-%m-%d %H:%M')
         jogos_da_rodada_para_palpite = conn.execute(
-            "SELECT id, time1_nome, time2_nome, data_hora FROM jogos WHERE rodada = ? AND data_hora > ?",
+            "SELECT id, time1_nome, time2_nome FROM jogos WHERE rodada = ? AND data_hora > ?",
             (rodada_selecionada, agora_str)
         ).fetchall()
 
+        palpites_inseridos = 0
         for jogo in jogos_da_rodada_para_palpite:
             game_id = jogo['id']
-            time1 = jogo['time1_nome']
-            time2 = jogo['time2_nome']
+            # Checa se o palpite para este jogo específico foi enviado
+            if f'gol_time1_{game_id}' in request.form:
+                gol_time1 = int(request.form[f'gol_time1_{game_id}'])
+                gol_time2 = int(request.form[f'gol_time2_{game_id}'])
+                resultado_palpite = request.form[f'resultado_{game_id}']
+                
+                # Insere ou atualiza o palpite
+                cursor.execute("DELETE FROM palpites WHERE nome = ? AND game_id = ?", (nome, game_id))
+                cursor.execute(
+                    "INSERT INTO palpites (nome, rodada, game_id, time1, time2, gol_time1, gol_time2, resultado, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                    (nome, rodada_selecionada, game_id, jogo['time1_nome'], jogo['time2_nome'], gol_time1, gol_time2, resultado_palpite, 'Pendente')
+                )
+                palpites_inseridos += 1
 
-            gol_time1 = request.form.get(f'gol_time1_{game_id}')
-            gol_time2 = request.form.get(f'gol_time2_{game_id}')
-            resultado_palpite = request.form.get(f'resultado_{game_id}')
-
-            if gol_time1 is not None and gol_time2 is not None:
-                gol_time1 = int(gol_time1)
-                gol_time2 = int(gol_time2)
-
-                existing_palpite = cursor.execute(
-                    "SELECT id FROM palpites WHERE nome = ? AND game_id = ?",
-                    (nome, game_id)
-                ).fetchone()
-
-                if existing_palpite:
-                    cursor.execute(
-                        "UPDATE palpites SET gol_time1 = ?, gol_time2 = ?, resultado = ?, status = ? WHERE id = ?",
-                        (gol_time1, gol_time2, resultado_palpite, 'Pendente', existing_palpite['id'])
-                    )
-                else:
-                    cursor.execute(
-                        "INSERT INTO palpites (nome, rodada, game_id, time1, time2, gol_time1, gol_time2, resultado, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
-                        (nome, rodada_selecionada, game_id, time1, time2, gol_time1, gol_time2, resultado_palpite, 'Pendente')
-                    )
         conn.commit()
         conn.close()
-        flash('Seus palpites foram registrados com sucesso!', 'success')
+        
+        if palpites_inseridos > 0:
+            print(f"[LOG - adicionar_palpites]: {palpites_inseridos} palpites de '{nome}' registrados com sucesso.")
+            flash(f'{palpites_inseridos} palpites foram registrados com sucesso!', 'success')
+        else:
+            flash('Nenhum palpite novo foi registrado (a rodada pode estar fechada).', 'warning')
+            
         return redirect(url_for('exibir_palpites'))
 
-    # GET request: exibir o formulário para adicionar palpites
-    rodadas_disponiveis = sorted(MUNDIAL_JOGOS_POR_RODADA.keys())
-
-    rodada_param = request.args.get('rodada', type=int)
-    rodada_atual = rodada_param if rodada_param in rodadas_disponiveis else (rodadas_disponiveis[0] if rodadas_disponiveis else None)
-
+    # --- LÓGICA DO GET ATUALIZADA ---
+    # Quando a página é carregada (sem POST)
+    
     agora_str = datetime.now().strftime('%Y-%m-%d %H:%M')
-    jogos_da_rodada_selecionada = conn.execute(
+    
+    # 1. Pega todas as rodadas que existem no sistema para o menu dropdown
+    todas_as_rodadas_rows = conn.execute("SELECT DISTINCT rodada FROM jogos ORDER BY rodada ASC").fetchall()
+    todas_as_rodadas = [r['rodada'] for r in todas_as_rodadas_rows]
+
+    rodada_selecionada_pelo_usuario = request.args.get('rodada', type=int)
+    rodada_ativa = 0
+
+    # 2. Verifica se o usuário escolheu uma rodada específica na URL
+    if rodada_selecionada_pelo_usuario in todas_as_rodadas:
+        rodada_ativa = rodada_selecionada_pelo_usuario
+    else:
+        # 3. Se não, encontra a primeira rodada que ainda tem jogos abertos
+        rodada_aberta_row = conn.execute(
+            "SELECT rodada FROM jogos WHERE data_hora > ? ORDER BY rodada ASC LIMIT 1",
+            (agora_str,)
+        ).fetchone()
+
+        if rodada_aberta_row:
+            rodada_ativa = rodada_aberta_row['rodada']
+        else:
+            # Se não houver nenhuma rodada aberta, seleciona a última rodada como padrão
+            rodada_ativa = todas_as_rodadas[-1] if todas_as_rodadas else 1
+    
+    # 4. Busca os jogos que ainda estão abertos para a rodada ativa
+    jogos_para_palpitar = conn.execute(
         "SELECT id, time1_nome, time1_img, time1_sigla, time2_nome, time2_img, time2_sigla, data_hora, local FROM jogos WHERE rodada = ? AND data_hora > ?",
-        (rodada_atual, agora_str)
+        (rodada_ativa, agora_str)
     ).fetchall()
     
     palpiteiros = ["Ariel", "Carlos", "Celso", "Gabriel", "Lucas"]
@@ -748,9 +772,9 @@ def adicionar_palpites():
 
     return render_template(
         'adicionar_palpites.html',
-        rodadas=rodadas_disponiveis,
-        rodada_selecionada=rodada_atual,
-        jogos=jogos_da_rodada_selecionada,
+        rodadas=todas_as_rodadas,
+        rodada_selecionada=rodada_ativa,
+        jogos=jogos_para_palpitar,
         palpiteiros=palpiteiros
     )
 
@@ -773,6 +797,8 @@ def estatisticas():
     # 2. Descobre a última rodada com palpites avaliados
     rodada_atual_row = conn.execute("SELECT MAX(rodada) as rodada FROM palpites WHERE status != 'Pendente'").fetchone()
     rodada_atual_bonus = rodada_atual_row['rodada'] if rodada_atual_row and rodada_atual_row['rodada'] else 0
+
+    print(f"\n[LOG] Rodada atual para cálculo de bônus: {rodada_atual_bonus}")
 
     sequencias_info = defaultdict(int)
     
@@ -813,6 +839,8 @@ def estatisticas():
 
     conn.close()
 
+    print(f"\n[LOG] Estatísticas carregadas para {len(estatisticas_completas)} jogadores\n")
+
     return render_template('estatisticas.html',
                            maior_pontuador=maior_pontuador,
                            quem_acertou_mais=quem_acertou_mais,
@@ -822,9 +850,10 @@ def estatisticas():
 
 # --- ROTA COMPLETAMENTE NOVA PARA O ADMIN CONCEDER O BÔNUS ---
 @app.route('/admin/award_bonus', methods=['POST'])
-@login_required # Protege a rota
+@login_required
 def award_bonus():
     if request.form.get('password') != ADMIN_PASSWORD:
+        print("\n[LOG] Tentativa de conceder bônus com senha incorreta")
         flash('Senha de administrador incorreta!', 'danger')
         return redirect(url_for('admin_dashboard'))
 
@@ -832,20 +861,26 @@ def award_bonus():
     pontos_bonus = 3
 
     if not nome_jogador:
+        print("\n[LOG] Nenhum jogador selecionado para bônus")
         flash('Você precisa selecionar um jogador para conceder o bônus.', 'warning')
         return redirect(url_for('admin_dashboard'))
 
     conn = get_db_connection()
     cursor = conn.cursor()
     
+    print(f"\n[LOG] Tentando conceder bônus para {nome_jogador}")
+
     try:
         cursor.execute("UPDATE pontuacao SET pontos_bonus = pontos_bonus + ? WHERE nome = ?", (pontos_bonus, nome_jogador))
         conn.commit()
         if cursor.rowcount > 0:
+            print(f"\n[LOG] Bônus concedido com sucesso para {nome_jogador}")
             flash(f'Bônus de {pontos_bonus} pontos concedido para {nome_jogador} com sucesso!', 'success')
         else:
+            print(f"\n[LOG] Jogador {nome_jogador} não encontrado")
             flash(f'Jogador {nome_jogador} não encontrado na tabela de pontuação.', 'danger')
     except Exception as e:
+        print(f"\n[LOG] Erro ao conceder bônus: {str(e)}")
         conn.rollback()
         flash(f'Erro ao conceder bônus: {e}', 'danger')
     finally:
@@ -855,6 +890,7 @@ def award_bonus():
 
 @app.route('/regras')
 def regra():
+    print("\n[LOG] Acessando página de regras\n")
     return render_template('regras.html')
 
 @app.route('/rodadas')
@@ -897,21 +933,22 @@ def login():
         password = request.form['password']
         if username == ADMIN_USERNAME and password == ADMIN_PASSWORD:
             session['logged_in'] = True
+            print(f"\n[LOG] Login realizado por {username}\n")
             flash('Login realizado com sucesso!', 'success')
-            return redirect(url_for('admin_dashboard')) # Redirecionar para um dashboard admin
+            return redirect(url_for('admin_dashboard'))
         else:
+            print(f"\n[LOG] Tentativa de login falhou - Usuário: {username}")
             flash('Nome de usuário ou senha incorretos.', 'danger')
     return render_template('login.html')
 
 # Rota de Logout
 @app.route('/logout')
 def logout():
+    print(f"\n[LOG] Logout realizado por {session.get('username', 'N/A')}\n")
     session.pop('logged_in', None)
     flash('Você foi desconectado.', 'info')
     return redirect(url_for('index'))
 
-# Dashboard do Administrador (Nova Rota)
-# Em app.py
 @app.route('/admin')
 @login_required
 def admin_dashboard():
@@ -921,15 +958,17 @@ def admin_dashboard():
     conn.close()
     return render_template('admin_dashboard.html', pontuacao_geral=pontuacao_geral)
 
-# Rota de Administração para definir resultados dos jogos (PROTEGIDA)
 @app.route('/admin/set_game_result', methods=['GET', 'POST'])
-@login_required # Protege esta rota
+@login_required
 def set_game_result():
     conn = get_db_connection()
     cursor = conn.cursor()
+    
+    print("\n[LOG] Acessando rota /admin/set_game_result")
 
     if request.method == 'POST':
         if request.form.get('password') != ADMIN_PASSWORD:
+            print("\n[LOG] Tentativa de acesso com senha incorreta")
             flash('Senha incorreta!', 'danger')
             conn.close()
             return redirect(url_for('set_game_result'))
@@ -937,19 +976,23 @@ def set_game_result():
         game_id = request.form.get('game_id', type=int)
         placar_time1 = request.form.get('placar_time1', type=int)
         placar_time2 = request.form.get('placar_time2', type=int)
+        
+        print(f"\n[LOG] Tentativa de atualizar jogo {game_id} para {placar_time1}x{placar_time2}")
 
         try:
-            # ALTERAÇÃO: Atualiza o placar e define o status como 'Ao Vivo'
             cursor.execute(
                 "UPDATE jogos SET placar_time1 = ?, placar_time2 = ?, status = 'Ao Vivo' WHERE id = ?",
                 (placar_time1, placar_time2, game_id)
             )
             conn.commit()
             if cursor.rowcount == 0:
+                print(f"\n[LOG] Jogo com ID {game_id} não encontrado")
                 flash(f'Jogo com ID {game_id} não encontrado.', 'warning')
             else:
+                print(f"\n[LOG] Jogo {game_id} atualizado com sucesso\n")
                 flash(f'Placar ao vivo do jogo ID {game_id} atualizado para {placar_time1}x{placar_time2}!', 'success')
         except Exception as e:
+            print(f"\n[LOG] Erro ao atualizar jogo: {str(e)}")
             conn.rollback()
             flash(f'Erro ao atualizar o placar ao vivo: {e}', 'danger')
         finally:
@@ -957,9 +1000,11 @@ def set_game_result():
         
         return redirect(url_for('set_game_result'))
 
-    # GET request: exibe o formulário
+    # GET request
     jogos_disponiveis = conn.execute("SELECT id, time1_nome, time2_nome, data_hora, placar_time1, placar_time2 FROM jogos ORDER BY data_hora").fetchall()
     conn.close()
+    
+    print(f"\n[LOG] Exibindo formulário com {len(jogos_disponiveis)} jogos disponíveis")
 
     return render_template('set_game_result.html', jogos_disponiveis=jogos_disponiveis)
 
@@ -970,14 +1015,20 @@ def atualizar_pontuacao_admin():
     conn = get_db_connection()
     cursor = conn.cursor()
 
-    cursor.execute("UPDATE pontuacao SET pontos = 0, acertos = 0, erros = 0")
+    print("\n[LOG] Iniciando atualização de pontuação")
 
-    # ALTERAÇÃO: Pega apenas jogos com placar definido para calcular pontos
+    cursor.execute("UPDATE pontuacao SET pontos = 0, acertos = 0, erros = 0")
+    print("\n[LOG] Zeradas as pontuações existentes")
+
     jogos_com_resultados = conn.execute("SELECT id, placar_time1, placar_time2 FROM jogos WHERE placar_time1 IS NOT NULL AND placar_time2 IS NOT NULL").fetchall()
     resultados_reais_map = {jogo['id']: (jogo['placar_time1'], jogo['placar_time2']) for jogo in jogos_com_resultados}
+    
+    print(f"\n[LOG] Jogos com resultados definidos: {len(resultados_reais_map)}")
 
     cursor.execute("SELECT * FROM palpites")
     palpites = cursor.fetchall()
+    
+    print(f"\n[LOG] Total de palpites a processar: {len(palpites)}")
 
     for palpite in palpites:
         nome = palpite['nome']
@@ -990,6 +1041,10 @@ def atualizar_pontuacao_admin():
         resultado_real = resultados_reais_map.get(game_id)
         if resultado_real:
             gol_real_time1, gol_real_time2 = resultado_real
+            
+            print(f"\n[LOG] Processando palpite de {nome} para jogo {game_id}")
+            print(f"[LOG] Palpite: {gol_time1}-{gol_time2} ({palpite_resultado_texto})")
+            print(f"[LOG] Resultado real: {gol_real_time1}-{gol_real_time2}")
 
             pontos_ganhos = 0
             status_palpite = "Erro (0 pts)"
@@ -1009,14 +1064,17 @@ def atualizar_pontuacao_admin():
                     pontos_ganhos = 2
                     status_palpite = "Acerto Placar (2 pts)"
                 cursor.execute("UPDATE pontuacao SET acertos = acertos + 1 WHERE nome = ?", (nome,))
+                print(f"[LOG] Acerto total/placar: +{pontos_ganhos} pontos")
             else:
                 if palpite_resultado_texto == real_resultado_texto:
                     pontos_ganhos = 1
                     status_palpite = "Acerto Resultado (1 pts)"
                     cursor.execute("UPDATE pontuacao SET acertos = acertos + 1 WHERE nome = ?", (nome,))
+                    print(f"[LOG] Acerto resultado: +1 ponto")
                 else:
                     cursor.execute("UPDATE pontuacao SET erros = erros + 1 WHERE nome = ?", (nome,))
                     status_palpite = "Erro (0 pts)"
+                    print(f"[LOG] Erro: 0 pontos")
 
             cursor.execute("UPDATE pontuacao SET pontos = pontos + ? WHERE nome = ?", (pontos_ganhos, nome))
             cursor.execute("UPDATE palpites SET status = ? WHERE id = ?", (status_palpite, palpite_id))
@@ -1038,6 +1096,7 @@ def atualizar_pontuacao_admin():
             if palpite['time_campeao'] == campeao_real['time_campeao']:
                 # Adiciona os pontos e um acerto extra para o palpite de campeão
                 cursor.execute("UPDATE pontuacao SET pontos = pontos + ?, acertos = acertos + 1 WHERE nome = ?", (PONTOS_CAMPEAO, palpite['nome']))
+                print(f"\n[LOG] Pontos de campeão concedidos para {palpite['nome']}")
 
     pontuacao_atualizada = conn.execute("SELECT nome, pontos FROM pontuacao ORDER BY pontos DESC, acertos DESC, erros ASC").fetchall()
     for i, jogador in enumerate(pontuacao_atualizada):
@@ -1045,9 +1104,10 @@ def atualizar_pontuacao_admin():
 
     conn.commit()
     conn.close()
+    
+    print("\n[LOG] Pontuação atualizada com sucesso")
     flash('Pontuação atualizada com sucesso!', 'info')
     return redirect(url_for('admin_dashboard'))
-
 
 @app.route('/palpite_campeao', methods=['GET', 'POST'])
 def palpite_campeao():
@@ -1095,11 +1155,13 @@ def palpite_campeao():
         ).fetchone()
         
         if existente:
+            print(f"\n[LOG] Atualizando palpite de campeão para {nome}\n")
             conn.execute(
                 'UPDATE palpite_campeao SET time_campeao = ?, time_campeao_img = ?, rodada = ?, data_palpite = ? WHERE id = ?',
                 (time_campeao, time_campeao_img, rodada_ativa_para_registro, datetime.now().strftime('%Y-%m-%d %H:%M'), existente['id'])
             )
         else:
+            print(f"\n[LOG] Inserindo novo palpite de campeão para {nome}\n")
             conn.execute(
                 'INSERT INTO palpite_campeao (nome, time_campeao, time_campeao_img, rodada, data_palpite) VALUES (?, ?, ?, ?, ?)',
                 (nome, time_campeao, time_campeao_img, rodada_ativa_para_registro, datetime.now().strftime('%Y-%m-%d %H:%M'))
@@ -1112,6 +1174,8 @@ def palpite_campeao():
     
     # GET request
     conn.close()
+    
+    print(f"\n[LOG] Exibindo formulário de palpite campeão para rodada {rodada_ativa_para_registro}\n")
     return render_template('palpite_campeao.html',
         palpiteiros=palpiteiros,
         times=all_teams_db,
@@ -1131,9 +1195,9 @@ def ver_palpites_campeao():
 
     conn.close()
     
+    print(f"\n[LOG] Exibindo palpites de campeão - Total: {len(palpites)}\n")
     return render_template('ver_palpites_campeao.html', palpites=palpites, campeao_real=campeao_real)
 
-# Rota para o Admin definir o campeão real
 @app.route('/admin/set_champion', methods=['GET', 'POST'])
 @login_required
 def set_champion():
@@ -1161,9 +1225,11 @@ def set_champion():
                 (campeao_nome, campeao_img, datetime.now().strftime('%Y-%m-%d %H:%M'))
             )
             conn.commit()
+            print(f"\n[LOG] Campeão definido: {campeao_nome}\n")
             flash(f'Campeão mundial definido como {campeao_nome}!', 'success')
         except Exception as e:
             conn.rollback()
+            print(f"\n[LOG] Erro ao definir campeão: {str(e)}\n")
             flash(f'Erro ao definir campeão: {e}', 'danger')
         finally:
             conn.close()
@@ -1172,11 +1238,13 @@ def set_champion():
     campeao_atual = conn.execute('SELECT time_campeao, time_campeao_img FROM campeao_mundial LIMIT 1').fetchone()
     conn.close()
 
+    print("\n[LOG] Acessando página de definição de campeão\n")
     return render_template('set_champion.html', teams=all_teams_db, campeao_atual=campeao_atual)
 
 if __name__ == '__main__':
     conn = get_db_connection()
     cursor = conn.cursor()
+    print(f"\n[LOG - Main]: Servidor Flask iniciando em http://192.168.1.244:3000")
     # Adicionando alguns jogos extras para garantir que a rodada ativa mude.
     # A rodada 1 termina no dia 16/06 14:00. Se a data atual for depois disso, a rodada 2 se torna ativa.
     # Ajuste as datas para testar as transições.
@@ -1191,4 +1259,6 @@ if __name__ == '__main__':
     conn.commit()
     conn.close()
 
+    print("[LOG] Iniciando aplicação Flask\n")
+    print("Pressione CTRL+C para parar o servidor.\n")
     app.run(host="0.0.0.0", port=3000, debug=True)
