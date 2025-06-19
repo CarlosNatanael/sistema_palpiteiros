@@ -1,56 +1,103 @@
-/* Arquivo: static/esta.css */
-
-html, body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
+:root {
+    --bs-success-rgb: 40, 167, 69;
+    --bs-primary-rgb: 13, 110, 253;
+    --bs-info-rgb: 23, 162, 184;
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #e0e0e0;
-    color: #333;
+    background-color: #f8f9fa;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
 }
 
-@media (min-height: 800px) {
-    .site-content {
-        padding-bottom: 50px;
+/* Cards de Estatísticas */
+.stat-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 0.75rem;
+    overflow: hidden;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.stat-card .card-header {
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.avatar-lg {
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Tabelas */
+.table-responsive {
+    border-radius: 0.5rem;
+    overflow: hidden;
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(var(--bs-success-rgb), 0.05);
+}
+
+/* Progress bars */
+.progress {
+    border-radius: 10px;
+}
+
+.progress-bar {
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+/* Efeito de pulso para bônus */
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+.pulse {
+    animation: pulse 1.5s infinite;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .display-4 {
+        font-size: 2.5rem;
+    }
+    
+    .card-body {
+        padding: 1.25rem;
     }
 }
 
-.bar { /* Pode ser removido se não for mais usado no HTML */
-    color: #333;
-    font-size: 1.8em;
-    margin-bottom: 20px;
-    text-transform: uppercase;
-    text-align: center;
-}
-
+/* Remover estilos antigos de header */
 header {
     padding: 0;
     box-shadow: none;
     border-bottom: none;
 }
-/* Ocultar elementos antigos */
-header h1, nav { display: none; }
 
 /* Estilos para o Navbar do Bootstrap */
 .navbar {
-    background-color: #006400 !important;
+    background-color: #006400 !important; /* Verde escuro para o Navbar */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    border-bottom: none;
+    border-bottom: none; /* Remover a borda inferior verde/turquesa */
     padding: 10px 20px;
     z-index: 1030;
 }
 
 .navbar-brand {
-    color: #fff !important;
+    color: #fff !important; /* Texto branco para a marca */
     font-size: 1.8em;
     font-weight: bold;
     text-transform: uppercase;
-    letter-spacing: normal;
+    letter-spacing: normal; /* Voltar ao normal */
 }
 
 .navbar-toggler {
@@ -58,203 +105,87 @@ header h1, nav { display: none; }
 }
 
 .navbar-toggler-icon {
+    /* Ícone hambúrguer branco */
     background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(255, 255, 255, 0.8)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E") !important;
 }
 
 .navbar-nav .nav-item .nav-link {
-    color: #fff !important;
+    color: #fff !important; /* Cor dos links do menu */
     font-weight: bold;
     padding: 8px 15px !important;
     margin: 0 5px;
     border-radius: 5px;
     transition: background-color 0.3s ease, color 0.3s ease;
-    background-color: #228B22;
+    background-color: #228B22; /* Fundo para cada item de menu */
 }
 
 .navbar-nav .nav-item .nav-link:hover {
-    background-color: #004d00 !important;
+    background-color: #004d00 !important; /* Verde escuro no hover */
     color: #fff !important;
 }
 
-main {
-    padding: 40px 20px;
-    max-width: 900px;
-    margin: 20px auto;
-    background-color: #ffffff; /* Fundo branco */
-    border-radius: 10px;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-    color: #333;
-}
-
-.statistics-section {
-    margin-top: 20px;
-    display: flex; /* ATIVADO: Para alinhar os cards lado a lado */
-    flex-wrap: wrap; /* ATIVADO: Permite que os cards quebrem a linha */
-    justify-content: center; /* ATIVADO: Centraliza os cards */
-    gap: 30px; /* ATIVADO: Espaço entre os cards */
-    align-items: flex-start; /* Alinhar cards pelo topo */
-}
-
-h1 {
-    color: #006400; /* Verde escuro */
-    font-size: 2em;
-    margin-bottom: 25px;
-    text-transform: uppercase;
-    text-align: center;
-    border-bottom: 2px solid #228B22; /* Linha verde */
-    padding-bottom: 10px;
-    letter-spacing: normal;
-    width: 100%; /* Garante que o título ocupe a largura total */
-}
+/* Estilos específicos para a página de estatísticas */
 
 .stat-card {
-    background-color: #f9f9f9; /* Fundo claro para o card */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra mais suave */
-    border-radius: 10px;
-    padding: 25px;
-    margin-bottom: 20px; /* Mantido para quando empilhar */
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    flex: 1; /* Permite que o card cresça e ocupe o espaço */
-    min-width: 280px; /* Largura mínima para cada card */
-    max-width: 400px; /* Largura máxima para cada card */
-    text-align: center;
-    border: 1px solid #eee; /* Borda suave */
-    color: #333;
-}
-
-.stat-card h2 {
-    color: #006400; /* Verde escuro */
-    font-size: 1.5em;
-    margin-bottom: 15px;
-    text-transform: uppercase;
-    border-bottom: 1px solid #ccc; /* Linha de separação */
-    padding-bottom: 10px;
-    text-align: center;
-}
-
-.stat-card h3 {
-    color: #228B22; /* Verde médio */
-    font-size: 1.2em;
-    margin-bottom: 15px;
-    text-transform: uppercase;
-}
-
-.stat-card p {
-    font-size: 1.2em;
-    margin: 10px 0;
-    color: #333;
-}
-
-.stat-card strong {
-    color: #004d00; /* Verde escuro */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 0.75rem;
+    overflow: hidden;
 }
 
 .stat-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Sombra mais intensa no hover */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
 }
 
-.site-container {
+.stat-card .card-header {
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.avatar-lg {
+    width: 60px;
+    height: 60px;
     display: flex;
-    flex-direction: column;
-    min-height: 100vh; /* 100% da viewport height */
+    align-items: center;
+    justify-content: center;
 }
 
-.site-content {
-    flex: 1; /* Isso faz o conteúdo ocupar todo o espaço disponível */
-    padding-bottom: 20px; /* Espaço antes do footer */
+.table-responsive {
+    border-radius: 0.5rem;
+    overflow: hidden;
 }
 
-/* Seu rodapé atualizado */
-footer {
-    background-color: #333;
-    color: #fff;
-    padding: 15px 0;
-    text-align: center;
-    width: 100%;
-    font-size: 0.9em;
-    box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.2);
-    /* Remova a margin-top se existir */
-    margin-top: 0;
+.table-hover tbody tr:hover {
+    background-color: rgba(40, 167, 69, 0.05);
 }
 
-/* Media Queries para Responsividade do Navbar e outros elementos */
-@media (max-width: 991.98px) {
-    .navbar-collapse {
-        background-color: #006400;
-        border-top: 1px solid #228B22;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        width: 100%;
-        z-index: 1000;
-        padding-bottom: 10px;
-    }
-    .navbar-nav {
-        flex-direction: column !important;
-        align-items: center;
-        width: 100%;
-    }
-    .navbar-nav .nav-item {
-        width: 90%;
-        margin: 5px 0;
-    }
-    .navbar-nav .nav-item .nav-link {
-        text-align: center;
-        background-color: #228B22;
-        border-radius: 5px;
-        margin: 2px 0;
-        padding: 10px 15px !important;
-    }
-    .navbar-nav .nav-item .nav-link:hover {
-        background-color: #004d00 !important;
-        color: #fff !important;
-    }
+.progress {
+    border-radius: 10px;
 }
 
+.progress-bar {
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+/* Efeito de pulso para bônus */
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+.pulse {
+    animation: pulse 1.5s infinite;
+}
+
+/* Responsividade */
 @media (max-width: 768px) {
-    main {
-        padding: 25px 15px;
-        max-width: 95%;
+    .display-4 {
+        font-size: 2.5rem;
     }
-
-    h1 {
-        font-size: 1.8em;
-        margin-bottom: 20px;
-    }
-
-    .statistics-section {
-        flex-direction: column; /* Empilha os cards em telas menores */
-        gap: 20px;
-        align-items: center;
-    }
-
-    .stat-card {
-        width: 90%;
-        min-width: unset;
-        max-width: unset;
-    }
-}
-
-@media (max-width: 480px) {
-    .navbar-brand {
-        font-size: 1.5em;
-    }
-
-    .navbar-nav .nav-item .nav-link {
-        font-size: 0.9em;
-        padding: 8px 15px !important;
-    }
-
-    h1 {
-        font-size: 1.5em;
-    }
-
-    .stat-card {
-        padding: 20px;
-    }
-
-    .stat-card h2 {
-        font-size: 1.5em;
+    
+    .card-body {
+        padding: 1.25rem;
     }
 }

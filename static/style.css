@@ -1,11 +1,38 @@
 /* Arquivo: static/style.css */
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif,-apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue";
     margin: 0;
     padding: 0;
     background-color: #e0e0e0; /* Fundo cinza claro */
     color: #333; /* Texto principal escuro */
+}
+
+/* Tabela de Classificação */
+.avatar-sm {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+.badge {
+    font-size: 0.9rem;
+    padding: 0.4em 0.7em;
+    min-width: 2.75rem;
+}
+.bg-gold { background-color: #ffd700 !important; color: #000 !important; }
+.bg-silver { background-color: #c0c0c0 !important; color: #000 !important; }
+.bg-bronze { background-color: #cd7f32 !important; color: #fff !important; }
+.progress {
+    background-color: #e9ecef;
+}
+.progress-bar {
+    color: white;
+    font-weight: 600;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
 }
 
 
@@ -80,10 +107,29 @@ h1, h2 {
     letter-spacing: normal; /* Voltar ao normal */
 }
 
-h3 {
+h3{
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.ko {
     margin-bottom: 20px;
     text-align: center;
     color: #333; /* Texto escuro */
+}
+
+/* Cores das Posições */
+
+.pri {
+    color: #057030; /* Azul para o 1º lugar */
+    font-weight: bold;
+    text-shadow: none;
+}
+
+.qui{
+    color: #ff2007; /* Amarelo/laranja para o 5º lugar */
+    font-weight: bold;
+    text-shadow: none;
 }
 
 h4 {
@@ -92,71 +138,15 @@ h4 {
     color: #333; /* Texto escuro */
 }
 
-/* Tabela de Pontuação */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 30px;
-    border-radius: 15px; /* Cantos arredondados originais */
-    overflow: hidden;
-    background-color: #ffffff; /* Fundo branco para a tabela */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra original */
-}
-
 table, th, td {
     border: 1px solid #ddd; /* Borda original */
 }
 
-th, td {
+td {
     padding: 15px;
     text-align: center;
     font-size: 1.1em;
     color: #333; /* Cor do texto padrão da tabela */
-}
-
-th {
-    background-color: #006400; /* Verde escuro */
-    color: #ffffff;
-    text-transform: uppercase;
-    font-weight: bold;
-    letter-spacing: normal; /* Voltar ao normal */
-}
-
-td {
-    background-color: #f9f9f9; /* Fundo das células */
-}
-
-tr:nth-child(even) td {
-    background-color: #e0e0e0; /* Fundo alternado */
-}
-
-tr:hover td {
-    background-color: #c0ffc0; /* Verde claro no hover */
-}
-
-/* Cores das Posições */
-.pri {
-    color: #007bff; /* Azul para o 1º lugar */
-    font-weight: bold;
-    text-shadow: none; /* Remover sombra */
-}
-.seg {
-    color: #28a745; /* Verde para o 2º lugar */
-    font-weight: bold;
-    text-shadow: none;
-}
-.ter {
-    color: #ffc107; /* Amarelo/laranja para o 3º lugar */
-    font-weight: bold;
-    text-shadow: none;
-}
-.qui{
-    color: #ff2007; /* Amarelo/laranja para o 5º lugar */
-    font-weight: bold;
-    text-shadow: none;
-}
-.nd {
-    color: #6c757d; /* Cinza para o hífen */
 }
 
 /* Seção de Jogos da Semana */

@@ -158,6 +158,27 @@
                     <a href="{{ url_for('ver_palpites_campeao') }}" class="btn">Ver Palpites</a>
                 </div>
             </div>
+        <br>
+        <div class="admin-section">
+            <h3>Conceder Bônus por Sequência</h3>
+            <p>Use esta função para dar 3 pontos de bônus para um jogador que atingiu 3 ou mais acertos seguidos (verificar na página de Estatísticas).</p>
+            <form action="{{ url_for('award_bonus') }}" method="POST">
+                <div class="form-group">
+                    <label for="nome_jogador">Selecione o Palpiteiro:</label>
+                    <select id="nome_jogador" name="nome_jogador" class="form-control" required>
+                        <option value="" disabled selected>Escolha um jogador...</option>
+                        {% for jogador in pontuacao_geral %} {# Você precisa passar 'pontuacao_geral' para este template #}
+                            <option value="{{ jogador.nome }}">{{ jogador.nome }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="password">Senha do Admin:</label>
+                    <input type="password" id="password" name="password" class="form-control" required>
+                </div>
+                <button type="submit" class="btn btn-warning">Conceder Bônus de 3 Pontos</button>
+            </form>
+        </div>
         </div>
     </main>
 

@@ -1,8 +1,10 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session
-import sqlite3
-import re
 from datetime import datetime
 from functools import wraps
+from collections import defaultdict
+import sqlite3
+import re
+
 
 API_BASE_URL = "http://apifutebol.footstats.com.br/3.1"
 API_TOKEN = "Bearer_client_token"
@@ -28,7 +30,8 @@ def init_db():
         nome TEXT UNIQUE,
         pontos INTEGER DEFAULT 0,
         acertos INTEGER DEFAULT 0,
-        erros INTEGER DEFAULT 0
+        erros INTEGER DEFAULT 0,
+        pontos_bonus INTEGER DEFAULT 0
     )''')
 
     conn.execute('''
@@ -86,6 +89,16 @@ def init_db():
     conn.close()
 
 init_db()
+
+# Decorator para exigir login
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'logged_in' not in session:
+            flash('Você precisa estar logado para acessar esta página.', 'danger')
+            return redirect(url_for('login'))
+        return f(*args, **kwargs)
+    return decorated_function
 
 # Filtro Jinja2 para formatar datas no template
 @app.template_filter('format_date_br')
@@ -537,7 +550,12 @@ MUNDIAL_JOGOS_POR_RODADA = {
 @app.route('/')
 def index():
     conn = get_db_connection()
-    pontuacao = conn.execute("SELECT * FROM pontuacao ORDER BY pontos DESC, acertos DESC, erros ASC").fetchall()
+    pontuacao = conn.execute('''
+        SELECT nome, acertos, erros, pontos, pontos_bonus, 
+               (pontos + pontos_bonus) as total_pontos
+        FROM pontuacao 
+        ORDER BY total_pontos DESC, acertos DESC
+    ''').fetchall()
     
     agora = datetime.now()
     rodada_param = request.args.get('rodada', type=int)
@@ -739,10 +757,101 @@ def adicionar_palpites():
 @app.route('/estatisticas')
 def estatisticas():
     conn = get_db_connection()
-    maior_pontuador = conn.execute("SELECT nome, pontos FROM pontuacao ORDER BY pontos DESC LIMIT 1").fetchone()
-    quem_acertou_mais = conn.execute("SELECT nome, acertos FROM pontuacao ORDER BY acertos DESC LIMIT 1").fetchone()
+
+    # 1. Busca estatísticas e calcula o percentual (sem alterações aqui)
+    estatisticas_completas = conn.execute('''
+        SELECT nome, pontos, acertos, erros,
+               CASE WHEN (acertos + erros) = 0 THEN 0.0 ELSE ROUND((acertos * 100.0 / (acertos + erros)), 1) END as percentual_acertos
+        FROM pontuacao ORDER BY pontos DESC, acertos DESC
+    ''').fetchall()
+
+    maior_pontuador = estatisticas_completas[0] if estatisticas_completas else None
+    quem_acertou_mais = sorted(estatisticas_completas, key=lambda x: x['acertos'], reverse=True)[0] if estatisticas_completas else None
+
+    # --- LÓGICA ATUALIZADA PARA SEQUÊNCIA ATUAL NA RODADA ---
+    
+    # 2. Descobre a última rodada com palpites avaliados
+    rodada_atual_row = conn.execute("SELECT MAX(rodada) as rodada FROM palpites WHERE status != 'Pendente'").fetchone()
+    rodada_atual_bonus = rodada_atual_row['rodada'] if rodada_atual_row and rodada_atual_row['rodada'] else 0
+
+    sequencias_info = defaultdict(int)
+    
+    if rodada_atual_bonus > 0:
+        palpites_rodada_atual = conn.execute("""
+            SELECT p.nome, p.status, j.data_hora FROM palpites p
+            JOIN jogos j ON p.game_id = j.id
+            WHERE p.status != 'Pendente' AND p.rodada = ?
+            ORDER BY p.nome, j.data_hora
+        """, (rodada_atual_bonus,)).fetchall()
+
+        # 3. Calcula a SEQUÊNCIA ATUAL para cada jogador
+        for jogador in estatisticas_completas:
+            nome = jogador['nome']
+            palpites_do_jogador_na_rodada = [p for p in palpites_rodada_atual if p['nome'] == nome]
+            
+            sequencia_atual = 0
+            for palpite in palpites_do_jogador_na_rodada:
+                if "Erro" not in palpite['status']:
+                    sequencia_atual += 1
+                else:
+                    # Se errar, a sequência atual é zerada imediatamente.
+                    sequencia_atual = 0
+            
+            # O valor final é a sequência atual, contada até o último jogo avaliado.
+            sequencias_info[nome] = sequencia_atual
+
+    # 4. Prepara os dados para o template (sem alterações aqui)
+    sequencias_para_template = []
+    for jogador in estatisticas_completas:
+        nome = jogador['nome']
+        max_streak = sequencias_info[nome]
+        sequencias_para_template.append({
+            'nome': nome,
+            'sequencia': max_streak,
+            'bonus': '🔥 Bônus Disponível!' if max_streak >= 3 else '--'
+        })
+
     conn.close()
-    return render_template('estatisticas.html', maior_pontuador=maior_pontuador, quem_acertou_mais=quem_acertou_mais)
+
+    return render_template('estatisticas.html',
+                           maior_pontuador=maior_pontuador,
+                           quem_acertou_mais=quem_acertou_mais,
+                           estatisticas_completas=estatisticas_completas,
+                           sequencias=sequencias_para_template,
+                           rodada_atual_bonus=rodada_atual_bonus)
+
+# --- ROTA COMPLETAMENTE NOVA PARA O ADMIN CONCEDER O BÔNUS ---
+@app.route('/admin/award_bonus', methods=['POST'])
+@login_required # Protege a rota
+def award_bonus():
+    if request.form.get('password') != ADMIN_PASSWORD:
+        flash('Senha de administrador incorreta!', 'danger')
+        return redirect(url_for('admin_dashboard'))
+
+    nome_jogador = request.form.get('nome_jogador')
+    pontos_bonus = 3
+
+    if not nome_jogador:
+        flash('Você precisa selecionar um jogador para conceder o bônus.', 'warning')
+        return redirect(url_for('admin_dashboard'))
+
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    
+    try:
+        cursor.execute("UPDATE pontuacao SET pontos_bonus = pontos_bonus + ? WHERE nome = ?", (pontos_bonus, nome_jogador))
+        conn.commit()
+        if cursor.rowcount > 0:
+            flash(f'Bônus de {pontos_bonus} pontos concedido para {nome_jogador} com sucesso!', 'success')
+        else:
+            flash(f'Jogador {nome_jogador} não encontrado na tabela de pontuação.', 'danger')
+    except Exception as e:
+        conn.rollback()
+        flash(f'Erro ao conceder bônus: {e}', 'danger')
+    finally:
+        conn.close()
+
+    return redirect(url_for('admin_dashboard'))
 
 @app.route('/regras')
 def regra():
@@ -780,16 +889,6 @@ def exibir_rodada(numero):
 
     return render_template('rodada.html', rodada=numero, palpites_agrupados=palpites_agrupados, jogos_da_rodada=jogos_da_rodada)
 
-# Decorator para exigir login
-def login_required(f):
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        if 'logged_in' not in session:
-            flash('Você precisa estar logado para acessar esta página.', 'danger')
-            return redirect(url_for('login'))
-        return f(*args, **kwargs)
-    return decorated_function
-
 # Rota de Login
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -812,10 +911,15 @@ def logout():
     return redirect(url_for('index'))
 
 # Dashboard do Administrador (Nova Rota)
-@app.route('/admin_dashboard')
+# Em app.py
+@app.route('/admin')
 @login_required
 def admin_dashboard():
-    return render_template('admin_dashboard.html') # Você precisará criar este template
+    conn = get_db_connection()
+    # Busca a pontuação para popular o dropdown do bônus
+    pontuacao_geral = conn.execute("SELECT nome FROM pontuacao ORDER BY nome").fetchall()
+    conn.close()
+    return render_template('admin_dashboard.html', pontuacao_geral=pontuacao_geral)
 
 # Rota de Administração para definir resultados dos jogos (PROTEGIDA)
 @app.route('/admin/set_game_result', methods=['GET', 'POST'])
@@ -861,7 +965,7 @@ def set_game_result():
 
 
 @app.route('/atualizar_pontuacao_admin')
-@login_required # Protege esta rota
+@login_required
 def atualizar_pontuacao_admin():
     conn = get_db_connection()
     cursor = conn.cursor()
@@ -925,6 +1029,15 @@ def atualizar_pontuacao_admin():
         placeholders = ','.join('?' for _ in resultados_reais_map.keys())
         cursor.execute(f"UPDATE jogos SET status = 'Finalizado' WHERE id IN ({placeholders})", list(resultados_reais_map.keys()))
 
+        # --- INÍCIO DA NOVA LÓGICA PARA PONTUAR O CAMPEÃO ---
+    PONTOS_CAMPEAO = 5 
+    campeao_real = conn.execute("SELECT time_campeao FROM campeao_mundial LIMIT 1").fetchone()
+    if campeao_real:
+        palpites_campeao = conn.execute("SELECT nome, time_campeao FROM palpite_campeao").fetchall()
+        for palpite in palpites_campeao:
+            if palpite['time_campeao'] == campeao_real['time_campeao']:
+                # Adiciona os pontos e um acerto extra para o palpite de campeão
+                cursor.execute("UPDATE pontuacao SET pontos = pontos + ?, acertos = acertos + 1 WHERE nome = ?", (PONTOS_CAMPEAO, palpite['nome']))
 
     pontuacao_atualizada = conn.execute("SELECT nome, pontos FROM pontuacao ORDER BY pontos DESC, acertos DESC, erros ASC").fetchall()
     for i, jogador in enumerate(pontuacao_atualizada):
@@ -932,7 +1045,7 @@ def atualizar_pontuacao_admin():
 
     conn.commit()
     conn.close()
-    flash('Pontuação atualizada com sucesso! Jogos foram marcados como finalizados.', 'info')
+    flash('Pontuação atualizada com sucesso!', 'info')
     return redirect(url_for('admin_dashboard'))
 
 

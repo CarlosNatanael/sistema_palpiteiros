@@ -37,50 +37,74 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url_for('ver_palpites_campeao') }}">Palpites Campeão</a>
                     </li>
+
                 </ul>
             </div>
         </nav>
     </header>
 
-    <main style="padding-top: 80px;">
-        <h1>TABELA DE PONTUAÇÃO</h1>
-        <table>
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Nome</th>
-                    <th>Acertos</th>
-                    <th>Erros</th>
-                    <th>Pts</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for jogador in pontuacao %}
-                <tr>
-                    <td>
-                        {% if loop.index == 1 %}
-                            <strong class="pri">{{ loop.index }}º</strong>
-                        {% elif loop.index == 2 %}
-                            <strong class="seg">{{ loop.index }}º</strong>
-                        {% elif loop.index == 3 %}
-                            <strong class="ter">{{ loop.index }}º</strong>
-                        {% elif loop.index == 5 %}
-                            <strong class="qui">{{ loop.index }}º</strong>
-                        {% else %}
-                            <strong>{{ loop.index }}º</strong>
-                        {% endif %}
-                    </td>
-                    <td><strong>{{ jogador.nome }}</strong></td>
-                    <td><strong>{{ jogador.acertos }}</strong></td>
-                    <td><strong>{{ jogador.erros }}</strong></td>
-                    <td><strong>{{ jogador.pontos }}</strong></td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="flash-message alert-{{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
 
+    <main style="padding-top: 80px;">
+        <div class="container py-4">
+            <div class="text-center mb-4">
+                <h1 class="display-5 fw-bold" style="color: #006400;">TABELA DE PONTUAÇÃO</h1>
+            </div>
+        
+        <div class="card shadow-sm mb-5">
+            <div class="card-header bg-dark text-white">
+                <h3 class="card-title mb-0"><i class="bi bi-bar-chart-fill me-2"></i>Classificação Geral</h3>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover mb-0">
+                        <thead class="table-dark">
+                            <tr>
+                                <th class="text-center">#</th>
+                                <th>Palpiteiro</th>
+                                <th class="text-center">Pts</th>
+                                <th class="text-center">Acertos</th>
+                                <th class="text-center">Erros</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for jogador in pontuacao %}
+                            <tr class="align-middle">
+                                <td class="text-center">
+                                    {% if loop.index == 1 %}
+                                        <span class="badge bg-gold">{{ loop.index }}º</span>
+                                    {% elif loop.index == 2 %}
+                                        <span class="badge bg-silver">{{ loop.index }}º</span>
+                                    {% elif loop.index == 3 %}
+                                        <span class="badge bg-bronze">{{ loop.index }}º</span>
+                                    {% else %}
+                                        <span class="badge bg-secondary">{{ loop.index }}º</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <strong class="player-name">{{ jogador.nome }}</strong>
+                                    </div>
+                                </td>
+                                <td class="pri">{{ jogador.total_pontos }}</td>
+                                <td class="pri">{{ jogador.acertos }}</td>
+                                <td class="qui">{{ jogador.erros }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
         <h2>RODADA {{ rodada_ativa }}</h2>
-    <div class="rodada-navigation">
+        <div class="rodada-navigation">
         {% if tem_anterior %}
             <a href="{{ url_for('index', rodada=anterior_rodada) }}" class="nav-arrow left-arrow">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -108,9 +132,9 @@
                 </svg>
             </a>
         {% endif %}
-    </div>
+        </div>
         {% if jogos_futuros %}
-        <h3>PRÓXIMOS JOGOS</h3>
+        <h3 class="ko">PRÓXIMOS JOGOS</h3>
         <div class="resultadoJogo">
             <div class="table-container">
                 {% for jogo in jogos_futuros %}
@@ -138,7 +162,7 @@
 
         {% if jogos_passados %}
         <br>
-        <h3>RESULTADOS DA RODADA</h3>
+        <h3 class="ko">RESULTADOS DA RODADA</h3>
         <div class="resultadoJogo">
             <div class="table-container">
                 {% for jogo in jogos_passados %}

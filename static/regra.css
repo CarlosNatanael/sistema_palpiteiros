@@ -127,13 +127,19 @@ h1 {
     line-height: 1.5;
 }
 
-.stat-card strong {
+strong {
     color: #004d00;
 }
 
 .stat-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.impo{
+    color: #333;
+    font-weight: bold;
+    text-shadow: none;
 }
 
 html, body {

@@ -63,13 +63,15 @@
                     <p><strong>Acerto do Placar + Acerto Resultado = </strong><strong>4 pts</strong></p>
                     <p><strong>Acerto do Placar = </strong><strong>2 pts</strong></p>
                     <p><strong>Acerto Resultado = </strong><strong>1 pts</strong></p>
-                    <p><strong>Bônus de Consistência = 2 pts</strong></p>
-                    <p><strong>Bônus por Finais de Competições = 2 pts</strong></p>
+                    <p><strong>Bônus de Consistência = 3 pts</strong></p>
+                    <p><strong>Bônus por Finais de Competições = 5 pts</strong></p>
                 </div>
 
                 <div class="stat-card">
                     <h2>Bônus de Pontuação</h2>
-                    <p><strong>Bônus de Consistência:</strong> Quem acertar o placar em todas as partidas de uma rodada ganha pontos adicionais.</p>
+                    <p><strong>Bônus por Sequência de Acertos:</strong> Mantenha uma sequência de acertos na rodada atual para ganhar um bônus de <strong>3 pontos</strong>! Se sua sequência de acertos chegar a 3 ou mais, você se torna elegível.</p>
+                    <p><strong>Atenção:</strong> Se você errar um palpite, sua sequência de acertos na rodada é <strong class="impo">zerada</strong> e você precisa começar de novo!</p>
+                    <p><strong>Como Funciona:</strong> Acompanhe sua <strong class="impo">"Sequência Atual"</strong> na página de <strong>Estatísticas</strong>. O bônus é concedido manualmente pelo administrador.</p>
                     <p><strong>Bônus por Finais de Competições:</strong> Para finais de campeonatos importantes quem acertar o resultado exato ganha pontos adicionais.</p>
                     <button type="submit" class="btn-enviar-palpite">
                         <a class="nav-link" href="{{ url_for('palpite_campeao') }}">Palpite Campeão</a>
