@@ -114,16 +114,6 @@
             </a>
         {% endif %}
         
-        <div class="rodada-selector">
-            <select onchange="location = this.value;">
-                {% for rodada in rodadas_disponiveis %}
-                    <option value="{{ url_for('index', rodada=rodada) }}" {% if rodada == rodada_ativa %}selected{% endif %}>
-                        Rodada {{ rodada_ativa }}
-                    </option>
-                {% endfor %}
-            </select>
-        </div>
-        
         {% if tem_proxima %}
             <a href="{{ url_for('index', rodada=proxima_rodada) }}" class="nav-arrow right-arrow">
                 Rodada {{ proxima_rodada }}
