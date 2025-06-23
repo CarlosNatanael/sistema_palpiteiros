@@ -904,7 +904,7 @@ def adicionar_palpites():
         conn.close()
         
         if palpites_inseridos > 0:
-            print(f"[LOG - adicionar_palpites]: {palpites_inseridos} palpites de '{nome}' registrados com sucesso.")
+            print(f"[LOG - adicionar_palpites]: {palpites_inseridos} palpites de '{nome}' registrados com sucesso.\n")
             flash(f'{palpites_inseridos} palpites foram registrados com sucesso!', 'success')
         else:
             flash('Nenhum palpite novo foi registrado (a rodada pode estar fechada).', 'warning')

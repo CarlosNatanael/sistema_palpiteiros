@@ -157,7 +157,11 @@
             </div>
         </div>
         {% else %}
-        <h4 class="no-games-message"><strong>Não há próximos jogos Agendados</strong></h4>
+        <div class="resultadoJogo">
+            <div class="match-row">
+                <h4 class="no-games-message"><strong>Não há próximos jogos Agendados</strong></h4>
+            </div>
+        </div>
         {% endif %}
 
         {% if jogos_passados %}
@@ -198,7 +202,11 @@
         </div>
         {% else %}
             <br>
-            <h4 class="no-games-message"><strong>Nenhum resultado de jogo disponível para esta rodada.</strong></h4>
+        <div class="resultadoJogo">
+            <div class="match-row">
+                <h4 class="no-games-message"><strong>Nenhum resultado de jogo disponível para esta rodada.</strong></h4>
+            </div>
+        </div>
         {% endif %}
         </div>
     </main>
