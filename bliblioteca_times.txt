@@ -223,6 +223,24 @@
 'time2_sigla': 'JUV',
 'time2_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/6lal-0xwWtos5HI99HRvuQ_48x48.png',
 
+============= CITY ==========================
+'time1_nome': 'City',
+'time1_sigla': 'MNC',
+'time1_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/z44l-a0W1v5FmgPnemV6Xw_48x48.png',
+
+'time2_nome': 'City',
+'time2_sigla': 'MNC',
+'time2_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/z44l-a0W1v5FmgPnemV6Xw_48x48.png',
+
+============= Al AIN ======================
+'time1_nome': 'Al Ain',
+'time1_sigla': 'AIN',
+'time1_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/vA9sLyDeHX3q7pn8QTmoeQ_48x48.png',
+
+'time2_nome': 'Al Ain',
+'time2_sigla': 'AIN',
+'time2_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/vA9sLyDeHX3q7pn8QTmoeQ_48x48.png',
+
 ============= WYDAD AC ======================
 'time1_nome': 'Wydad AC',
 'time1_sigla': 'WYD',

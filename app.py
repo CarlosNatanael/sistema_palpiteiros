@@ -544,7 +544,185 @@ MUNDIAL_JOGOS_POR_RODADA = {
             'local': 'Mercedes-Benz Stadium'
         },
     ],
-    # Adicione mais rodadas e jogos conforme necessário, seguindo a estrutura
+    3: [
+        {
+            'id': 301,
+            'time1_nome': 'Seattle Sounders',
+            'time1_sigla': 'SES',
+            'time1_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/k6m3hoy4Rn3KRrMYSYDjog_48x48.png',
+            'time2_nome': 'PSG',
+            'time2_sigla': 'PSG',
+            'time2_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/mcpMspef1hwHwi9qrfp4YQ_48x48.png',
+            'data_hora': '2025-06-23 16:00',
+            'local': 'Lumen Field'
+        },
+        {
+            'id': 302,
+            'time1_nome': 'Atlético de Madrid',
+            'time1_sigla': 'ATM',
+            'time1_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/pEqmA7CL-VRo4Llq3rwIPA_48x48.png',
+            'time2_nome': 'Botafogo',
+            'time2_sigla': 'BOT',
+            'time2_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/KLDWYp-H8CAOT9H_JgizRg_48x48.png',
+            'data_hora': '2025-06-23 16:00',
+            'local': 'Rose Bowl'
+        },
+        {
+            'id': 303,
+            'time1_nome': 'Palmeiras',
+            'time1_sigla': 'PAL',
+            'time1_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/7spurne-xDt2p6C0imYYNA_48x48.png',
+            'time2_nome': 'Inter Miami',
+            'time2_sigla': 'INT',
+            'time2_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/dn0bMtTbbpx7v3Ieq6TZtQ_48x48.png',
+            'data_hora': '2025-06-23 22:00',
+            'local': 'Hard Rock Stadium'
+        },
+        {
+            'id': 304,
+            'time1_nome': 'Porto',
+            'time1_sigla': 'POT',
+            'time1_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/QkkllEKwkj60jEVtOEZWAg_48x48.png',
+            'time2_nome': 'Al Ahly',
+            'time2_sigla': 'ALA',
+            'time2_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/JdNbaaw7JlDHvPHZaX2V2A_48x48.png',
+            'data_hora': '2025-06-23 22:00',
+            'local': 'MetLife Stadium'
+        },
+        {
+            'id': 305,
+            'time1_nome': 'Benfica',
+            'time1_sigla': 'BEN',
+            'time1_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/nFwABZ-4n_A3BGXT9A7Adg_48x48.png',
+            'time2_nome': 'Bayern',
+            'time2_sigla': 'BAY',
+            'time2_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/-_cmntP5q_pHL7g5LfkRiw_96x96.png',
+            'data_hora': '2025-06-24 16:00',
+            'local': 'Bank of America Stadium'
+        },
+        {
+            'id': 306,
+            'time1_nome': 'Auckland City',
+            'time1_sigla': 'ACC',
+            'time1_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/ydlyVc6hUPBXoaT3wR_lFg_96x96.png',
+            'time2_nome': 'Boca Juniors',
+            'time2_sigla': 'BOC',
+            'time2_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/YO1impuFJT2hex6wvCd9Pw_48x48.png',
+            'data_hora': '2025-06-24 16:00',
+            'local': 'Geodis Park'
+        },
+        {
+            'id': 307,
+            'time1_nome': 'LAFC',
+            'time1_sigla': 'LOS',
+            'time1_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/waD0z1CWx6_r4UT_hgb7nA_96x96.png',
+            'time2_nome': 'Flamengo',
+            'time2_sigla': 'FLA',
+            'time2_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/orE554NToSkH6nuwofe7Yg_48x48.png',
+            'data_hora': '2025-06-24 22:00',
+            'local': 'Camping World Stadium'
+        },
+        {
+            'id': 308,
+            'time1_nome': 'Espérance',
+            'time1_sigla': 'EST',
+            'time1_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/Kf32x8gh5SCMEqvKjVGLfg_48x48.png',
+            'time2_nome': 'Chelsea',
+            'time2_sigla': 'CFC',
+            'time2_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/fhBITrIlbQxhVB6IjxUO6Q_48x48.png',
+            'data_hora': '2025-06-24 22:00',
+            'local': 'Lincoln Financial Field'
+        },
+        {
+            'id': 309,
+            'time1_nome': 'Sundowns',
+            'time1_sigla': 'MSM',
+            'time1_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/Lmp8fUABWWKRwNrHf71m5w_48x48.png',
+            'time2_nome': 'Fluminense',
+            'time2_sigla': 'FLU',
+            'time2_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/fCMxMMDF2AZPU7LzYKSlig_48x48.png',
+            'data_hora': '2025-06-25 16:00',
+            'local': 'Hard Rock Stadium'
+        },
+        {
+            'id': 310,
+            'time1_nome': 'Borussia',
+            'time1_sigla': 'BVB',
+            'time1_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/FZnTSH2rbHFos4BnlWAItw_48x48.png',
+            'time2_nome': 'Ulsan Hyundai',
+            'time2_sigla': 'ULH',
+            'time2_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/-K1h8OOTItUmjKqR2g5Nnw_48x48.png',
+            'data_hora': '2025-06-25 16:00',
+            'local': 'TQL Stadium'
+        },
+        {
+            'id': 311,
+            'time1_nome': 'Inter',
+            'time1_sigla': 'INT',
+            'time1_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/l2-icwsMhIvsbRw8AwC1yg_48x48.png',
+            'time2_nome': 'River Plate',
+            'time2_sigla': 'RIV',
+            'time2_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/700Mj6lUNkbBdvOVEbjC3g_48x48.png',
+            'data_hora': '2025-06-25 22:00',
+            'local': 'Lumen Field'
+        },
+        {
+            'id': 312,
+            'time1_nome': 'Urawa Reds',
+            'time1_sigla': 'URD',
+            'time1_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/F-09rxdgECid61-Rj8Uxrw_48x48.png',
+            'time2_nome': 'Monterrey',
+            'time2_sigla': 'MTR',
+            'time2_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/LXZ8fEgzf0_FwSyq15buPw_48x48.png',
+            'data_hora': '2025-06-25 22:00',
+            'local': 'Rose Bowl'
+        },
+        {
+            'id': 313,
+            'time1_nome': 'Juventus',
+            'time1_sigla': 'JUV',
+            'time1_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/6lal-0xwWtos5HI99HRvuQ_48x48.png',
+            'time2_nome': 'City',
+            'time2_sigla': 'MNC',
+            'time2_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/z44l-a0W1v5FmgPnemV6Xw_48x48.png',
+            'data_hora': '2025-06-26 16:00',
+            'local': 'Lincoln Financial Field'
+        },
+        {
+            'id': 314,
+            'time1_nome': 'Wydad AC',
+            'time1_sigla': 'WYD',
+            'time1_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/JxwBeJ9HrjZX_vRqTPwY6A_48x48.png',
+            'time2_nome': 'Al Ain',
+            'time2_sigla': 'AIN',
+            'time2_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/vA9sLyDeHX3q7pn8QTmoeQ_48x48.png',
+            'data_hora': '2025-06-26 16:00',
+            'local': 'Audi Field'
+        },
+        {
+            'id': 315,
+            'time1_nome': 'Salzburg',
+            'time1_sigla': 'SLZ',
+            'time1_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/vQhr4NoE_4Yg1IhUZvbRNw_48x48.png',
+            'time2_nome': 'Real Madrid',
+            'time2_sigla': 'RMA',
+            'time2_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/Th4fAVAZeCJWRcKoLW7koA_48x48.png',
+            'data_hora': '2025-06-26 22:00',
+            'local': 'Lincoln Financial Field'
+        },
+        {
+            'id': 316,
+            'time1_nome': 'Al Hilal',
+            'time1_sigla': 'HIL',
+            'time1_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/HGVsnyWvMiGVotxhgicdSQ_48x48.png',
+            'time2_nome': 'Pachuca',
+            'time2_sigla': 'PCH',
+            'time2_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/9dscoX8iYhzbjSNxXVp2gQ_48x48.png',
+            'data_hora': '2025-06-26 22:00',
+            'local': 'Geodis Park'
+        },
+    ]
+    # # Adicione mais rodadas e jogos conforme necessário, seguindo a estrutura
     # Certifique-se de que os IDs dos jogos são únicos em todo o dicionário
 }
 
@@ -1041,10 +1219,6 @@ def atualizar_pontuacao_admin():
         resultado_real = resultados_reais_map.get(game_id)
         if resultado_real:
             gol_real_time1, gol_real_time2 = resultado_real
-            
-            print(f"\n[LOG] Processando palpite de {nome} para jogo {game_id}")
-            print(f"[LOG] Palpite: {gol_time1}-{gol_time2} ({palpite_resultado_texto})")
-            print(f"[LOG] Resultado real: {gol_real_time1}-{gol_real_time2}")
 
             pontos_ganhos = 0
             status_palpite = "Erro (0 pts)"
