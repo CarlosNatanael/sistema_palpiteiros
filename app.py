@@ -1238,17 +1238,14 @@ def atualizar_pontuacao_admin():
                     pontos_ganhos = 2
                     status_palpite = "Acerto Placar (2 pts)"
                 cursor.execute("UPDATE pontuacao SET acertos = acertos + 1 WHERE nome = ?", (nome,))
-                print(f"[LOG] Acerto total/placar: +{pontos_ganhos} pontos")
             else:
                 if palpite_resultado_texto == real_resultado_texto:
                     pontos_ganhos = 1
                     status_palpite = "Acerto Resultado (1 pts)"
                     cursor.execute("UPDATE pontuacao SET acertos = acertos + 1 WHERE nome = ?", (nome,))
-                    print(f"[LOG] Acerto resultado: +1 ponto")
                 else:
                     cursor.execute("UPDATE pontuacao SET erros = erros + 1 WHERE nome = ?", (nome,))
                     status_palpite = "Erro (0 pts)"
-                    print(f"[LOG] Erro: 0 pontos")
 
             cursor.execute("UPDATE pontuacao SET pontos = pontos + ? WHERE nome = ?", (pontos_ganhos, nome))
             cursor.execute("UPDATE palpites SET status = ? WHERE id = ?", (status_palpite, palpite_id))
