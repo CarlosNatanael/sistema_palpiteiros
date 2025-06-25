@@ -945,7 +945,7 @@ def adicionar_palpites():
         (rodada_ativa, agora_str)
     ).fetchall()
     
-    palpiteiros = ["Ariel", "Carlos", "Celso", "Gabriel", "Lucas"]
+    palpiteiros = ["Ariel", "Arthur", "Carlos", "Celso", "Gabriel", "Lucas"]
     conn.close()
 
     return render_template(
@@ -1291,7 +1291,7 @@ def palpite_campeao():
         ORDER BY name
     ''').fetchall()
     
-    palpiteiros = ["Ariel", "Carlos", "Celso", "Gabriel", "Lucas"]
+    palpiteiros = ["Ariel", "Arthur", "Carlos", "Celso", "Gabriel", "Lucas"]
 
     # Determinar a rodada ativa (esta parte deve estar tanto para GET quanto POST)
     agora = datetime.now()
