@@ -22,52 +22,27 @@ def init_db():
     print("\n[LOG - init_db]: Verificando e inicializando o banco de dados...")
     conn = get_db_connection()
     cursor = conn.cursor()
-    try:
-        cursor.execute("SELECT pontos_bonus FROM pontuacao LIMIT 1")
-    except sqlite3.OperationalError:
-        print("[LOG - init_db]: Adicionando coluna 'pontos_bonus' à tabela 'pontuacao'.")
-        conn.execute("ALTER TABLE pontuacao ADD COLUMN pontos_bonus INTEGER DEFAULT 0")
 
     conn.execute('''
     CREATE TABLE IF NOT EXISTS pontuacao (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        posicao INTEGER,
-        nome TEXT UNIQUE,
-        pontos INTEGER DEFAULT 0,
-        acertos INTEGER DEFAULT 0,
-        erros INTEGER DEFAULT 0,
+        id INTEGER PRIMARY KEY AUTOINCREMENT, posicao INTEGER, nome TEXT UNIQUE,
+        pontos INTEGER DEFAULT 0, acertos INTEGER DEFAULT 0, erros INTEGER DEFAULT 0,
         pontos_bonus INTEGER DEFAULT 0
     )''')
 
     conn.execute('''
     CREATE TABLE IF NOT EXISTS palpites (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        nome TEXT,
-        rodada INTEGER,
-        game_id INTEGER,
-        time1 TEXT,
-        time2 TEXT,
-        gol_time1 INTEGER,
-        gol_time2 INTEGER,
-        resultado TEXT,
-        status TEXT
+        id INTEGER PRIMARY KEY AUTOINCREMENT, nome TEXT, rodada INTEGER, game_id INTEGER,
+        time1 TEXT, time2 TEXT, gol_time1 INTEGER, gol_time2 INTEGER, resultado TEXT, status TEXT,
+        quem_avanca TEXT
     )''')
 
     conn.execute('''
     CREATE TABLE IF NOT EXISTS jogos (
-        id INTEGER PRIMARY KEY,
-        rodada INTEGER,
-        time1_nome TEXT,
-        time1_img TEXT,
-        time1_sigla TEXT,
-        time2_nome TEXT,
-        time2_img TEXT,
-        time2_sigla TEXT,
-        data_hora TEXT,
-        local TEXT,
-        placar_time1 INTEGER,
-        placar_time2 INTEGER,
-        status TEXT DEFAULT 'Pendente'
+        id INTEGER PRIMARY KEY, rodada INTEGER, time1_nome TEXT, time1_img TEXT, time1_sigla TEXT,
+        time2_nome TEXT, time2_img TEXT, time2_sigla TEXT, data_hora TEXT, local TEXT,
+        placar_time1 INTEGER, placar_time2 INTEGER, status TEXT DEFAULT 'Pendente',
+        time_que_avancou TEXT
     )''')
 
     # TABELA PARA PALPITE CAMPEÃO
@@ -90,23 +65,13 @@ def init_db():
         data_definicao TEXT UNIQUE
     )''')
 
-    # --- Verificação de Colunas para evitar erros ---
-    def column_exists(table, column):
-        try:
-            cursor.execute(f"SELECT {column} FROM {table} LIMIT 1")
-            return True
-        except sqlite3.OperationalError:
-            return False
-
-    if not column_exists('jogos', 'fase'):
-        print("[LOG - init_db]: Adicionando coluna 'fase' à tabela 'jogos'.")
-        conn.execute("ALTER TABLE jogos ADD COLUMN fase TEXT DEFAULT 'grupos'")
-    if not column_exists('jogos', 'time_que_avancou'):
-        print("[LOG - init_db]: Adicionando coluna 'time_que_avancou' à tabela 'jogos'.")
-        conn.execute("ALTER TABLE jogos ADD COLUMN time_que_avancou TEXT")
-    if not column_exists('palpites', 'quem_avanca'):
-        print("[LOG - init_db]: Adicionando coluna 'quem_avanca' à tabela 'palpites'.")
-        conn.execute("ALTER TABLE palpites ADD COLUMN quem_avanca TEXT")
+    # Cria as tabelas se elas não existirem (não causa erro se já existirem)
+    conn.execute('''
+    CREATE TABLE IF NOT EXISTS pontuacao (
+        id INTEGER PRIMARY KEY AUTOINCREMENT, posicao INTEGER, nome TEXT UNIQUE,
+        pontos INTEGER DEFAULT 0, acertos INTEGER DEFAULT 0, erros INTEGER DEFAULT 0,
+        pontos_bonus INTEGER DEFAULT 0
+    )''')
 
     conn.commit()
     conn.close()
@@ -856,7 +821,7 @@ def index():
     
     rodada_ativa = rodada_param if (rodada_param and rodada_param in rodadas_disponiveis) else (rodadas_disponiveis[-1] if rodadas_disponiveis else 1)
     
-    print(f"[LOG - index]: Rodada ativa para exibição: {rodada_ativa}")
+    print(f"\n[LOG - index]: Rodada ativa para exibição: {rodada_ativa}\n")
     
     rodada_index = rodadas_disponiveis.index(rodada_ativa) if rodada_ativa in rodadas_disponiveis else -1
     tem_proxima = rodada_index != -1 and rodada_index < len(rodadas_disponiveis) - 1
@@ -1010,7 +975,6 @@ def adicionar_palpites():
                 gol_time1 = int(request.form[f'gol_time1_{game_id}'])
                 gol_time2 = int(request.form[f'gol_time2_{game_id}'])
                 resultado_palpite = request.form[f'resultado_{game_id}']
-                # Pega o valor de quem avança, se o campo existir no formulário
                 quem_avanca = request.form.get(f'quem_avanca_{game_id}', None)
 
                 # Deleta o palpite antigo para inserir o novo/atualizado
@@ -1022,6 +986,8 @@ def adicionar_palpites():
         
         conn.commit()
         conn.close()
+        print(f"\n[LOG]: {nome} adicionou na rodada {rodada_selecionada}")
+        print(f"[LOG]: {nome} adicionou {jogo['time1_nome']} x {jogo['time2_nome']}")
         flash('Palpites registrados com sucesso!', 'success')
         return redirect(url_for('exibir_palpites'))
 
@@ -1290,9 +1256,8 @@ def set_game_result():
 @app.route('/atualizar_pontuacao_admin')
 @login_required
 def atualizar_pontuacao_admin():
-    print("\n[LOG - atualizar_pontuacao_admin]: INÍCIO do processo de atualização de pontuação.")
+    print("\n[LOG]: Iniciando atualização de pontuação.")
     conn = get_db_connection()
-    
     conn.execute("UPDATE pontuacao SET pontos = 0, acertos = 0, erros = 0")
     
     palpites = conn.execute("SELECT * FROM palpites").fetchall()
@@ -1306,30 +1271,26 @@ def atualizar_pontuacao_admin():
             nome = palpite['nome']
             pontos_ganhos = 0
             
-            # Variáveis do Palpite
-            p_gol1 = palpite['gol_time1']
-            p_gol2 = palpite['gol_time2']
+            # Acessa as colunas de forma segura
+            p_avanca = palpite['quem_avanca']
+            j_avancou = jogo['time_que_avancou']
+            
+            p_gol1, p_gol2 = palpite['gol_time1'], palpite['gol_time2']
             p_resultado = palpite['resultado']
-            p_avanca = palpite.get('quem_avanca')
-
-            # Variáveis do Jogo Real
-            j_gol1 = jogo['placar_time1']
-            j_gol2 = jogo['placar_time2']
-            j_avancou = jogo.get('time_que_avancou')
-            j_fase = jogo.get('fase', 'grupos')
-
+            j_gol1, j_gol2 = jogo['placar_time1'], jogo['placar_time2']
+            
             if j_gol1 > j_gol2: j_resultado = 'Vitória (Casa)'
             elif j_gol1 < j_gol2: j_resultado = 'Vitória (Fora)'
             else: j_resultado = 'Empate'
 
             acerto_placar = (p_gol1 == j_gol1 and p_gol2 == j_gol2)
             acerto_resultado = (p_resultado == j_resultado)
-            acerto_avanco = (p_avanca == j_avancou)
+            acerto_avanco = (p_avanca is not None and p_avanca == j_avancou)
             
             status_palpite = "Erro (0 pts)"
 
-            # --- NOVA LÓGICA DE PONTUAÇÃO PARA MATA-MATA ---
-            if j_fase == 'mata-mata':
+            # Lógica para jogos com palpite de avanço (a partir da Rodada 4)
+            if jogo['rodada'] >= 4:
                 if acerto_placar and acerto_resultado and acerto_avanco:
                     pontos_ganhos = 5
                     status_palpite = "Acerto Total! (5 pts)"
@@ -1342,6 +1303,9 @@ def atualizar_pontuacao_admin():
                 elif acerto_placar:
                     pontos_ganhos = 2
                     status_palpite = "Acerto Placar (2 pts)"
+                elif acerto_resultado and acerto_avanco:
+                    pontos_ganhos = 2 
+                    status_palpite = "Acerto Resultado + Avanço (2 pts)"
                 elif acerto_resultado:
                     pontos_ganhos = 1
                     status_palpite = "Acerto Resultado (1 pt)"
@@ -1349,19 +1313,15 @@ def atualizar_pontuacao_admin():
                     pontos_ganhos = 1
                     status_palpite = "Acerto Avanço (1 pt)"
             
-            # --- LÓGICA ANTIGA PARA FASE DE GRUPOS ---
+            # Lógica para jogos da fase de grupos (Rodadas 1 a 3)
             else:
-                if acerto_placar and acerto_resultado:
+                if acerto_placar:
                     pontos_ganhos = 4
                     status_palpite = "Acerto Total (4 pts)"
-                elif acerto_placar:
-                    pontos_ganhos = 2
-                    status_palpite = "Acerto Placar (2 pts)"
                 elif acerto_resultado:
                     pontos_ganhos = 1
                     status_palpite = "Acerto Resultado (1 pt)"
 
-            # Atualiza pontos e status
             if pontos_ganhos > 0:
                 conn.execute("UPDATE pontuacao SET pontos = pontos + ?, acertos = acertos + 1 WHERE nome = ?", (pontos_ganhos, nome))
             else:

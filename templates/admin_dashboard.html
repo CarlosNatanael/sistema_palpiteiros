@@ -101,27 +101,8 @@
                         <li class="nav-item"><a class="nav-link" href="{{ url_for('regra') }}">Regras</a></li>
                         <li class="nav-item"><a class="nav-link" href="{{ url_for('ver_palpites_campeao') }}">Campeão</a></li>
                         <li class="nav-item"><a class="nav-link" href="{{ url_for('chaveamento') }}">Chaveamento</a></li>
-                    </ul>
-
-                    <ul class="navbar-nav">
-                        {% if session.logged_in %}
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownAdmin" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="bi bi-gear-fill me-1"></i>Admin
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownAdmin">
-                                <li><a class="dropdown-item" href="{{ url_for('admin_dashboard') }}">Painel Admin</a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="{{ url_for('logout') }}">Sair</a></li>
-                            </ul>
-                        </li>
-                        {% else %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url_for('login') }}">
-                                <i class="bi bi-box-arrow-in-right me-1"></i>Login
-                            </a>
-                        </li>
-                        {% endif %}
+                        <li class="nav-item"><a class="nav-link active" href="{{ url_for('admin_dashboard') }}">Painel Admin</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('logout') }}">Sair</a></li>
                     </ul>
                 </div>
             </div>
