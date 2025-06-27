@@ -881,6 +881,62 @@ def index():
         anterior_rodada=rodadas_disponiveis[rodada_index - 1] if tem_anterior else None
     )
 
+@app.route('/chaveamento')
+def chaveamento():
+    print("[LOG]: Acessando a página de chaveamento.")
+    conn = get_db_connection()
+    
+    # Busca todos os jogos de mata-mata (Rodada 4 em diante)
+    jogos_mata_mata = conn.execute("SELECT * FROM jogos WHERE rodada >= 4 ORDER BY id ASC").fetchall()
+    conn.close()
+
+    # Organiza os jogos por rodada e ID para fácil acesso
+    jogos_map = {jogo['id']: dict(jogo) for jogo in jogos_mata_mata}
+
+    # Função para determinar o vencedor de um jogo
+    def get_vencedor(jogo_id):
+        jogo = jogos_map.get(jogo_id)
+        if not jogo or jogo.get('time_que_avancou') is None:
+            return {'nome': 'A definir', 'sigla': '???', 'img': 'https://placehold.co/40x40/eee/eee?text='}
+        
+        vencedor_nome = jogo['time_que_avancou']
+        if vencedor_nome == jogo['time1_nome']:
+            return {'nome': jogo['time1_nome'], 'sigla': jogo['time1_sigla'], 'img': jogo['time1_img']}
+        else:
+            return {'nome': jogo['time2_nome'], 'sigla': jogo['time2_sigla'], 'img': jogo['time2_img']}
+
+    # Estrutura do chaveamento (hardcoded para o torneio de 16 times)
+    # Oitavas de Final
+    oitavas = [jogos_map.get(i) for i in range(401, 409)]
+
+    # Quartas de Final
+    quartas = [
+        {'id': 501, 'time1': get_vencedor(401), 'time2': get_vencedor(402), 'dados_jogo': jogos_map.get(501)},
+        {'id': 502, 'time1': get_vencedor(403), 'time2': get_vencedor(404), 'dados_jogo': jogos_map.get(502)},
+        {'id': 503, 'time1': get_vencedor(405), 'time2': get_vencedor(406), 'dados_jogo': jogos_map.get(503)},
+        {'id': 504, 'time1': get_vencedor(407), 'time2': get_vencedor(408), 'dados_jogo': jogos_map.get(504)},
+    ]
+
+    # Semifinais
+    semis = [
+        {'id': 601, 'time1': get_vencedor(501), 'time2': get_vencedor(502), 'dados_jogo': jogos_map.get(601)},
+        {'id': 602, 'time1': get_vencedor(503), 'time2': get_vencedor(504), 'dados_jogo': jogos_map.get(602)},
+    ]
+
+    # Final
+    final = [
+        {'id': 701, 'time1': get_vencedor(601), 'time2': get_vencedor(602), 'dados_jogo': jogos_map.get(701)},
+    ]
+    
+    campeao = get_vencedor(701)
+
+    return render_template('chaveamento.html', 
+                           oitavas=oitavas, 
+                           quartas=quartas, 
+                           semis=semis, 
+                           final=final,
+                           campeao=campeao)
+
 @app.route('/palpites')
 def exibir_palpites():
     conn = get_db_connection()
