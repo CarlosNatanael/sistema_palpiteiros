@@ -1,4 +1,4 @@
-/* Arquivo: static/palpites.css */
+/* Arquivo: static/regra.css */
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -6,6 +6,14 @@ body {
     padding: 0;
     background-color: #e0e0e0;
     color: #333;
+}
+
+.bar { /* Pode ser removido se não for mais usado no HTML */
+    color: #333;
+    font-size: 1.8em;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    text-align: center;
 }
 
 header {
@@ -58,8 +66,7 @@ header h1, nav { display: none; }
 
 main {
     padding: 40px 20px;
-    text-align: center;
-    max-width: 1000px;
+    max-width: 900px;
     margin: 20px auto;
     background-color: #ffffff; /* Fundo branco */
     border-radius: 10px;
@@ -67,7 +74,18 @@ main {
     color: #333;
 }
 
-h1, h2 {
+.statistics-section {
+    margin-top: 20px;
+}
+
+.rules-section {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+}
+
+h1 {
     color: #006400;
     font-size: 2em;
     margin-bottom: 25px;
@@ -78,90 +96,50 @@ h1, h2 {
     letter-spacing: normal;
 }
 
-/* Estilos da Tabela e Acordeão */
-.accordion {
-    margin-top: 30px;
-}
-
-.card {
-    border: 1px solid #ddd; /* Borda original */
-    border-radius: 8px;
-    margin-bottom: 15px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sombra original */
-    overflow: hidden;
+.stat-card {
     background-color: #f9f9f9; /* Fundo claro para o card */
-}
-
-.card-header {
-    background-color: #f8f9fa; /* Fundo claro para o cabeçalho do card */
-    border-bottom: 1px solid #ddd;
-    padding: 0;
-}
-
-.card-header h2 button {
-    width: 100%;
-    text-align: left;
-    padding: 15px 20px;
-    font-size: 1.2em;
-    color: #333; /* Texto escuro para o botão */
-    font-weight: bold;
-    text-decoration: none;
-    background-color: transparent;
-    border: none;
-    transition: background-color 0.3s ease;
-}
-
-.card-header h2 button:hover {
-    background-color: #e9ecef; /* Cor de hover mais clara */
-    color: #006400; /* Texto verde escuro no hover */
-}
-
-.card-body {
-    padding: 20px;
-    background-color: #ffffff; /* Fundo branco para o corpo do card */
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    background-color: #ffffff; /* Fundo branco */
-    border-radius: 8px;
-    overflow: hidden;
-}
-
-table, th, td {
-    border: 1px solid #ddd;
-}
-
-th, td {
-    padding: 12px 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    padding: 25px;
+    margin-bottom: 20px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    flex: 1;
+    min-width: 280px;
+    max-width: 400px;
     text-align: center;
-    font-size: 1em;
-    color: #333; /* Texto escuro */
+    border: 1px solid #eee;
+    color: #333;
 }
 
-th {
-    background-color: #006400; /* Verde escuro */
-    color: #ffffff;
+.stat-card h2 {
+    color: #006400;
+    font-size: 1.5em;
+    margin-bottom: 15px;
     text-transform: uppercase;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 10px;
 }
 
-td {
-    background-color: #f9f9f9; /* Fundo claro */
+.stat-card p {
+    font-size: 1.1em;
+    margin: 8px 0;
+    color: #333;
+    line-height: 1.5;
 }
 
-/* Nova regra para o texto da célula de status */
-td:nth-child(7) { /* Seleciona a sexta coluna (onde o status está) */
-    color: #333; /* Cor preta para o texto do status */
+strong {
+    color: #004d00;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.impo{
+    color: #333;
     font-weight: bold;
-}
-
-tr:nth-child(even) td {
-    background-color: #e0e0e0;
-}
-
-tr:hover td {
-    background-color: #c0ffc0; /* Verde claro no hover */
+    text-shadow: none;
 }
 
 html, body {
@@ -198,6 +176,12 @@ footer {
     box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.2);
     /* Remova a margin-top se existir */
     margin-top: 0;
+}
+
+h3 {
+    color: #228B22; /* Verde médio */
+    margin-bottom: 20px;
+    text-align: center;
 }
 
 /* Media Queries para Responsividade do Navbar e outros elementos */
@@ -240,14 +224,21 @@ footer {
         max-width: 95%;
     }
 
-    h1, h2 {
+    h1 {
         font-size: 1.8em;
         margin-bottom: 20px;
     }
 
-    th, td {
-        padding: 10px 5px;
-        font-size: 0.9em;
+    .rules-section {
+        flex-direction: column;
+        gap: 20px;
+        align-items: center;
+    }
+
+    .stat-card {
+        width: 90%;
+        min-width: unset;
+        max-width: unset;
     }
 }
 
@@ -261,117 +252,89 @@ footer {
         padding: 8px 15px !important;
     }
 
-    h1, h2 {
+    h1 {
         font-size: 1.5em;
     }
 
-    th, td {
-        font-size: 0.8em;
-        padding: 8px;
+    .stat-card {
+        padding: 20px;
+    }
+
+    .stat-card h2 {
+        font-size: 1.5em;
     }
 }
 
-/* static/palpites.css */
-
-body {
-    background-color: #f4f7f6;
-}
-
-.card-header .btn-link {
-    color: #006400;
-    font-size: 1.2rem;
-    text-decoration: none;
-}
-.card-header .btn-link:hover {
-    text-decoration: none;
-}
-
-.list-group-item {
+/* Estilo do botão no navbar */
+.btn-palpite-campeao {
+    background: linear-gradient(135deg, #006400, #228B22);
+    color: white !important;
+    border-radius: 50px;
+    padding: 8px 20px !important;
+    margin: 0 5px;
+    transition: all 0.3s;
     display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-    padding: 1rem;
-}
-
-.matchup-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 1.1rem;
-    padding-bottom: 0.75rem;
-    border-bottom: 1px solid #eee;
-    text-align: center;
-    font-weight: 500;
-}
-
-.team-logo-sm {
-    width: 28px;
-    height: 28px;
-    object-fit: contain;
-}
-
-.palpite-comparison {
-    display: flex;
-    justify-content: space-around;
-    align-items: stretch; /* Faz as caixas terem a mesma altura */
-    text-align: center;
-    gap: 1rem;
-    flex-wrap: wrap;
-    padding: 0.5rem 0;
-}
-
-.palpite-box {
-    display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
-    background-color: #f8f9fa;
-    padding: 0.75rem 1.25rem;
-    border: 1px solid #e9ecef;
-    border-radius: 0.5rem;
-    flex: 1; /* Faz as caixas ocuparem o espaço igualmente */
-    min-width: 160px;
+    box-shadow: 0 4px 6px rgba(0, 100, 0, 0.2);
 }
 
-.palpite-box span:first-child {
-    font-size: 0.85rem;
-    color: #6c757d;
-    font-weight: 500;
-    margin-bottom: 0.25rem;
+.btn-palpite-campeao:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 10px rgba(0, 100, 0, 0.3);
+    background: linear-gradient(135deg, #228B22, #006400);
 }
 
-.palpite-box strong {
-    font-size: 1.75rem;
-    font-weight: 700;
-    line-height: 1.2;
+.btn-palpite-campeao span {
+    margin-left: 8px;
 }
 
-.palpite-status {
-    text-align: center;
-    margin-top: 0.5rem;
-    padding-top: 0.75rem;
-    border-top: 1px solid #eee;
+/* Estilo do botão de submit */
+.btn-enviar-palpite {
+    background: linear-gradient(135deg, #d4af37, #f9d423);
+    color: #006400;
+    border: none;
+    border-radius: 50px;
+    padding: 12px 30px;
+    font-size: 1.1em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 20px auto;
+    box-shadow: 0 4px 8px rgba(212, 175, 55, 0.3);
 }
 
-.palpite-status .badge {
-    font-size: 0.9rem;
-    padding: 0.5em 1em;
-    font-weight: 600;
+.btn-enviar-palpite:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 15px rgba(212, 175, 55, 0.4);
+    background: linear-gradient(135deg, #f9d423, #d4af37);
 }
 
-/* Estilo para o link do ícone de admin/login */
-.admin-icon-link {
-    padding: 0.25rem 0.75rem !important;
-    color: rgba(255, 255, 255, 0.75) !important;
-    transition: color 0.2s ease-in-out;
+.btn-enviar-palpite .btn-text {
+    margin-right: 10px;
 }
 
-.admin-icon-link:hover {
-    color: #fff !important;
+.btn-enviar-palpite .btn-icon {
+    font-size: 1.2em;
 }
 
-/* Ajuste para o dropdown do admin */
-.dropdown-menu-end {
-    right: 0;
-    left: auto;
+/* Efeito ao clicar */
+.btn-enviar-palpite:active {
+    transform: translateY(1px);
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .btn-palpite-campeao {
+        padding: 6px 15px !important;
+        font-size: 0.9em;
+    }
+    
+    .btn-enviar-palpite {
+        padding: 10px 25px;
+        font-size: 1em;
+    }
 }

@@ -4,12 +4,15 @@ from functools import wraps
 from collections import defaultdict
 import sqlite3
 import re
-import socket
 
 
-# --- Configurações de Administrador ---
+API_BASE_URL = "http://apifutebol.footstats.com.br/3.1"
+API_TOKEN = "Bearer_client_token"
+
 app = Flask(__name__)
 app.secret_key = 'ALJDHA76797#%*#JKOL'
+
+# --- Configurações de Administrador ---
 ADMIN_USERNAME = "admin"
 ADMIN_PASSWORD = "pokemar16#" 
 
@@ -21,13 +24,6 @@ def get_db_connection():
 def init_db():
     print("\n[LOG - init_db]: Verificando e inicializando o banco de dados...")
     conn = get_db_connection()
-    cursor = conn.cursor()
-    try:
-        cursor.execute("SELECT pontos_bonus FROM pontuacao LIMIT 1")
-    except sqlite3.OperationalError:
-        print("[LOG - init_db]: Adicionando coluna 'pontos_bonus' à tabela 'pontuacao'.")
-        conn.execute("ALTER TABLE pontuacao ADD COLUMN pontos_bonus INTEGER DEFAULT 0")
-
     conn.execute('''
     CREATE TABLE IF NOT EXISTS pontuacao (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -90,31 +86,12 @@ def init_db():
         data_definicao TEXT UNIQUE
     )''')
 
-    # --- Verificação de Colunas para evitar erros ---
-    def column_exists(table, column):
-        try:
-            cursor.execute(f"SELECT {column} FROM {table} LIMIT 1")
-            return True
-        except sqlite3.OperationalError:
-            return False
-
-    if not column_exists('jogos', 'fase'):
-        print("[LOG - init_db]: Adicionando coluna 'fase' à tabela 'jogos'.")
-        conn.execute("ALTER TABLE jogos ADD COLUMN fase TEXT DEFAULT 'grupos'")
-    if not column_exists('jogos', 'time_que_avancou'):
-        print("[LOG - init_db]: Adicionando coluna 'time_que_avancou' à tabela 'jogos'.")
-        conn.execute("ALTER TABLE jogos ADD COLUMN time_que_avancou TEXT")
-    if not column_exists('palpites', 'quem_avanca'):
-        print("[LOG - init_db]: Adicionando coluna 'quem_avanca' à tabela 'palpites'.")
-        conn.execute("ALTER TABLE palpites ADD COLUMN quem_avanca TEXT")
-
     conn.commit()
     conn.close()
-    print("[LOG - init_db]: Banco de dados pronto.")
 
 init_db()
 
-# --- Decorators e Filtros ---
+# Decorator para exigir login
 def login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
@@ -127,11 +104,12 @@ def login_required(f):
 # Filtro Jinja2 para formatar datas no template
 @app.template_filter('format_date_br')
 def format_date_br_filter(date_str):
-    if not date_str: return ""
-    try:
-        return datetime.strptime(date_str.split(' ')[0], '%Y-%m-%d').strftime('%d/%m/%Y')
-    except (ValueError, IndexError):
-        return date_str
+    if date_str:
+        try:
+            return datetime.strptime(date_str.split(' ')[0], '%Y-%m-%d').strftime('%d/%m/%Y')
+        except ValueError:
+            return date_str
+    return ""
 
 # Função auxiliar para extrair nomes e URLs de imagens dos times (para o palpite campeão)
 def get_all_teams_for_champion_bet():
@@ -851,23 +829,38 @@ def index():
     agora = datetime.now()
     rodada_param = request.args.get('rodada', type=int)
     
-    rodadas_disponiveis_rows = conn.execute("SELECT DISTINCT rodada FROM jogos ORDER BY rodada").fetchall()
-    rodadas_disponiveis = [r['rodada'] for r in rodadas_disponiveis_rows]
+    # Obter todas as rodadas disponíveis
+    rodadas_disponiveis = sorted([r['rodada'] for r in conn.execute("SELECT DISTINCT rodada FROM jogos ORDER BY rodada").fetchall()])
     
-    rodada_ativa = rodada_param if (rodada_param and rodada_param in rodadas_disponiveis) else (rodadas_disponiveis[-1] if rodadas_disponiveis else 1)
+    # Determinar a rodada ativa
+    if rodada_param and rodada_param in rodadas_disponiveis:
+        rodada_ativa = rodada_param
+    else:
+        # Se não houver rodadas, define um padrão para evitar erro
+        rodada_ativa = rodadas_disponiveis[-1] if rodadas_disponiveis else 1
     
-    print(f"[LOG - index]: Rodada ativa para exibição: {rodada_ativa}")
-    
+    # Verificar se há próxima/anterior rodada
     rodada_index = rodadas_disponiveis.index(rodada_ativa) if rodada_ativa in rodadas_disponiveis else -1
     tem_proxima = rodada_index != -1 and rodada_index < len(rodadas_disponiveis) - 1
     tem_anterior = rodada_index > 0
     
+    # Filtrar jogos para a rodada ativa
     agora_str = agora.strftime('%Y-%m-%d %H:%M')
     
-    jogos_futuros = conn.execute("SELECT * FROM jogos WHERE rodada = ? AND data_hora > ? ORDER BY data_hora ASC", (rodada_ativa, agora_str)).fetchall()
-    jogos_passados = conn.execute("SELECT * FROM jogos WHERE rodada = ? AND data_hora <= ? ORDER BY data_hora DESC", (rodada_ativa, agora_str)).fetchall()
+    jogos_futuros = conn.execute(
+        "SELECT id, rodada, time1_nome, time1_img, time1_sigla, time2_nome, time2_img, time2_sigla, data_hora, local, placar_time1, placar_time2 FROM jogos WHERE rodada = ? AND data_hora > ? ORDER BY data_hora ASC",
+        (rodada_ativa, agora_str)
+    ).fetchall()
+    
+    jogos_passados = conn.execute(
+        "SELECT id, rodada, time1_nome, time1_img, time1_sigla, time2_nome, time2_img, time2_sigla, data_hora, local, placar_time1, placar_time2, status FROM jogos WHERE rodada = ? AND data_hora <= ? ORDER BY data_hora DESC",
+        (rodada_ativa, agora_str)
+    ).fetchall()
     
     conn.close()
+
+    print(f"\n[LOG] Acessando página inicial - Rodada ativa: {rodada_ativa}")
+    print(f"[LOG] Jogos futuros: {len(jogos_futuros)}, Jogos passados: {len(jogos_passados)}\n")
     
     return render_template('index.html', 
         pontuacao=pontuacao,
@@ -884,52 +877,77 @@ def index():
 @app.route('/palpites')
 def exibir_palpites():
     conn = get_db_connection()
+    
+    # Adicionando um parâmetro de rodada opcional para exibir palpites de rodadas específicas
     rodada_param = request.args.get('rodada', type=int)
 
-    # Lógica para determinar a rodada a ser exibida
-    rodada_para_exibir = 0
-    if rodada_param:
+    # Lógica para determinar a rodada ativa (se nenhuma for especificada)
+    rodada_para_exibir = None
+    if rodada_param: # Se uma rodada específica for solicitada na URL
         rodada_para_exibir = rodada_param
-    else:
-        # Encontra a rodada mais recente que tem palpites
-        rodada_recente_row = conn.execute("SELECT MAX(rodada) as max_rodada FROM palpites").fetchone()
-        if rodada_recente_row and rodada_recente_row['max_rodada']:
-            rodada_para_exibir = rodada_recente_row['max_rodada']
-        else:
-            # Se não houver palpites, mostra a primeira rodada
-            rodada_para_exibir = 1
-    
-    # Busca os palpites e os jogos da rodada selecionada
+        print(f"[LOG] Rodada solicitada via parâmetro: {rodada_para_exibir}")
+    else: # Se nenhuma rodada for especificada, determina a rodada ativa
+        agora = datetime.now()
+        rodadas_no_db = conn.execute("SELECT DISTINCT rodada FROM jogos ORDER BY rodada ASC").fetchall()
+        
+        rodada_ativa = None
+        for row in rodadas_no_db:
+            num_rodada = row['rodada']
+            ultimo_jogo_da_rodada = conn.execute(
+                "SELECT data_hora FROM jogos WHERE rodada = ? ORDER BY data_hora DESC LIMIT 1", (num_rodada,)
+            ).fetchone()
+            
+            if ultimo_jogo_da_rodada:
+                ultimo_jogo_datetime = datetime.strptime(ultimo_jogo_da_rodada['data_hora'], '%Y-%m-%d %H:%M')
+                if agora < ultimo_jogo_datetime:
+                    rodada_ativa = num_rodada
+                    break
+        
+        if rodada_ativa is None:
+            if rodadas_no_db:
+                rodada_ativa = rodadas_no_db[-1]['rodada']
+            else:
+                rodada_ativa = 1 # Padrão para Rodada 1 se não houver rodadas no DB
+        rodada_para_exibir = rodada_ativa # Define a rodada a ser exibida
+
+    # Agora, buscar os palpites para a rodada determinada
     palpites = conn.execute("SELECT * FROM palpites WHERE rodada = ? ORDER BY nome", (rodada_para_exibir,)).fetchall()
-    jogos_da_rodada = conn.execute("SELECT * FROM jogos WHERE rodada = ?", (rodada_para_exibir,)).fetchall()
-    
-    # Cria um "mapa" para facilitar a busca de jogos no template
-    jogos_map = {jogo['id']: jogo for jogo in jogos_da_rodada}
 
-    # Agrupa os palpites por nome de jogador
-    palpites_agrupados = defaultdict(list)
+    palpites_agrupados = {}
     for palpite in palpites:
-        palpites_agrupados[palpite['nome']].append(palpite)
+        nome = palpite['nome']
+        if nome not in palpites_agrupados:
+            palpites_agrupados[nome] = []
+        palpites_agrupados[nome].append(palpite)
 
-    # Lógica para navegação entre rodadas
+    # Obter todas as rodadas existentes para a navegação de próxima/anterior e links
     rodadas_existentes = sorted([r['rodada'] for r in conn.execute("SELECT DISTINCT rodada FROM jogos ORDER BY rodada ASC").fetchall()])
+    
     idx_rodada = rodadas_existentes.index(rodada_para_exibir) if rodada_para_exibir in rodadas_existentes else -1
-    tem_proxima = idx_rodada != -1 and idx_rodada < len(rodadas_existentes) - 1
-    tem_anterior = idx_rodada > 0
-    proxima_rodada = rodadas_existentes[idx_rodada + 1] if tem_proxima else None
-    anterior_rodada = rodadas_existentes[idx_rodada - 1] if tem_anterior else None
+    
+    tem_proxima = False
+    proxima_rodada = None
+    if idx_rodada != -1 and idx_rodada < len(rodadas_existentes) - 1:
+        tem_proxima = True
+        proxima_rodada = rodadas_existentes[idx_rodada + 1]
 
-    conn.close()
+    tem_anterior = False
+    anterior_rodada = None
+    if idx_rodada > 0:
+        tem_anterior = True
+        anterior_rodada = rodadas_existentes[idx_rodada - 1]
+
+    conn.close() # Mover conn.close() para o final da função
 
     return render_template(
         'palpites.html',
         palpites_agrupados=palpites_agrupados,
-        jogos_map=jogos_map,  # Passa os dados dos jogos para o template
         rodada_exibida_num=rodada_para_exibir,
         tem_proxima=tem_proxima,
         proxima_rodada=proxima_rodada,
         tem_anterior=tem_anterior,
-        anterior_rodada=anterior_rodada
+        anterior_rodada=anterior_rodada,
+        rodadas_disponiveis=rodadas_existentes # Para o Navbar, se necessário
     )
 
 @app.route('/adicionar_palpites', methods=['GET', 'POST'])
@@ -938,57 +956,82 @@ def adicionar_palpites():
     cursor = conn.cursor()
 
     if request.method == 'POST':
-        # A lógica de salvar os palpites (POST) precisa ser atualizada para incluir 'quem_avanca'
-        nome = request.form.get('nome')
-        rodada_selecionada = int(request.form.get('rodada_selecionada'))
-        
+        # A lógica de salvar os palpites (POST) continua a mesma
+        nome = request.form['nome']
+        rodada_selecionada = int(request.form['rodada_selecionada'])
+        print(f"\n[LOG - adicionar_palpites]: Recebido POST de '{nome}' para a rodada {rodada_selecionada}.")
+
+        try:
+            cursor.execute("INSERT OR IGNORE INTO pontuacao (nome) VALUES (?)", (nome,))
+            conn.commit()
+        except sqlite3.IntegrityError:
+            pass # Ignora se o nome já existe, que é o esperado
+
         agora_str = datetime.now().strftime('%Y-%m-%d %H:%M')
         jogos_da_rodada_para_palpite = conn.execute(
-            "SELECT * FROM jogos WHERE rodada = ? AND data_hora > ?",
+            "SELECT id, time1_nome, time2_nome FROM jogos WHERE rodada = ? AND data_hora > ?",
             (rodada_selecionada, agora_str)
         ).fetchall()
 
+        palpites_inseridos = 0
         for jogo in jogos_da_rodada_para_palpite:
             game_id = jogo['id']
+            # Checa se o palpite para este jogo específico foi enviado
             if f'gol_time1_{game_id}' in request.form:
                 gol_time1 = int(request.form[f'gol_time1_{game_id}'])
                 gol_time2 = int(request.form[f'gol_time2_{game_id}'])
                 resultado_palpite = request.form[f'resultado_{game_id}']
-                # Pega o valor de quem avança, se o campo existir no formulário
-                quem_avanca = request.form.get(f'quem_avanca_{game_id}', None)
-
-                # Deleta o palpite antigo para inserir o novo/atualizado
+                
+                # Insere ou atualiza o palpite
                 cursor.execute("DELETE FROM palpites WHERE nome = ? AND game_id = ?", (nome, game_id))
                 cursor.execute(
-                    "INSERT INTO palpites (nome, rodada, game_id, time1, time2, gol_time1, gol_time2, resultado, status, quem_avanca) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-                    (nome, rodada_selecionada, game_id, jogo['time1_nome'], jogo['time2_nome'], gol_time1, gol_time2, resultado_palpite, 'Pendente', quem_avanca)
+                    "INSERT INTO palpites (nome, rodada, game_id, time1, time2, gol_time1, gol_time2, resultado, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                    (nome, rodada_selecionada, game_id, jogo['time1_nome'], jogo['time2_nome'], gol_time1, gol_time2, resultado_palpite, 'Pendente')
                 )
-        
+                palpites_inseridos += 1
+
         conn.commit()
         conn.close()
-        flash('Palpites registrados com sucesso!', 'success')
+        
+        if palpites_inseridos > 0:
+            print(f"[LOG - adicionar_palpites]: {palpites_inseridos} palpites de '{nome}' registrados com sucesso.\n")
+            flash(f'{palpites_inseridos} palpites foram registrados com sucesso!', 'success')
+        else:
+            flash('Nenhum palpite novo foi registrado (a rodada pode estar fechada).', 'warning')
+            
         return redirect(url_for('exibir_palpites'))
 
     # --- LÓGICA DO GET ATUALIZADA ---
+    # Quando a página é carregada (sem POST)
+    
     agora_str = datetime.now().strftime('%Y-%m-%d %H:%M')
     
+    # 1. Pega todas as rodadas que existem no sistema para o menu dropdown
     todas_as_rodadas_rows = conn.execute("SELECT DISTINCT rodada FROM jogos ORDER BY rodada ASC").fetchall()
     todas_as_rodadas = [r['rodada'] for r in todas_as_rodadas_rows]
 
     rodada_selecionada_pelo_usuario = request.args.get('rodada', type=int)
     rodada_ativa = 0
 
+    # 2. Verifica se o usuário escolheu uma rodada específica na URL
     if rodada_selecionada_pelo_usuario in todas_as_rodadas:
         rodada_ativa = rodada_selecionada_pelo_usuario
     else:
+        # 3. Se não, encontra a primeira rodada que ainda tem jogos abertos
         rodada_aberta_row = conn.execute(
-            "SELECT rodada FROM jogos WHERE data_hora > ? ORDER BY rodada ASC LIMIT 1", (agora_str,)
+            "SELECT rodada FROM jogos WHERE data_hora > ? ORDER BY rodada ASC LIMIT 1",
+            (agora_str,)
         ).fetchone()
-        rodada_ativa = rodada_aberta_row['rodada'] if rodada_aberta_row else (todas_as_rodadas[-1] if todas_as_rodadas else 1)
+
+        if rodada_aberta_row:
+            rodada_ativa = rodada_aberta_row['rodada']
+        else:
+            # Se não houver nenhuma rodada aberta, seleciona a última rodada como padrão
+            rodada_ativa = todas_as_rodadas[-1] if todas_as_rodadas else 1
     
-    # CORREÇÃO: A consulta agora busca TODAS as colunas, incluindo 'fase'
+    # 4. Busca os jogos que ainda estão abertos para a rodada ativa
     jogos_para_palpitar = conn.execute(
-        "SELECT * FROM jogos WHERE rodada = ? AND data_hora > ?",
+        "SELECT id, time1_nome, time1_img, time1_sigla, time2_nome, time2_img, time2_sigla, data_hora, local FROM jogos WHERE rodada = ? AND data_hora > ?",
         (rodada_ativa, agora_str)
     ).fetchall()
     
@@ -1022,6 +1065,9 @@ def estatisticas():
     # 2. Descobre a última rodada com palpites avaliados
     rodada_atual_row = conn.execute("SELECT MAX(rodada) as rodada FROM palpites WHERE status != 'Pendente'").fetchone()
     rodada_atual_bonus = rodada_atual_row['rodada'] if rodada_atual_row and rodada_atual_row['rodada'] else 0
+
+    print(f"\n[LOG] Rodada atual para cálculo de bônus: {rodada_atual_bonus}")
+
     sequencias_info = defaultdict(int)
     
     if rodada_atual_bonus > 0:
@@ -1061,8 +1107,7 @@ def estatisticas():
 
     conn.close()
 
-    print(f"\n[LOG - estatisticas]: Rodada atual para cálculo de bônus: {rodada_atual_bonus}")
-    print(f"[LOG - estatisticas]: Estatísticas carregadas para {len(estatisticas_completas)} jogadores.\n")
+    print(f"\n[LOG] Estatísticas carregadas para {len(estatisticas_completas)} jogadores\n")
 
     return render_template('estatisticas.html',
                            maior_pontuador=maior_pontuador,
@@ -1124,12 +1169,10 @@ def exibir_rodadas():
 @app.route('/rodada/<int:numero>')
 def exibir_rodada(numero):
     conn = get_db_connection()
-    # A busca de palpites já pega a coluna 'quem_avanca', então está correta.
     palpites = conn.execute("SELECT * FROM palpites WHERE rodada = ?", (numero,)).fetchall()
 
-    # CORREÇÃO: A busca de jogos agora inclui as colunas 'fase' e 'time_que_avancou'
     jogos_da_rodada = conn.execute(
-        "SELECT * FROM jogos WHERE rodada = ? ORDER BY data_hora",
+        "SELECT id, time1_nome, time1_img, time1_sigla, time2_nome, time2_img, time2_sigla, data_hora, local, placar_time1, placar_time2 FROM jogos WHERE rodada = ? ORDER BY data_hora",
         (numero,)
     ).fetchall()
     conn.close()
@@ -1139,33 +1182,35 @@ def exibir_rodada(numero):
         nome = palpite['nome']
         if nome not in palpites_agrupados:
             palpites_agrupados[nome] = []
-        # O palpite completo já é adicionado, o que é perfeito.
-        palpites_agrupados[nome].append(palpite)
+        palpites_agrupados[nome].append({
+            'time1': palpite['time1'],
+            'gol_time1': palpite['gol_time1'],
+            'time2': palpite['time2'],
+            'gol_time2': palpite['gol_time2'],
+            'resultado': palpite['resultado'],
+            'status': palpite['status']
+        })
 
-    return render_template('rodada.html', 
-                           rodada=numero, 
-                           palpites_agrupados=palpites_agrupados, 
-                           jogos_da_rodada=jogos_da_rodada)
+    return render_template('rodada.html', rodada=numero, palpites_agrupados=palpites_agrupados, jogos_da_rodada=jogos_da_rodada)
 
 # Rota de Login
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        username = request.form.get('username')
-        ip_cliente = request.remote_addr
-        
-        if username == ADMIN_USERNAME and request.form.get('password') == ADMIN_PASSWORD:
+        username = request.form['username']
+        password = request.form['password']
+        if username == ADMIN_USERNAME and password == ADMIN_PASSWORD:
             session['logged_in'] = True
-            print(f"\n[LOG - login]: Login BEM-SUCEDIDO para '{username}' a partir do IP {ip_cliente}.\n")
+            print(f"\n[LOG] Login realizado por {username}\n")
             flash('Login realizado com sucesso!', 'success')
             return redirect(url_for('admin_dashboard'))
         else:
-            print(f"\n[LOG - login]: Tentativa de login FALHOU para '{username}' a partir do IP {ip_cliente}.\n")
+            print(f"\n[LOG] Tentativa de login falhou - Usuário: {username}")
             flash('Nome de usuário ou senha incorretos.', 'danger')
     return render_template('login.html')
 
 # Rota de Logout
-@app.route('/logout', methods=['GET', 'POST'])
+@app.route('/logout')
 def logout():
     print(f"\n[LOG] Logout realizado por {session.get('username', 'N/A')}\n")
     session.pop('logged_in', None)
@@ -1175,18 +1220,20 @@ def logout():
 @app.route('/admin')
 @login_required
 def admin_dashboard():
-    print("\n[LOG - admin_dashboard]: Acessando o painel de administração.")
     conn = get_db_connection()
+    # Busca a pontuação para popular o dropdown do bônus
     pontuacao_geral = conn.execute("SELECT nome FROM pontuacao ORDER BY nome").fetchall()
     conn.close()
     return render_template('admin_dashboard.html', pontuacao_geral=pontuacao_geral)
-
 
 @app.route('/admin/set_game_result', methods=['GET', 'POST'])
 @login_required
 def set_game_result():
     conn = get_db_connection()
     cursor = conn.cursor()
+    
+    print("\n[LOG] Acessando rota /admin/set_game_result")
+
     if request.method == 'POST':
         if request.form.get('password') != ADMIN_PASSWORD:
             print("\n[LOG] Tentativa de acesso com senha incorreta")
@@ -1197,7 +1244,8 @@ def set_game_result():
         game_id = request.form.get('game_id', type=int)
         placar_time1 = request.form.get('placar_time1', type=int)
         placar_time2 = request.form.get('placar_time2', type=int)
-        print(f"\n[LOG - set_game_result]: Recebido POST para definir placar do jogo ID {game_id} como {placar_time1}x{placar_time2}.")
+        
+        print(f"\n[LOG] Tentativa de atualizar jogo {game_id} para {placar_time1}x{placar_time2}")
 
         try:
             cursor.execute(
@@ -1217,9 +1265,7 @@ def set_game_result():
             flash(f'Erro ao atualizar o placar ao vivo: {e}', 'danger')
         finally:
             conn.close()
-
-        print(f"[LOG - set_game_result]: Jogo ID {game_id} atualizado com sucesso.")
-        flash('Placar ao vivo atualizado!', 'success')
+        
         return redirect(url_for('set_game_result'))
 
     # GET request
@@ -1234,89 +1280,73 @@ def set_game_result():
 @app.route('/atualizar_pontuacao_admin')
 @login_required
 def atualizar_pontuacao_admin():
-    print("\n[LOG - atualizar_pontuacao_admin]: INÍCIO do processo de atualização de pontuação.")
     conn = get_db_connection()
+    cursor = conn.cursor()
+
+    print("\n[LOG] Iniciando atualização de pontuação")
+
+    cursor.execute("UPDATE pontuacao SET pontos = 0, acertos = 0, erros = 0")
+    print("\n[LOG] Zeradas as pontuações existentes")
+
+    jogos_com_resultados = conn.execute("SELECT id, placar_time1, placar_time2 FROM jogos WHERE placar_time1 IS NOT NULL AND placar_time2 IS NOT NULL").fetchall()
+    resultados_reais_map = {jogo['id']: (jogo['placar_time1'], jogo['placar_time2']) for jogo in jogos_com_resultados}
     
-    conn.execute("UPDATE pontuacao SET pontos = 0, acertos = 0, erros = 0")
+    print(f"\n[LOG] Jogos com resultados definidos: {len(resultados_reais_map)}")
+
+    cursor.execute("SELECT * FROM palpites")
+    palpites = cursor.fetchall()
     
-    palpites = conn.execute("SELECT * FROM palpites").fetchall()
-    jogos = conn.execute("SELECT * FROM jogos WHERE status = 'Finalizado'").fetchall()
-    jogos_map = {jogo['id']: jogo for jogo in jogos}
+    print(f"\n[LOG] Total de palpites a processar: {len(palpites)}")
 
     for palpite in palpites:
+        nome = palpite['nome']
         game_id = palpite['game_id']
-        if game_id in jogos_map:
-            jogo = jogos_map[game_id]
-            nome = palpite['nome']
+        gol_time1 = palpite['gol_time1']
+        gol_time2 = palpite['gol_time2']
+        palpite_resultado_texto = palpite['resultado']
+        palpite_id = palpite['id']
+
+        resultado_real = resultados_reais_map.get(game_id)
+        if resultado_real:
+            gol_real_time1, gol_real_time2 = resultado_real
+
             pontos_ganhos = 0
-            
-            # Variáveis do Palpite
-            p_gol1 = palpite['gol_time1']
-            p_gol2 = palpite['gol_time2']
-            p_resultado = palpite['resultado']
-            p_avanca = palpite.get('quem_avanca')
-
-            # Variáveis do Jogo Real
-            j_gol1 = jogo['placar_time1']
-            j_gol2 = jogo['placar_time2']
-            j_avancou = jogo.get('time_que_avancou')
-            j_fase = jogo.get('fase', 'grupos')
-
-            if j_gol1 > j_gol2: j_resultado = 'Vitória (Casa)'
-            elif j_gol1 < j_gol2: j_resultado = 'Vitória (Fora)'
-            else: j_resultado = 'Empate'
-
-            acerto_placar = (p_gol1 == j_gol1 and p_gol2 == j_gol2)
-            acerto_resultado = (p_resultado == j_resultado)
-            acerto_avanco = (p_avanca == j_avancou)
-            
             status_palpite = "Erro (0 pts)"
 
-            # --- NOVA LÓGICA DE PONTUAÇÃO PARA MATA-MATA ---
-            if j_fase == 'mata-mata':
-                if acerto_placar and acerto_resultado and acerto_avanco:
-                    pontos_ganhos = 5
-                    status_palpite = "Acerto Total! (5 pts)"
-                elif acerto_placar and acerto_resultado:
-                    pontos_ganhos = 4
-                    status_palpite = "Acerto Placar + Resultado (4 pts)"
-                elif acerto_placar and acerto_avanco:
-                    pontos_ganhos = 3
-                    status_palpite = "Acerto Placar + Avanço (3 pts)"
-                elif acerto_placar:
-                    pontos_ganhos = 2
-                    status_palpite = "Acerto Placar (2 pts)"
-                elif acerto_resultado:
-                    pontos_ganhos = 1
-                    status_palpite = "Acerto Resultado (1 pt)"
-                elif acerto_avanco:
-                    pontos_ganhos = 1
-                    status_palpite = "Acerto Avanço (1 pt)"
-            
-            # --- LÓGICA ANTIGA PARA FASE DE GRUPOS ---
+            if gol_real_time1 > gol_real_time2:
+                real_resultado_texto = 'Vitória (Casa)'
+            elif gol_real_time1 < gol_real_time2:
+                real_resultado_texto = 'Vitória (Fora)'
             else:
-                if acerto_placar and acerto_resultado:
+                real_resultado_texto = 'Empate'
+
+            if gol_time1 == gol_real_time1 and gol_time2 == gol_real_time2:
+                if palpite_resultado_texto == real_resultado_texto:
                     pontos_ganhos = 4
                     status_palpite = "Acerto Total (4 pts)"
-                elif acerto_placar:
+                else:
                     pontos_ganhos = 2
                     status_palpite = "Acerto Placar (2 pts)"
-                elif acerto_resultado:
-                    pontos_ganhos = 1
-                    status_palpite = "Acerto Resultado (1 pt)"
-
-            # Atualiza pontos e status
-            if pontos_ganhos > 0:
-                conn.execute("UPDATE pontuacao SET pontos = pontos + ?, acertos = acertos + 1 WHERE nome = ?", (pontos_ganhos, nome))
+                cursor.execute("UPDATE pontuacao SET acertos = acertos + 1 WHERE nome = ?", (nome,))
             else:
-                conn.execute("UPDATE pontuacao SET erros = erros + 1 WHERE nome = ?", (nome,))
-            
-            conn.execute("UPDATE palpites SET status = ? WHERE id = ?", (status_palpite, palpite['id']))
+                if palpite_resultado_texto == real_resultado_texto:
+                    pontos_ganhos = 1
+                    status_palpite = "Acerto Resultado (1 pts)"
+                    cursor.execute("UPDATE pontuacao SET acertos = acertos + 1 WHERE nome = ?", (nome,))
+                else:
+                    cursor.execute("UPDATE pontuacao SET erros = erros + 1 WHERE nome = ?", (nome,))
+                    status_palpite = "Erro (0 pts)"
+
+            cursor.execute("UPDATE pontuacao SET pontos = pontos + ? WHERE nome = ?", (pontos_ganhos, nome))
+            cursor.execute("UPDATE palpites SET status = ? WHERE id = ?", (status_palpite, palpite_id))
+        else:
+            status_palpite = "Pendente"
+            cursor.execute("UPDATE palpites SET status = ? WHERE id = ?", (status_palpite, palpite_id))
     
     # ALTERAÇÃO: Após calcular os pontos, atualiza o status dos jogos processados para 'Finalizado'
-    if jogos_map:
-        placeholders = ','.join('?' for _ in jogos_map.keys())
-        cursor.execute(f"UPDATE jogos SET status = 'Finalizado' WHERE id IN ({placeholders})", list(jogos_map.keys()))
+    if resultados_reais_map:
+        placeholders = ','.join('?' for _ in resultados_reais_map.keys())
+        cursor.execute(f"UPDATE jogos SET status = 'Finalizado' WHERE id IN ({placeholders})", list(resultados_reais_map.keys()))
 
         # --- INÍCIO DA NOVA LÓGICA PARA PONTUAR O CAMPEÃO ---
     PONTOS_CAMPEAO = 5 
@@ -1335,7 +1365,8 @@ def atualizar_pontuacao_admin():
 
     conn.commit()
     conn.close()
-    print("[LOG - atualizar_pontuacao_admin]: FIM do processo de atualização.")
+    
+    print("\n[LOG] Pontuação atualizada com sucesso")
     flash('Pontuação atualizada com sucesso!', 'info')
     return redirect(url_for('admin_dashboard'))
 
@@ -1474,9 +1505,10 @@ def set_champion():
 if __name__ == '__main__':
     conn = get_db_connection()
     cursor = conn.cursor()
-    print("\n" + "="*50)
-    print("      INICIANDO APLICAÇÃO DE PALPITES")
-    print("="*50 + "\n")
+    print(f"\n[LOG - Main]: Servidor Flask iniciando")
+    # Adicionando alguns jogos extras para garantir que a rodada ativa mude.
+    # A rodada 1 termina no dia 16/06 14:00. Se a data atual for depois disso, a rodada 2 se torna ativa.
+    # Ajuste as datas para testar as transições.
     for rodada_num, jogos_rodada in MUNDIAL_JOGOS_POR_RODADA.items():
         for jogo in jogos_rodada:
             cursor.execute("SELECT id FROM jogos WHERE id = ?", (jogo['id'],))
@@ -1488,17 +1520,6 @@ if __name__ == '__main__':
     conn.commit()
     conn.close()
 
-    try:
-        hostname = socket.gethostname()
-        ip_server = socket.gethostbyname(hostname)
-    except socket.error as e:
-        ip_server = '127.0.0.1' # IP de fallback caso não consiga encontrar
-        print(f"[AVISO] Não foi possível obter o IP local: {e}. Usando {ip_server} como fallback.")
-
-    print(f"[LOG - Main]: Servidor Flask rodando. Acesse nos seguintes endereços:")
-    print(f"   - Na mesma máquina: http://127.0.0.1:3000")
-    print(f"   - Em outros dispositivos na mesma rede: http://{ip_server}:3000")
-    print("\nPressione CTRL+C para parar o servidor.")
-    
-    # O host '0.0.0.0' é essencial para permitir acessos de outros dispositivos na rede
-    app.run(host="0.0.0.0", port=3000, debug=True)
+    print("[LOG] Iniciando aplicação Flask\n")
+    print("Pressione CTRL+C para parar o servidor.\n")
+    app.run(host="0.0.0.0", port=5000, debug=True)

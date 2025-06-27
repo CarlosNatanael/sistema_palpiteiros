@@ -127,27 +127,14 @@
             </button>
             <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
                 <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('index') }}">Pontuação</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('estatisticas') }}">Estatísticas</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('exibir_palpites') }}">Palpites</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('exibir_rodadas') }}">Rodadas</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('adicionar_palpites') }}">Adicionar Palpite</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('regra') }}">Regras</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('admin_dashboard') }}">Admin</a>
-                    </li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('index') }}">Pontuação</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('estatisticas') }}">Estatísticas</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('exibir_palpites') }}">Palpites</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('adicionar_palpites') }}">Adicionar Palpite</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('regra') }}">Regras</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('ver_palpites_campeao') }}">Palpites Campeão</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('admin_dashboard') }}">Painel Admin</a></li>
+
                 </ul>
             </div>
         </nav>
@@ -202,8 +189,10 @@
         </div>
     </main>
 
-    <footer>
-        <p>© Desenvolvido por Carlos Natanael</p>
+    <footer class="bg-dark text-white py-3 mt-auto">
+        <div class="container text-center">
+            <p class="mb-0">© Desenvolvido por Carlos Natanael</p>
+        </div>
     </footer>
 
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>

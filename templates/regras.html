@@ -5,51 +5,54 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Regras - Sistema de Palpites</title>
     <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+    <link rel="stylesheet" href="{{ url_for('static', filename='regra.css') }}">    
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="{{ url_for('static', filename='regra.css') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
 </head>
 <body class="site-container">
     <header>
-        <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('index') }}">Pontuação</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('estatisticas') }}">Estatísticas</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('exibir_palpites') }}">Palpites</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('exibir_rodadas') }}">Rodadas</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('adicionar_palpites') }}">Adicionar Palpite</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('regra') }}">Regras</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('ver_palpites_campeao') }}">Palpites Campeão</a>
-                    </li>
-                    {% if session.logged_in %} {# Adicionado: Exibir 'Admin' e 'Sair' apenas se logado #}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('admin_dashboard') }}">Admin</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('logout') }}">Sair</a>
-                    </li>
-                    {% else %} {# Adicionado: Exibir 'Login' se não logado #}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('login') }}">Login</a>
-                    </li>
-                    {% endif %}
-                </ul>
+        <nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="background-color: #006400 !important;">
+            <div class="container-fluid">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <!-- Links Centrais -->
+                    <ul class="navbar-nav mx-auto">
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('index') }}">Pontuação</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('estatisticas') }}">Estatísticas</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('exibir_palpites') }}">Palpites</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('adicionar_palpites') }}">Adicionar Palpite</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('regra') }}">Regras</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('ver_palpites_campeao') }}">Palpites Campeão</a></li>
+                    </ul>
+
+                    <!-- ÍCONE DE ADMIN À DIREITA (NOVA SEÇÃO) -->
+                    <ul class="navbar-nav">
+                        {% if session.logged_in %}
+                        <!-- Se estiver logado, mostra um menu dropdown -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link admin-icon-link" href="#" id="navbarDropdownAdmin" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-gear-fill fs-4"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownAdmin">
+                                <li><a class="dropdown-item" href="{{ url_for('admin_dashboard') }}">Painel Admin</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="{{ url_for('logout') }}">Sair</a></li>
+                            </ul>
+                        </li>
+                        {% else %}
+                        <!-- Se não estiver logado, mostra o ícone de login -->
+                        <li class="nav-item">
+                            <a class="nav-link admin-icon-link" href="{{ url_for('login') }}" title="Login do Administrador">
+                                <i class="bi bi-box-arrow-in-right fs-4"></i>
+                            </a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </div>
             </div>
         </nav>
     </header>
@@ -58,21 +61,23 @@
         <section class="statistics-section">
             <h1>REGRAS DO JOGO</h1>
             <section class="rules-section">
+                
+                <!-- Card de Pontuação Atualizado -->
                 <div class="stat-card">
                     <h2>Regras de Pontuação</h2>
-                    <p><strong>Acerto do Placar + Acerto Resultado = </strong><strong>4 pts</strong></p>
-                    <p><strong>Acerto do Placar = </strong><strong>2 pts</strong></p>
-                    <p><strong>Acerto Resultado = </strong><strong>1 pts</strong></p>
-                    <p><strong>Bônus de Consistência = 3 pts</strong></p>
-                    <p><strong>Bônus por Finais de Competições = 5 pts</strong></p>
+                    <hr>
+                    <p><strong class="impo">Acertar Total</strong> <strong>5 pts</strong></p>
+                    <p><strong class="impo">Acertar placar + resultado</strong> <strong>4 pts</strong></p>
+                    <p><strong class="impo">Acertar placar + quem avança</strong> <strong>3 pts</strong></p>
+                    <p><strong class="impo">Acertar apenas o placar</strong> <strong>2 pts</strong></p>
+                    <p><strong class="impo">Acertar apenas o resultado</strong> <strong>1 pt</strong></p>
+                    <p><strong class="impo">Acertar apenas quem avança</strong> <strong>1 pt</strong></p>
                 </div>
 
                 <div class="stat-card">
                     <h2>Bônus de Pontuação</h2>
-                    <p><strong>Bônus por Sequência de Acertos:</strong> Mantenha uma sequência de acertos na rodada atual para ganhar um bônus de <strong>3 pontos</strong>! Se sua sequência de acertos chegar a 3 ou mais, você se torna elegível.</p>
-                    <p><strong>Atenção:</strong> Se você errar um palpite, sua sequência de acertos na rodada é <strong class="impo">zerada</strong> e você precisa começar de novo!</p>
-                    <p><strong>Como Funciona:</strong> Acompanhe sua <strong class="impo">"Sequência Atual"</strong> na página de <strong>Estatísticas</strong>. O bônus é concedido manualmente pelo administrador.</p>
-                    <p><strong>Bônus por Finais de Competições:</strong> Para finais de campeonatos importantes quem acertar o resultado exato ganha pontos adicionais.</p>
+                    <p><strong>Bônus por Sequência:</strong> Mantenha uma sequência de <strong>3 acertos</strong> na rodada atual para ganhar um bônus de <strong>3 pontos</strong>. Se errar, a sequência zera!</p>
+                    <p><strong>Bônus do Campeão:</strong> Acertar o campeão do torneio rende <strong>5 pontos</strong> extras no final!</p>
                     <button type="submit" class="btn-enviar-palpite">
                         <a class="nav-link" href="{{ url_for('palpite_campeao') }}">Palpite Campeão</a>
                     </button>
@@ -80,23 +85,25 @@
 
                 <div class="stat-card">
                     <h2>Regras dos Palpites</h2>
-                    <p><strong>Os palpites desaparecerão ao começo do horario do jogo.</strong></p>
-                    <p><strong>Palpites já feitos não podem ser alterados.</strong></p>
-                    <p><strong>As estatísticas serão atualizadas ao final de cada rodada.</strong></p>
+                    <p><strong>Os palpites para um jogo são bloqueados no horário de início da partida.</strong></p>
+                    <p><strong>Palpites já feitos não podem ser alterados após o bloqueio.</strong></p>
+                    <p><strong>As estatísticas são atualizadas pelo administrador ao final de cada rodada.</strong></p>
                 </div>
 
                 <div class="stat-card">
                     <h2>👑 Premiação 👑</h2>
                     <p><strong>Prêmio para o Top 2:</strong></p>
-                    <p><strong>1º Lugar:</strong> Uma torres de choop.</p>
-                    <p><strong>2º Lugar:</strong> Uma camiseta do time favorito.</p>
+                    <p><strong>1º Lugar:</strong> Uma camiseta do time do coração.</p>
+                    <p><strong>2º Lugar:</strong> Uma torre de chopp.</p>
                 </div>
             </section>
         </section>
     </main>
 
-    <footer>
-        <p>© Desenvolvido por Carlos Natanael</p>
+    <footer class="bg-dark text-white py-3 mt-auto">
+        <div class="container text-center">
+            <p class="mb-0">© Desenvolvido por Carlos Natanael</p>
+        </div>
     </footer>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

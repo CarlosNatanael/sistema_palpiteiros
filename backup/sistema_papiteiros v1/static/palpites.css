@@ -151,7 +151,7 @@ td {
 }
 
 /* Nova regra para o texto da célula de status */
-td:nth-child(7) { /* Seleciona a sexta coluna (onde o status está) */
+td:nth-child(6) { /* Seleciona a sexta coluna (onde o status está) */
     color: #333; /* Cor preta para o texto do status */
     font-weight: bold;
 }
@@ -269,109 +269,4 @@ footer {
         font-size: 0.8em;
         padding: 8px;
     }
-}
-
-/* static/palpites.css */
-
-body {
-    background-color: #f4f7f6;
-}
-
-.card-header .btn-link {
-    color: #006400;
-    font-size: 1.2rem;
-    text-decoration: none;
-}
-.card-header .btn-link:hover {
-    text-decoration: none;
-}
-
-.list-group-item {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-    padding: 1rem;
-}
-
-.matchup-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 1.1rem;
-    padding-bottom: 0.75rem;
-    border-bottom: 1px solid #eee;
-    text-align: center;
-    font-weight: 500;
-}
-
-.team-logo-sm {
-    width: 28px;
-    height: 28px;
-    object-fit: contain;
-}
-
-.palpite-comparison {
-    display: flex;
-    justify-content: space-around;
-    align-items: stretch; /* Faz as caixas terem a mesma altura */
-    text-align: center;
-    gap: 1rem;
-    flex-wrap: wrap;
-    padding: 0.5rem 0;
-}
-
-.palpite-box {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background-color: #f8f9fa;
-    padding: 0.75rem 1.25rem;
-    border: 1px solid #e9ecef;
-    border-radius: 0.5rem;
-    flex: 1; /* Faz as caixas ocuparem o espaço igualmente */
-    min-width: 160px;
-}
-
-.palpite-box span:first-child {
-    font-size: 0.85rem;
-    color: #6c757d;
-    font-weight: 500;
-    margin-bottom: 0.25rem;
-}
-
-.palpite-box strong {
-    font-size: 1.75rem;
-    font-weight: 700;
-    line-height: 1.2;
-}
-
-.palpite-status {
-    text-align: center;
-    margin-top: 0.5rem;
-    padding-top: 0.75rem;
-    border-top: 1px solid #eee;
-}
-
-.palpite-status .badge {
-    font-size: 0.9rem;
-    padding: 0.5em 1em;
-    font-weight: 600;
-}
-
-/* Estilo para o link do ícone de admin/login */
-.admin-icon-link {
-    padding: 0.25rem 0.75rem !important;
-    color: rgba(255, 255, 255, 0.75) !important;
-    transition: color 0.2s ease-in-out;
-}
-
-.admin-icon-link:hover {
-    color: #fff !important;
-}
-
-/* Ajuste para o dropdown do admin */
-.dropdown-menu-end {
-    right: 0;
-    left: auto;
 }

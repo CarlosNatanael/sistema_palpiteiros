@@ -338,3 +338,20 @@ h3 {
         font-size: 1em;
     }
 }
+
+/* Estilo para o link do ícone de admin/login */
+.admin-icon-link {
+    padding: 0.25rem 0.75rem !important;
+    color: rgba(255, 255, 255, 0.75) !important;
+    transition: color 0.2s ease-in-out;
+}
+
+.admin-icon-link:hover {
+    color: #fff !important;
+}
+
+/* Ajuste para o dropdown do admin */
+.dropdown-menu-end {
+    right: 0;
+    left: auto;
+}
