@@ -153,25 +153,37 @@
         <div class="admin-container">
             <h1>DEFINIR RESULTADOS DOS JOGOS</h1>
 
+            <!-- NOVO MENU DE SELEÇÃO DE RODADA -->
+            <div class="form-group">
+                <label for="rodada_selector">Filtrar por Rodada:</label>
+                <select id="rodada_selector" class="form-control" onchange="window.location.href = this.value;">
+                    {% for rodada_num in rodadas_disponiveis %}
+                        <option value="{{ url_for('set_game_result', rodada=rodada_num) }}" {% if rodada_num == rodada_ativa %}selected{% endif %}>
+                            Rodada {{ rodada_num }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <hr>
+
             {% with messages = get_flashed_messages(with_categories=true) %}
                 {% if messages %}
                     {% for category, message in messages %}
-                        <div class="flash-message alert-{{ category }}">{{ message }}</div>
+                        <div class="alert alert-{{ category }}">{{ message }}</div>
                     {% endfor %}
                 {% endif %}
             {% endwith %}
 
-            <form method="POST">
+            <form method="POST" action="{{ url_for('set_game_result', rodada=rodada_ativa) }}">
                 <div class="form-group">
                     <label for="game_id">Selecione o Jogo:</label>
-                    <select id="game_id" name="game_id" class="selectpicker form-control" data-live-search="true" title="Escolha um jogo..." required>
+                    <select id="game_id" name="game_id" class="selectpicker form-control" data-live-search="true" title="Escolha um jogo da Rodada {{ rodada_ativa }}..." required>
                         {% for jogo in jogos_disponiveis %}
-                            <!-- Adicionando data-attributes para o JavaScript usar -->
                             <option value="{{ jogo.id }}" 
                                     data-time1="{{ jogo.time1_nome }}" 
                                     data-time2="{{ jogo.time2_nome }}"
                                     data-rodada="{{ jogo.rodada }}">
-                                Rodada {{jogo.rodada}}: {{ jogo.time1_nome }} vs {{ jogo.time2_nome }}
+                                {{ jogo.time1_nome }} vs {{ jogo.time2_nome }}
                             </option>
                         {% endfor %}
                     </select>
@@ -186,11 +198,10 @@
                     </div>
                 </div>
                 
-                <!-- NOVO CAMPO PARA QUEM AVANÇOU -->
                 <div class="form-group" id="container-avanco" style="display: none;">
                     <label for="time_que_avancou">Quem Avançou? (Obrigatório se houver empate)</label>
                     <select id="time_que_avancou" name="time_que_avancou" class="form-control">
-                        <!-- Opções serão preenchidas pelo JavaScript -->
+                        <!-- Opções preenchidas pelo JavaScript -->
                     </select>
                 </div>
 
@@ -203,6 +214,7 @@
             </form>
         </div>
     </main>
+
 
     <footer class="bg-dark text-white py-3 mt-auto">
         <div class="container text-center">

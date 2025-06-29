@@ -1212,35 +1212,48 @@ def set_game_result():
         game_id = request.form.get('game_id', type=int)
         placar_time1 = request.form.get('placar_time1', type=int)
         placar_time2 = request.form.get('placar_time2', type=int)
-        
-        # --- NOVA LÓGICA PARA SALVAR QUEM AVANÇOU ---
-        time_que_avancou = request.form.get('time_que_avancou')
-        # Garante que um valor vazio seja salvo como NULL no banco
-        if not time_que_avancou:
-            time_que_avancou = None
+        time_que_avancou = request.form.get('time_que_avancou') or None
 
-        print(f"\n[LOG] Admin definindo resultado para Jogo ID {game_id}: {placar_time1}x{placar_time2}, Avançou: {time_que_avancou}")
+        conn.execute(
+            "UPDATE jogos SET placar_time1 = ?, placar_time2 = ?, status = 'Ao Vivo', time_que_avancou = ? WHERE id = ?",
+            (placar_time1, placar_time2, time_que_avancou, game_id)
+        )
+        conn.commit()
+        flash(f'Placar do jogo ID {game_id} atualizado!', 'success')
+        # Redireciona de volta para a mesma rodada que estava sendo editada
+        return redirect(url_for('set_game_result', rodada=request.args.get('rodada')))
 
-        try:
-            conn.execute(
-                "UPDATE jogos SET placar_time1 = ?, placar_time2 = ?, status = 'Ao Vivo', time_que_avancou = ? WHERE id = ?",
-                (placar_time1, placar_time2, time_que_avancou, game_id)
-            )
-            conn.commit()
-            flash(f'Placar do jogo ID {game_id} atualizado com sucesso!', 'success')
-        except Exception as e:
-            conn.rollback()
-            print(f"[ERRO] ao atualizar jogo: {e}")
-            flash(f'Erro ao atualizar o placar: {e}', 'danger')
-            
-        
-        return redirect(url_for('set_game_result'))
-
-    # A busca de jogos para o GET continua a mesma
-    jogos_disponiveis = conn.execute("SELECT * FROM jogos ORDER BY data_hora").fetchall()
+    # --- LÓGICA DO GET ATUALIZADA ---
     
+    # Pega todas as rodadas disponíveis para o menu de seleção
+    rodadas_disponiveis_rows = conn.execute("SELECT DISTINCT rodada FROM jogos ORDER BY rodada ASC").fetchall()
+    rodadas_disponiveis = [r['rodada'] for r in rodadas_disponiveis_rows]
 
-    return render_template('set_game_result.html', jogos_disponiveis=jogos_disponiveis)
+    rodada_selecionada = request.args.get('rodada', type=int)
+    rodada_ativa = 0
+
+    if rodada_selecionada and rodada_selecionada in rodadas_disponiveis:
+        rodada_ativa = rodada_selecionada
+    else:
+        # Encontra a primeira rodada que ainda tem jogos pendentes ou "Ao Vivo"
+        rodada_atual_row = conn.execute(
+            "SELECT MIN(rodada) FROM jogos WHERE status != 'Finalizado'"
+        ).fetchone()
+        if rodada_atual_row and rodada_atual_row[0] is not None:
+            rodada_ativa = rodada_atual_row[0]
+        else:
+            # Se todos os jogos estiverem finalizados, mostra a última rodada
+            rodada_ativa = rodadas_disponiveis[-1] if rodadas_disponiveis else 1
+    
+    # Busca apenas os jogos da rodada ativa
+    jogos_para_exibir = conn.execute("SELECT * FROM jogos WHERE rodada = ? ORDER BY data_hora", (rodada_ativa,)).fetchall()
+
+    return render_template(
+        'set_game_result.html', 
+        jogos_disponiveis=jogos_para_exibir,
+        rodadas_disponiveis=rodadas_disponiveis,
+        rodada_ativa=rodada_ativa
+    )
 
 
 @app.route('/atualizar_pontuacao_admin')

@@ -103,8 +103,11 @@
                                                 <div class="palpite-box">
                                                     <span>Resultado Real</span>
                                                     {% if jogo.placar_time1 is not none %}
+                                                        
                                                         <strong>{{ jogo.placar_time1 }} x {{ jogo.placar_time2 }}</strong>
+                                                        {% if jogo.status == 'Finalizado' %}
                                                             <small class="text-muted">(Avançou: {{ jogo.time_que_avancou }})</small>
+                                                        {% endif %}
                                                     {% else %}
                                                         <strong class="text-muted">- x -</strong>
                                                     {% endif %}
