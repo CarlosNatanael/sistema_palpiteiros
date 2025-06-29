@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, session
+from flask import Flask, render_template, request, redirect, url_for, flash, session, g
 from datetime import datetime
 from functools import wraps
 from collections import defaultdict
@@ -6,97 +6,11 @@ import sqlite3
 import re
 import socket
 
-
 # --- Configurações de Administrador ---
 app = Flask(__name__)
 app.secret_key = 'ALJDHA76797#%*#JKOL'
 ADMIN_USERNAME = "admin"
 ADMIN_PASSWORD = "pokemar16#" 
-
-def get_db_connection():
-    conn = sqlite3.connect('palpites.db')
-    conn.row_factory = sqlite3.Row
-    return conn
-
-def init_db():
-    print("\n[LOG - init_db]: Verificando e inicializando o banco de dados...")
-    conn = get_db_connection()
-    cursor = conn.cursor()
-
-    conn.execute('''
-    CREATE TABLE IF NOT EXISTS pontuacao (
-        id INTEGER PRIMARY KEY AUTOINCREMENT, posicao INTEGER, nome TEXT UNIQUE,
-        pontos INTEGER DEFAULT 0, acertos INTEGER DEFAULT 0, erros INTEGER DEFAULT 0,
-        pontos_bonus INTEGER DEFAULT 0
-    )''')
-
-    conn.execute('''
-    CREATE TABLE IF NOT EXISTS palpites (
-        id INTEGER PRIMARY KEY AUTOINCREMENT, nome TEXT, rodada INTEGER, game_id INTEGER,
-        time1 TEXT, time2 TEXT, gol_time1 INTEGER, gol_time2 INTEGER, resultado TEXT, status TEXT,
-        quem_avanca TEXT
-    )''')
-
-    conn.execute('''
-    CREATE TABLE IF NOT EXISTS jogos (
-        id INTEGER PRIMARY KEY, rodada INTEGER, time1_nome TEXT, time1_img TEXT, time1_sigla TEXT,
-        time2_nome TEXT, time2_img TEXT, time2_sigla TEXT, data_hora TEXT, local TEXT,
-        placar_time1 INTEGER, placar_time2 INTEGER, status TEXT DEFAULT 'Pendente',
-        time_que_avancou TEXT
-    )''')
-
-    # TABELA PARA PALPITE CAMPEÃO
-    conn.execute('''
-    CREATE TABLE IF NOT EXISTS palpite_campeao (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        nome TEXT UNIQUE,
-        time_campeao TEXT,
-        time_campeao_img TEXT,
-        rodada INTEGER,
-        data_palpite TEXT
-    )''')
-
-    # TABELA PARA O CAMPEÃO REAL DO MUNDIAL (Definido pelo Admin)
-    conn.execute('''
-    CREATE TABLE IF NOT EXISTS campeao_mundial (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        time_campeao TEXT,
-        time_campeao_img TEXT,
-        data_definicao TEXT UNIQUE
-    )''')
-
-    # Cria as tabelas se elas não existirem (não causa erro se já existirem)
-    conn.execute('''
-    CREATE TABLE IF NOT EXISTS pontuacao (
-        id INTEGER PRIMARY KEY AUTOINCREMENT, posicao INTEGER, nome TEXT UNIQUE,
-        pontos INTEGER DEFAULT 0, acertos INTEGER DEFAULT 0, erros INTEGER DEFAULT 0,
-        pontos_bonus INTEGER DEFAULT 0
-    )''')
-
-    conn.commit()
-    conn.close()
-    print("[LOG - init_db]: Banco de dados pronto.")
-
-init_db()
-
-# --- Decorators e Filtros ---
-def login_required(f):
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        if 'logged_in' not in session:
-            flash('Você precisa estar logado para acessar esta página.', 'danger')
-            return redirect(url_for('login'))
-        return f(*args, **kwargs)
-    return decorated_function
-
-# Filtro Jinja2 para formatar datas no template
-@app.template_filter('format_date_br')
-def format_date_br_filter(date_str):
-    if not date_str: return ""
-    try:
-        return datetime.strptime(date_str.split(' ')[0], '%Y-%m-%d').strftime('%d/%m/%Y')
-    except (ValueError, IndexError):
-        return date_str
 
 # Função auxiliar para extrair nomes e URLs de imagens dos times (para o palpite campeão)
 def get_all_teams_for_champion_bet():
@@ -803,9 +717,91 @@ MUNDIAL_JOGOS_POR_RODADA = {
     # Certifique-se de que os IDs dos jogos são únicos em todo o dicionário
 }
 
+
+def get_db():
+    """Abre uma nova conexão com o banco de dados se não houver uma no contexto da requisição."""
+    if 'db' not in g:
+        g.db = sqlite3.connect('palpites.db', timeout=10)
+        g.db.row_factory = sqlite3.Row
+    return g.db
+
+@app.teardown_appcontext
+def close_db(exception):
+    """Fecha a conexão com o banco de dados no final da requisição."""
+    db = g.pop('db', None)
+    if db is not None:
+        db.close()
+
+def init_db():
+    """Função de inicialização que usa uma conexão direta e temporária."""
+    print("[LOG - init_db]: Verificando e inicializando o banco de dados...")
+    with sqlite3.connect('palpites.db') as conn:
+        cursor = conn.cursor()
+        
+        def column_exists(table_name, column_name):
+            cursor.execute(f"PRAGMA table_info({table_name})")
+            columns = [info[1] for info in cursor.fetchall()]
+            return column_name in columns
+
+        # Adiciona colunas necessárias de forma segura
+        if not column_exists('pontuacao', 'pontos_bonus'): conn.execute("ALTER TABLE pontuacao ADD COLUMN pontos_bonus INTEGER DEFAULT 0")
+        if not column_exists('jogos', 'fase'): conn.execute("ALTER TABLE jogos ADD COLUMN fase TEXT DEFAULT 'grupos'")
+        if not column_exists('jogos', 'time_que_avancou'): conn.execute("ALTER TABLE jogos ADD COLUMN time_que_avancou TEXT")
+        if not column_exists('palpites', 'quem_avanca'): conn.execute("ALTER TABLE palpites ADD COLUMN quem_avanca TEXT")
+        
+        # Cria as tabelas se elas não existirem
+        conn.execute('''
+        CREATE TABLE IF NOT EXISTS pontuacao (
+            id INTEGER PRIMARY KEY AUTOINCREMENT, posicao INTEGER, nome TEXT UNIQUE,
+            pontos INTEGER DEFAULT 0, acertos INTEGER DEFAULT 0, erros INTEGER DEFAULT 0,
+            pontos_bonus INTEGER DEFAULT 0
+        )''')
+        conn.execute('''
+        CREATE TABLE IF NOT EXISTS palpites (
+            id INTEGER PRIMARY KEY AUTOINCREMENT, nome TEXT, rodada INTEGER, game_id INTEGER,
+            time1 TEXT, time2 TEXT, gol_time1 INTEGER, gol_time2 INTEGER, resultado TEXT, status TEXT,
+            quem_avanca TEXT
+        )''')
+        conn.execute('''
+        CREATE TABLE IF NOT EXISTS jogos (
+            id INTEGER PRIMARY KEY, rodada INTEGER, time1_nome TEXT, time1_img TEXT, time1_sigla TEXT,
+            time2_nome TEXT, time2_img TEXT, time2_sigla TEXT, data_hora TEXT, local TEXT,
+            placar_time1 INTEGER, placar_time2 INTEGER, status TEXT DEFAULT 'Pendente',
+            time_que_avancou TEXT
+        )''')
+        conn.execute('''
+        CREATE TABLE IF NOT EXISTS campeao_palpiteiros (
+            id INTEGER PRIMARY KEY,
+            nome TEXT NOT NULL,
+            pontos INTEGER,
+            acertos INTEGER,
+            erros INTEGER,
+            data_definicao TEXT NOT NULL
+        )''')
+        conn.commit()
+    print("[LOG - init_db]: Banco de dados pronto.")
+
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'logged_in' not in session:
+            flash('Você precisa estar logado para acessar esta página.', 'danger')
+            return redirect(url_for('login'))
+        return f(*args, **kwargs)
+    return decorated_function
+
+# Filtro Jinja2 para formatar datas no template
+@app.template_filter('format_date_br')
+def format_date_br_filter(date_str):
+    if not date_str: return ""
+    try:
+        return datetime.strptime(date_str.split(' ')[0], '%Y-%m-%d').strftime('%d/%m/%Y')
+    except (ValueError, IndexError):
+        return date_str
+
 @app.route('/')
 def index():
-    conn = get_db_connection()
+    conn = get_db() # MUDANÇA
     pontuacao = conn.execute('''
         SELECT nome, acertos, erros, pontos, pontos_bonus, 
                (pontos + pontos_bonus) as total_pontos
@@ -832,7 +828,7 @@ def index():
     jogos_futuros = conn.execute("SELECT * FROM jogos WHERE rodada = ? AND data_hora > ? ORDER BY data_hora ASC", (rodada_ativa, agora_str)).fetchall()
     jogos_passados = conn.execute("SELECT * FROM jogos WHERE rodada = ? AND data_hora <= ? ORDER BY data_hora DESC", (rodada_ativa, agora_str)).fetchall()
     
-    conn.close()
+    
     
     return render_template('index.html', 
         pontuacao=pontuacao,
@@ -849,11 +845,11 @@ def index():
 @app.route('/chaveamento')
 def chaveamento():
     print("[LOG]: Acessando a página de chaveamento.")
-    conn = get_db_connection()
+    conn = get_db()
     
     # Busca todos os jogos de mata-mata (Rodada 4 em diante)
     jogos_mata_mata = conn.execute("SELECT * FROM jogos WHERE rodada >= 4 ORDER BY id ASC").fetchall()
-    conn.close()
+    
 
     # Organiza os jogos por rodada e ID para fácil acesso
     jogos_map = {jogo['id']: dict(jogo) for jogo in jogos_mata_mata}
@@ -904,7 +900,7 @@ def chaveamento():
 
 @app.route('/palpites')
 def exibir_palpites():
-    conn = get_db_connection()
+    conn = get_db()
     rodada_param = request.args.get('rodada', type=int)
 
     # Lógica para determinar a rodada a ser exibida
@@ -940,7 +936,7 @@ def exibir_palpites():
     proxima_rodada = rodadas_existentes[idx_rodada + 1] if tem_proxima else None
     anterior_rodada = rodadas_existentes[idx_rodada - 1] if tem_anterior else None
 
-    conn.close()
+    
 
     return render_template(
         'palpites.html',
@@ -955,7 +951,7 @@ def exibir_palpites():
 
 @app.route('/adicionar_palpites', methods=['GET', 'POST'])
 def adicionar_palpites():
-    conn = get_db_connection()
+    conn = get_db()
     cursor = conn.cursor()
 
     if request.method == 'POST':
@@ -985,7 +981,7 @@ def adicionar_palpites():
                 )
         
         conn.commit()
-        conn.close()
+        
         print(f"\n[LOG]: {nome} adicionou na rodada {rodada_selecionada}")
         print(f"[LOG]: {nome} adicionou {jogo['time1_nome']} x {jogo['time2_nome']}")
         flash('Palpites registrados com sucesso!', 'success')
@@ -1015,7 +1011,7 @@ def adicionar_palpites():
     ).fetchall()
     
     palpiteiros = ["Ariel", "Arthur", "Carlos", "Celso", "Gabriel", "Lucas"]
-    conn.close()
+    
 
     return render_template(
         'adicionar_palpites.html',
@@ -1027,7 +1023,7 @@ def adicionar_palpites():
 
 @app.route('/estatisticas')
 def estatisticas():
-    conn = get_db_connection()
+    conn = get_db()
 
     # 1. Busca estatísticas e calcula o percentual (sem alterações aqui)
     estatisticas_completas = conn.execute('''
@@ -1081,7 +1077,7 @@ def estatisticas():
             'bonus': '🔥 Bônus Disponível!' if max_streak >= 3 else '--'
         })
 
-    conn.close()
+    
 
     print(f"\n[LOG - estatisticas]: Rodada atual para cálculo de bônus: {rodada_atual_bonus}")
     print(f"[LOG - estatisticas]: Estatísticas carregadas para {len(estatisticas_completas)} jogadores.\n")
@@ -1110,7 +1106,7 @@ def award_bonus():
         flash('Você precisa selecionar um jogador para conceder o bônus.', 'warning')
         return redirect(url_for('admin_dashboard'))
 
-    conn = get_db_connection()
+    conn = get_db()
     cursor = conn.cursor()
     
     print(f"\n[LOG] Tentando conceder bônus para {nome_jogador}")
@@ -1128,8 +1124,7 @@ def award_bonus():
         print(f"\n[LOG] Erro ao conceder bônus: {str(e)}")
         conn.rollback()
         flash(f'Erro ao conceder bônus: {e}', 'danger')
-    finally:
-        conn.close()
+        
 
     return redirect(url_for('admin_dashboard'))
 
@@ -1145,7 +1140,7 @@ def exibir_rodadas():
 
 @app.route('/rodada/<int:numero>')
 def exibir_rodada(numero):
-    conn = get_db_connection()
+    conn = get_db()
     # A busca de palpites já pega a coluna 'quem_avanca', então está correta.
     palpites = conn.execute("SELECT * FROM palpites WHERE rodada = ?", (numero,)).fetchall()
 
@@ -1154,7 +1149,7 @@ def exibir_rodada(numero):
         "SELECT * FROM jogos WHERE rodada = ? ORDER BY data_hora",
         (numero,)
     ).fetchall()
-    conn.close()
+    
 
     palpites_agrupados = {}
     for palpite in palpites:
@@ -1197,58 +1192,53 @@ def logout():
 @app.route('/admin')
 @login_required
 def admin_dashboard():
-    print("\n[LOG - admin_dashboard]: Acessando o painel de administração.")
-    conn = get_db_connection()
+    conn = get_db()
     pontuacao_geral = conn.execute("SELECT nome FROM pontuacao ORDER BY nome").fetchall()
-    conn.close()
-    return render_template('admin_dashboard.html', pontuacao_geral=pontuacao_geral)
+    campeao_atual = conn.execute("SELECT nome FROM campeao_palpiteiros WHERE id = 1").fetchone()
+    return render_template('admin_dashboard.html', pontuacao_geral=pontuacao_geral, campeao_atual=campeao_atual)
 
 
 @app.route('/admin/set_game_result', methods=['GET', 'POST'])
 @login_required
 def set_game_result():
-    conn = get_db_connection()
-    cursor = conn.cursor()
+    conn = get_db()
+    
     if request.method == 'POST':
         if request.form.get('password') != ADMIN_PASSWORD:
-            print("\n[LOG] Tentativa de acesso com senha incorreta")
             flash('Senha incorreta!', 'danger')
-            conn.close()
+            
             return redirect(url_for('set_game_result'))
 
         game_id = request.form.get('game_id', type=int)
         placar_time1 = request.form.get('placar_time1', type=int)
         placar_time2 = request.form.get('placar_time2', type=int)
-        print(f"\n[LOG - set_game_result]: Recebido POST para definir placar do jogo ID {game_id} como {placar_time1}x{placar_time2}.")
+        
+        # --- NOVA LÓGICA PARA SALVAR QUEM AVANÇOU ---
+        time_que_avancou = request.form.get('time_que_avancou')
+        # Garante que um valor vazio seja salvo como NULL no banco
+        if not time_que_avancou:
+            time_que_avancou = None
+
+        print(f"\n[LOG] Admin definindo resultado para Jogo ID {game_id}: {placar_time1}x{placar_time2}, Avançou: {time_que_avancou}")
 
         try:
-            cursor.execute(
-                "UPDATE jogos SET placar_time1 = ?, placar_time2 = ?, status = 'Ao Vivo' WHERE id = ?",
-                (placar_time1, placar_time2, game_id)
+            conn.execute(
+                "UPDATE jogos SET placar_time1 = ?, placar_time2 = ?, status = 'Ao Vivo', time_que_avancou = ? WHERE id = ?",
+                (placar_time1, placar_time2, time_que_avancou, game_id)
             )
             conn.commit()
-            if cursor.rowcount == 0:
-                print(f"\n[LOG] Jogo com ID {game_id} não encontrado")
-                flash(f'Jogo com ID {game_id} não encontrado.', 'warning')
-            else:
-                print(f"\n[LOG] Jogo {game_id} atualizado com sucesso\n")
-                flash(f'Placar ao vivo do jogo ID {game_id} atualizado para {placar_time1}x{placar_time2}!', 'success')
+            flash(f'Placar do jogo ID {game_id} atualizado com sucesso!', 'success')
         except Exception as e:
-            print(f"\n[LOG] Erro ao atualizar jogo: {str(e)}")
             conn.rollback()
-            flash(f'Erro ao atualizar o placar ao vivo: {e}', 'danger')
-        finally:
-            conn.close()
-
-        print(f"[LOG - set_game_result]: Jogo ID {game_id} atualizado com sucesso.")
-        flash('Placar ao vivo atualizado!', 'success')
+            print(f"[ERRO] ao atualizar jogo: {e}")
+            flash(f'Erro ao atualizar o placar: {e}', 'danger')
+            
+        
         return redirect(url_for('set_game_result'))
 
-    # GET request
-    jogos_disponiveis = conn.execute("SELECT id, time1_nome, time2_nome, data_hora, placar_time1, placar_time2 FROM jogos ORDER BY data_hora").fetchall()
-    conn.close()
+    # A busca de jogos para o GET continua a mesma
+    jogos_disponiveis = conn.execute("SELECT * FROM jogos ORDER BY data_hora").fetchall()
     
-    print(f"\n[LOG] Exibindo formulário com {len(jogos_disponiveis)} jogos disponíveis")
 
     return render_template('set_game_result.html', jogos_disponiveis=jogos_disponiveis)
 
@@ -1257,12 +1247,23 @@ def set_game_result():
 @login_required
 def atualizar_pontuacao_admin():
     print("\n[LOG]: Iniciando atualização de pontuação.")
-    conn = get_db_connection()
+    conn = get_db()
+    
+    # Zera os pontos de jogos, mas mantém os pontos de bônus
     conn.execute("UPDATE pontuacao SET pontos = 0, acertos = 0, erros = 0")
     
     palpites = conn.execute("SELECT * FROM palpites").fetchall()
-    jogos = conn.execute("SELECT * FROM jogos WHERE status = 'Finalizado'").fetchall()
-    jogos_map = {jogo['id']: jogo for jogo in jogos}
+    
+    # ** A CORREÇÃO PRINCIPAL ESTÁ AQUI **
+    # Busca TODOS os jogos que já têm um placar definido, não importa o status.
+    jogos_finalizados = conn.execute("SELECT * FROM jogos WHERE placar_time1 IS NOT NULL AND placar_time2 IS NOT NULL").fetchall()
+    
+    if not jogos_finalizados:
+        flash('Nenhum jogo com resultado definido para calcular a pontuação.', 'info')
+        return redirect(url_for('admin_dashboard'))
+
+    jogos_map = {jogo['id']: dict(jogo) for jogo in jogos_finalizados}
+    print(f"[LOG]: Encontrados {len(jogos_finalizados)} jogos com resultado para processar.")
 
     for palpite in palpites:
         game_id = palpite['game_id']
@@ -1271,7 +1272,6 @@ def atualizar_pontuacao_admin():
             nome = palpite['nome']
             pontos_ganhos = 0
             
-            # Acessa as colunas de forma segura
             p_avanca = palpite['quem_avanca']
             j_avancou = jogo['time_que_avancou']
             
@@ -1289,38 +1289,17 @@ def atualizar_pontuacao_admin():
             
             status_palpite = "Erro (0 pts)"
 
-            # Lógica para jogos com palpite de avanço (a partir da Rodada 4)
-            if jogo['rodada'] >= 4:
-                if acerto_placar and acerto_resultado and acerto_avanco:
-                    pontos_ganhos = 5
-                    status_palpite = "Acerto Total! (5 pts)"
-                elif acerto_placar and acerto_resultado:
-                    pontos_ganhos = 4
-                    status_palpite = "Acerto Placar + Resultado (4 pts)"
-                elif acerto_placar and acerto_avanco:
-                    pontos_ganhos = 3
-                    status_palpite = "Acerto Placar + Avanço (3 pts)"
-                elif acerto_placar:
-                    pontos_ganhos = 2
-                    status_palpite = "Acerto Placar (2 pts)"
-                elif acerto_resultado and acerto_avanco:
-                    pontos_ganhos = 2 
-                    status_palpite = "Acerto Resultado + Avanço (2 pts)"
-                elif acerto_resultado:
-                    pontos_ganhos = 1
-                    status_palpite = "Acerto Resultado (1 pt)"
-                elif acerto_avanco:
-                    pontos_ganhos = 1
-                    status_palpite = "Acerto Avanço (1 pt)"
-            
-            # Lógica para jogos da fase de grupos (Rodadas 1 a 3)
-            else:
-                if acerto_placar:
-                    pontos_ganhos = 4
-                    status_palpite = "Acerto Total (4 pts)"
-                elif acerto_resultado:
-                    pontos_ganhos = 1
-                    status_palpite = "Acerto Resultado (1 pt)"
+            if jogo['rodada'] >= 4: # Lógica para mata-mata
+                if acerto_placar and acerto_resultado and acerto_avanco: pontos_ganhos, status_palpite = 5, "Acerto Total! (5 pts)"
+                elif acerto_placar and acerto_resultado: pontos_ganhos, status_palpite = 4, "Acerto Placar + Resultado (4 pts)"
+                elif acerto_placar and acerto_avanco: pontos_ganhos, status_palpite = 3, "Acerto Placar + Avanço (3 pts)"
+                elif acerto_placar: pontos_ganhos, status_palpite = 2, "Acerto Placar (2 pts)"
+                elif acerto_resultado and acerto_avanco: pontos_ganhos, status_palpite = 2, "Acerto Resultado + Avanço (2 pts)"
+                elif acerto_resultado: pontos_ganhos, status_palpite = 1, "Acerto Resultado (1 pt)"
+                elif acerto_avanco: pontos_ganhos, status_palpite = 1, "Acerto Avanço (1 pt)"
+            else: # Lógica para fase de grupos
+                if acerto_placar: pontos_ganhos, status_palpite = 4, "Acerto Total (4 pts)"
+                elif acerto_resultado: pontos_ganhos, status_palpite = 1, "Acerto Resultado (1 pt)"
 
             if pontos_ganhos > 0:
                 conn.execute("UPDATE pontuacao SET pontos = pontos + ?, acertos = acertos + 1 WHERE nome = ?", (pontos_ganhos, nome))
@@ -1328,36 +1307,30 @@ def atualizar_pontuacao_admin():
                 conn.execute("UPDATE pontuacao SET erros = erros + 1 WHERE nome = ?", (nome,))
             
             conn.execute("UPDATE palpites SET status = ? WHERE id = ?", (status_palpite, palpite['id']))
-    
-    # ALTERAÇÃO: Após calcular os pontos, atualiza o status dos jogos processados para 'Finalizado'
-    if jogos_map:
-        placeholders = ','.join('?' for _ in jogos_map.keys())
-        cursor.execute(f"UPDATE jogos SET status = 'Finalizado' WHERE id IN ({placeholders})", list(jogos_map.keys()))
 
-        # --- INÍCIO DA NOVA LÓGICA PARA PONTUAR O CAMPEÃO ---
-    PONTOS_CAMPEAO = 5 
+    # Marca TODOS os jogos processados como 'Finalizado'
+    ids_processados = list(jogos_map.keys())
+    placeholders = ','.join('?' for _ in ids_processados)
+    conn.execute(f"UPDATE jogos SET status = 'Finalizado' WHERE id IN ({placeholders})", ids_processados)
+    print(f"[LOG]: Jogos com IDs {ids_processados} foram marcados como 'Finalizado'.")
+
+    # Bônus do campeão
     campeao_real = conn.execute("SELECT time_campeao FROM campeao_mundial LIMIT 1").fetchone()
     if campeao_real:
         palpites_campeao = conn.execute("SELECT nome, time_campeao FROM palpite_campeao").fetchall()
         for palpite in palpites_campeao:
             if palpite['time_campeao'] == campeao_real['time_campeao']:
-                # Adiciona os pontos e um acerto extra para o palpite de campeão
-                cursor.execute("UPDATE pontuacao SET pontos = pontos + ?, acertos = acertos + 1 WHERE nome = ?", (PONTOS_CAMPEAO, palpite['nome']))
-                print(f"\n[LOG] Pontos de campeão concedidos para {palpite['nome']}")
-
-    pontuacao_atualizada = conn.execute("SELECT nome, pontos FROM pontuacao ORDER BY pontos DESC, acertos DESC, erros ASC").fetchall()
-    for i, jogador in enumerate(pontuacao_atualizada):
-        cursor.execute("UPDATE pontuacao SET posicao = ? WHERE nome = ?", (i + 1, jogador['nome']))
+                conn.execute("UPDATE pontuacao SET pontos_bonus = pontos_bonus + ? WHERE nome = ?", (5, palpite['nome']))
+        pass
 
     conn.commit()
-    conn.close()
     print("[LOG - atualizar_pontuacao_admin]: FIM do processo de atualização.")
     flash('Pontuação atualizada com sucesso!', 'info')
     return redirect(url_for('admin_dashboard'))
 
 @app.route('/palpite_campeao', methods=['GET', 'POST'])
 def palpite_campeao():
-    conn = get_db_connection()
+    conn = get_db()
     # Obter a lista de todos os times que aparecem em 'jogos'
     all_teams_db = conn.execute('''
         SELECT DISTINCT time1_nome as name, time1_img as img_src FROM jogos
@@ -1414,12 +1387,12 @@ def palpite_campeao():
             )
         
         conn.commit()
-        conn.close()
+        
         flash('Seu palpite para campeão foi registrado/atualizado!', 'success')
         return redirect(url_for('ver_palpites_campeao'))
     
     # GET request
-    conn.close()
+    
     
     print(f"\n[LOG] Exibindo formulário de palpite campeão para rodada {rodada_ativa_para_registro}\n")
     return render_template('palpite_campeao.html',
@@ -1430,7 +1403,7 @@ def palpite_campeao():
 
 @app.route('/ver_palpites_campeao')
 def ver_palpites_campeao():
-    conn = get_db_connection()
+    conn = get_db()
     palpites = conn.execute('''
         SELECT p.nome, p.time_campeao, p.data_palpite, p.time_campeao_img, p.rodada
         FROM palpite_campeao p
@@ -1439,7 +1412,7 @@ def ver_palpites_campeao():
     
     campeao_real = conn.execute('SELECT time_campeao, time_campeao_img, data_definicao FROM campeao_mundial ORDER BY data_definicao DESC LIMIT 1').fetchone()
 
-    conn.close()
+    
     
     print(f"\n[LOG] Exibindo palpites de campeão - Total: {len(palpites)}\n")
     return render_template('ver_palpites_campeao.html', palpites=palpites, campeao_real=campeao_real)
@@ -1447,7 +1420,7 @@ def ver_palpites_campeao():
 @app.route('/admin/set_champion', methods=['GET', 'POST'])
 @login_required
 def set_champion():
-    conn = get_db_connection()
+    conn = get_db()
     cursor = conn.cursor()
 
     all_teams_db = conn.execute('''
@@ -1477,44 +1450,96 @@ def set_champion():
             conn.rollback()
             print(f"\n[LOG] Erro ao definir campeão: {str(e)}\n")
             flash(f'Erro ao definir campeão: {e}', 'danger')
-        finally:
-            conn.close()
+            
         return redirect(url_for('set_champion'))
 
     campeao_atual = conn.execute('SELECT time_campeao, time_campeao_img FROM campeao_mundial LIMIT 1').fetchone()
-    conn.close()
+    
 
     print("\n[LOG] Acessando página de definição de campeão\n")
     return render_template('set_champion.html', teams=all_teams_db, campeao_atual=campeao_atual)
 
-if __name__ == '__main__':
-    conn = get_db_connection()
-    cursor = conn.cursor()
-    print("\n" + "="*50)
-    print("      INICIANDO APLICAÇÃO DE PALPITES")
-    print("="*50 + "\n")
-    for rodada_num, jogos_rodada in MUNDIAL_JOGOS_POR_RODADA.items():
-        for jogo in jogos_rodada:
-            cursor.execute("SELECT id FROM jogos WHERE id = ?", (jogo['id'],))
-            if cursor.fetchone() is None:
-                cursor.execute(
-                    "INSERT INTO jogos (id, rodada, time1_nome, time1_img, time1_sigla, time2_nome, time2_img, time2_sigla, data_hora, local, placar_time1, placar_time2) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-                    (jogo['id'], rodada_num, jogo['time1_nome'], jogo['time1_img'], jogo['time1_sigla'], jogo['time2_nome'], jogo['time2_img'], jogo['time2_sigla'], jogo['data_hora'], jogo['local'], None, None)
-                )
-    conn.commit()
-    conn.close()
-
-    try:
-        hostname = socket.gethostname()
-        ip_server = socket.gethostbyname(hostname)
-    except socket.error as e:
-        ip_server = '127.0.0.1' # IP de fallback caso não consiga encontrar
-        print(f"[AVISO] Não foi possível obter o IP local: {e}. Usando {ip_server} como fallback.")
-
-    print(f"[LOG - Main]: Servidor Flask rodando. Acesse nos seguintes endereços:")
-    print(f"   - Na mesma máquina: http://127.0.0.1:3000")
-    print(f"   - Em outros dispositivos na mesma rede: http://{ip_server}:3000")
-    print("\nPressione CTRL+C para parar o servidor.")
+@app.route('/campeao_geral')
+def campeao_geral():
+    conn = get_db()
+    campeao_data = conn.execute("SELECT * FROM campeao_palpiteiros WHERE id = 1").fetchone()
     
-    # O host '0.0.0.0' é essencial para permitir acessos de outros dispositivos na rede
-    app.run(host="0.0.0.0", port=3000, debug=True)
+    campeao = None
+    if campeao_data:
+        # Converte a linha do banco para um dicionário para podermos adicionar novos dados
+        campeao = dict(campeao_data)
+        total_jogos = campeao['acertos'] + campeao['erros']
+        if total_jogos > 0:
+            percentual = (campeao['acertos'] / total_jogos) * 100
+            campeao['percentual_acertos'] = round(percentual, 1)
+        else:
+            campeao['percentual_acertos'] = 0
+
+    return render_template('campeao_geral.html', campeao=campeao)
+
+# Adicione esta nova rota de admin
+@app.route('/admin/set_campeao_palpiteiro', methods=['POST'])
+@login_required
+def set_campeao_palpiteiro():
+    conn = get_db()
+    nome_campeao = request.form.get('campeao_nome')
+    
+    if not nome_campeao:
+        flash('Nenhum jogador selecionado.', 'warning')
+        return redirect(url_for('admin_dashboard'))
+
+    # Busca os dados do jogador, incluindo o total de pontos calculado
+    jogador_stats = conn.execute(
+        "SELECT nome, acertos, erros, (pontos + pontos_bonus) as total_pontos FROM pontuacao WHERE nome = ?", 
+        (nome_campeao,)
+    ).fetchone()
+    
+    if not jogador_stats:
+        flash('Jogador não encontrado.', 'danger')
+        return redirect(url_for('admin_dashboard'))
+
+    # Limpa a tabela para garantir um único campeão
+    conn.execute("DELETE FROM campeao_palpiteiros")
+    
+    # Insere o novo campeão
+    conn.execute(
+        "INSERT INTO campeao_palpiteiros (id, nome, pontos, acertos, erros, data_definicao) VALUES (?, ?, ?, ?, ?, ?)",
+        (1, jogador_stats['nome'], jogador_stats['total_pontos'], jogador_stats['acertos'], jogador_stats['erros'], datetime.now().strftime('%Y-%m-%d %H:%M'))
+    )
+    conn.commit()
+    flash(f'{nome_campeao} foi definido como o Campeão dos Palpiteiros!', 'success')
+    return redirect(url_for('admin_dashboard'))
+
+if __name__ == '__main__':
+    with app.app_context():
+        init_db()
+        conn = get_db()
+        cursor = conn.cursor()
+        print("\n" + "="*50)
+        print("      INICIANDO APLICAÇÃO DE PALPITES")
+        print("="*50 + "\n")
+        for rodada_num, jogos_rodada in MUNDIAL_JOGOS_POR_RODADA.items():
+            for jogo in jogos_rodada:
+                cursor.execute("SELECT id FROM jogos WHERE id = ?", (jogo['id'],))
+                if cursor.fetchone() is None:
+                    cursor.execute(
+                        "INSERT INTO jogos (id, rodada, time1_nome, time1_img, time1_sigla, time2_nome, time2_img, time2_sigla, data_hora, local, placar_time1, placar_time2) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                        (jogo['id'], rodada_num, jogo['time1_nome'], jogo['time1_img'], jogo['time1_sigla'], jogo['time2_nome'], jogo['time2_img'], jogo['time2_sigla'], jogo['data_hora'], jogo['local'], None, None)
+                    )
+        conn.commit()
+
+
+        try:
+            hostname = socket.gethostname()
+            ip_server = socket.gethostbyname(hostname)
+        except socket.error as e:
+            ip_server = '127.0.0.1' # IP de fallback caso não consiga encontrar
+            print(f"[AVISO] Não foi possível obter o IP local: {e}. Usando {ip_server} como fallback.")
+
+        print(f"[LOG - Main]: Servidor Flask rodando. Acesse nos seguintes endereços:")
+        print(f"   - Na mesma máquina: http://127.0.0.1:3000")
+        print(f"   - Em outros dispositivos na mesma rede: http://{ip_server}:3000")
+        print("\nPressione CTRL+C para parar o servidor.")
+
+        # O host '0.0.0.0' é essencial para permitir acessos de outros dispositivos na rede
+        app.run(host="0.0.0.0", port=3000, debug=True)

@@ -126,7 +126,7 @@
             <div class="container-fluid">
                 <a class="navbar-brand d-flex align-items-center" href="{{ url_for('index') }}">
                     <i class="bi bi-trophy me-2"></i>
-                    <span>Tabela pontuaçao</span>
+                    <span>Tabela pontuação</span>
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -136,10 +136,11 @@
                         <li class="nav-item"><a class="nav-link" href="{{ url_for('index') }}">Pontuação</a></li>
                         <li class="nav-item"><a class="nav-link" href="{{ url_for('estatisticas') }}">Estatísticas</a></li>
                         <li class="nav-item"><a class="nav-link" href="{{ url_for('exibir_palpites') }}">Palpites</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{ url_for('adicionar_palpites') }}">Adicionar Palpite</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{ url_for('regra') }}">Regras</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{ url_for('ver_palpites_campeao') }}">Campeão</a></li>
                         <li class="nav-item"><a class="nav-link" href="{{ url_for('chaveamento') }}">Chaveamento</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('adicionar_palpites') }}">Adicionar Palpite</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('ver_palpites_campeao') }}">Palpites Campeão</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('campeao_geral') }}">Campeão Palpiteiros</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('regra') }}">Regras</a></li>
                         <li class="nav-item"><a class="nav-link active" href="{{ url_for('admin_dashboard') }}">Painel Admin</a></li>
                         <li class="nav-item"><a class="nav-link" href="{{ url_for('logout') }}">Sair</a></li>
                     </ul>
@@ -165,26 +166,32 @@
                     <label for="game_id">Selecione o Jogo:</label>
                     <select id="game_id" name="game_id" class="selectpicker form-control" data-live-search="true" title="Escolha um jogo..." required>
                         {% for jogo in jogos_disponiveis %}
-                            <option value="{{ jogo.id }}" {% if jogo.placar_time1 is not none %} selected {% endif %}
-                                    data-tokens="{{ jogo.time1_nome }} {{ jogo.time2_nome }} {{ jogo.data_hora }}">
-                                {{ jogo.time1_nome }} vs {{ jogo.time2_nome }} ({{ jogo.data_hora }}) -
-                                {% if jogo.placar_time1 is not none %}
-                                    Atual: {{ jogo.placar_time1 }} x {{ jogo.placar_time2 }}
-                                {% else %}
-                                    Pendente
-                                {% endif %}
+                            <!-- Adicionando data-attributes para o JavaScript usar -->
+                            <option value="{{ jogo.id }}" 
+                                    data-time1="{{ jogo.time1_nome }}" 
+                                    data-time2="{{ jogo.time2_nome }}"
+                                    data-rodada="{{ jogo.rodada }}">
+                                Rodada {{jogo.rodada}}: {{ jogo.time1_nome }} vs {{ jogo.time2_nome }}
                             </option>
                         {% endfor %}
                     </select>
                 </div>
 
                 <div class="form-group">
-                    <label for="placar_time1">Placar Time da Casa:</label>
+                    <label>Placar do Jogo:</label>
                     <div class="score-inputs-admin">
-                        <input type="number" id="placar_time1" name="placar_time1" class="form-control" min="0" required>
+                        <input type="number" name="placar_time1" class="form-control" min="0" required>
                         <span class="separator">x</span>
-                        <input type="number" id="placar_time2" name="placar_time2" class="form-control" min="0" required>
+                        <input type="number" name="placar_time2" class="form-control" min="0" required>
                     </div>
+                </div>
+                
+                <!-- NOVO CAMPO PARA QUEM AVANÇOU -->
+                <div class="form-group" id="container-avanco" style="display: none;">
+                    <label for="time_que_avancou">Quem Avançou? (Obrigatório se houver empate)</label>
+                    <select id="time_que_avancou" name="time_que_avancou" class="form-control">
+                        <!-- Opções serão preenchidas pelo JavaScript -->
+                    </select>
                 </div>
 
                 <div class="form-group">
@@ -210,6 +217,37 @@
     <script type="text/javascript">
         $(document).ready(function() {
             $('.selectpicker').selectpicker();
+        });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('.selectpicker').selectpicker();
+
+            // Evento que dispara quando um jogo é selecionado
+            $('#game_id').on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
+                var selectedOption = $(this).find('option').eq(clickedIndex);
+                var rodada = parseInt(selectedOption.data('rodada'));
+                var containerAvanco = $('#container-avanco');
+                var selectAvanca = $('#time_que_avancou');
+
+                // Se a rodada for 4 ou maior, mostra o campo "Quem Avançou"
+                if (rodada >= 4) {
+                    var time1 = selectedOption.data('time1');
+                    var time2 = selectedOption.data('time2');
+
+                    // Limpa opções antigas e adiciona as novas
+                    selectAvanca.empty()
+                        .append($('<option>', { value: '', text: '-- Selecione quem avançou --' }))
+                        .append($('<option>', { value: time1, text: time1 }))
+                        .append($('<option>', { value: time2, text: time2 }));
+                    
+                    containerAvanco.show();
+                } else {
+                    // Se for fase de grupos, esconde o campo
+                    containerAvanco.hide();
+                    selectAvanca.empty();
+                }
+            });
         });
     </script>
 </body>

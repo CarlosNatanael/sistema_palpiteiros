@@ -87,7 +87,7 @@
             <div class="container-fluid">
                 <a class="navbar-brand d-flex align-items-center" href="{{ url_for('index') }}">
                     <i class="bi bi-trophy me-2"></i>
-                    <span>Tabela pontuaçao</span>
+                    <span>Tabela pontuação</span>
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -97,10 +97,11 @@
                         <li class="nav-item"><a class="nav-link" href="{{ url_for('index') }}">Pontuação</a></li>
                         <li class="nav-item"><a class="nav-link" href="{{ url_for('estatisticas') }}">Estatísticas</a></li>
                         <li class="nav-item"><a class="nav-link" href="{{ url_for('exibir_palpites') }}">Palpites</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{ url_for('adicionar_palpites') }}">Adicionar Palpite</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{ url_for('regra') }}">Regras</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{ url_for('ver_palpites_campeao') }}">Campeão</a></li>
                         <li class="nav-item"><a class="nav-link" href="{{ url_for('chaveamento') }}">Chaveamento</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('adicionar_palpites') }}">Adicionar Palpite</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('ver_palpites_campeao') }}">Palpites Campeão</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('campeao_geral') }}">Campeão Palpiteiros</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('regra') }}">Regras</a></li>
                         <li class="nav-item"><a class="nav-link active" href="{{ url_for('admin_dashboard') }}">Painel Admin</a></li>
                         <li class="nav-item"><a class="nav-link" href="{{ url_for('logout') }}">Sair</a></li>
                     </ul>
@@ -162,6 +163,28 @@
                     <input type="password" id="password" name="password" class="form-control" required>
                 </div>
                 <button type="submit" class="btn btn-warning">Conceder Bônus de 3 Pontos</button>
+            </form>
+        </div>
+        <br>
+        <div class="admin-section">
+            <h2>Definir Campeão dos Palpiteiros</h2>
+            {% if campeao_atual %}
+                <div class="alert alert-success">Campeão atual: <strong>{{ campeao_atual.nome }}</strong></div>
+            {% else %}
+                <div class="alert alert-secondary">Nenhum campeão definido.</div>
+            {% endif %}
+            
+            <form action="{{ url_for('set_campeao_palpiteiro') }}" method="POST" class="mt-3">
+                <div class="form-group">
+                    <label for="campeao_nome">Selecione o Campeão:</label>
+                    <select name="campeao_nome" id="campeao_nome" class="form-control" required>
+                        <option value="" disabled selected>-- Escolha um jogador --</option>
+                        {% for jogador in pontuacao_geral %}
+                            <option value="{{ jogador.nome }}">{{ jogador.nome }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-warning w-100 mt-2">Coroar Campeão</button>
             </form>
         </div>
     </div>
