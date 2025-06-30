@@ -273,21 +273,22 @@ td {
     padding: 12px 0;
     margin: 0 10px;
     border-bottom: 1px solid #eee;
+    padding-left: 10px !important; /* Adiciona um pequeno padding à esquerda da linha */
+    padding-right: 10px !important; /* Adiciona um pequeno padding à direita da linha */
 }
 
 /* Estilo dos times - extremidades */
+/* Ajuste adicional para garantir alinhamento */
 .team {
     display: flex;
     align-items: center;
-    width: 120px; /* Largura fixa para alinhamento */
+    padding: 0 5px;
 }
 
-/* Alinhamento do time da casa */
 .team-home {
     justify-content: flex-start;
 }
 
-/* Alinhamento do time visitante */
 .team-away {
     justify-content: flex-end;
 }
@@ -307,8 +308,10 @@ td {
 /* Container central (data/hora ou placar) */
 .match-center {
     flex-grow: 1;
+    flex-shrink: 0;
     text-align: center;
     padding: 0 10px;
+    min-width: 100px;
 }
 
 /* Data/hora */
@@ -480,6 +483,27 @@ footer {
         width: 70px;
         margin: 0 8px;
     }
+    .team-away {
+        justify-content: flex-end !important;
+        margin-left: auto !important;
+    }
+    
+    .team-away .team-sigla {
+        order: 2; /* Coloca a sigla depois do escudo */
+        margin-left: 8px !important;
+        margin-right: 0 !important;
+    }
+    
+    .team-away img {
+        order: 1; /* Coloca o escudo antes da sigla */
+        margin-left: 0 !important;
+        margin-right: 8px !important;
+    }
+}
+
+.team-home, .team-away {
+    flex: 1;
+    min-width: 0; /* Permite que o texto seja truncado se necessário */
 }
 
 @media (max-width: 480px) {
@@ -832,13 +856,13 @@ footer {
 }
 
 @media (max-width: 768px) {
- .result-row .team-away {
-   margin-left: auto !important; /* Garante que qualquer outra margem seja ignorada */
-   margin-right: auto !important; /* Adiciona uma pequena margem à direita para afastar do escudo */
- }
+    .result-row .team-away {
+      margin-left: auto !important; /* Garante que qualquer outra margem seja ignorada */
+      margin-right: 5px !important; /* Adiciona uma pequena margem à direita para afastar do escudo */
+    }
 
- .result-row .match-center {
-   margin-left: auto !important; /* Adiciona uma pequena margem à esquerda do placar */
-   margin-right: auto !important; /* Adiciona uma pequena margem à direita do placar */
- }
+    .result-row .match-center {
+      margin-left: 5px !important; /* Adiciona uma pequena margem à esquerda do placar */
+      margin-right: 5px !important; /* Adiciona uma pequena margem à direita do placar */
+    }
 }
