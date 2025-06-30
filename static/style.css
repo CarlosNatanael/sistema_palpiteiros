@@ -812,3 +812,33 @@ footer {
         opacity: 0.5;
     }
 }
+
+/* ======================================================= */
+/* CORREÇÃO PARA FORÇAR LAYOUT DE DESKTOP EM TELAS MOBILE  */
+/* ======================================================= */
+@media (max-width: 768px) {
+    .match-row, .result-row {
+        flex-direction: row !important;
+        flex-wrap: nowrap !important;
+    }
+
+    .match-row .team,
+    .result-row .team {
+        flex: 1 1 auto !important; /* Permite que os times ocupem o espaço necessário */
+        justify-content: unset !important; /* Reseta o alinhamento para o padrão */
+        margin-bottom: 0 !important; /* Remove a margem que empurrava para baixo */
+        width: auto !important; /* Deixa a largura automática */
+    }
+}
+
+@media (max-width: 768px) {
+ .result-row .team-away {
+   margin-left: auto !important; /* Garante que qualquer outra margem seja ignorada */
+   margin-right: auto !important; /* Adiciona uma pequena margem à direita para afastar do escudo */
+ }
+
+ .result-row .match-center {
+   margin-left: auto !important; /* Adiciona uma pequena margem à esquerda do placar */
+   margin-right: auto !important; /* Adiciona uma pequena margem à direita do placar */
+ }
+}
