@@ -873,15 +873,15 @@ def chaveamento():
     # Quartas de Final
     quartas = [
         {'id': 501, 'time1': get_vencedor(401), 'time2': get_vencedor(402), 'dados_jogo': jogos_map.get(501)},
-        {'id': 502, 'time1': get_vencedor(403), 'time2': get_vencedor(404), 'dados_jogo': jogos_map.get(502)},
         {'id': 503, 'time1': get_vencedor(405), 'time2': get_vencedor(406), 'dados_jogo': jogos_map.get(503)},
+        {'id': 502, 'time1': get_vencedor(403), 'time2': get_vencedor(404), 'dados_jogo': jogos_map.get(502)},
         {'id': 504, 'time1': get_vencedor(407), 'time2': get_vencedor(408), 'dados_jogo': jogos_map.get(504)},
     ]
 
     # Semifinais
     semis = [
-        {'id': 601, 'time1': get_vencedor(501), 'time2': get_vencedor(502), 'dados_jogo': jogos_map.get(601)},
-        {'id': 602, 'time1': get_vencedor(503), 'time2': get_vencedor(504), 'dados_jogo': jogos_map.get(602)},
+        {'id': 601, 'time1': get_vencedor(501), 'time2': get_vencedor(503), 'dados_jogo': jogos_map.get(601)},
+        {'id': 602, 'time1': get_vencedor(502), 'time2': get_vencedor(504), 'dados_jogo': jogos_map.get(602)},
     ]
 
     # Final
@@ -958,12 +958,17 @@ def adicionar_palpites():
         # A lógica de salvar os palpites (POST) precisa ser atualizada para incluir 'quem_avanca'
         nome = request.form.get('nome')
         rodada_selecionada = int(request.form.get('rodada_selecionada'))
-        
+
         agora_str = datetime.now().strftime('%Y-%m-%d %H:%M')
         jogos_da_rodada_para_palpite = conn.execute(
             "SELECT * FROM jogos WHERE rodada = ? AND data_hora > ?",
             (rodada_selecionada, agora_str)
         ).fetchall()
+
+        # --- INÍCIO DO LOG ---
+        # Imprime um cabeçalho para os logs antes de começar a processar os jogos
+        print(f"\n[LOG]: {nome} registrou palpites para a Rodada {rodada_selecionada}")
+        print("-" * 60) # Adiciona uma linha para separar e organi  zar
 
         for jogo in jogos_da_rodada_para_palpite:
             game_id = jogo['id']
@@ -979,13 +984,18 @@ def adicionar_palpites():
                     "INSERT INTO palpites (nome, rodada, game_id, time1, time2, gol_time1, gol_time2, resultado, status, quem_avanca) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
                     (nome, rodada_selecionada, game_id, jogo['time1_nome'], jogo['time2_nome'], gol_time1, gol_time2, resultado_palpite, 'Pendente', quem_avanca)
                 )
-        
+                log_message = f"  - {jogo['time1_sigla']} [{gol_time1}] x [{gol_time2}] {jogo['time2_sigla']} | {resultado_palpite} "
+                if quem_avanca: # Adiciona a informação de quem avança, se existir
+                    log_message += f"| (Avança: {quem_avanca})"
+                print(log_message)
+
         conn.commit()
-        
-        print(f"\n[LOG]: {nome} adicionou na rodada {rodada_selecionada}")
-        print(f"[LOG]: {nome} adicionou {jogo['time1_nome']} x {jogo['time2_nome']}")
+
+        # --- FIM DO LOG ---
+        print("-" * 60)
+        print("")
         flash('Palpites registrados com sucesso!', 'success')
-        return redirect(url_for('exibir_palpites'))
+        return redirect(url_for('adicionar_palpites'))
 
     # --- LÓGICA DO GET ATUALIZADA ---
     agora_str = datetime.now().strftime('%Y-%m-%d %H:%M')
