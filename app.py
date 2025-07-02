@@ -712,6 +712,52 @@ MUNDIAL_JOGOS_POR_RODADA = {
             'data_hora': '2025-07-01 22:00',
             'local': 'Mercedes-Benz Stadium'
         },
+    ],
+    5: [
+        {
+            'id': 503,
+            'time1_nome': 'Fluminense',
+            'time1_sigla': 'FLU',
+            'time1_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/fCMxMMDF2AZPU7LzYKSlig_48x48.png',
+            'time2_nome': 'Al Hilal',
+            'time2_sigla': 'HIL',
+            'time2_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/HGVsnyWvMiGVotxhgicdSQ_48x48.png',
+            'data_hora': '2025-07-04 16:00',
+            'local': 'Camping World Stadium'
+        },
+        {
+            'id': 501,
+            'time1_nome': 'Palmeiras',
+            'time1_sigla': 'PAL',
+            'time1_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/7spurne-xDt2p6C0imYYNA_48x48.png',
+            'time2_nome': 'Chelsea',
+            'time2_sigla': 'CFC',
+            'time2_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/fhBITrIlbQxhVB6IjxUO6Q_48x48.png',
+            'data_hora': '2025-07-04 22:00',
+            'local': 'Lincoln Financial Field'
+        },
+        {
+            'id': 502,
+            'time1_nome': 'PSG',
+            'time1_sigla': 'PSG',
+            'time1_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/mcpMspef1hwHwi9qrfp4YQ_48x48.png',
+            'time2_nome': 'Bayern',
+            'time2_sigla': 'BAY',
+            'time2_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/-_cmntP5q_pHL7g5LfkRiw_96x96.png',
+            'data_hora': '2025-07-05 13:00',
+            'local': 'Mercedes-Benz Stadium'
+        },
+        {
+            'id': 504,
+            'time1_nome': 'Real Madrid',
+            'time1_sigla': 'RMA',
+            'time1_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/Th4fAVAZeCJWRcKoLW7koA_48x48.png',
+            'time2_nome': 'Borussia',
+            'time2_sigla': 'BVB',
+            'time2_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/FZnTSH2rbHFos4BnlWAItw_48x48.png',
+            'data_hora': '2025-07-05 17:00',
+            'local': 'Mercedes-Benz Stadium'
+        },
     ]
     # # Adicione mais rodadas e jogos conforme necessário, seguindo a estrutura
     # Certifique-se de que os IDs dos jogos são únicos em todo o dicionário
