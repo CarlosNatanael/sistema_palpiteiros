@@ -892,7 +892,6 @@ def index():
 def chaveamento():
     print("[LOG]: Acessando a página de chaveamento.")
     conn = get_db()
-    
     # Busca todos os jogos de mata-mata (Rodada 4 em diante)
     jogos_mata_mata = conn.execute("SELECT * FROM jogos WHERE rodada >= 4 ORDER BY id ASC").fetchall()
     
