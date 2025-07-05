@@ -1,5 +1,5 @@
 // Configura a data de retorno (ano, mês-1, dia, hora, minuto)
-const returnDate = new Date(2025, 5, 30, 10, 0).getTime();
+const returnDate = new Date(2025, 6, 5, 10, 0).getTime();
 
 function updateCountdown() {
     const now = new Date().getTime();
