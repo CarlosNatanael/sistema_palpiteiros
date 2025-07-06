@@ -758,7 +758,32 @@ MUNDIAL_JOGOS_POR_RODADA = {
             'data_hora': '2025-07-05 17:00',
             'local': 'Mercedes-Benz Stadium'
         },
+    ],
+    6: [
+        {
+            'id': 601,
+            'time1_nome': 'Fluminense',
+            'time1_sigla': 'FLU',
+            'time1_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/fCMxMMDF2AZPU7LzYKSlig_48x48.png',
+            'time2_nome': 'Chelsea',
+            'time2_sigla': 'CFC',
+            'time2_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/fhBITrIlbQxhVB6IjxUO6Q_48x48.png',
+            'data_hora': '2025-07-08 16:00',
+            'local': 'MetLife Stadium'
+        },
+        {
+            'id': 602,
+            'time1_nome': 'PSG',
+            'time1_sigla': 'PSG',
+            'time1_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/mcpMspef1hwHwi9qrfp4YQ_48x48.png',
+            'time2_nome': 'Real Madrid',
+            'time2_sigla': 'RMA',
+            'time2_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/Th4fAVAZeCJWRcKoLW7koA_48x48.png',
+            'data_hora': '2025-07-09 16:00',
+            'local': 'MetLife Stadium'
+        },
     ]
+
     # # Adicione mais rodadas e jogos conforme necessário, seguindo a estrutura
     # Certifique-se de que os IDs dos jogos são únicos em todo o dicionário
 }
@@ -890,7 +915,7 @@ def index():
 
 @app.route('/chaveamento')
 def chaveamento():
-    print("[LOG]: Acessando a página de chaveamento.")
+    print("\n[LOG]: Acessando a página de chaveamento.")
     conn = get_db()
     # Busca todos os jogos de mata-mata (Rodada 4 em diante)
     jogos_mata_mata = conn.execute("SELECT * FROM jogos WHERE rodada >= 4 ORDER BY id ASC").fetchall()
@@ -935,6 +960,7 @@ def chaveamento():
     ]
     
     campeao = get_vencedor(701)
+    print(f"[LOG]: Campeão do Mundial de Clubes: {campeao['nome']}\n")
 
     return render_template('chaveamento.html', 
                            oitavas=oitavas, 
