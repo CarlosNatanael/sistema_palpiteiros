@@ -1,0 +1,330 @@
+:root {
+    --primary-color: #006400;
+    --secondary-color: #228B22;
+    --light-green: #e8f5e9;
+    --winner-color: #2e7d32;
+    --trophy-gold: #ffd700;
+}
+
+/* Base Styles */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Navbar Styles */
+.navbar {
+    background-color: var(--primary-color) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 0.5rem 1rem;
+}
+
+.navbar-brand {
+    font-weight: 700;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+}
+
+.navbar-brand i {
+    font-size: 1.8rem;
+    color: var(--trophy-gold);
+}
+
+.nav-link {
+    font-weight: 500;
+    padding: 0.5rem 1rem !important;
+    transition: all 0.3s ease;
+    border-radius: 0.5rem;
+}
+
+.nav-link:hover, .nav-link.active {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    transform: translateY(-2px);
+}
+
+/* Main Content */
+main {
+    flex: 1;
+    padding-top: 80px;
+}
+
+/* Bracket Container */
+.bracket-container {
+    width: 100%;
+    overflow-x: auto;
+    padding: 1rem 0;
+    margin: 0 auto;
+}
+
+.bracket {
+    display: flex;
+    justify-content: center;
+    min-width: fit-content;
+    transition: transform 0.3s ease;
+    transform-origin: center top;
+    padding: 1rem;
+}
+
+/* Round Styles */
+.round {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-width: 280px;
+    margin: 0 1rem;
+    position: relative;
+}
+
+.round-header {
+    font-size: 1.25rem;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: var(--primary-color);
+    background-color: var(--light-green);
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.round-header i {
+    color: var(--trophy-gold);
+}
+
+/* Matchup Styles */
+.matchup {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 0.75rem;
+    margin: 0 auto 1.5rem auto;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    width: 100%;
+    max-width: 300px;
+    position: relative;
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.matchup:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0, 100, 0, 0.1);
+}
+
+.match-info {
+    padding: 0.5rem;
+    text-align: center;
+    background-color: #f8f9fa;
+    border-top: 1px solid #eee;
+    font-size: 0.85rem;
+}
+
+/* Team Styles */
+.team {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #eee;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.team:last-child {
+    border-bottom: none;
+}
+
+.team-logo {
+    width: 32px;
+    height: 32px;
+    margin-right: 12px;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+.team-name {
+    flex-grow: 1;
+    font-size: 0.95rem;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.team-score {
+    font-weight: 700;
+    font-size: 1.1rem;
+    padding-left: 10px;
+    min-width: 20px;
+    text-align: center;
+    color: var(--primary-color);
+}
+
+.team.winner {
+    background-color: rgba(46, 125, 50, 0.05);
+}
+
+.team.winner .team-name {
+    font-weight: 700;
+    color: var(--winner-color);
+}
+
+.team.winner::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background-color: var(--winner-color);
+}
+
+/* Champion Styles */
+.champion-box {
+    flex-direction: column;
+    text-align: center;
+    padding: 1.5rem;
+    background-color: rgba(255, 215, 0, 0.1);
+    border: 2px solid var(--trophy-gold);
+}
+
+.champion-trophy {
+    font-size: 3rem;
+    color: var(--trophy-gold);
+    margin-bottom: 0.5rem;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.champion-box .team-logo {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 1rem auto;
+}
+
+.champion-box .team-name {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    white-space: normal;
+}
+
+/* Connector Lines - Desktop */
+@media (min-width: 992px) {
+    .bracket {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 20px;
+        padding: 2rem;
+    }
+    
+    .round {
+        margin: 0;
+    }
+    
+    .matchup {
+        margin-bottom: 30px;
+        width: 100%;
+    }
+    
+    /* Connector lines between rounds */
+    .matchup::after {
+        content: '';
+        position: absolute;
+        right: -20px;
+        top: 50%;
+        width: 20px;
+        height: 2px;
+        background: #ccc;
+        z-index: -1;
+    }
+    
+    .quartas .matchup:nth-child(odd)::before,
+    .semis .matchup:nth-child(odd)::before,
+    .final .matchup::before {
+        content: '';
+        position: absolute;
+        right: -20px;
+        top: 50%;
+        width: 20px;
+        height: calc(100% + 60px);
+        border-right: 2px solid #ccc;
+        border-bottom: 2px solid #ccc;
+        border-radius: 0 0 10px 0;
+        z-index: -1;
+    }
+    
+    .final .matchup::before {
+        height: calc(50% + 30px);
+        top: 100%;
+    }
+    
+    .champion .matchup::before {
+        display: none;
+    }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 991.98px) {
+    .bracket {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .round {
+        margin-bottom: 2rem;
+        width: 100%;
+    }
+    
+    .round-header {
+        margin-bottom: 1rem;
+    }
+    
+    .matchup {
+        margin-bottom: 1rem;
+    }
+}
+
+/* Zoom Controls */
+.btn-group {
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.btn-outline-success {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
+.btn-outline-success:hover {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+/* Animation Classes */
+.animate__pulse {
+    animation-duration: 2s;
+}
+
+/* Print Styles */
+@media print {
+    .navbar, footer, .btn-group {
+        display: none !important;
+    }
+    
+    main {
+        padding-top: 0 !important;
+    }
+    
+    .bracket {
+        transform: none !important;
+    }
+    
+    .matchup {
+        break-inside: avoid;
+    }
+}

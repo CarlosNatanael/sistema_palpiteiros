@@ -7,6 +7,7 @@
     <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"> <style>
         /* Estilos específicos para esta página de Admin */
         .admin-container {
@@ -128,43 +129,29 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('index') }}">Pontuação</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('estatisticas') }}">Estatísticas</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('exibir_palpites') }}">Palpites</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('exibir_rodadas') }}">Rodadas</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('adicionar_palpites') }}">Adicionar Palpite</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('regra') }}">Regras</a>
-                    </li>
-                    {% if session.logged_in %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('admin_dashboard') }}">Admin</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('logout') }}">Sair</a>
-                    </li>
-                    {% else %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('login') }}">Login</a>
-                    </li>
-                    {% endif %}
-                </ul>
+        <nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="background-color: #006400 !important;">
+            <div class="container-fluid">
+                <a class="navbar-brand d-flex align-items-center" href="{{ url_for('index') }}">
+                    <i class="bi bi-trophy me-2"></i>
+                    <span>Tabela pontuação</span>
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav mx-auto">
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('index') }}">Pontuação</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('estatisticas') }}">Estatísticas</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('exibir_palpites') }}">Palpites</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('chaveamento') }}">Chaveamento</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('adicionar_palpites') }}">Adicionar Palpite</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('ver_palpites_campeao') }}">Palpites Campeão</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('campeao_geral') }}">Campeão Palpiteiros</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('regra') }}">Regras</a></li>
+                        <li class="nav-item"><a class="nav-link active" href="{{ url_for('admin_dashboard') }}">Painel Admin</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('logout') }}">Sair</a></li>
+                    </ul>
+                </div>
             </div>
         </nav>
     </header>
@@ -211,8 +198,10 @@
         </div>
     </main>
 
-    <footer>
-        <p>© Desenvolvido por Carlos Natanael</p>
+    <footer class="bg-dark text-white py-3 mt-auto">
+        <div class="container text-center">
+            <p class="mb-0">© Desenvolvido por Carlos Natanael</p>
+        </div>
     </footer>
 
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Site em Manutenção</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='40' fill='%23f1c40f'/><path d='M50 20 L50 40 M50 60 L50 80 M30 50 L70 50' stroke='%23c0392b' stroke-width='8' stroke-linecap='round'/></svg>">
+</head>
+<body>
+    <div class="maintenance-container">
+        <div class="maintenance-content">
+            <div class="icon">
+                <i class="fas fa-tools"></i>
+            </div>
+            <h1>Site em Manutenção</h1>
+            <p>Nosso site está passando por uma manutenção no momento.</p>
+            <div class="countdown" id="countdown">
+                <p>Previsão de retorno:</p>
+                <div class="timer">
+                    <div class="time-box">
+                        <span id="days">01</span>
+                        <small>Dias</small>
+                    </div>
+                    <div class="time-box">
+                        <span id="hours">00</span>
+                        <small>Horas</small>
+                    </div>
+                    <div class="time-box">
+                        <span id="minutes">00</span>
+                        <small>Minutos</small>
+                    </div>
+                    <div class="time-box">
+                        <span id="seconds">00</span>
+                        <small>Segundos</small>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="contact">
+                <p>Equipe de Desenvolvimento</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

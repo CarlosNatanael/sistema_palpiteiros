@@ -1,4 +1,7 @@
 /* Arquivo: static/regra.css */
+:root {
+    --trophy-gold: #ffd700;
+}
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -26,46 +29,60 @@ header h1, nav { display: none; }
 
 /* Estilos para o Navbar do Bootstrap */
 .navbar {
-    background-color: #006400 !important;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    border-bottom: none;
-    padding: 10px 20px;
-    z-index: 1030;
+    background-color: var(--primary-color) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 0.5rem 1rem;
 }
 
 .navbar-brand {
-    color: #fff !important;
-    font-size: 1.8em;
-    font-weight: bold;
-    text-transform: uppercase;
-    letter-spacing: normal;
+    font-weight: 700;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
 }
 
-.navbar-toggler {
-    border-color: rgba(255, 255, 255, 0.3) !important;
+.navbar-brand i {
+    font-size: 1.8rem;
+    color: var(--trophy-gold);
 }
 
-.navbar-toggler-icon {
-    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(255, 255, 255, 0.8)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E") !important;
+.nav-link {
+    font-weight: 500;
+    padding: 0.5rem 1rem !important;
+    transition: all 0.3s ease;
+    border-radius: 0.5rem;
 }
 
-.navbar-nav .nav-item .nav-link {
-    color: #fff !important;
-    font-weight: bold;
-    padding: 8px 15px !important;
-    margin: 0 5px;
-    border-radius: 5px;
-    transition: background-color 0.3s ease, color 0.3s ease;
-    background-color: #228B22;
+.nav-link:hover, .nav-link.active {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    transform: translateY(-2px);
 }
 
-.navbar-nav .nav-item .nav-link:hover {
-    background-color: #004d00 !important;
-    color: #fff !important;
+.nav-link.active {
+    font-weight: 600;
+}
+
+/* Dropdown Styles */
+.dropdown-menu {
+    border-radius: 0.5rem;
+    border: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.dropdown-item {
+    padding: 0.5rem 1.5rem;
+    transition: all 0.2s;
+}
+
+.dropdown-item:hover, .dropdown-item:focus {
+    background-color: var(--light-green);
+    color: var(--primary-color);
 }
 
 main {
     padding: 40px 20px;
+    padding-top: calc(var(--navbar-height) + 20px);
+    flex: 1;    
     max-width: 900px;
     margin: 20px auto;
     background-color: #ffffff; /* Fundo branco */
@@ -185,39 +202,25 @@ h3 {
 }
 
 /* Media Queries para Responsividade do Navbar e outros elementos */
+/* Responsive Styles */
 @media (max-width: 991.98px) {
     .navbar-collapse {
-        background-color: #006400;
-        border-top: 1px solid #228B22;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        width: 100%;
-        z-index: 1000;
-        padding-bottom: 10px;
+        background-color: var(--primary-color);
+        border-top: 1px solid var(--secondary-color);
+        padding: 1rem;
+        margin-top: 0.5rem;
+        border-radius: 0 0 0.5rem 0.5rem;
     }
+    
     .navbar-nav {
-        flex-direction: column !important;
-        align-items: center;
-        width: 100%;
+        gap: 0.5rem;
     }
-    .navbar-nav .nav-item {
-        width: 90%;
-        margin: 5px 0;
-    }
-    .navbar-nav .nav-item .nav-link {
-        text-align: center;
-        background-color: #228B22;
-        border-radius: 5px;
-        margin: 2px 0;
-        padding: 10px 15px !important;
-    }
-    .navbar-nav .nav-item .nav-link:hover {
-        background-color: #004d00 !important;
-        color: #fff !important;
+    
+    .nav-link {
+        justify-content: center;
+        padding: 0.75rem !important;
     }
 }
-
 @media (max-width: 768px) {
     main {
         padding: 25px 15px;
@@ -242,14 +245,26 @@ h3 {
     }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 991.98px) {
     .navbar-brand {
         font-size: 1.5em;
     }
 
-    .navbar-nav .nav-item .nav-link {
-        font-size: 0.9em;
-        padding: 8px 15px !important;
+    .navbar-collapse {
+        background-color: var(--primary-color);
+        border-top: 1px solid var(--secondary-color);
+        padding: 1rem;
+        margin-top: 0.5rem;
+        border-radius: 0 0 0.5rem 0.5rem;
+    }
+    
+    .navbar-nav {
+        gap: 0.5rem;
+    }
+    
+    .nav-link {
+        justify-content: center;
+        padding: 0.75rem !important;
     }
 
     h1 {
@@ -337,4 +352,21 @@ h3 {
         padding: 10px 25px;
         font-size: 1em;
     }
+}
+
+/* Estilo para o link do ícone de admin/login */
+.admin-icon-link {
+    padding: 0.25rem 0.75rem !important;
+    color: rgba(255, 255, 255, 0.75) !important;
+    transition: color 0.2s ease-in-out;
+}
+
+.admin-icon-link:hover {
+    color: #fff !important;
+}
+
+/* Ajuste para o dropdown do admin */
+.dropdown-menu-end {
+    right: 0;
+    left: auto;
 }

@@ -1,4 +1,7 @@
 /* Arquivo: static/style.css */
+:root {
+    --trophy-gold: #ffd700;
+}
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif,-apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue";
@@ -46,49 +49,62 @@ header {
 
 /* Estilos para o Navbar do Bootstrap */
 .navbar {
-    background-color: #006400 !important; /* Verde escuro para o Navbar */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    border-bottom: none; /* Remover a borda inferior verde/turquesa */
-    padding: 10px 20px;
-    z-index: 1030;
+    background-color: var(--primary-color) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 0.5rem 1rem;
 }
 
 .navbar-brand {
-    color: #fff !important; /* Texto branco para a marca */
-    font-size: 1.8em;
-    font-weight: bold;
-    text-transform: uppercase;
-    letter-spacing: normal; /* Voltar ao normal */
+    font-weight: 700;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
 }
 
-.navbar-toggler {
-    border-color: rgba(255, 255, 255, 0.3) !important;
+.navbar-brand i {
+    font-size: 1.8rem;
+    color: var(--trophy-gold);
 }
 
-.navbar-toggler-icon {
-    /* Ícone hambúrguer branco */
-    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(255, 255, 255, 0.8)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E") !important;
+.nav-link {
+    font-weight: 500;
+    padding: 0.5rem 1rem !important;
+    transition: all 0.3s ease;
+    border-radius: 0.5rem;
 }
 
-.navbar-nav .nav-item .nav-link {
-    color: #fff !important; /* Cor dos links do menu */
-    font-weight: bold;
-    padding: 8px 15px !important;
-    margin: 0 5px;
-    border-radius: 5px;
-    transition: background-color 0.3s ease, color 0.3s ease;
-    background-color: #228B22; /* Fundo para cada item de menu */
+.nav-link:hover, .nav-link.active {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    transform: translateY(-2px);
 }
 
-.navbar-nav .nav-item .nav-link:hover {
-    background-color: #004d00 !important; /* Verde escuro no hover */
-    color: #fff !important;
+.nav-link.active {
+    font-weight: 600;
+}
+
+/* Dropdown Styles */
+.dropdown-menu {
+    border-radius: 0.5rem;
+    border: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.dropdown-item {
+    padding: 0.5rem 1.5rem;
+    transition: all 0.2s;
+}
+
+.dropdown-item:hover, .dropdown-item:focus {
+    background-color: var(--light-green);
+    color: var(--primary-color);
 }
 
 /* Conteúdo Principal da Página */
 main {
     padding: 30px 20px;
     max-width: 1200px;
+    padding-top: calc(var(--navbar-height) + 20px);
+    flex: 1;
     margin: 20px auto;
     background-color: #ffffff; /* Fundo branco para o conteúdo principal */
     border-radius: 10px;
@@ -179,7 +195,7 @@ td {
 .table-container h3 {
     text-align: center;
     margin-bottom: 20px;
-    color: #006400; /* Verde escuro */
+    color: #b39c0d; /* Verde escuro */
     padding-top: 15px;
 }
 
@@ -257,21 +273,22 @@ td {
     padding: 12px 0;
     margin: 0 10px;
     border-bottom: 1px solid #eee;
+    padding-left: 10px !important; /* Adiciona um pequeno padding à esquerda da linha */
+    padding-right: 10px !important; /* Adiciona um pequeno padding à direita da linha */
 }
 
 /* Estilo dos times - extremidades */
+/* Ajuste adicional para garantir alinhamento */
 .team {
     display: flex;
     align-items: center;
-    width: 120px; /* Largura fixa para alinhamento */
+    padding: 0 5px;
 }
 
-/* Alinhamento do time da casa */
 .team-home {
     justify-content: flex-start;
 }
 
-/* Alinhamento do time visitante */
 .team-away {
     justify-content: flex-end;
 }
@@ -291,8 +308,10 @@ td {
 /* Container central (data/hora ou placar) */
 .match-center {
     flex-grow: 1;
+    flex-shrink: 0;
     text-align: center;
     padding: 0 10px;
+    min-width: 100px;
 }
 
 /* Data/hora */
@@ -464,6 +483,27 @@ footer {
         width: 70px;
         margin: 0 8px;
     }
+    .team-away {
+        justify-content: flex-end !important;
+        margin-left: auto !important;
+    }
+    
+    .team-away .team-sigla {
+        order: 2; /* Coloca a sigla depois do escudo */
+        margin-left: 8px !important;
+        margin-right: 0 !important;
+    }
+    
+    .team-away img {
+        order: 1; /* Coloca o escudo antes da sigla */
+        margin-left: 0 !important;
+        margin-right: 8px !important;
+    }
+}
+
+.team-home, .team-away {
+    flex: 1;
+    min-width: 0; /* Permite que o texto seja truncado se necessário */
 }
 
 @media (max-width: 480px) {
@@ -607,13 +647,13 @@ footer {
     border-color: #006400 !important;
     box-shadow: 0 0 5px rgba(0, 100, 0, 0.3) !important;
 }
-/* Navegação entre rodadas */
+
+/* Navigation */
 .rodada-navigation {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin: 20px 0 30px;
-    padding: 0 20px;
+    margin: 2rem 0;
 }
 
 .nav-arrow {
@@ -765,8 +805,6 @@ footer {
     text-align: right;
 }
 
-/* ... (todo o CSS anterior) ... */
-
 /* Estilos para o status do jogo (FIM / AO VIVO) */
 .match-status {
     font-size: 0.8em;
@@ -796,5 +834,35 @@ footer {
 @keyframes blinker {
     50% {
         opacity: 0.5;
+    }
+}
+
+/* ======================================================= */
+/* CORREÇÃO PARA FORÇAR LAYOUT DE DESKTOP EM TELAS MOBILE  */
+/* ======================================================= */
+@media (max-width: 768px) {
+    .match-row, .result-row {
+        flex-direction: row !important;
+        flex-wrap: nowrap !important;
+    }
+
+    .match-row .team,
+    .result-row .team {
+        flex: 1 1 auto !important; /* Permite que os times ocupem o espaço necessário */
+        justify-content: unset !important; /* Reseta o alinhamento para o padrão */
+        margin-bottom: 0 !important; /* Remove a margem que empurrava para baixo */
+        width: auto !important; /* Deixa a largura automática */
+    }
+}
+
+@media (max-width: 768px) {
+    .result-row .team-away {
+      margin-left: auto !important; /* Garante que qualquer outra margem seja ignorada */
+      margin-right: 5px !important; /* Adiciona uma pequena margem à direita para afastar do escudo */
+    }
+
+    .result-row .match-center {
+      margin-left: 5px !important; /* Adiciona uma pequena margem à esquerda do placar */
+      margin-right: 5px !important; /* Adiciona uma pequena margem à direita do placar */
     }
 }

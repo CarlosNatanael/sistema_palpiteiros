@@ -1,5 +1,6 @@
 @echo off
 REM Define o diretório do projeto Flask
+REM "C:\Pasta Dev\sistema_palpiteiros"
 cd /d "C:\Users\SUPORTE 03\Desktop\EU\Eu (Carlos)\Cod_Dev\sistema_palpiteiros"
 
 REM Define a variável de ambiente para o arquivo Flask principal

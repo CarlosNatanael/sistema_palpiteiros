@@ -7,6 +7,7 @@
     <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"> <style>
         /* Estilos específicos para esta página se style.css não cobrir tudo */
         .admin-container {
@@ -121,34 +122,29 @@
 </head>
 <body class="site-container">
     <header>
-        <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('index') }}">Pontuação</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('estatisticas') }}">Estatísticas</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('exibir_palpites') }}">Palpites</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('exibir_rodadas') }}">Rodadas</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('adicionar_palpites') }}">Adicionar Palpite</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('regra') }}">Regras</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('admin_dashboard') }}">Admin</a>
-                    </li>
-                </ul>
+        <nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="background-color: #006400 !important;">
+            <div class="container-fluid">
+                <a class="navbar-brand d-flex align-items-center" href="{{ url_for('index') }}">
+                    <i class="bi bi-trophy me-2"></i>
+                    <span>Tabela pontuação</span>
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav mx-auto">
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('index') }}">Pontuação</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('estatisticas') }}">Estatísticas</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('exibir_palpites') }}">Palpites</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('chaveamento') }}">Chaveamento</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('adicionar_palpites') }}">Adicionar Palpite</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('ver_palpites_campeao') }}">Palpites Campeão</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('campeao_geral') }}">Campeão Palpiteiros</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('regra') }}">Regras</a></li>
+                        <li class="nav-item"><a class="nav-link active" href="{{ url_for('admin_dashboard') }}">Painel Admin</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('logout') }}">Sair</a></li>
+                    </ul>
+                </div>
             </div>
         </nav>
     </header>
@@ -157,39 +153,56 @@
         <div class="admin-container">
             <h1>DEFINIR RESULTADOS DOS JOGOS</h1>
 
+            <!-- NOVO MENU DE SELEÇÃO DE RODADA -->
+            <div class="form-group">
+                <label for="rodada_selector">Filtrar por Rodada:</label>
+                <select id="rodada_selector" class="form-control" onchange="window.location.href = this.value;">
+                    {% for rodada_num in rodadas_disponiveis %}
+                        <option value="{{ url_for('set_game_result', rodada=rodada_num) }}" {% if rodada_num == rodada_ativa %}selected{% endif %}>
+                            Rodada {{ rodada_num }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <hr>
+
             {% with messages = get_flashed_messages(with_categories=true) %}
                 {% if messages %}
                     {% for category, message in messages %}
-                        <div class="flash-message alert-{{ category }}">{{ message }}</div>
+                        <div class="alert alert-{{ category }}">{{ message }}</div>
                     {% endfor %}
                 {% endif %}
             {% endwith %}
 
-            <form method="POST">
+            <form method="POST" action="{{ url_for('set_game_result', rodada=rodada_ativa) }}">
                 <div class="form-group">
                     <label for="game_id">Selecione o Jogo:</label>
-                    <select id="game_id" name="game_id" class="selectpicker form-control" data-live-search="true" title="Escolha um jogo..." required>
+                    <select id="game_id" name="game_id" class="selectpicker form-control" data-live-search="true" title="Escolha um jogo da Rodada {{ rodada_ativa }}..." required>
                         {% for jogo in jogos_disponiveis %}
-                            <option value="{{ jogo.id }}" {% if jogo.placar_time1 is not none %} selected {% endif %}
-                                    data-tokens="{{ jogo.time1_nome }} {{ jogo.time2_nome }} {{ jogo.data_hora }}">
-                                {{ jogo.time1_nome }} vs {{ jogo.time2_nome }} ({{ jogo.data_hora }}) -
-                                {% if jogo.placar_time1 is not none %}
-                                    Atual: {{ jogo.placar_time1 }} x {{ jogo.placar_time2 }}
-                                {% else %}
-                                    Pendente
-                                {% endif %}
+                            <option value="{{ jogo.id }}" 
+                                    data-time1="{{ jogo.time1_nome }}" 
+                                    data-time2="{{ jogo.time2_nome }}"
+                                    data-rodada="{{ jogo.rodada }}">
+                                {{ jogo.time1_nome }} vs {{ jogo.time2_nome }}
                             </option>
                         {% endfor %}
                     </select>
                 </div>
 
                 <div class="form-group">
-                    <label for="placar_time1">Placar Time da Casa:</label>
+                    <label>Placar do Jogo:</label>
                     <div class="score-inputs-admin">
-                        <input type="number" id="placar_time1" name="placar_time1" class="form-control" min="0" required>
+                        <input type="number" name="placar_time1" class="form-control" min="0" required>
                         <span class="separator">x</span>
-                        <input type="number" id="placar_time2" name="placar_time2" class="form-control" min="0" required>
+                        <input type="number" name="placar_time2" class="form-control" min="0" required>
                     </div>
+                </div>
+                
+                <div class="form-group" id="container-avanco" style="display: none;">
+                    <label for="time_que_avancou">Quem Avançou? (Obrigatório se houver empate)</label>
+                    <select id="time_que_avancou" name="time_que_avancou" class="form-control">
+                        <!-- Opções preenchidas pelo JavaScript -->
+                    </select>
                 </div>
 
                 <div class="form-group">
@@ -202,8 +215,11 @@
         </div>
     </main>
 
-    <footer>
-        <p>© Desenvolvido por Carlos Natanael</p>
+
+    <footer class="bg-dark text-white py-3 mt-auto">
+        <div class="container text-center">
+            <p class="mb-0">© Desenvolvido por Carlos Natanael</p>
+        </div>
     </footer>
 
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
@@ -213,6 +229,37 @@
     <script type="text/javascript">
         $(document).ready(function() {
             $('.selectpicker').selectpicker();
+        });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('.selectpicker').selectpicker();
+
+            // Evento que dispara quando um jogo é selecionado
+            $('#game_id').on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
+                var selectedOption = $(this).find('option').eq(clickedIndex);
+                var rodada = parseInt(selectedOption.data('rodada'));
+                var containerAvanco = $('#container-avanco');
+                var selectAvanca = $('#time_que_avancou');
+
+                // Se a rodada for 4 ou maior, mostra o campo "Quem Avançou"
+                if (rodada >= 4) {
+                    var time1 = selectedOption.data('time1');
+                    var time2 = selectedOption.data('time2');
+
+                    // Limpa opções antigas e adiciona as novas
+                    selectAvanca.empty()
+                        .append($('<option>', { value: '', text: '-- Selecione quem avançou --' }))
+                        .append($('<option>', { value: time1, text: time1 }))
+                        .append($('<option>', { value: time2, text: time2 }));
+                    
+                    containerAvanco.show();
+                } else {
+                    // Se for fase de grupos, esconde o campo
+                    containerAvanco.hide();
+                    selectAvanca.empty();
+                }
+            });
         });
     </script>
 </body>
