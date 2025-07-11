@@ -782,6 +782,19 @@ MUNDIAL_JOGOS_POR_RODADA = {
             'data_hora': '2025-07-09 16:00',
             'local': 'MetLife Stadium'
         },
+    ],
+    7: [
+        {
+            'id': 701,
+            'time1_nome': 'Chelsea',
+            'time1_sigla': 'CFC',
+            'time1_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/fhBITrIlbQxhVB6IjxUO6Q_48x48.png',
+            'time2_nome': 'PSG',
+            'time2_sigla': 'PSG',
+            'time2_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/mcpMspef1hwHwi9qrfp4YQ_48x48.png',
+            'data_hora': '2025-07-13 16:00',
+            'local': 'MetLife Stadium'
+        },
     ]
 
     # # Adicione mais rodadas e jogos conforme necessário, seguindo a estrutura
