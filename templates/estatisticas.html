@@ -177,19 +177,48 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {% for seq in sequencias %}
-                            <tr class="{{ 'table-success' if seq.sequencia >= 3 }}">
-                                <td>{{ seq.nome }}</td>
-                                <td>{{ seq.sequencia }}</td>
+                            <tr>
+                                <td>Lucas</td>
+                                <td>0</td>
                                 <td>
-                                    {% if seq.sequencia >= 3 %}
-                                    <span class="badge bg-warning text-dark pulse">{{ seq.bonus }}</span>
-                                    {% else %}
-                                    <span class="badge bg-secondary">{{ seq.bonus }}</span>
-                                    {% endif %}
+                                	<span class="badge bg-secondary">--</span>
                                 </td>
                             </tr>
-                            {% endfor %}
+                            <tr>
+                                <td>Carlos</td>
+                                <td>3</td>
+                                <td>
+                                	<span class="badge bg-warning text-dark pulse">🔥 Bônus Disponível!</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Gabriel</td>
+                                <td>0</td>
+                                <td>
+                                	<span class="badge bg-secondary">--</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Ariel</td>
+                                <td>1</td>
+                                <td>
+                                	<span class="badge bg-secondary">--</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Celso</td>
+                                <td>0</td>
+                                <td>
+                                	<span class="badge bg-secondary">--</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Arthur</td>
+                                <td>1</td>
+                                <td>
+                                	<span class="badge bg-secondary">--</span>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
