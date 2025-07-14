@@ -19,7 +19,6 @@ TEMPORADA_ATUAL = "2ª Temporada"
 
 # --- Conexão com o Banco de Dados ---
 def get_db():
-    """Abre uma nova conexão com o banco de dados se não houver uma no contexto da requisição."""
     if 'db' not in g:
         g.db = sqlite3.connect('palpites.db', timeout=10)
         g.db.row_factory = sqlite3.Row
@@ -27,67 +26,9 @@ def get_db():
 
 @app.teardown_appcontext
 def close_db(exception):
-    """Fecha a conexão com o banco de dados no final da requisição."""
     db = g.pop('db', None)
     if db is not None:
         db.close()
-
-def init_db():
-    """Cria/Verifica TODAS as tabelas no banco de dados local, incluindo as novas."""
-    print("[LOG - app.py]: Verificando e inicializando TODAS as tabelas...")
-    with get_db() as conn:
-        # Tabela para armazenar resultados inseridos pelo Admin
-        conn.execute('''
-        CREATE TABLE IF NOT EXISTS jogos (
-            id INTEGER PRIMARY KEY, placar_time1 INTEGER, placar_time2 INTEGER,
-            status TEXT DEFAULT 'Pendente', time_que_avancou TEXT
-        )''')
-        # Tabela para a pontuação geral dos usuários
-        conn.execute('''
-        CREATE TABLE IF NOT EXISTS pontuacao (
-            id INTEGER PRIMARY KEY AUTOINCREMENT, nome TEXT UNIQUE,
-            pontos INTEGER DEFAULT 0, acertos INTEGER DEFAULT 0, erros INTEGER DEFAULT 0,
-            pontos_bonus INTEGER DEFAULT 0
-        )''')
-        # Tabela para os palpites individuais dos usuários
-        conn.execute('''
-        CREATE TABLE IF NOT EXISTS palpites (
-            id INTEGER PRIMARY KEY AUTOINCREMENT, nome TEXT, rodada INTEGER, game_id INTEGER,
-            time1 TEXT, time2 TEXT, gol_time1 INTEGER, gol_time2 INTEGER, resultado TEXT,
-            status TEXT, quem_avanca TEXT
-        )''')
-        
-        # CORREÇÃO APLICADA AQUI: Adicionada a coluna 'campeonato'
-        conn.execute('''
-        CREATE TABLE IF NOT EXISTS palpite_campeao (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            nome TEXT NOT NULL,
-            campeonato TEXT NOT NULL,
-            time_campeao TEXT,
-            time_campeao_img TEXT,
-            data_palpite TEXT
-        )''')
-        
-        # Tabelas de Campeões
-        conn.execute('''
-        CREATE TABLE IF NOT EXISTS campeao_real (
-            id INTEGER PRIMARY KEY AUTOINCREMENT, campeonato TEXT UNIQUE, 
-            time_campeao TEXT, time_campeao_img TEXT, data_definicao TEXT
-        )''')
-
-        conn.execute('''
-        CREATE TABLE IF NOT EXISTS campeao_palpiteiros (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            temporada TEXT NOT NULL UNIQUE,
-            competicao TEXT,
-            nome TEXT NOT NULL, 
-            pontos INTEGER, 
-            acertos INTEGER,
-            erros INTEGER, 
-            data_definicao TEXT NOT NULL
-        )''')
-
-    print("[LOG - app.py]: Banco de dados de palpites pronto e atualizado.")
 
 # --- Função Mágica: Busca dados da nossa API ---
 def get_jogos_from_api(as_dict=True):
@@ -823,5 +764,3 @@ def manage_games():
 
     jogos = conn.execute("SELECT * FROM jogos ORDER BY rodada, data_hora").fetchall()
     return render_template('manage_games.html', jogos=jogos)
-
-init_db()

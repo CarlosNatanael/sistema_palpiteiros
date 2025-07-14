@@ -124,41 +124,23 @@ DADOS_DOS_CAMPEONATOS = {
 }
 
 def setup_api_database():
-    """Cria e popula o banco de dados para a API."""
-    print(f"--- Configurando Banco de Dados da API ({API_DB_NAME}) ---")
-    if os.path.exists(API_DB_NAME):
-        os.remove(API_DB_NAME)
-        print(f"Banco de dados antigo '{API_DB_NAME}' removido.")
-        
+    print(f"--- Configurando Banco de Dados da API: {API_DB_NAME} ---")
+    if os.path.exists(API_DB_NAME): os.remove(API_DB_NAME)
+    
     conn = sqlite3.connect(API_DB_NAME)
     cursor = conn.cursor()
-    cursor.execute('''
-    CREATE TABLE jogos (
-        id INTEGER PRIMARY KEY, campeonato TEXT, rodada INTEGER, fase TEXT,
-        time1_nome TEXT, time1_img TEXT, time1_sigla TEXT,
-        time2_nome TEXT, time2_img TEXT, time2_sigla TEXT,
-        data_hora TEXT, local TEXT
-    )''')
-    
+    cursor.execute('''CREATE TABLE jogos (id INTEGER PRIMARY KEY, campeonato TEXT, rodada INTEGER, fase TEXT, time1_nome TEXT, time1_img TEXT, time1_sigla TEXT, time2_nome TEXT, time2_img TEXT, time2_sigla TEXT, data_hora TEXT, local TEXT)''')
     for campeonato, jogos in DADOS_DOS_CAMPEONATOS.items():
         for jogo in jogos:
-            cursor.execute("INSERT INTO jogos VALUES (?,?,?,?,?,?,?,?,?,?,?,?)", (
-                jogo['id'], campeonato, jogo['rodada'], jogo['fase'],
-                jogo['time1_nome'], jogo['time1_img'], jogo['time1_sigla'],
-                jogo['time2_nome'], jogo['time2_img'], jogo['time2_sigla'],
-                jogo['data_hora'], jogo['local']
-            ))
+            cursor.execute("INSERT INTO jogos VALUES (?,?,?,?,?,?,?,?,?,?,?,?)", (jogo['id'], campeonato, jogo['rodada'], jogo['fase'], jogo['time1_nome'], jogo['time1_img'], jogo['time1_sigla'], jogo['time2_nome'], jogo['time2_img'], jogo['time2_sigla'], jogo['data_hora'], jogo['local']))
     conn.commit()
     conn.close()
-    print("Banco da API configurado com sucesso.")
+    print("Banco da API configurado.")
 
 def setup_app_database():
-    """Cria as tabelas vazias para a aplicação principal."""
-    print(f"--- Configurando Banco de Dados da Aplicação ({APP_DB_NAME}) ---")
-    if os.path.exists(APP_DB_NAME):
-        os.remove(APP_DB_NAME)
-        print(f"Banco de dados antigo '{APP_DB_NAME}' removido.")
-
+    print(f"--- Configurando Banco de Dados da Aplicação: {APP_DB_NAME} ---")
+    if os.path.exists(APP_DB_NAME): os.remove(APP_DB_NAME)
+    
     conn = sqlite3.connect(APP_DB_NAME)
     cursor = conn.cursor()
     cursor.execute('''CREATE TABLE jogos (id INTEGER PRIMARY KEY, placar_time1 INTEGER, placar_time2 INTEGER, status TEXT, time_que_avancou TEXT)''')
@@ -169,7 +151,7 @@ def setup_app_database():
     cursor.execute('''CREATE TABLE campeao_palpiteiros (id INTEGER PRIMARY KEY AUTOINCREMENT, temporada TEXT UNIQUE, competicao TEXT, nome TEXT, pontos INTEGER, acertos INTEGER, erros INTEGER, data_definicao TEXT)''')
     conn.commit()
     conn.close()
-    print("Banco da Aplicação configurado com sucesso.")
+    print("Banco da Aplicação configurado.")
 
 if __name__ == '__main__':
     print("Iniciando configuração completa dos bancos de dados...")
