@@ -3,81 +3,112 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Campeão dos Palpiteiros</title>
+    <title>Galeria de Campeões</title>
     <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="{{ url_for('static', filename='campeao_palpiteiros.css') }}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap">
+    <link rel="stylesheet" href="{{ url_for('static', filename='historico.css') }}">
 </head>
-<body>
+<body class="d-flex flex-column min-vh-100" style="font-family: 'Poppins', sans-serif;">
     <header>
-        <nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="background-color: #006400 !important;">
-            <div class="container-fluid">
-                <a class="navbar-brand d-flex align-items-center" href="{{ url_for('index') }}">
-                    <i class="bi bi-trophy me-2"></i>
-                    <span>Tabela pontuação</span>
-                </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-            </div>
-        </nav>
+        <!-- Cabeçalho pode ser adicionado aqui se necessário -->
     </header>
 
-    <main>
-        <div class="container text-center py-5">
-            <div class="champion-header">
-                <h1><i class="bi bi-clock-history"></i> HISTÓRICO DE CAMPEÕES</h1>
-                <p class="subtitle">Os mestres de todas as temporadas!</p>
+    <main class="container py-4 flex-grow-1" style="padding-top: 80px;">
+        <div class="gallery-header text-center">
+            <h1><i class="bi bi-trophy"></i> Galeria de Campeões</h1>
+            <p class="lead">O Hall da Fama dos Melhores Palpiteiros</p>
+            <div class="d-flex justify-content-center mt-3">
+                <div class="stats-badge">
+                    <span class="badge bg-light text-dark">
+                        <i class="bi bi-people-fill me-1"></i> {{ campeoes_agrupados|length }} Campeões
+                    </span>
+                </div>
+                <div class="stats-badge ms-2">
+                    <span class="badge bg-light text-dark">
+                        <i class="bi bi-trophy-fill me-1"></i> 
+                        1 Títulos
+                    </span>
+                </div>
             </div>
-            
-            {% if campeoes %}
-                {% for campeao in campeoes %}
-                <div class="champion-card mx-auto mb-5">
+        </div>
 
-                    <h5 class="text-muted">CAMPEÃO DA {{ campeao.temporada | upper }}</h5>
-
-                    <div class="avatar">
-                        </div>
-                    <h2 class="champion-name">{{ campeao.nome }}</h2>
-                    <hr class="my-4">
-                    <div class="stats">
-                        <div class="stat-item">
-                            <span class="stat-value">{{ campeao.pontos }}</span>
-                            <span class="stat-label">Pontos</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-value">{{ campeao.acertos }}</span>
-                            <span class="stat-label">Acertos</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-value">{{ campeao.erros }}</span>
-                            <span class="stat-label">Erros</span>
-                        </div>
-                    </div>
-                    <div class="performance-metric mt-4">
-                        <h3>Taxa de Acerto</h3>
-                        <div class="progress" style="height: 25px;">
-                            <div class="progress-bar" role="progressbar" style="width: {{ campeao.percentual_acertos }}%;" aria-valuenow="{{ campeao.percentual_acertos }}" aria-valuemin="0" aria-valuemax="100">
-                                {{ campeao.percentual_acertos }}%
+        {% if campeoes_agrupados %}
+            <div class="accordion" id="championsAccordion">
+                {% for nome, vitorias in campeoes_agrupados.items() %}
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="heading-{{ loop.index }}">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-{{ loop.index }}" aria-expanded="false" aria-controls="collapse-{{ loop.index }}">
+                            <div class="d-flex align-items-center">
+                                <div class="champion-avatar me-3">
+                                    <i class="bi bi-person-circle"></i>
+                                </div>
+                                <div>
+                                    <span class="champion-name">{{ nome }}</span>
+                                    <span class="badge bg-warning text-dark rounded-pill ms-2">{{ vitorias|length }} Título(s)</span>
+                                </div>
+                            </div>
+                        </button>
+                    </h2>
+                    <div id="collapse-{{ loop.index }}" class="accordion-collapse collapse" aria-labelledby="heading-{{ loop.index }}" data-bs-parent="#championsAccordion">
+                        <div class="accordion-body">
+                            <div class="row g-4">
+                                {% for vitoria in vitorias %}
+                                <div class="col-md-6 col-lg-4">
+                                    <div class="trophy-plaque">
+                                        <i class="bi bi-trophy-fill trophy-icon"></i>
+                                        <div class="trophy-season">{{ vitoria.temporada }}</div>
+                                        <p class="text-muted mb-2"><i class="bi bi-controller me-1"></i>{{ vitoria.competicao }}</p> 
+                                        <div class="trophy-divider"></div>
+                                        <ul class="trophy-stats">
+                                            <li>
+                                                <span class="stat-label">Pontos:</span>
+                                                <span class="stat-value">{{ vitoria.pontos }}</span>
+                                            </li>
+                                            <li>
+                                                <span class="stat-label">Acertos:</span>
+                                                <span class="stat-value text-success">{{ vitoria.acertos or 0 }}</span>
+                                            </li>
+                                            <li>
+                                                <span class="stat-label">Erros:</span>
+                                                <span class="stat-value text-danger">{{ vitoria.erros or 0 }}</span>
+                                            </li>
+                                        </ul>
+                                        <div class="trophy-date mt-2">
+                                            <small class="text-muted">
+                                                <i class="bi bi-calendar me-1"></i>
+                                                {{ vitoria.data_definicao.split(' ')[0]|format_date }}
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
                             </div>
                         </div>
                     </div>
-                    <small class="text-muted mt-4 d-block">Coroado em: {{ campeao.data_definicao.split(' ')[0] | format_date_br }}</small>
                 </div>
                 {% endfor %}
-            {% else %}
-                <div class="no-champion">
-                    <i class="bi bi-search"></i>
-                    <h2>Ainda não há campeões registrados no histórico.</h2>
-                </div>
-            {% endif %}
-        </div>
+            </div>
+        {% else %}
+            <div class="text-center py-5 my-5">
+                <i class="bi bi-emoji-frown display-4 text-muted mb-3"></i>
+                <h3 class="text-muted">Nenhum campeão registrado ainda</h3>
+                <p class="text-muted">Volte mais tarde para conferir os vencedores</p>
+            </div>
+        {% endif %}
     </main>
 
-    <footer class="bg-dark text-white py-3 mt-auto">
+    <div class="text-center mt-4 mb-5">
+        <a href="{{ url_for('index') }}" class="btn btn-success btn-lg">
+            <i class="bi bi-arrow-left-circle-fill me-2"></i>Voltar à Pontuação Geral
+        </a>
+    </div>
+
+    <footer class="py-3 mt-auto">
         <div class="container text-center">
-            <p class="mb-0">© Desenvolvido por Carlos Natanael</p>
+            <p class="mb-0">©2025 Desenvolvido por Carlos Natanael</p>
+            <small class="text-muted">Todos os direitos reservados</small>
         </div>
     </footer>
 

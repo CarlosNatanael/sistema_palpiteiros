@@ -1,0 +1,118 @@
+/* Adicione isso ao seu arquivo CSS existente */
+
+/* Efeito de gradiente no cabeçalho */
+.gallery-header {
+    background: linear-gradient(135deg, #006400 0%, #228B22 100%);
+    color: white;
+    padding: 2rem 1rem;
+    border-radius: 0.75rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 12px rgba(0, 100, 0, 0.15);
+}
+
+.gallery-header h1 {
+    color: white;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.gallery-header .lead {
+    color: rgba(255, 255, 255, 0.85) !important;
+}
+
+/* Melhorias nos cards de troféus */
+.trophy-plaque {
+    background: white;
+    border: none;
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    text-align: center;
+    height: 100%;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.trophy-plaque::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #006400 0%, #FFD700 100%);
+}
+
+.trophy-plaque:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 8px 20px rgba(0, 100, 0, 0.2);
+}
+
+.trophy-icon {
+    font-size: 3.5rem;
+    color: #FFD700;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 0.5rem;
+}
+
+.trophy-season {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #006400;
+    margin: 0.5rem 0;
+}
+
+/* Melhorias no accordion */
+.accordion-item {
+    margin-bottom: 1.5rem;
+    border: none;
+    border-radius: 0.75rem !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.accordion-button {
+    font-size: 1.4rem;
+    padding: 1.25rem 1.5rem;
+    border-radius: 0.75rem !important;
+}
+
+.accordion-button:not(.collapsed) {
+    background: linear-gradient(135deg, #006400 0%, #228B22 100%);
+}
+
+.accordion-body {
+    padding: 1.5rem;
+}
+
+/* Botão de voltar melhorado */
+.btn-success {
+    background: linear-gradient(135deg, #006400 0%, #228B22 100%);
+    border: none;
+    padding: 0.75rem 2rem;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(0, 100, 0, 0.2);
+    transition: all 0.3s ease;
+}
+
+.btn-success:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 100, 0, 0.3);
+}
+
+/* Rodapé melhorado */
+footer {
+    background: linear-gradient(135deg, #222 0%, #000 100%);
+    padding: 1.5rem 0;
+    margin-top: 3rem;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .accordion-button {
+        font-size: 1.2rem;
+    }
+    
+    .trophy-plaque {
+        padding: 1rem;
+    }
+}

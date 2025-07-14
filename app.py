@@ -13,7 +13,9 @@ app.secret_key = 'ALJDHA76797#%*#JKOL'
 ADMIN_USERNAME = "admin"
 ADMIN_PASSWORD = "pokemar16#" 
 
-API_BASE_URL = "http://127.0.0.1:5001/api/v1" 
+API_BASE_URL = "http://127.0.0.1:5001/api/v1"
+
+TEMPORADA_ATUAL = "2ª Temporada" 
 
 # --- Conexão com o Banco de Dados ---
 def get_db():
@@ -77,6 +79,7 @@ def init_db():
         CREATE TABLE IF NOT EXISTS campeao_palpiteiros (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             temporada TEXT NOT NULL UNIQUE,
+            competicao TEXT,
             nome TEXT NOT NULL, 
             pontos INTEGER, 
             acertos INTEGER,
@@ -115,6 +118,14 @@ def format_date_br_filter(date_str):
     try:
         return datetime.strptime(date_str.split(' ')[0], '%Y-%m-%d').strftime('%d/%m/%Y')
     except (ValueError, IndexError):
+        return date_str
+    
+@app.template_filter('format_date')
+def format_date_filter(date_str):
+    try:
+        date_obj = datetime.strptime(date_str, '%Y-%m-%d')
+        return date_obj.strftime('%d/%m/%Y')
+    except:
         return date_str
 
 @app.route('/')
@@ -496,10 +507,11 @@ def admin_dashboard():
 def set_campeao_palpiteiro():
     conn = get_db()
     nome_campeao = request.form.get('campeao_nome')
-    temporada = request.form.get('temporada') # << Pega a temporada do form
+    temporada = request.form.get('temporada')
+    competicao = request.form.get('competicao')
 
-    if not nome_campeao or not temporada:
-        flash('Nome do campeão e temporada são obrigatórios.', 'warning')
+    if not all([nome_campeao, temporada, competicao]):
+        flash('Todos os campos (campeão, temporada e competição) são obrigatórios.', 'warning')
         return redirect(url_for('admin_dashboard'))
 
     jogador_stats = conn.execute(
@@ -510,36 +522,32 @@ def set_campeao_palpiteiro():
     if not jogador_stats:
         flash('Jogador não encontrado.', 'danger')
         return redirect(url_for('admin_dashboard'))
-    
-    # Usa INSERT OR REPLACE para inserir um novo campeão ou atualizar um existente da mesma temporada
     conn.execute(
         """
-        INSERT INTO campeao_palpiteiros (temporada, nome, pontos, acertos, erros, data_definicao) 
-        VALUES (?, ?, ?, ?, ?, ?)
+        INSERT INTO campeao_palpiteiros (temporada, competicao, nome, pontos, acertos, erros, data_definicao) 
+        VALUES (?, ?, ?, ?, ?, ?, ?)
         ON CONFLICT(temporada) DO UPDATE SET
-        nome=excluded.nome, pontos=excluded.pontos, acertos=excluded.acertos, erros=excluded.erros, data_definicao=excluded.data_definicao
+        competicao=excluded.competicao, nome=excluded.nome, pontos=excluded.pontos, acertos=excluded.acertos, erros=excluded.erros, data_definicao=excluded.data_definicao
         """,
-        (temporada, jogador_stats['nome'], jogador_stats['total_pontos'], jogador_stats['acertos'], jogador_stats['erros'], datetime.now().strftime('%Y-%m-%d %H:%M'))
+        (temporada, competicao, jogador_stats['nome'], jogador_stats['total_pontos'], jogador_stats['acertos'], jogador_stats['erros'], datetime.now().strftime('%Y-%m-%d %H:%M'))
     )
     conn.commit()
-    flash(f'{nome_campeao} foi definido como o Campeão da temporada {temporada}!', 'success')
+    flash(f'{nome_campeao} foi coroado Campeão da {temporada} ({competicao})!', 'success')
     return redirect(url_for('admin_dashboard'))
 
 @app.route('/historico')
 def historico_campeoes():
     conn = get_db()
-    campeoes = conn.execute("SELECT * FROM campeao_palpiteiros ORDER BY temporada DESC").fetchall()
+    campeoes_db = conn.execute("SELECT * FROM campeao_palpiteiros ORDER BY nome ASC, temporada ASC").fetchall()
     
-    # Calcula a taxa de acerto para cada campeão
-    campeoes_com_stats = []
-    for campeao_data in campeoes:
-        campeao = dict(campeao_data)
-        total_jogos = campeao['acertos'] + campeao['erros']
-        percentual = (campeao['acertos'] * 100 / total_jogos) if total_jogos > 0 else 0
-        campeao['percentual_acertos'] = round(percentual, 1)
-        campeoes_com_stats.append(campeao)
+    # Agrupa todas as informações da vitória por nome de jogador
+    campeoes_agrupados = defaultdict(list)
+    for campeao_data in campeoes_db:
+        # Converte a linha do banco em um dicionário completo
+        campeao_dict = dict(campeao_data)
+        campeoes_agrupados[campeao_dict['nome']].append(campeao_dict)
 
-    return render_template('historico.html', campeoes=campeoes_com_stats)
+    return render_template('historico.html', campeoes_agrupados=campeoes_agrupados)
 
 @app.route('/admin/set_game_result', methods=['GET', 'POST'])
 @login_required
@@ -781,8 +789,11 @@ def set_champion():
 @app.route('/campeao_geral')
 def campeao_geral():
     conn = get_db()
-    # Este novo comando busca o campeão da temporada mais recente (ORDER BY temporada DESC)
-    campeao_data = conn.execute("SELECT * FROM campeao_palpiteiros ORDER BY temporada DESC LIMIT 1").fetchone()
+    # A consulta agora busca especificamente o campeão da TEMPORADA_ATUAL
+    campeao_data = conn.execute(
+        "SELECT * FROM campeao_palpiteiros WHERE temporada = ?", 
+        (TEMPORADA_ATUAL,)
+    ).fetchone()
     
     campeao = None
     if campeao_data:
@@ -793,8 +804,9 @@ def campeao_geral():
             campeao['percentual_acertos'] = round(percentual, 1)
         else:
             campeao['percentual_acertos'] = 0
-
-    return render_template('campeao_geral.html', campeao=campeao)
+    
+    # Adicionamos a temporada atual ao template para poder exibi-la
+    return render_template('campeao_geral.html', campeao=campeao, temporada_atual=TEMPORADA_ATUAL)
 
 @app.route('/admin/manage_games', methods=['GET', 'POST'])
 @login_required
