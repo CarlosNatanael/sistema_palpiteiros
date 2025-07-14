@@ -33,7 +33,6 @@
                         <li class="nav-item"><a class="nav-link" href="{{ url_for('campeao_geral') }}">Campeão Palpiteiros</a></li>
                         <li class="nav-item"><a class="nav-link" href="{{ url_for('regra') }}">Regras</a></li>
                     </ul>
-
                     <ul class="navbar-nav">
                         {% if session.logged_in %}
                         <li class="nav-item dropdown">
@@ -59,21 +58,44 @@
         </nav>
     </header>
 
-    <main style="padding-top: 80px;"> <h1>ADICIONAR NOVO PALPITE</h1>
-
-            {% with messages = get_flashed_messages(with_categories=true) %}
-                {% if messages %}
-                    {% for category, message in messages %}
-                        <div class="flash-message alert-{{ category }}">{{ message }}</div>
-                    {% endfor %}
-                {% endif %}
-            {% endwith %}
-            
+    <main style="padding-top: 80px;">
+        <h1>ADICIONAR NOVO PALPITE</h1>
+        
         <div class="form-container">
-            <form action="{{ url_for('adicionar_palpites') }}" method="POST">
+            <form id="filtroForm" action="{{ url_for('adicionar_palpites') }}" method="GET">
+                <div class="form-group mb-3">
+                    <label for="campeonato_selecionado">1. Selecione o Campeonato</label>
+                    <select id="campeonato_selecionado" name="campeonato_selecionado" class="form-control" onchange="document.getElementById('filtroForm').submit();">
+                        <option value="" disabled {% if not campeonato_selecionado %}selected{% endif %}>Escolha um campeonato...</option>
+                        {% for camp in campeonatos %}
+                        <option value="{{ camp }}" {% if camp == campeonato_selecionado %}selected{% endif %}>{{ camp }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                {% if campeonato_selecionado %}
                 <div class="form-group">
-                    <label for="nome">Nome</label>
-                    <select id="nome" name="nome" class="selectpicker" data-live-search="true" data-style="btn-light" required>
+                    <label for="rodada_selecionada">2. Selecione a Rodada</label>
+                    <select id="rodada_selecionada" name="rodada_selecionada" class="form-control" onchange="this.form.submit();">
+                        <option value="" disabled {% if not rodada_selecionada %}selected{% endif %}>Escolha uma rodada...</option>
+                        {% for rodada_num in rodadas %}
+                        <option value="{{ rodada_num }}" {% if rodada_num == rodada_selecionada %}selected{% endif %}>{{ rodada_num }}ª Rodada</option>
+                        {% endfor %}
+                    </select>
+                    <input type="hidden" name="campeonato_selecionado" value="{{ campeonato_selecionado }}">
+                </div>
+                {% endif %}
+            </form>
+
+            <hr>
+
+            <form id="palpiteForm" action="{{ url_for('adicionar_palpites') }}" method="POST">
+                <input type="hidden" name="campeonato_selecionado" value="{{ campeonato_selecionado }}">
+                <input type="hidden" name="rodada_selecionada" value="{{ rodada_selecionada }}">
+                
+                <div class="form-group">
+                    <label for="nome">Nome do Palpiteiro</label>
+                    <select id="nome" name="nome" class="form-control" required>
                         <option value="" disabled selected>Selecione seu nome</option>
                         {% for palpiteiro in palpiteiros %}
                         <option value="{{ palpiteiro }}">{{ palpiteiro }}</option>
@@ -81,18 +103,8 @@
                     </select>
                 </div>
 
-                <div class="form-group">
-                    <label for="rodada_selecionada">Selecione a Rodada</label>
-                    <select id="rodada_selecionada" name="rodada_selecionada" class="selectpicker" data-style="btn-light" required>
-                        <option value="" disabled {% if not rodada_selecionada %}selected{% endif %}>Escolha a rodada</option>
-                        {% for rodada_num in rodadas %}
-                        <option value="{{ rodada_num }}" {% if rodada_num == rodada_selecionada %}selected{% endif %}>{{ rodada_num }}ª Rodada</option>
-                        {% endfor %}
-                    </select>
-                </div>
-
                 {% if jogos %}
-                <h2>Rodada {{ rodada_selecionada }}</h2>
+                <h2 class="mt-4">Jogos de {{ campeonato_selecionado }} - Rodada {{ rodada_selecionada }}</h2>
                 <div class="games-list">
                     {% for jogo in jogos %}
                     <div class="game-card">
@@ -116,7 +128,7 @@
 
                         <div class="result-prediction-group">
                             <label for="resultado_{{ jogo.id }}">Resultado</label>
-                            <select id="resultado_{{ jogo.id }}" name="resultado_{{ jogo.id }}" class="selectpicker" data-style="btn-light" required>
+                            <select id="resultado_{{ jogo.id }}" name="resultado_{{ jogo.id }}" class="form-control" required>
                                 <option value="" disabled selected>Selecione o resultado</option>
                                 <option value="Vitória (Casa)">Vitória (Casa)</option>
                                 <option value="Empate">Empate</option>
@@ -124,47 +136,34 @@
                             </select>
                         </div>
                         
+                        {% if jogo.fase == 'mata-mata' %}
                         <div class="result-prediction-group mt-2">
                             <label for="quem_avanca_{{ jogo.id }}">Quem Avança?</label>
-                            <select id="quem_avanca_{{ jogo.id }}" name="quem_avanca_{{ jogo.id }}" class="selectpicker" data-style="btn-light" required>
+                            <select id="quem_avanca_{{ jogo.id }}" name="quem_avanca_{{ jogo.id }}" class="form-control" required>
                                 <option value="" disabled selected>Selecione quem avança</option>
                                 <option value="{{ jogo.time1_nome }}">{{ jogo.time1_nome }}</option>
                                 <option value="{{ jogo.time2_nome }}">{{ jogo.time2_nome }}</option>
                             </select>
                         </div>
+                        {% endif %}
                     </div>
                     {% endfor %}
                 </div>
-                <button type="submit">Enviar Palpites da Rodada</button>
-                {% else %}
-                <h4 class="no-games-message"><strong>RODADA FECHADA</strong></h4>
+                <button type="submit" class="btn btn-primary mt-4">Enviar Palpites</button>
+                {% elif rodada_selecionada %}
+                <h4 class="no-games-message"><strong>Nenhum jogo aberto para palpites nesta rodada.</strong></h4>
                 {% endif %}
             </form>
         </div>
     </main>
-
     <footer class="bg-dark text-white py-3 mt-auto">
         <div class="container text-center">
             <p class="mb-0">© Desenvolvido por Carlos Natanael</p>
         </div>
     </footer>
-
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $('.selectpicker').selectpicker();
-            $('#rodada_selecionada').change(function() {
-                var selectedRodada = $(this).val();
-                if (selectedRodada) {
-                    window.location.href = "{{ url_for('adicionar_palpites') }}?rodada=" + selectedRodada;
-                }
-            });
-        });
-    </script>
 </body>
 </html>
