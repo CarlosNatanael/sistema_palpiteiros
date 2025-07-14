@@ -31,37 +31,73 @@ def close_db(exception):
         db.close()
 
 def init_db():
-    print("[LOG - app.py]: Verificando tabelas de palpites e pontuação...")
-    with sqlite3.connect('palpites.db') as conn:
+    """Cria/Verifica TODAS as tabelas no banco de dados local, incluindo as novas."""
+    print("[LOG - app.py]: Verificando e inicializando TODAS as tabelas...")
+    with get_db() as conn:
+        # Tabela para armazenar resultados inseridos pelo Admin
         conn.execute('''
         CREATE TABLE IF NOT EXISTS jogos (
-            id INTEGER PRIMARY KEY, placar_time1 INTEGER, placar_time2 INTEGER, 
+            id INTEGER PRIMARY KEY, placar_time1 INTEGER, placar_time2 INTEGER,
             status TEXT DEFAULT 'Pendente', time_que_avancou TEXT
         )''')
+        # Tabela para a pontuação geral dos usuários
         conn.execute('''
         CREATE TABLE IF NOT EXISTS pontuacao (
             id INTEGER PRIMARY KEY AUTOINCREMENT, nome TEXT UNIQUE,
             pontos INTEGER DEFAULT 0, acertos INTEGER DEFAULT 0, erros INTEGER DEFAULT 0,
             pontos_bonus INTEGER DEFAULT 0
         )''')
+        # Tabela para os palpites individuais dos usuários
         conn.execute('''
         CREATE TABLE IF NOT EXISTS palpites (
             id INTEGER PRIMARY KEY AUTOINCREMENT, nome TEXT, rodada INTEGER, game_id INTEGER,
-            time1 TEXT, time2 TEXT, gol_time1 INTEGER, gol_time2 INTEGER, resultado TEXT, 
+            time1 TEXT, time2 TEXT, gol_time1 INTEGER, gol_time2 INTEGER, resultado TEXT,
             status TEXT, quem_avanca TEXT
         )''')
-    print("[LOG - app.py]: Banco de dados de palpites pronto.")
+        
+        # CORREÇÃO APLICADA AQUI: Adicionada a coluna 'campeonato'
+        conn.execute('''
+        CREATE TABLE IF NOT EXISTS palpite_campeao (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            nome TEXT NOT NULL,
+            campeonato TEXT NOT NULL,
+            time_campeao TEXT,
+            time_campeao_img TEXT,
+            data_palpite TEXT
+        )''')
+        
+        # Tabelas de Campeões
+        conn.execute('''
+        CREATE TABLE IF NOT EXISTS campeao_real (
+            id INTEGER PRIMARY KEY AUTOINCREMENT, campeonato TEXT UNIQUE, 
+            time_campeao TEXT, time_campeao_img TEXT, data_definicao TEXT
+        )''')
+
+        conn.execute('''
+        CREATE TABLE IF NOT EXISTS campeao_palpiteiros (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            temporada TEXT NOT NULL UNIQUE,
+            nome TEXT NOT NULL, 
+            pontos INTEGER, 
+            acertos INTEGER,
+            erros INTEGER, 
+            data_definicao TEXT NOT NULL
+        )''')
+
+    print("[LOG - app.py]: Banco de dados de palpites pronto e atualizado.")
 
 # --- Função Mágica: Busca dados da nossa API ---
-def get_jogos_from_api():
-    """Busca a lista completa de jogos da api.py e retorna como uma LISTA."""
+def get_jogos_from_api(as_dict=True):
+    """Busca os jogos da api.py. Retorna um dicionário por padrão para performance."""
     try:
         response = requests.get(f"{API_BASE_URL}/jogos")
         response.raise_for_status()
-        return response.json()
-    except requests.exceptions.RequestException as e:
-        print(f"ERRO GRAVE: Não foi possível conectar à API de jogos. Detalhe: {e}")
-        return []
+        jogos = response.json()
+        if as_dict:
+            return {jogo['id']: jogo for jogo in jogos}
+        return jogos
+    except requests.exceptions.RequestException:
+        return {} if as_dict else []
 
 def login_required(f):
     @wraps(f)
@@ -84,71 +120,102 @@ def format_date_br_filter(date_str):
 @app.route('/')
 def index():
     conn = get_db()
-    jogos_api = get_jogos_from_api() # É uma lista
-    if not jogos_api:
-        flash("Atenção: Não foi possível carregar a lista de jogos. A API pode estar offline.", "warning")
+    jogos_api_map = get_jogos_from_api() # Retorna um dicionário {id: jogo}
+    if not jogos_api_map:
+        flash("Atenção: A API de jogos parece estar offline.", "warning")
 
-    # Transforma a lista em um dicionário para fácil acesso
-    jogos_map = {jogo['id']: jogo for jogo in jogos_api}
-    
-    # Junta os dados da API com os resultados do banco local
+    # Mescla resultados do banco local com os dados da API
     resultados_db = conn.execute("SELECT * FROM jogos").fetchall()
     for res in resultados_db:
-        if res['id'] in jogos_map:
-            jogos_map[res['id']].update(dict(res))
+        if res['id'] in jogos_api_map:
+            jogos_api_map[res['id']].update(dict(res))
 
+    # --- LÓGICA DE AGRUPAMENTO POR CAMPEONATO ---
     agora = datetime.now().strftime('%Y-%m-%d %H:%M')
     
-    # CORREÇÃO: Itera sobre os valores do dicionário
-    jogos_futuros = [j for j in jogos_map.values() if j.get('data_hora', '') > agora]
-    jogos_passados = [j for j in jogos_map.values() if j.get('data_hora', '') <= agora]
+    jogos_futuros_por_campeonato = defaultdict(list)
+    jogos_passados_por_campeonato = defaultdict(list)
+
+    # Itera sobre todos os jogos e os agrupa
+    for jogo in jogos_api_map.values():
+        campeonato = jogo.get('campeonato', 'Sem Campeonato')
+        if jogo.get('data_hora', 'Z') > agora:
+            jogos_futuros_por_campeonato[campeonato].append(jogo)
+        else:
+            jogos_passados_por_campeonato[campeonato].append(jogo)
+    # --- FIM DA LÓGICA DE AGRUPAMENTO ---
     
     pontuacao = conn.execute("SELECT nome, (pontos + pontos_bonus) as total_pontos, acertos, erros FROM pontuacao ORDER BY total_pontos DESC, acertos DESC").fetchall()
     
-    return render_template('index.html', pontuacao=pontuacao, jogos_futuros=jogos_futuros, jogos_passados=jogos_passados)
+    # Passa os dicionários agrupados para o template
+    return render_template('index.html', 
+        pontuacao=pontuacao,
+        jogos_futuros_por_campeonato=jogos_futuros_por_campeonato,
+        jogos_passados_por_campeonato=jogos_passados_por_campeonato
+    )
 
 @app.route('/chaveamento')
 def chaveamento():
-    conn = get_db()
-    jogos_mata_mata = conn.execute("SELECT * FROM jogos WHERE fase = 'mata-mata' ORDER BY rodada, id ASC").fetchall()
-    jogos_map = {jogo['id']: dict(jogo) for jogo in jogos_mata_mata}
+    jogos_api = get_jogos_from_api(as_dict=False) # Pega como lista
     
-    oitavas = [jogo for jogo in jogos_mata_mata if jogo['rodada'] == 4]
+    # Filtra apenas jogos de mata-mata direto da API
+    jogos_mata_mata = [j for j in jogos_api if j.get('fase') == 'mata-mata']
+    
+    # Restante da lógica para montar o chaveamento
+    oitavas = [j for j in jogos_mata_mata if j['rodada'] == 1] # Exemplo
+    #... (sua lógica para quartas, semis, etc. continua aqui) ...
 
     return render_template('chaveamento.html', oitavas=oitavas, quartas=[], semis=[], final=[], campeao={'nome': 'A definir'})
 
 @app.route('/palpites')
 def exibir_palpites():
     conn = get_db()
-    rodada_param = request.args.get('rodada', type=int)
-
-    rodadas_existentes_rows = conn.execute("SELECT DISTINCT rodada FROM jogos ORDER BY rodada ASC").fetchall()
-    rodadas_existentes = [r['rodada'] for r in rodadas_existentes_rows]
     
+    # 1. Obter todos os jogos da API e criar o 'jogos_map'
+    jogos_api_map = get_jogos_from_api(as_dict=True) # as_dict=True é importante aqui
+    if not jogos_api_map:
+        flash("Atenção: Não foi possível carregar a lista de jogos. A API pode estar offline.", "warning")
+
+    # 2. Obter as rodadas disponíveis a partir dos dados da API
+    rodadas_existentes = sorted(list(set(j['rodada'] for j in jogos_api_map.values())))
+    
+    rodada_param = request.args.get('rodada', type=int)
+    
+    # Define a rodada a ser exibida (a mais recente com palpites, ou a primeira disponível)
     rodada_para_exibir = rodada_param
     if not rodada_para_exibir or rodada_para_exibir not in rodadas_existentes:
         rodada_recente_row = conn.execute("SELECT MAX(rodada) as max_rodada FROM palpites").fetchone()
-        rodada_para_exibir = (rodada_recente_row['max_rodada'] if rodada_recente_row and rodada_recente_row['max_rodada'] 
-                              else (rodadas_existentes[0] if rodadas_existentes else 1))
+        if rodada_recente_row and rodada_recente_row['max_rodada'] in rodadas_existentes:
+            rodada_para_exibir = rodada_recente_row['max_rodada']
+        else:
+            rodada_para_exibir = rodadas_existentes[0] if rodadas_existentes else 1
 
-    palpites = conn.execute("SELECT * FROM palpites WHERE rodada = ? ORDER BY nome", (rodada_para_exibir,)).fetchall()
-    jogos_da_rodada = conn.execute("SELECT * FROM jogos WHERE rodada = ?", (rodada_para_exibir,)).fetchall()
-    jogos_map = {jogo['id']: jogo for jogo in jogos_da_rodada}
+    # 3. Buscar palpites do banco de dados local para a rodada selecionada
+    palpites_db = conn.execute("SELECT * FROM palpites WHERE rodada = ? ORDER BY nome", (rodada_para_exibir,)).fetchall()
 
+    # 4. Agrupar os palpites por jogador
     palpites_agrupados = defaultdict(list)
-    for palpite in palpites:
-        palpites_agrupados[palpite['nome']].append(palpite)
+    for palpite in palpites_db:
+        palpites_agrupados[palpite['nome']].append(dict(palpite))
 
+    # Lógica de navegação entre rodadas
     idx_rodada = rodadas_existentes.index(rodada_para_exibir) if rodada_para_exibir in rodadas_existentes else -1
     tem_proxima = idx_rodada != -1 and idx_rodada < len(rodadas_existentes) - 1
     tem_anterior = idx_rodada > 0
     proxima_rodada = rodadas_existentes[idx_rodada + 1] if tem_proxima else None
     anterior_rodada = rodadas_existentes[idx_rodada - 1] if tem_anterior else None
 
-    return render_template('palpites.html',
-        palpites_agrupados=palpites_agrupados, jogos_map=jogos_map,
-        rodada_exibida_num=rodada_para_exibir, tem_proxima=tem_proxima,
-        proxima_rodada=proxima_rodada, tem_anterior=tem_anterior, anterior_rodada=anterior_rodada)
+    # 5. Passar TODOS os dados necessários para o template, incluindo o jogos_map
+    return render_template(
+        'palpites.html',
+        palpites_agrupados=palpites_agrupados,
+        jogos_map=jogos_api_map,  # <-- CORREÇÃO PRINCIPAL AQUI
+        rodada_exibida_num=rodada_para_exibir,
+        tem_proxima=tem_proxima,
+        proxima_rodada=proxima_rodada,
+        tem_anterior=tem_anterior,
+        anterior_rodada=anterior_rodada
+    )
 
 
 def get_api_data(endpoint="jogos"):
@@ -167,11 +234,23 @@ def adicionar_palpites():
     conn = get_db()
     
     if request.method == 'POST':
+        conn = get_db()
         nome = request.form.get('nome')
         rodada_selecionada = int(request.form.get('rodada_selecionada'))
         campeonato = request.form.get('campeonato_selecionado')
 
-        jogos_api = get_api_data() or []
+        # --- CORREÇÃO APLICADA AQUI ---
+        # 1. Verifica se o palpiteiro já existe na tabela de pontuação
+        cursor = conn.cursor()
+        cursor.execute("SELECT id FROM pontuacao WHERE nome = ?", (nome,))
+        palpiteiro_existente = cursor.fetchone()
+
+        # 2. Se não existir, insere o nome na tabela de pontuação para que ele apareça no ranking
+        if not palpiteiro_existente:
+            conn.execute("INSERT INTO pontuacao (nome) VALUES (?)", (nome,))
+        # --- FIM DA CORREÇÃO ---
+
+        jogos_api = get_api_data("jogos") or []
         agora_str = datetime.now().strftime('%Y-%m-%d %H:%M')
         
         jogos_da_rodada_para_palpite = [
@@ -407,16 +486,67 @@ def logout():
 @login_required
 def admin_dashboard():
     conn = get_db()
+    # Estas consultas precisam que o DB já esteja criado com as tabelas certas.
     pontuacao_geral = conn.execute("SELECT nome FROM pontuacao ORDER BY nome").fetchall()
     campeao_atual = conn.execute("SELECT nome FROM campeao_palpiteiros WHERE id = 1").fetchone()
     return render_template('admin_dashboard.html', pontuacao_geral=pontuacao_geral, campeao_atual=campeao_atual)
 
+@app.route('/admin/set_campeao_palpiteiro', methods=['POST'])
+@login_required
+def set_campeao_palpiteiro():
+    conn = get_db()
+    nome_campeao = request.form.get('campeao_nome')
+    temporada = request.form.get('temporada') # << Pega a temporada do form
+
+    if not nome_campeao or not temporada:
+        flash('Nome do campeão e temporada são obrigatórios.', 'warning')
+        return redirect(url_for('admin_dashboard'))
+
+    jogador_stats = conn.execute(
+        "SELECT nome, acertos, erros, (pontos + pontos_bonus) as total_pontos FROM pontuacao WHERE nome = ?", 
+        (nome_campeao,)
+    ).fetchone()
+    
+    if not jogador_stats:
+        flash('Jogador não encontrado.', 'danger')
+        return redirect(url_for('admin_dashboard'))
+    
+    # Usa INSERT OR REPLACE para inserir um novo campeão ou atualizar um existente da mesma temporada
+    conn.execute(
+        """
+        INSERT INTO campeao_palpiteiros (temporada, nome, pontos, acertos, erros, data_definicao) 
+        VALUES (?, ?, ?, ?, ?, ?)
+        ON CONFLICT(temporada) DO UPDATE SET
+        nome=excluded.nome, pontos=excluded.pontos, acertos=excluded.acertos, erros=excluded.erros, data_definicao=excluded.data_definicao
+        """,
+        (temporada, jogador_stats['nome'], jogador_stats['total_pontos'], jogador_stats['acertos'], jogador_stats['erros'], datetime.now().strftime('%Y-%m-%d %H:%M'))
+    )
+    conn.commit()
+    flash(f'{nome_campeao} foi definido como o Campeão da temporada {temporada}!', 'success')
+    return redirect(url_for('admin_dashboard'))
+
+@app.route('/historico')
+def historico_campeoes():
+    conn = get_db()
+    campeoes = conn.execute("SELECT * FROM campeao_palpiteiros ORDER BY temporada DESC").fetchall()
+    
+    # Calcula a taxa de acerto para cada campeão
+    campeoes_com_stats = []
+    for campeao_data in campeoes:
+        campeao = dict(campeao_data)
+        total_jogos = campeao['acertos'] + campeao['erros']
+        percentual = (campeao['acertos'] * 100 / total_jogos) if total_jogos > 0 else 0
+        campeao['percentual_acertos'] = round(percentual, 1)
+        campeoes_com_stats.append(campeao)
+
+    return render_template('historico.html', campeoes=campeoes_com_stats)
 
 @app.route('/admin/set_game_result', methods=['GET', 'POST'])
 @login_required
 def set_game_result():
     conn = get_db()
     if request.method == 'POST':
+        # Lógica para salvar o resultado (permanece a mesma)
         game_id = int(request.form['game_id'])
         placar1 = int(request.form['placar_time1'])
         placar2 = int(request.form['placar_time2'])
@@ -428,13 +558,45 @@ def set_game_result():
             cursor.execute("UPDATE jogos SET placar_time1=?, placar_time2=?, status='Ao Vivo', time_que_avancou=? WHERE id=?", (placar1, placar2, avancou, game_id))
         else:
             cursor.execute("INSERT INTO jogos (id, placar_time1, placar_time2, status, time_que_avancou) VALUES (?, ?, ?, 'Ao Vivo', ?)", (game_id, placar1, placar2, avancou))
+        
         conn.commit()
         flash(f'Resultado do jogo {game_id} salvo. Rode a atualização para calcular os pontos.', 'success')
-        return redirect(url_for('set_game_result'))
+        # Redireciona mantendo os filtros
+        return redirect(url_for('set_game_result', 
+                                campeonato_selecionado=request.form.get('campeonato_selecionado'), 
+                                rodada_selecionada=request.form.get('rodada_selecionada')))
+
+    # --- LÓGICA DO GET (para exibir a página) ---
+    campeonato_selecionado = request.args.get('campeonato_selecionado')
+    rodada_selecionada = request.args.get('rodada_selecionada', type=int)
+
+    # 1. Busca todos os campeonatos
+    campeonatos = get_api_data("campeonatos") or []
     
-    # CORREÇÃO: Itera sobre a lista diretamente
-    jogos_api = get_jogos_from_api()
-    return render_template('set_game_result.html', jogos_disponiveis=jogos_api)
+    rodadas_disponiveis = []
+    jogos_filtrados = []
+    
+    if campeonato_selecionado:
+        # 2. Se um campeonato foi escolhido, busca todos os jogos
+        jogos_api = get_api_data("jogos") or []
+        
+        # Filtra jogos do campeonato selecionado
+        jogos_do_campeonato = [j for j in jogos_api if j['campeonato'] == campeonato_selecionado]
+        
+        if jogos_do_campeonato:
+            rodadas_disponiveis = sorted(list(set(j['rodada'] for j in jogos_do_campeonato)))
+
+        # 3. Se uma rodada também foi escolhida, filtra os jogos para o formulário
+        if rodada_selecionada and rodada_selecionada in rodadas_disponiveis:
+            jogos_filtrados = [j for j in jogos_do_campeonato if j['rodada'] == rodada_selecionada]
+
+    return render_template('set_game_result.html',
+        campeonatos=campeonatos,
+        campeonato_selecionado=campeonato_selecionado,
+        rodadas=rodadas_disponiveis,
+        rodada_selecionada=rodada_selecionada,
+        jogos_disponiveis=jogos_filtrados
+    )
 
 
 @app.route('/atualizar_pontuacao_admin')
@@ -504,91 +666,75 @@ def atualizar_pontuacao_admin():
 @app.route('/palpite_campeao', methods=['GET', 'POST'])
 def palpite_campeao():
     conn = get_db()
-    # Obter a lista de todos os times que aparecem em 'jogos'
-    all_teams_db = conn.execute('''
-        SELECT DISTINCT time1_nome as name, time1_img as img_src FROM jogos
-        UNION
-        SELECT DISTINCT time2_nome as name, time2_img as img_src FROM jogos
-        ORDER BY name
-    ''').fetchall()
     
-    palpiteiros = ["Ariel", "Arthur", "Carlos", "Celso", "Gabriel", "Lucas"]
-
-    # Determinar a rodada ativa (esta parte deve estar tanto para GET quanto POST)
-    agora = datetime.now()
-    rodadas_no_db = conn.execute("SELECT DISTINCT rodada FROM jogos ORDER BY rodada ASC").fetchall()
-    rodada_ativa_para_registro = None
-    for row in rodadas_no_db:
-        num_rodada = row['rodada']
-        ultimo_jogo_da_rodada = conn.execute(
-            "SELECT data_hora FROM jogos WHERE rodada = ? ORDER BY data_hora DESC LIMIT 1", (num_rodada,)
-        ).fetchone()
-        if ultimo_jogo_da_rodada:
-            ultimo_jogo_datetime = datetime.strptime(ultimo_jogo_da_rodada['data_hora'], '%Y-%m-%d %H:%M')
-            if agora < ultimo_jogo_datetime:
-                rodada_ativa_para_registro = num_rodada
-                break
-    if rodada_ativa_para_registro is None and rodadas_no_db:
-        rodada_ativa_para_registro = rodadas_no_db[-1]['rodada']
-    elif not rodadas_no_db:
-        rodada_ativa_para_registro = 1
-
     if request.method == 'POST':
         nome = request.form['nome']
+        campeonato = request.form['campeonato_selecionado'] # Pega o campeonato do campo oculto
         time_campeao = request.form['time_campeao']
-        
-        time_campeao_info = next((team for team in all_teams_db if team['name'] == time_campeao), None)
-        time_campeao_img = time_campeao_info['img_src'] if time_campeao_info else None
 
-        # Verifica se já existe palpite para este palpiteiro
-        existente = conn.execute(
-            'SELECT id FROM palpite_campeao WHERE nome = ?',
-            (nome,)
-        ).fetchone()
+        # Busca a imagem do time na API
+        jogos_api = get_api_data() or []
+        time_campeao_img = None
+        for jogo in jogos_api:
+            if jogo['time1_nome'] == time_campeao:
+                time_campeao_img = jogo['time1_img']
+                break
+            if jogo['time2_nome'] == time_campeao:
+                time_campeao_img = jogo['time2_img']
+                break
+        
+        existente = conn.execute('SELECT id FROM palpite_campeao WHERE nome = ? AND campeonato = ?', (nome, campeonato)).fetchone()
         
         if existente:
-            print(f"\n[LOG] Atualizando palpite de campeão para {nome}\n")
-            conn.execute(
-                'UPDATE palpite_campeao SET time_campeao = ?, time_campeao_img = ?, rodada = ?, data_palpite = ? WHERE id = ?',
-                (time_campeao, time_campeao_img, rodada_ativa_para_registro, datetime.now().strftime('%Y-%m-%d %H:%M'), existente['id'])
-            )
+            conn.execute('UPDATE palpite_campeao SET time_campeao = ?, time_campeao_img = ?, data_palpite = ? WHERE id = ?', (time_campeao, time_campeao_img, datetime.now().strftime('%Y-%m-%d %H:%M'), existente['id']))
         else:
-            print(f"\n[LOG] Inserindo novo palpite de campeão para {nome}\n")
-            conn.execute(
-                'INSERT INTO palpite_campeao (nome, time_campeao, time_campeao_img, rodada, data_palpite) VALUES (?, ?, ?, ?, ?)',
-                (nome, time_campeao, time_campeao_img, rodada_ativa_para_registro, datetime.now().strftime('%Y-%m-%d %H:%M'))
-            )
+            conn.execute('INSERT INTO palpite_campeao (nome, campeonato, time_campeao, time_campeao_img, data_palpite) VALUES (?, ?, ?, ?, ?)', (nome, campeonato, time_campeao, time_campeao_img, datetime.now().strftime('%Y-%m-%d %H:%M')))
         
         conn.commit()
-        
-        flash('Seu palpite para campeão foi registrado/atualizado!', 'success')
+        flash('Seu palpite para campeão foi registrado!', 'success')
         return redirect(url_for('ver_palpites_campeao'))
+
+    # --- LÓGICA DO GET ---
+    campeonato_selecionado = request.args.get('campeonato_selecionado')
     
-    # GET request
+    # 1. Busca a lista de campeonatos disponíveis
+    campeonatos = get_api_data("campeonatos") or []
     
+    times_filtrados = []
+    if campeonato_selecionado:
+        # 2. Se um campeonato foi escolhido, busca todos os jogos
+        jogos_api = get_api_data() or []
+        
+        # 3. Filtra os times APENAS do campeonato selecionado
+        times_do_campeonato = {}
+        for jogo in jogos_api:
+            if jogo['campeonato'] == campeonato_selecionado:
+                times_do_campeonato[jogo['time1_nome']] = jogo['time1_img']
+                times_do_campeonato[jogo['time2_nome']] = jogo['time2_img']
+        
+        times_filtrados = [{'name': nome, 'img_src': img} for nome, img in sorted(times_do_campeonato.items())]
+
+    palpiteiros = ["Ariel", "Arthur", "Carlos", "Celso", "Gabriel", "Lucas"]
     
-    print(f"\n[LOG] Exibindo formulário de palpite campeão para rodada {rodada_ativa_para_registro}\n")
-    return render_template('palpite_campeao.html',
-        palpiteiros=palpiteiros,
-        times=all_teams_db,
-        rodada_atual_display=rodada_ativa_para_registro
-    )
+    return render_template('palpite_campeao.html', 
+        palpiteiros=palpiteiros, 
+        campeonatos=campeonatos,
+        campeonato_selecionado=campeonato_selecionado,
+        times=times_filtrados)
 
 @app.route('/ver_palpites_campeao')
 def ver_palpites_campeao():
     conn = get_db()
     palpites = conn.execute('''
-        SELECT p.nome, p.time_campeao, p.data_palpite, p.time_campeao_img, p.rodada
+        SELECT p.nome, p.campeonato, p.time_campeao, p.data_palpite, p.time_campeao_img
         FROM palpite_campeao p
-        ORDER BY p.rodada ASC, p.nome ASC
+        ORDER BY p.campeonato ASC, p.nome ASC
     ''').fetchall()
     
-    campeao_real = conn.execute('SELECT time_campeao, time_campeao_img, data_definicao FROM campeao_mundial ORDER BY data_definicao DESC LIMIT 1').fetchone()
+    campeoes_reais = conn.execute('SELECT * FROM campeao_real').fetchall()
+    campeoes_map = {c['campeonato']: dict(c) for c in campeoes_reais}
 
-    
-    
-    print(f"\n[LOG] Exibindo palpites de campeão - Total: {len(palpites)}\n")
-    return render_template('ver_palpites_campeao.html', palpites=palpites, campeao_real=campeao_real)
+    return render_template('ver_palpites_campeao.html', palpites=palpites, campeoes_reais=campeoes_map)
 
 @app.route('/admin/set_champion', methods=['GET', 'POST'])
 @login_required
@@ -675,4 +821,4 @@ if __name__ == '__main__':
     print("      Certifique-se que a API (api.py) está rodando.")
     print("="*50)
     
-    app.run(host="0.0.0.0", port=3000, debug=False) 
+    app.run(host="0.0.0.0", port=3000, debug=True)

@@ -3,15 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Palpite Campeão</title>
+    <title>Campeão dos Palpiteiros</title>
     <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
-    <link rel="stylesheet" href="{{ url_for('static', filename='adipalpites.css') }}"> 
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='campeao_palpiteiros.css') }}">
 </head>
-<body class="d-flex flex-column min-vh-100">
+<body>
     <header>
         <nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="background-color: #006400 !important;">
             <div class="container-fluid">
@@ -29,8 +27,8 @@
                         <li class="nav-item"><a class="nav-link" href="{{ url_for('exibir_palpites') }}">Palpites</a></li>
                         <li class="nav-item"><a class="nav-link" href="{{ url_for('chaveamento') }}">Chaveamento</a></li>
                         <li class="nav-item"><a class="nav-link" href="{{ url_for('adicionar_palpites') }}">Adicionar Palpite</a></li>
-                        <li class="nav-item"><a class="nav-link active" href="{{ url_for('ver_palpites_campeao') }}">Palpites Campeão</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{ url_for('campeao_geral') }}">Campeão Palpiteiros</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('ver_palpites_campeao') }}">Palpites Campeão</a></li>
+                        <li class="nav-item"><a class="nav-link active" href="{{ url_for('campeao_geral') }}">Campeão Palpiteiros</a></li>
                         <li class="nav-item"><a class="nav-link" href="{{ url_for('regra') }}">Regras</a></li>
                     </ul>
 
@@ -59,55 +57,58 @@
         </nav>
     </header>
 
-    <main style="padding-top: 80px;">
-        <div class="container">
-            <h1 class="text-center mb-4">PALPITE DE CAMPEÃO</h1>
-
-            <form id="filtroCampeonatoForm" action="{{ url_for('palpite_campeao') }}" method="GET" class="mb-4">
-                <div class="form-group">
-                    <label for="campeonato_selecionado"><strong>1. Escolha o Campeonato:</strong></label>
-                    <select id="campeonato_selecionado" name="campeonato_selecionado" class="form-control" onchange="this.form.submit()">
-                        <option value="" disabled {% if not campeonato_selecionado %}selected{% endif %}>Selecione um campeonato...</option>
-                        {% for camp in campeonatos %}
-                        <option value="{{ camp }}" {% if camp == campeonato_selecionado %}selected{% endif %}>{{ camp }}</option>
-                        {% endfor %}
-                    </select>
+    <main>
+        <div class="container text-center py-5">
+            <div class="champion-header">
+                <h1><i class="bi bi-clock-history"></i> HISTÓRICO DE CAMPEÕES</h1>
+                <p class="subtitle">Os mestres de todas as temporadas!</p>
+            </div>
+            
+            {% if campeoes %}
+                {% for campeao in campeoes %}
+                <div class="champion-card mx-auto mb-5">
+                    <h5 class="text-muted">TEMPORADA {{ campeao.temporada }}</h5>
+                    <div class="avatar">
+                        <div class="avatar-circle">
+                            <span>{{ campeao.nome[0]|upper }}</span>
+                        </div>
+                    </div>
+                    <h2 class="champion-name">{{ campeao.nome }}</h2>
+                    <hr class="my-4">
+                    <div class="stats">
+                        <div class="stat-item">
+                            <span class="stat-value">{{ campeao.pontos }}</span>
+                            <span class="stat-label">Pontos</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-value">{{ campeao.acertos }}</span>
+                            <span class="stat-label">Acertos</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-value">{{ campeao.erros }}</span>
+                            <span class="stat-label">Erros</span>
+                        </div>
+                    </div>
+                    <div class="performance-metric mt-4">
+                        <h3>Taxa de Acerto</h3>
+                        <div class="progress" style="height: 25px;">
+                            <div class="progress-bar" role="progressbar" style="width: {{ campeao.percentual_acertos }}%;" aria-valuenow="{{ campeao.percentual_acertos }}" aria-valuemin="0" aria-valuemax="100">
+                                {{ campeao.percentual_acertos }}%
+                            </div>
+                        </div>
+                    </div>
+                    <small class="text-muted mt-4 d-block">Coroado em: {{ campeao.data_definicao.split(' ')[0] | format_date_br }}</small>
                 </div>
-            </form>
-
-            <hr>
-
-            {% if campeonato_selecionado %}
-            <form id="palpiteForm" action="{{ url_for('palpite_campeao') }}" method="POST">
-                <input type="hidden" name="campeonato_selecionado" value="{{ campeonato_selecionado }}">
-
-                <div class="form-group">
-                    <label for="nome"><strong>2. Seu Nome:</strong></label>
-                    <select id="nome" name="nome" class="form-control" required>
-                        <option value="" disabled selected>Selecione seu nome</option>
-                        {% for palpiteiro in palpiteiros %}
-                        <option value="{{ palpiteiro }}">{{ palpiteiro }}</option>
-                        {% endfor %}
-                    </select>
+                {% endfor %}
+            {% else %}
+                <div class="no-champion">
+                    <i class="bi bi-search"></i>
+                    <h2>Ainda não há campeões registrados no histórico.</h2>
                 </div>
-
-                <div class="form-group">
-                    <label for="time_campeao"><strong>3. Seu Palpite para Campeão de {{ campeonato_selecionado }}:</strong></label>
-                    <select id="time_campeao" name="time_campeao" class="form-control" required>
-                        <option value="" disabled selected>Selecione um time...</option>
-                        {% for time in times %}
-                        <option value="{{ time.name }}">{{ time.name }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-                
-                <button type="submit" class="btn btn-primary btn-block mt-4">Registrar Palpite</button>
-            </form>
             {% endif %}
         </div>
     </main>
 
-    <!-- Rodapé Fixo -->
     <footer class="bg-dark text-white py-3 mt-auto">
         <div class="container text-center">
             <p class="mb-0">© Desenvolvido por Carlos Natanael</p>
@@ -115,14 +116,5 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $('.selectpicker').selectpicker();
-        });
-    </script>
 </body>
 </html>

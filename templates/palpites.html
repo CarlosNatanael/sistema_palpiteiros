@@ -98,20 +98,22 @@
                                                 <span>Seu Palpite</span>
                                                 <strong>{{ palpite.gol_time1 }} x {{ palpite.gol_time2 }}</strong>
                                                 <small class="text-muted">({{ palpite.resultado }})</small>
+                                                
+                                                {% if jogo.fase == 'mata-mata' %}
                                                     <small class="text-muted">(Avança: {{ palpite.quem_avanca }})</small>
+                                                {% endif %}
                                             </div>
-                                                <div class="palpite-box">
-                                                    <span>Resultado Real</span>
-                                                    {% if jogo.placar_time1 is not none %}
-                                                        
-                                                        <strong>{{ jogo.placar_time1 }} x {{ jogo.placar_time2 }}</strong>
-                                                        {% if jogo.status == 'Finalizado' %}
-                                                            <small class="text-muted">(Avançou: {{ jogo.time_que_avancou }})</small>
-                                                        {% endif %}
-                                                    {% else %}
-                                                        <strong class="text-muted">- x -</strong>
+                                            <div class="palpite-box">
+                                                <span>Resultado Real</span>
+                                                {% if jogo.placar_time1 is not none %}
+                                                    <strong>{{ jogo.placar_time1 }} x {{ jogo.placar_time2 }}</strong>
+                                                    {% if jogo.status == 'Finalizado' and jogo.fase == 'mata-mata' %}
+                                                        <small class="text-muted">(Avançou: {{ jogo.time_que_avancou }})</small>
                                                     {% endif %}
-                                                </div>
+                                                {% else %}
+                                                    <strong class="text-muted">- x -</strong>
+                                                {% endif %}
+                                            </div>
                                             </div>
                                             {% if jogo.status == 'Finalizado' %}
                                                 {% set resultado_real_texto = '' %}

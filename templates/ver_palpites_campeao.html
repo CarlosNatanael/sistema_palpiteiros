@@ -93,7 +93,7 @@
                     {% for palpite in palpites %}
                     <tr>
                         <td>{{ palpite.nome }}</td>
-                        <td>
+                        <td><strong>{{ palpite.campeonato }}</strong></td> <td>
                             <img src="{{ palpite.time_campeao_img }}" alt="{{ palpite.time_campeao }}" style="width: 24px; height: 24px; vertical-align: middle; margin-right: 8px;"/>
                             {{ palpite.time_campeao }}
                         </td>

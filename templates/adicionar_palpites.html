@@ -64,7 +64,7 @@
         <div class="form-container">
             <form id="filtroForm" action="{{ url_for('adicionar_palpites') }}" method="GET">
                 <div class="form-group mb-3">
-                    <label for="campeonato_selecionado">1. Selecione o Campeonato</label>
+                    <label for="campeonato_selecionado">Selecione o Campeonato</label>
                     <select id="campeonato_selecionado" name="campeonato_selecionado" class="form-control" onchange="document.getElementById('filtroForm').submit();">
                         <option value="" disabled {% if not campeonato_selecionado %}selected{% endif %}>Escolha um campeonato...</option>
                         {% for camp in campeonatos %}
@@ -75,7 +75,7 @@
 
                 {% if campeonato_selecionado %}
                 <div class="form-group">
-                    <label for="rodada_selecionada">2. Selecione a Rodada</label>
+                    <label for="rodada_selecionada">Selecione a Rodada</label>
                     <select id="rodada_selecionada" name="rodada_selecionada" class="form-control" onchange="this.form.submit();">
                         <option value="" disabled {% if not rodada_selecionada %}selected{% endif %}>Escolha uma rodada...</option>
                         {% for rodada_num in rodadas %}
