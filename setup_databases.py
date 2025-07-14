@@ -149,12 +149,36 @@ def setup_app_database():
     cursor.execute('''CREATE TABLE palpite_campeao (id INTEGER PRIMARY KEY AUTOINCREMENT, nome TEXT, campeonato TEXT, time_campeao TEXT, time_campeao_img TEXT, data_palpite TEXT)''')
     cursor.execute('''CREATE TABLE campeao_real (id INTEGER PRIMARY KEY AUTOINCREMENT, campeonato TEXT UNIQUE, time_campeao TEXT, time_campeao_img TEXT, data_definicao TEXT)''')
     cursor.execute('''CREATE TABLE campeao_palpiteiros (id INTEGER PRIMARY KEY AUTOINCREMENT, temporada TEXT UNIQUE, competicao TEXT, nome TEXT, pontos INTEGER, acertos INTEGER, erros INTEGER, data_definicao TEXT)''')
+    
+    # --- INÍCIO DA SEÇÃO ADICIONADA: DADOS HISTÓRICOS ---
+    campeao_temporada_1 = {
+        'temporada': '1ª Temporada',
+        'competicao': 'Super Mundial da FIFA',
+        'nome': 'Lucas',
+        'pontos': 71,
+        'acertos': 33,
+        'erros': 25,
+        'data_definicao': '2025-07-13 00:00:00'
+    }
+    
+    try:
+        cursor.execute("""
+            INSERT INTO campeao_palpiteiros (temporada, competicao, nome, pontos, acertos, erros, data_definicao)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+        """, (
+            campeao_temporada_1['temporada'],
+            campeao_temporada_1['competicao'],
+            campeao_temporada_1['nome'],
+            campeao_temporada_1['pontos'],
+            campeao_temporada_1['acertos'],
+            campeao_temporada_1['erros'],
+            campeao_temporada_1['data_definicao']
+        ))
+        print("-> Campeão histórico (1ª Temporada) inserido com sucesso!")
+    except sqlite3.IntegrityError:
+        print("-> Campeão histórico (1ª Temporada) já existe no banco de dados.")
+    # --- FIM DA SEÇÃO ADICIONADA ---
+
     conn.commit()
     conn.close()
     print("Banco da Aplicação configurado.")
-
-if __name__ == '__main__':
-    print("Iniciando configuração completa dos bancos de dados...")
-    setup_api_database()
-    setup_app_database()
-    print("\nConfiguração finalizada com sucesso!")
