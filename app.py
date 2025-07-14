@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, flash, ses
 from collections import defaultdict
 from datetime import datetime
 from functools import wraps
+from config import API_BASE_URL
 import requests
 import sqlite3
 import socket
@@ -12,9 +13,7 @@ import re
 app = Flask(__name__)
 app.secret_key = 'ALJDHA76797#%*#JKOL'
 ADMIN_USERNAME = "admin"
-ADMIN_PASSWORD = "pokemar16#" 
-
-API_BASE_URL = os.environ.get("API_BASE_URL", "http://127.0.0.1:5001/api/v1")
+ADMIN_PASSWORD = "pokemar16#"
 
 TEMPORADA_ATUAL = "2ª Temporada" 
 
