@@ -781,11 +781,11 @@ def set_champion():
 @app.route('/campeao_geral')
 def campeao_geral():
     conn = get_db()
-    campeao_data = conn.execute("SELECT * FROM campeao_palpiteiros WHERE id = 1").fetchone()
+    # Este novo comando busca o campeão da temporada mais recente (ORDER BY temporada DESC)
+    campeao_data = conn.execute("SELECT * FROM campeao_palpiteiros ORDER BY temporada DESC LIMIT 1").fetchone()
     
     campeao = None
     if campeao_data:
-        # Converte a linha do banco para um dicionário para podermos adicionar novos dados
         campeao = dict(campeao_data)
         total_jogos = campeao['acertos'] + campeao['erros']
         if total_jogos > 0:
