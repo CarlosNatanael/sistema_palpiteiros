@@ -9,6 +9,11 @@ import socket
 import os
 import re
 
+# --- Adicione esta linha perto do topo ---
+# Define o caminho completo para o diretório do projeto
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DB_PATH = os.path.join(BASE_DIR, 'palpites.db')
+
 # --- Configurações de Administrador ---
 app = Flask(__name__)
 app.secret_key = 'ALJDHA76797#%*#JKOL'
@@ -20,7 +25,8 @@ TEMPORADA_ATUAL = "2ª Temporada"
 # --- Conexão com o Banco de Dados ---
 def get_db():
     if 'db' not in g:
-        g.db = sqlite3.connect('palpites.db', timeout=10)
+        # Use a variável DB_PATH com o caminho completo
+        g.db = sqlite3.connect(DB_PATH, timeout=10)
         g.db.row_factory = sqlite3.Row
     return g.db
 
