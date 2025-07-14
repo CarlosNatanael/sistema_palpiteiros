@@ -73,13 +73,13 @@
                         <h3 class="card-title mb-0"><i class="bi bi-file-ruled-fill me-2"></i>Sistema de Pontuação</h3>
                     </div>
                     <div class="card-body">
-                        <h5 class="card-subtitle mb-2 text-muted">Fase de Grupos (Rodadas 1-3)</h5>
+                        <h5 class="card-subtitle mb-2 text-muted">Partidas Brasileirão</h5>
                         <ul class="list-group list-group-flush">
                             <li class="list-group-item d-flex justify-content-between align-items-center">Acertar o placar exato <span class="badge bg-success rounded-pill">4 pts</span></li>
                             <li class="list-group-item d-flex justify-content-between align-items-center">Acertar apenas o resultado <span class="badge bg-primary rounded-pill">1 pt</span></li>
                         </ul>
                         <hr>
-                        <h5 class="card-subtitle mb-2 text-muted">Mata-Mata (A partir da Rodada 4)</h5>
+                        <h5 class="card-subtitle mb-2 text-muted">Partidas Mata-Mata</h5>
                         <ul class="list-group list-group-flush">
                             <li class="list-group-item d-flex justify-content-between align-items-center">Placar + Resultado + Avanço <span class="badge bg-success rounded-pill">5 pts</span></li>
                             <li class="list-group-item d-flex justify-content-between align-items-center">Placar + Resultado <span class="badge bg-info text-dark rounded-pill">4 pts</span></li>
@@ -130,6 +130,9 @@
                         <p class="fs-5"><strong>Prêmio para o Top 2:</strong></p>
                         <p><strong>1º Lugar:</strong> Uma camiseta do time do coração.</p>
                         <p><strong>2º Lugar:</strong> Uma torre de chopp.</p>
+                        <div class="mt-auto text-center">
+                            <a href="{{ url_for('campeao_geral') }} " class="btn btn-dark">Atual campeão</a>
+                        </div>
                     </div>
                 </div>
             </div>

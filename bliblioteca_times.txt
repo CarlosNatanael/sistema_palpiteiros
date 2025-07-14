@@ -34,3 +34,15 @@
 'time2_nome': 'Fluminense',
 'time2_sigla': 'FLU',
 'time2_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/fCMxMMDF2AZPU7LzYKSlig_48x48.png',
+
+
+
+
+============= CORINTHIANS ======================
+============= SÃO PAULO ======================
+============= INTERNACIONAL ======================
+============= CRUZEIRO ======================
+============= GREMIO ======================
+============= ATLETICO ======================
+============= SANTOS ======================
+
