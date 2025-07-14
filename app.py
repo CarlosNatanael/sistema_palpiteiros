@@ -32,7 +32,7 @@ def close_db(exception):
     if db is not None:
         db.close()
 
-def init_db():
+def init_app_db():
     """Cria/Verifica TODAS as tabelas no banco de dados local, incluindo as novas."""
     print("[LOG - app.py]: Verificando e inicializando TODAS as tabelas...")
     with get_db() as conn:
@@ -824,13 +824,4 @@ def manage_games():
     jogos = conn.execute("SELECT * FROM jogos ORDER BY rodada, data_hora").fetchall()
     return render_template('manage_games.html', jogos=jogos)
 
-if __name__ == '__main__':
-    with app.app_context():
-        init_db()  # Apenas garante que as tabelas locais existem
-
-    print("\n" + "="*50)
-    print("      INICIANDO APLICAÇÃO PRINCIPAL (APP.PY)")
-    print("      Certifique-se que a API (api.py) está rodando.")
-    print("="*50)
-    
-    app.run(host="0.0.0.0", port=3000, debug=True)
+init_app_db()
