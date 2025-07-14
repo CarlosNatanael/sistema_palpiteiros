@@ -182,3 +182,9 @@ def setup_app_database():
     conn.commit()
     conn.close()
     print("Banco da Aplicação configurado.")
+    
+if __name__ == '__main__':
+    print("Iniciando configuração completa dos bancos de dados...")
+    setup_api_database()
+    setup_app_database()
+    print("\nConfiguração finalizada com sucesso!")
