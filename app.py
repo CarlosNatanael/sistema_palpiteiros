@@ -5,6 +5,7 @@ from functools import wraps
 import requests
 import sqlite3
 import socket
+import os
 import re
 
 # --- Configurações de Administrador ---
@@ -13,7 +14,7 @@ app.secret_key = 'ALJDHA76797#%*#JKOL'
 ADMIN_USERNAME = "admin"
 ADMIN_PASSWORD = "pokemar16#" 
 
-API_BASE_URL = "http://127.0.0.1:5001/api/v1"
+API_BASE_URL = os.environ.get("API_BASE_URL", "http://127.0.0.1:5001/api/v1")
 
 TEMPORADA_ATUAL = "2ª Temporada" 
 
