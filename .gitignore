@@ -3,6 +3,10 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# Ignorar banco de dados
+*.sqlite3
+*.db
+
 # C extensions
 *.so
 
