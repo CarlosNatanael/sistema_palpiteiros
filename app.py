@@ -19,8 +19,10 @@ app = Flask(__name__)
 app.secret_key = 'ALJDHA76797#%*#JKOL'
 ADMIN_USERNAME = "admin"
 ADMIN_PASSWORD = "pokemar16#"
-
 TEMPORADA_ATUAL = "2ª Temporada" 
+
+# ==== TESTE LOCAL =======
+# API_BASE_URL = "http://127.0.0.1:5001/api/v1"
 
 # --- Conexão com o Banco de Dados ---
 def get_db():
@@ -82,97 +84,63 @@ def index():
     if not jogos_api_map:
         flash("Atenção: A API de jogos parece estar offline.", "warning")
 
+    # 1. Obter todas as rodadas existentes da API e ordená-las
+    todas_rodadas = sorted(list(set(j['rodada'] for j in jogos_api_map.values())))
+
+    # 2. Determinar a rodada ativa
+    # Pega o parâmetro 'rodada' da URL. Se não existir, usa a última rodada disponível.
+    rodada_ativa_str = request.args.get('rodada')
+    try:
+        rodada_ativa = int(rodada_ativa_str) if rodada_ativa_str else todas_rodadas[-1]
+    except (ValueError, IndexError):
+        rodada_ativa = todas_rodadas[0] if todas_rodadas else 1
+    
+    if rodada_ativa not in todas_rodadas and todas_rodadas:
+        rodada_ativa = todas_rodadas[-1]
+
+    # 3. Lógica de Navegação entre rodadas
+    idx_rodada_ativa = todas_rodadas.index(rodada_ativa) if rodada_ativa in todas_rodadas else -1
+    tem_anterior = idx_rodada_ativa > 0
+    anterior_rodada = todas_rodadas[idx_rodada_ativa - 1] if tem_anterior else None
+    tem_proxima = idx_rodada_ativa != -1 and idx_rodada_ativa < len(todas_rodadas) - 1
+    proxima_rodada = todas_rodadas[idx_rodada_ativa + 1] if tem_proxima else None
+
     # Mescla resultados do banco local com os dados da API
     resultados_db = conn.execute("SELECT * FROM jogos").fetchall()
-    for res in resultados_db:
-        if res['id'] in jogos_api_map:
-            jogos_api_map[res['id']].update(dict(res))
+    resultados_map = {res['id']: dict(res) for res in resultados_db}
 
-    # --- LÓGICA DE AGRUPAMENTO POR CAMPEONATO ---
+    # --- LÓGICA DE AGRUPAMENTO E FILTRAGEM POR RODADA ---
     agora = datetime.now().strftime('%Y-%m-%d %H:%M')
     
     jogos_futuros_por_campeonato = defaultdict(list)
     jogos_passados_por_campeonato = defaultdict(list)
 
-    # Itera sobre todos os jogos e os agrupa
-    for jogo in jogos_api_map.values():
-        campeonato = jogo.get('campeonato', 'Sem Campeonato')
-        if jogo.get('data_hora', 'Z') > agora:
-            jogos_futuros_por_campeonato[campeonato].append(jogo)
-        else:
-            jogos_passados_por_campeonato[campeonato].append(jogo)
-    # --- FIM DA LÓGICA DE AGRUPAMENTO ---
+    # 4. Itera sobre todos os jogos, mas filtra pela rodada_ativa
+    for jogo_id, jogo_base in jogos_api_map.items():
+        if jogo_base.get('rodada') == rodada_ativa:
+            # Mescla dados do resultado se existir
+            jogo = jogo_base.copy()
+            if jogo_id in resultados_map:
+                jogo.update(resultados_map[jogo_id])
+            
+            campeonato = jogo.get('campeonato', 'Sem Campeonato')
+            if jogo.get('data_hora', 'Z') > agora:
+                jogos_futuros_por_campeonato[campeonato].append(jogo)
+            else:
+                jogos_passados_por_campeonato[campeonato].append(jogo)
     
     pontuacao = conn.execute("SELECT nome, (pontos + pontos_bonus) as total_pontos, acertos, erros FROM pontuacao ORDER BY total_pontos DESC, acertos DESC").fetchall()
     
-    # Passa os dicionários agrupados para o template
+    # 5. Passa todas as variáveis (incluindo as de navegação) para o template
     return render_template('index.html', 
         pontuacao=pontuacao,
         jogos_futuros_por_campeonato=jogos_futuros_por_campeonato,
-        jogos_passados_por_campeonato=jogos_passados_por_campeonato
-    )
-
-@app.route('/chaveamento')
-def chaveamento():
-    jogos_api = get_jogos_from_api(as_dict=False) # Pega como lista
-    
-    # Filtra apenas jogos de mata-mata direto da API
-    jogos_mata_mata = [j for j in jogos_api if j.get('fase') == 'mata-mata']
-    
-    # Restante da lógica para montar o chaveamento
-    oitavas = [j for j in jogos_mata_mata if j['rodada'] == 1] # Exemplo
-    #... (sua lógica para quartas, semis, etc. continua aqui) ...
-
-    return render_template('chaveamento.html', oitavas=oitavas, quartas=[], semis=[], final=[], campeao={'nome': 'A definir'})
-
-@app.route('/palpites')
-def exibir_palpites():
-    conn = get_db()
-    
-    # 1. Obter todos os jogos da API e criar o 'jogos_map'
-    jogos_api_map = get_jogos_from_api(as_dict=True) # as_dict=True é importante aqui
-    if not jogos_api_map:
-        flash("Atenção: Não foi possível carregar a lista de jogos. A API pode estar offline.", "warning")
-
-    # 2. Obter as rodadas disponíveis a partir dos dados da API
-    rodadas_existentes = sorted(list(set(j['rodada'] for j in jogos_api_map.values())))
-    
-    rodada_param = request.args.get('rodada', type=int)
-    
-    # Define a rodada a ser exibida (a mais recente com palpites, ou a primeira disponível)
-    rodada_para_exibir = rodada_param
-    if not rodada_para_exibir or rodada_para_exibir not in rodadas_existentes:
-        rodada_recente_row = conn.execute("SELECT MAX(rodada) as max_rodada FROM palpites").fetchone()
-        if rodada_recente_row and rodada_recente_row['max_rodada'] in rodadas_existentes:
-            rodada_para_exibir = rodada_recente_row['max_rodada']
-        else:
-            rodada_para_exibir = rodadas_existentes[0] if rodadas_existentes else 1
-
-    # 3. Buscar palpites do banco de dados local para a rodada selecionada
-    palpites_db = conn.execute("SELECT * FROM palpites WHERE rodada = ? ORDER BY nome", (rodada_para_exibir,)).fetchall()
-
-    # 4. Agrupar os palpites por jogador
-    palpites_agrupados = defaultdict(list)
-    for palpite in palpites_db:
-        palpites_agrupados[palpite['nome']].append(dict(palpite))
-
-    # Lógica de navegação entre rodadas
-    idx_rodada = rodadas_existentes.index(rodada_para_exibir) if rodada_para_exibir in rodadas_existentes else -1
-    tem_proxima = idx_rodada != -1 and idx_rodada < len(rodadas_existentes) - 1
-    tem_anterior = idx_rodada > 0
-    proxima_rodada = rodadas_existentes[idx_rodada + 1] if tem_proxima else None
-    anterior_rodada = rodadas_existentes[idx_rodada - 1] if tem_anterior else None
-
-    # 5. Passar TODOS os dados necessários para o template, incluindo o jogos_map
-    return render_template(
-        'palpites.html',
-        palpites_agrupados=palpites_agrupados,
-        jogos_map=jogos_api_map,  # <-- CORREÇÃO PRINCIPAL AQUI
-        rodada_exibida_num=rodada_para_exibir,
-        tem_proxima=tem_proxima,
-        proxima_rodada=proxima_rodada,
+        jogos_passados_por_campeonato=jogos_passados_por_campeonato,
+        rodada_ativa=rodada_ativa,
         tem_anterior=tem_anterior,
-        anterior_rodada=anterior_rodada
+        anterior_rodada=anterior_rodada,
+        tem_proxima=tem_proxima,
+        proxima_rodada=proxima_rodada
     )
 
 
@@ -271,6 +239,32 @@ def adicionar_palpites():
         jogos=jogos_filtrados,
         palpiteiros=palpiteiros
     )
+
+@app.route('/chaveamento')
+def chaveamento():
+    # Pega os jogos como uma lista para facilitar a filtragem
+    jogos_api = get_jogos_from_api(as_dict=False)
+    
+    # Filtra apenas jogos de mata-mata direto da API
+    jogos_mata_mata = [j for j in jogos_api if j.get('fase') == 'mata-mata']
+    
+    # Lógica para separar as fases do mata-mata
+    # Por enquanto, apenas as oitavas estão sendo populadas.
+    oitavas = sorted([j for j in jogos_mata_mata if j.get('rodada') == 1], key=lambda x: x['id'])
+    
+    # As fases seguintes (quartas, semis, etc.) ainda não têm lógica para serem montadas.
+    # Elas serão implementadas no futuro.
+    quartas = []
+    semis = []
+    final = []
+    campeao = {'nome': 'A definir', 'img': 'https://placehold.co/80x80/eee/006400?text=?'}
+
+    return render_template('chaveamento.html', 
+                           oitavas=oitavas, 
+                           quartas=quartas, 
+                           semis=semis, 
+                           final=final, 
+                           campeao=campeao)
 
 @app.route('/estatisticas')
 def estatisticas():
@@ -383,6 +377,63 @@ def award_bonus():
 def regra():
     print("\n[LOG] Acessando página de regras\n")
     return render_template('regras.html')
+
+@app.route('/palpites')
+def exibir_palpites():
+    conn = get_db()
+    
+    # 1. Obter todos os jogos da API e criar o 'jogos_map'
+    jogos_api_map = get_jogos_from_api(as_dict=True)
+    if not jogos_api_map:
+        flash("Atenção: Não foi possível carregar a lista de jogos. A API pode estar offline.", "warning")
+        jogos_api_map = {}
+
+    # 2. Mescla os resultados do banco de palpites no mapa de jogos
+    resultados_db = conn.execute("SELECT * FROM jogos").fetchall()
+    for res in resultados_db:
+        if res['id'] in jogos_api_map:
+            jogos_api_map[res['id']].update(dict(res))
+
+    # 3. Obter as rodadas disponíveis a partir dos dados da API
+    rodadas_existentes = sorted(list(set(j['rodada'] for j in jogos_api_map.values())))
+    
+    rodada_param = request.args.get('rodada', type=int)
+    
+    # Define a rodada a ser exibida
+    rodada_para_exibir = rodada_param
+    if not rodada_para_exibir or rodada_para_exibir not in rodadas_existentes:
+        rodada_recente_row = conn.execute("SELECT MAX(rodada) as max_rodada FROM palpites").fetchone()
+        if rodada_recente_row and rodada_recente_row['max_rodada'] in rodadas_existentes:
+            rodada_para_exibir = rodada_recente_row['max_rodada']
+        else:
+            rodada_para_exibir = rodadas_existentes[0] if rodadas_existentes else 1
+
+    # 4. Buscar palpites do banco de dados local para a rodada selecionada
+    palpites_db = conn.execute("SELECT * FROM palpites WHERE rodada = ? ORDER BY nome", (rodada_para_exibir,)).fetchall()
+
+    # 5. Agrupar os palpites por jogador
+    palpites_agrupados = defaultdict(list)
+    for palpite in palpites_db:
+        palpites_agrupados[palpite['nome']].append(dict(palpite))
+
+    # Lógica de navegação entre rodadas
+    idx_rodada = rodadas_existentes.index(rodada_para_exibir) if rodada_para_exibir in rodadas_existentes else -1
+    tem_proxima = idx_rodada != -1 and idx_rodada < len(rodadas_existentes) - 1
+    tem_anterior = idx_rodada > 0
+    proxima_rodada = rodadas_existentes[idx_rodada + 1] if tem_proxima else None
+    anterior_rodada = rodadas_existentes[idx_rodada - 1] if tem_anterior else None
+
+    # 6. Passar TODOS os dados necessários para o template, incluindo o jogos_map
+    return render_template(
+        'palpites.html',
+        palpites_agrupados=palpites_agrupados,
+        jogos_map=jogos_api_map,
+        rodada_exibida_num=rodada_para_exibir,
+        tem_proxima=tem_proxima,
+        proxima_rodada=proxima_rodada,
+        tem_anterior=tem_anterior,
+        anterior_rodada=anterior_rodada
+    )
 
 @app.route('/rodadas')
 def exibir_rodadas():
@@ -770,3 +821,6 @@ def manage_games():
 
     jogos = conn.execute("SELECT * FROM jogos ORDER BY rodada, data_hora").fetchall()
     return render_template('manage_games.html', jogos=jogos)
+
+# if __name__ == '__main__':
+#     app.run(debug=True,host="0.0.0.0",port=5000)

@@ -1,4 +1,3 @@
-# api.py
 import sqlite3
 import os
 from flask import Flask, jsonify
@@ -29,4 +28,5 @@ def get_campeonatos():
     conn.close()
     return jsonify([row['campeonato'] for row in campeonatos])
 
-# Não há mais nada no final do arquivo
+# if __name__ == '__main__':
+#     api_app.run(port=5001)
