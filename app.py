@@ -609,7 +609,6 @@ def set_game_result():
 @login_required
 def atualizar_pontuacao_admin():
     conn = get_db()
-    # CORREÇÃO: Transforma a lista da API em um dicionário para performance
     jogos_api = get_jogos_from_api()
     jogos_api_map = {jogo['id']: jogo for jogo in jogos_api}
 
