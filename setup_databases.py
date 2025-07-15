@@ -23,48 +23,30 @@ DADOS_DOS_CAMPEONATOS = {
         },
         {
             'id': 2003, 'rodada': 1, 'fase': 'grupos', 
-            'time1_nome': 'Juventude', 'time1_sigla': 'JUV', 'time1_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/JrXw-m4Dov0gE2Sh6XJQMQ_48x48.png',
-            'time2_nome': 'Vasco da Gama', 'time2_sigla': 'VAS', 'time2_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/hHwT8LwRmYCAGxQ-STLxYA_48x48.png',
-            'data_hora': '2025-07-16 20:00', 'local': 'Alfredo Jaconi'
-        },
-        {
-            'id': 2004, 'rodada': 1, 'fase': 'grupos', 
-            'time1_nome': 'Bahia', 'time1_sigla': 'BAH', 'time1_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/nIdbR6qIUDyZUBO9vojSPw_48x48.png',
-            'time2_nome': 'Internacional', 'time2_sigla': 'INT', 'time2_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/OWVFKuHrQuf4q2Wk0hEmSA_48x48.png',
-            'data_hora': '2025-07-16 20:30', 'local': 'Arena Fonte Nova'
-        },
-        {
-            'id': 2005, 'rodada': 1, 'fase': 'grupos', 
             'time1_nome': 'Red Bull Bragantino', 'time1_sigla': 'BGT', 'time1_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/lMyw2zn1Z4cdkaxKJWnsQw_48x48.png',
             'time2_nome': 'São Paulo', 'time2_sigla': 'SAO', 'time2_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/4w2Z97Hf9CSOqICK3a8AxQ_48x48.png',
             'data_hora': '2025-07-16 21:30', 'local': 'Nabi Abi Chedid'
         },
         {
-            'id': 2006, 'rodada': 1, 'fase': 'grupos', 
-            'time1_nome': 'Atlético-MG', 'time1_sigla': 'CAM', 'time1_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/q9fhEsgpuyRq58OgmSndcQ_48x48.png',
-            'time2_nome': 'Sport Recife', 'time2_sigla': 'SPO', 'time2_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/u9Ydy0qt6JJjWhTaI6r10A_48x48.png',
-            'data_hora': '2025-07-16 21:30', 'local': 'Arena MRV'
-        },
-        {
-            'id': 2007, 'rodada': 1, 'fase': 'grupos', 
+            'id': 2004, 'rodada': 1, 'fase': 'grupos', 
             'time1_nome': 'Palmeiras', 'time1_sigla': 'PAL', 'time1_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/7spurne-xDt2p6C0imYYNA_48x48.png',
             'time2_nome': 'Mirassol', 'time2_sigla': 'MIR', 'time2_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/5J3JY7fcdiDYU5rbPW7AKA_48x48.png',
             'data_hora': '2025-07-16 21:30', 'local': 'Allianz Parque'
         },
         {
-            'id': 2008, 'rodada': 1, 'fase': 'grupos', 
+            'id': 2005, 'rodada': 1, 'fase': 'grupos', 
             'time1_nome': 'Santos', 'time1_sigla': 'SAN', 'time1_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/VHdNOT6wWOw_vJ38GMjMzg_48x48.png',
             'time2_nome': 'Flamengo', 'time2_sigla': 'FLA', 'time2_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/orE554NToSkH6nuwofe7Yg_48x48.png',
             'data_hora': '2025-07-16 21:30', 'local': 'Vila Belmiro'
         },
         {
-            'id': 2009, 'rodada': 1, 'fase': 'grupos', 
+            'id': 2006, 'rodada': 1, 'fase': 'grupos', 
             'time1_nome': 'Grêmio', 'time1_sigla': 'GRE', 'time1_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/Ku-73v_TW9kpex-IEGb0ZA_48x48.png',
             'time2_nome': 'Fortaleza', 'time2_sigla': 'FOR', 'time2_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/me10ephzRxdj45zVq1Risg_48x48.png',
             'data_hora': '2025-07-16 21:30', 'local': 'Arena do Grêmio'
         },
         {
-            'id': 2010, 'rodada': 1, 'fase': 'grupos', 
+            'id': 2007, 'rodada': 1, 'fase': 'grupos', 
             'time1_nome': 'Botafogo', 'time1_sigla': 'BOT', 'time1_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/KLDWYp-H8CAOT9H_JgizRg_48x48.png',
             'time2_nome': 'Vitória', 'time2_sigla': 'VIT', 'time2_img': 'https://ssl.gstatic.com/onebox/media/sports/logos/LHSM6VchpkI4NIptoSTHOg_48x48.png',
             'data_hora': '2025-07-16 21:30', 'local': 'Estádio Nilton Santos'
