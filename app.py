@@ -675,7 +675,7 @@ def palpite_campeao():
     
     if request.method == 'POST':
         nome = request.form['nome']
-        campeonato = request.form['campeonato_selecionado'] # Pega o campeonato do campo oculto
+        campeonato = request.form['campeonato_selecionado']
         time_campeao = request.form['time_campeao']
 
         # Busca a imagem do time na API
@@ -702,16 +702,11 @@ def palpite_campeao():
 
     # --- LÓGICA DO GET ---
     campeonato_selecionado = request.args.get('campeonato_selecionado')
-    
-    # 1. Busca a lista de campeonatos disponíveis
     campeonatos = get_api_data("campeonatos") or []
     
     times_filtrados = []
     if campeonato_selecionado:
-        # 2. Se um campeonato foi escolhido, busca todos os jogos
         jogos_api = get_api_data() or []
-        
-        # 3. Filtra os times APENAS do campeonato selecionado
         times_do_campeonato = {}
         for jogo in jogos_api:
             if jogo['campeonato'] == campeonato_selecionado:
