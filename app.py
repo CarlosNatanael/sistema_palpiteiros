@@ -552,47 +552,44 @@ def historico_campeoes():
 def set_game_result():
     conn = get_db()
     if request.method == 'POST':
-        # Lógica para salvar o resultado (permanece a mesma)
         game_id = int(request.form['game_id'])
         placar1 = int(request.form['placar_time1'])
         placar2 = int(request.form['placar_time2'])
         avancou = request.form.get('time_que_avancou')
+        
+        # --- LÓGICA DO NOVO STATUS ---
+        # Verifica se a checkbox foi marcada. Se sim, o status é 'Finalizado'.
+        # Se não, o status é 'Ao Vivo' (para placares parciais).
+        status_jogo = 'Finalizado' if request.form.get('status_finalizado') else 'Ao Vivo'
+        # --- FIM DA LÓGICA ---
 
         cursor = conn.cursor()
         cursor.execute("SELECT id FROM jogos WHERE id = ?", (game_id,))
         if cursor.fetchone():
-            cursor.execute("UPDATE jogos SET placar_time1=?, placar_time2=?, status='Ao Vivo', time_que_avancou=? WHERE id=?", (placar1, placar2, avancou, game_id))
+            # Atualiza o jogo existente com o novo status
+            cursor.execute("UPDATE jogos SET placar_time1=?, placar_time2=?, status=?, time_que_avancou=? WHERE id=?", (placar1, placar2, status_jogo, avancou, game_id))
         else:
-            cursor.execute("INSERT INTO jogos (id, placar_time1, placar_time2, status, time_que_avancou) VALUES (?, ?, ?, 'Ao Vivo', ?)", (game_id, placar1, placar2, avancou))
+            # Insere um novo jogo com o novo status
+            cursor.execute("INSERT INTO jogos (id, placar_time1, placar_time2, status, time_que_avancou) VALUES (?, ?, ?, ?, ?)", (game_id, placar1, placar2, status_jogo, avancou))
         
         conn.commit()
-        flash(f'Resultado do jogo {game_id} salvo. Rode a atualização para calcular os pontos.', 'success')
-        # Redireciona mantendo os filtros
+        flash(f'Resultado do jogo {game_id} salvo como "{status_jogo}".', 'success')
         return redirect(url_for('set_game_result', 
                                 campeonato_selecionado=request.form.get('campeonato_selecionado'), 
                                 rodada_selecionada=request.form.get('rodada_selecionada')))
 
-    # --- LÓGICA DO GET (para exibir a página) ---
+    # --- LÓGICA DO GET (permanece a mesma) ---
     campeonato_selecionado = request.args.get('campeonato_selecionado')
     rodada_selecionada = request.args.get('rodada_selecionada', type=int)
-
-    # 1. Busca todos os campeonatos
     campeonatos = get_api_data("campeonatos") or []
-    
     rodadas_disponiveis = []
     jogos_filtrados = []
     
     if campeonato_selecionado:
-        # 2. Se um campeonato foi escolhido, busca todos os jogos
         jogos_api = get_api_data("jogos") or []
-        
-        # Filtra jogos do campeonato selecionado
         jogos_do_campeonato = [j for j in jogos_api if j['campeonato'] == campeonato_selecionado]
-        
         if jogos_do_campeonato:
             rodadas_disponiveis = sorted(list(set(j['rodada'] for j in jogos_do_campeonato)))
-
-        # 3. Se uma rodada também foi escolhida, filtra os jogos para o formulário
         if rodada_selecionada and rodada_selecionada in rodadas_disponiveis:
             jogos_filtrados = [j for j in jogos_do_campeonato if j['rodada'] == rodada_selecionada]
 
@@ -604,22 +601,22 @@ def set_game_result():
         jogos_disponiveis=jogos_filtrados
     )
 
-
 @app.route('/atualizar_pontuacao_admin')
 @login_required
 def atualizar_pontuacao_admin():
     conn = get_db()
-    jogos_api = get_jogos_from_api()
-    jogos_api_map = {jogo['id']: jogo for jogo in jogos_api}
+    jogos_api_map = get_jogos_from_api(as_dict=True)
 
-    resultados_db = conn.execute("SELECT * FROM jogos WHERE status != 'Pendente'").fetchall()
+    resultados_db = conn.execute("SELECT * FROM jogos WHERE status = 'Finalizado'").fetchall()
+    
     palpites = conn.execute("SELECT * FROM palpites").fetchall()
     
     if not resultados_db:
-        flash('Nenhum jogo com resultado definido para calcular a pontuação.', 'info')
+        flash('Nenhum jogo marcado como "Finalizado" para calcular a pontuação.', 'info')
         return redirect(url_for('admin_dashboard'))
 
     resultados_map = {r['id']: r for r in resultados_db}
+    
     conn.execute("UPDATE pontuacao SET pontos = 0, acertos = 0, erros = 0")
 
     for palpite in palpites:
@@ -644,8 +641,8 @@ def atualizar_pontuacao_admin():
                 if acerto_placar and acerto_resultado and acerto_avanco: pontos_ganhos, status_palpite = 5, "Acerto Total! (5 pts)"
                 elif acerto_placar and acerto_resultado: pontos_ganhos, status_palpite = 4, "Acerto Placar + Resultado (4 pts)"
                 elif acerto_placar and acerto_avanco: pontos_ganhos, status_palpite = 3, "Acerto Placar + Avanço (3 pts)"
-                elif acerto_placar: pontos_ganhos, status_palpite = 2, "Acerto Placar (2 pts)"
                 elif acerto_resultado and acerto_avanco: pontos_ganhos, status_palpite = 2, "Acerto Resultado + Avanço (2 pts)"
+                elif acerto_placar: pontos_ganhos, status_palpite = 2, "Acerto Placar (2 pts)"
                 elif acerto_resultado: pontos_ganhos, status_palpite = 1, "Acerto Resultado (1 pt)"
                 elif acerto_avanco: pontos_ganhos, status_palpite = 1, "Acerto Avanço (1 pt)"
             else:
@@ -653,7 +650,8 @@ def atualizar_pontuacao_admin():
                 elif acerto_resultado: pontos_ganhos, status_palpite = 1, "Acerto Resultado (1 pt)"
 
             if pontos_ganhos > 0:
-                conn.execute("UPDATE pontuacao SET pontos = pontos + ?, acertos = acertos + 1 WHERE nome = ?", (pontos_ganhos, nome_palpiteiro))
+                conn.execute("UPDATE pontuacao SET pontos = pontos + ? WHERE nome = ?", (pontos_ganhos, nome_palpiteiro))
+                conn.execute("UPDATE pontuacao SET acertos = acertos + 1 WHERE nome = ?", (nome_palpiteiro,))
             else:
                 conn.execute("UPDATE pontuacao SET erros = erros + 1 WHERE nome = ?", (nome_palpiteiro,))
             
@@ -662,10 +660,10 @@ def atualizar_pontuacao_admin():
     ids_processados = list(resultados_map.keys())
     if ids_processados:
         placeholders = ','.join('?' for _ in ids_processados)
-        conn.execute(f"UPDATE jogos SET status = 'Finalizado' WHERE id IN ({placeholders})", ids_processados)
+        conn.execute(f"UPDATE jogos SET status = 'Processado' WHERE id IN ({placeholders})", ids_processados)
     
     conn.commit()
-    flash('Pontuação atualizada com sucesso!', 'info')
+    flash('Pontuação atualizada com sucesso para os jogos finalizados!', 'info')
     return redirect(url_for('admin_dashboard'))
 
 @app.route('/palpite_campeao', methods=['GET', 'POST'])

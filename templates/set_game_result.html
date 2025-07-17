@@ -112,6 +112,16 @@
                     <input type="password" id="password" name="password" class="form-control" required>
                 </div>
 
+                <div class="form-group form-check mt-3 text-start">
+                    <input type="checkbox" class="form-check-input" id="status_finalizado" name="status_finalizado" value="true">
+                    <label class="form-check-label" for="status_finalizado">
+                        <strong>Marcar como Jogo Finalizado?</strong>
+                        <small class="form-text text-muted">
+                            Marque esta caixa APENAS se o jogo já terminou. A pontuação só será calculada para jogos finalizados.
+                        </small>
+                    </label>
+                </div>
+
                 <button type="submit" class="btn btn-primary btn-block">Definir Resultado</button>
             </form>
             {% elif rodada_selecionada %}
