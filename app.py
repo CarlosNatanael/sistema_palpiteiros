@@ -270,48 +270,62 @@ def chaveamento():
 def estatisticas():
     conn = get_db()
 
-    # 1. Busca estatísticas e calcula o percentual (sem alterações aqui)
+    # Busca estatísticas gerais (sem alterações aqui)
     estatisticas_completas = conn.execute('''
-        SELECT nome, pontos, acertos, erros,
+        SELECT nome, (pontos + pontos_bonus) as total_pontos, pontos, acertos, erros,
                CASE WHEN (acertos + erros) = 0 THEN 0.0 ELSE ROUND((acertos * 100.0 / (acertos + erros)), 1) END as percentual_acertos
-        FROM pontuacao ORDER BY pontos DESC, acertos DESC
+        FROM pontuacao ORDER BY total_pontos DESC, acertos DESC
     ''').fetchall()
 
     maior_pontuador = estatisticas_completas[0] if estatisticas_completas else None
     quem_acertou_mais = sorted(estatisticas_completas, key=lambda x: x['acertos'], reverse=True)[0] if estatisticas_completas else None
 
-    # --- LÓGICA ATUALIZADA PARA SEQUÊNCIA ATUAL NA RODADA ---
+    # --- INÍCIO DA LÓGICA CORRIGIDA PARA SEQUÊNCIAS ---
     
+    # 1. Busca os dados dos jogos da API para obter a data e hora
+    jogos_api_map = get_jogos_from_api(as_dict=True)
+
     # 2. Descobre a última rodada com palpites avaliados
     rodada_atual_row = conn.execute("SELECT MAX(rodada) as rodada FROM palpites WHERE status != 'Pendente'").fetchone()
     rodada_atual_bonus = rodada_atual_row['rodada'] if rodada_atual_row and rodada_atual_row['rodada'] else 0
+    
     sequencias_info = defaultdict(int)
     
     if rodada_atual_bonus > 0:
-        palpites_rodada_atual = conn.execute("""
-            SELECT p.nome, p.status, j.data_hora FROM palpites p
-            JOIN jogos j ON p.game_id = j.id
-            WHERE p.status != 'Pendente' AND p.rodada = ?
-            ORDER BY p.nome, j.data_hora
+        # 3. Pega os palpites do banco de dados local
+        palpites_da_rodada_db = conn.execute("""
+            SELECT nome, status, game_id 
+            FROM palpites 
+            WHERE status != 'Pendente' AND rodada = ?
         """, (rodada_atual_bonus,)).fetchall()
 
-        # 3. Calcula a SEQUÊNCIA ATUAL para cada jogador
-        for jogador in estatisticas_completas:
-            nome = jogador['nome']
-            palpites_do_jogador_na_rodada = [p for p in palpites_rodada_atual if p['nome'] == nome]
+        # 4. Adiciona a data e hora da API a cada palpite
+        palpites_com_data = []
+        for palpite in palpites_da_rodada_db:
+            palpite_dict = dict(palpite)
+            jogo_info = jogos_api_map.get(palpite['game_id'])
+            if jogo_info:
+                palpite_dict['data_hora'] = jogo_info.get('data_hora', '')
+                palpites_com_data.append(palpite_dict)
+        
+        # 5. Ordena a lista de palpites pelo nome e pela data/hora do jogo
+        palpites_ordenados = sorted(palpites_com_data, key=lambda p: (p['nome'], p['data_hora']))
+
+        # 6. Calcula a SEQUÊNCIA ATUAL para cada jogador usando a lista ordenada
+        jogadores = {jogador['nome'] for jogador in estatisticas_completas}
+        for nome_jogador in jogadores:
+            palpites_do_jogador = [p for p in palpites_ordenados if p['nome'] == nome_jogador]
             
             sequencia_atual = 0
-            for palpite in palpites_do_jogador_na_rodada:
+            for palpite in palpites_do_jogador:
                 if "Erro" not in palpite['status']:
                     sequencia_atual += 1
                 else:
-                    # Se errar, a sequência atual é zerada imediatamente.
-                    sequencia_atual = 0
+                    sequencia_atual = 0 # Zera a sequência no primeiro erro
             
-            # O valor final é a sequência atual, contada até o último jogo avaliado.
-            sequencias_info[nome] = sequencia_atual
+            sequencias_info[nome_jogador] = sequencia_atual
 
-    # 4. Prepara os dados para o template (sem alterações aqui)
+    # Prepara os dados para o template
     sequencias_para_template = []
     for jogador in estatisticas_completas:
         nome = jogador['nome']
@@ -321,11 +335,8 @@ def estatisticas():
             'sequencia': max_streak,
             'bonus': '🔥 Bônus Disponível!' if max_streak >= 3 else '--'
         })
-
     
-
-    print(f"\n[LOG - estatisticas]: Rodada atual para cálculo de bônus: {rodada_atual_bonus}")
-    print(f"[LOG - estatisticas]: Estatísticas carregadas para {len(estatisticas_completas)} jogadores.\n")
+    # --- FIM DA LÓGICA CORRIGIDA ---
 
     return render_template('estatisticas.html',
                            maior_pontuador=maior_pontuador,
