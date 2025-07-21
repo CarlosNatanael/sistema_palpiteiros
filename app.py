@@ -80,15 +80,16 @@ def format_date_filter(date_str):
 @app.route('/')
 def index():
     conn = get_db()
-    jogos_api_map = get_jogos_from_api() # Retorna um dicionário {id: jogo}
+    
+    # --- LÓGICA DE ANÚNCIOS ADICIONADA ---
+    anuncios = conn.execute("SELECT * FROM anuncios ORDER BY data_criacao DESC LIMIT 3").fetchall()
+    # --- FIM DA ADIÇÃO ---
+
+    jogos_api_map = get_jogos_from_api()
     if not jogos_api_map:
         flash("Atenção: A API de jogos parece estar offline.", "warning")
 
-    # 1. Obter todas as rodadas existentes da API e ordená-las
     todas_rodadas = sorted(list(set(j['rodada'] for j in jogos_api_map.values())))
-
-    # 2. Determinar a rodada ativa
-    # Pega o parâmetro 'rodada' da URL. Se não existir, usa a última rodada disponível.
     rodada_ativa_str = request.args.get('rodada')
     try:
         rodada_ativa = int(rodada_ativa_str) if rodada_ativa_str else todas_rodadas[-1]
@@ -98,27 +99,21 @@ def index():
     if rodada_ativa not in todas_rodadas and todas_rodadas:
         rodada_ativa = todas_rodadas[-1]
 
-    # 3. Lógica de Navegação entre rodadas
     idx_rodada_ativa = todas_rodadas.index(rodada_ativa) if rodada_ativa in todas_rodadas else -1
     tem_anterior = idx_rodada_ativa > 0
     anterior_rodada = todas_rodadas[idx_rodada_ativa - 1] if tem_anterior else None
     tem_proxima = idx_rodada_ativa != -1 and idx_rodada_ativa < len(todas_rodadas) - 1
     proxima_rodada = todas_rodadas[idx_rodada_ativa + 1] if tem_proxima else None
 
-    # Mescla resultados do banco local com os dados da API
     resultados_db = conn.execute("SELECT * FROM jogos").fetchall()
     resultados_map = {res['id']: dict(res) for res in resultados_db}
 
-    # --- LÓGICA DE AGRUPAMENTO E FILTRAGEM POR RODADA ---
     agora = datetime.now().strftime('%Y-%m-%d %H:%M')
-    
     jogos_futuros_por_campeonato = defaultdict(list)
     jogos_passados_por_campeonato = defaultdict(list)
 
-    # 4. Itera sobre todos os jogos, mas filtra pela rodada_ativa
     for jogo_id, jogo_base in jogos_api_map.items():
         if jogo_base.get('rodada') == rodada_ativa:
-            # Mescla dados do resultado se existir
             jogo = jogo_base.copy()
             if jogo_id in resultados_map:
                 jogo.update(resultados_map[jogo_id])
@@ -131,7 +126,6 @@ def index():
     
     pontuacao = conn.execute("SELECT nome, (pontos + pontos_bonus) as total_pontos, acertos, erros FROM pontuacao ORDER BY total_pontos DESC, acertos DESC").fetchall()
     
-    # 5. Passa todas as variáveis (incluindo as de navegação) para o template
     return render_template('index.html', 
         pontuacao=pontuacao,
         jogos_futuros_por_campeonato=jogos_futuros_por_campeonato,
@@ -140,7 +134,8 @@ def index():
         tem_anterior=tem_anterior,
         anterior_rodada=anterior_rodada,
         tem_proxima=tem_proxima,
-        proxima_rodada=proxima_rodada
+        proxima_rodada=proxima_rodada,
+        anuncios=anuncios
     )
 
 
@@ -844,5 +839,35 @@ def manage_games():
     jogos = conn.execute("SELECT * FROM jogos ORDER BY rodada, data_hora").fetchall()
     return render_template('manage_games.html', jogos=jogos)
 
-# if __name__ == '__main__':
-#     app.run(debug=True,host="0.0.0.0",port=5000)
+
+@app.route('/admin/anuncios', methods=['GET', 'POST'])
+@login_required
+def gerenciar_anuncios():
+    conn = get_db()
+    if request.method == 'POST':
+        titulo = request.form['titulo']
+        mensagem = request.form['mensagem']
+        tipo = request.form['tipo']
+        data_criacao = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        conn.execute(
+            'INSERT INTO anuncios (titulo, mensagem, tipo, data_criacao) VALUES (?, ?, ?, ?)',
+            (titulo, mensagem, tipo, data_criacao)
+        )
+        conn.commit()
+        flash('Anúncio adicionado com sucesso!', 'success')
+        return redirect(url_for('gerenciar_anuncios'))
+
+    anuncios = conn.execute('SELECT * FROM anuncios ORDER BY data_criacao DESC').fetchall()
+    return render_template('gerenciar_anuncios.html', anuncios=anuncios)
+
+@app.route('/admin/anuncios/delete/<int:anuncio_id>', methods=['POST'])
+@login_required
+def deletar_anuncio(anuncio_id):
+    conn = get_db()
+    conn.execute('DELETE FROM anuncios WHERE id = ?', (anuncio_id,))
+    conn.commit()
+    flash('Anúncio apagado com sucesso!', 'success')
+    return redirect(url_for('gerenciar_anuncios'))
+
+if __name__ == '__main__':
+    app.run(debug=True,host="0.0.0.0",port=5000)

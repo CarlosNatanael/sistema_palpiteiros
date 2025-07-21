@@ -866,3 +866,64 @@ footer {
       margin-right: 5px !important; /* Adiciona uma pequena margem à direita do placar */
     }
 }
+
+/* =================================== */
+/* NOVO PAINEL DE AVISOS (VISUAL V2)   */
+/* =================================== */
+
+.avisos-painel-v2 {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Espaço entre os cards de aviso */
+}
+
+.aviso-card-v2 {
+    display: flex;
+    align-items: stretch; /* Faz o ícone e o texto terem a mesma altura */
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    overflow: hidden; /* Garante que a cor de fundo do ícone não vaze */
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.aviso-card-v2:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+}
+
+.aviso-icon-v2 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 25px;
+    font-size: 2rem;
+    color: #fff;
+    flex-shrink: 0;
+}
+
+.aviso-texto-v2 {
+    padding: 15px 20px;
+    flex-grow: 1;
+    border-left: 1px solid #e9ecef;
+}
+
+.aviso-titulo-v2 {
+    margin-top: 0;
+    margin-bottom: 8px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: #212529;
+}
+
+.aviso-mensagem-v2 {
+    font-size: 0.95rem;
+    color: #495057;
+    line-height: 1.6;
+}
+
+/* Cores de fundo para a seção do ícone */
+.aviso-icon-v2.aviso-primary { background-color: #0d6efd; } /* Azul (Informativo) */
+.aviso-icon-v2.aviso-success { background-color: #198754; } /* Verde (Sucesso) */
+.aviso-icon-v2.aviso-warning { background-color: #ffc107; } /* Amarelo (Atenção) */
+.aviso-icon-v2.aviso-danger  { background-color: #dc3545; } /* Vermelho (Urgente) */
