@@ -72,15 +72,12 @@ def atualizar_banco_de_jogos():
         jogos_inseridos = 0
         jogos_atualizados = 0
 
-        # Itera sobre os dados e insere/atualiza no banco
         for campeonato, jogos in NOVOS_JOGOS_E_CAMPEONATOS.items():
             for jogo in jogos:
-                # Verifica se o jogo já existe
                 cursor.execute("SELECT id FROM jogos WHERE id = ?", (jogo['id'],))
                 data = cursor.fetchone()
 
                 if data is None:
-                    # Jogo não existe, então INSERE
                     cursor.execute("""
                         INSERT INTO jogos (id, campeonato, rodada, fase, time1_nome, time1_img, time1_sigla,
                                            time2_nome, time2_img, time2_sigla, data_hora, local)
@@ -93,7 +90,6 @@ def atualizar_banco_de_jogos():
                     ))
                     jogos_inseridos += 1
                 else:
-                    # Jogo já existe, então ATUALIZA
                     cursor.execute("""
                         UPDATE jogos SET campeonato=?, rodada=?, fase=?, time1_nome=?, time1_img=?, time1_sigla=?,
                                          time2_nome=?, time2_img=?, time2_sigla=?, data_hora=?, local=?
