@@ -98,7 +98,50 @@ DADOS_DOS_CAMPEONATOS = {
             "time1_nome": "Flamengo", "time1_sigla": "FLA", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/orE554NToSkH6nuwofe7Yg_48x48.png",
             "time2_nome": "Fluminense", "time2_sigla": "FLU", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/fCMxMMDF2AZPU7LzYKSlig_48x48.png",
             "data_hora": "2025-07-20 19:30", "local": "Maracanã"
-        }
+        },
+        # === RODADA 3 ===
+        {
+          "id": 2017, "rodada": 3, "fase": "grupos",
+          "time1_nome": "Fluminense", "time1_sigla": "FLU", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/fCMxMMDF2AZPU7LzYKSlig_48x48.png",
+          "time2_nome": "Palmeiras", "time2_sigla": "PAL", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/7spurne-xDt2p6C0imYYNA_48x48.png",
+          "data_hora": "2025-07-23 19:00", "local": "Maracanã"
+        },
+        {
+          "id": 2018, "rodada": 3, "fase": "grupos",
+          "time1_nome": "Ceará SC", "time1_sigla": "CEA", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/mSl0cz3i2t8uv4zcprobOg_48x48.png",
+          "time2_nome": "Mirassol", "time2_sigla": "MIR", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/5J3JY7fcdiDYU5rbPW7AKA_48x48.png",
+          "data_hora": "2025-07-23 19:00", "local": "Arena Castelão"
+        },
+        {
+          "id": 2019, "rodada": 3, "fase": "grupos",
+          "time1_nome": "Corinthians", "time1_sigla": "COR", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/tCMSqgXVHROpdCpQhzTo1g_48x48.png",
+          "time2_nome": "Cruzeiro", "time2_sigla": "CRU", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/Tcv9X__nIh-6wFNJPMwIXQ_48x48.png",
+          "data_hora": "2025-07-23 19:30", "local": "Neo Química Arena"
+        },
+        {
+          "id": 2020, "rodada": 3, "fase": "grupos",
+          "time1_nome": "EC Vitória", "time1_sigla": "VIT", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/LHSM6VchpkI4NIptoSTHOg_48x48.png",
+          "time2_nome": "Sport Recife", "time2_sigla": "SPO", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/u9Ydy0qt6JJjWhTaI6r10A_48x48.png",
+          "data_hora": "2025-07-23 21:30", "local": "Barradão"
+        },
+        {
+          "id": 2021, "rodada": 3, "fase": "grupos",
+          "time1_nome": "Santos", "time1_sigla": "SAN", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/VHdNOT6wWOw_vJ38GMjMzg_48x48.png",
+          "time2_nome": "Internacional", "time2_sigla": "INT", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/OWVFKuHrQuf4q2Wk0hEmSA_48x48.png",
+          "data_hora": "2025-07-23 21:30", "local": "Vila Belmiro"
+        },
+        {
+          "id": 2022, "rodada": 3, "fase": "grupos",
+          "time1_nome": "Bragantino", "time1_sigla": "BGT", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/lMyw2zn1Z4cdkaxKJWnsQw_48x48.png",
+          "time2_nome": "Flamengo", "time2_sigla": "FLA", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/orE554NToSkH6nuwofe7Yg_48x48.png",
+          "data_hora": "2025-07-23 21:30", "local": "Nabi Abi Chedid"
+        },
+        {
+          "id": 2023, "rodada": 3, "fase": "grupos",
+          "time1_nome": "Juventude", "time1_sigla": "JUV", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/JrXw-m4Dov0gE2Sh6XJQMQ_48x48.png",
+          "time2_nome": "São Paulo", "time2_sigla": "SAO", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/4w2Z97Hf9CSOqICK3a8AxQ_48x48.png",
+          "data_hora": "2025-07-24 19:00", "local": "Alfredo Jaconi"
+        },
     ],
     "Libertadores 2025": [
         # === OITAVAS DE FINAL (IDA) ===

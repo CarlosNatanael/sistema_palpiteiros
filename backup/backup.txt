@@ -1,7 +1,7 @@
 ========== APP ============
 
-/home/CarlosNatanael/.virtualenvs/meu-ambiente-de-palpites
-/home/CarlosNatanael/sistema_palpiteiros
+cd /home/CarlosNatanael/.virtualenvs/meu-ambiente-de-palpites
+cd /home/CarlosNatanael/sistema_palpiteiros
 
 
 # Backup do arquivo palpites.db
@@ -9,8 +9,8 @@ tar -czvf backup_palpites_$(date +%Y-%m-%d_%H-%M-%S).tar.gz palpites.db
 
 ========= API =============
 
-/home/sinapsedev/sistema_palpiteiros
-/home/sinapsedev/.virtualenvs/meu-ambiente-de-palpites
+cd /home/sinapsedev/sistema_palpiteiros
+cd /home/sinapsedev/.virtualenvs/meu-ambiente-de-palpites
 
 # Backup do arquivo api_data.db
 tar -czvf backup_api_$(date +%Y-%m-%d_%H-%M-%S).tar.gz api_data.db
