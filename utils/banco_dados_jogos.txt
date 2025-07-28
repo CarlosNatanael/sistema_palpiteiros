@@ -203,6 +203,13 @@ DADOS_DOS_CAMPEONATOS = {
           "time2_nome": "Atlético-MG", "time2_sigla": "CAM", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/q9fhEsgpuyRq58OgmSndcQ_48x48.png",
           "data_hora": "2025-07-27 20:30", "local": "Maracanã"
         },
+        # === RODADA 5 ===
+        {
+          "id": 2034, "rodada": 5, "fase": "grupos",
+          "time1_nome": "Grêmio", "time1_sigla": "GRE", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/Ku-73v_TW9kpex-IEGb0ZA_48x48.png",
+          "time2_nome": "Fortaleza", "time2_sigla": "FOR", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/me10ephzRxdj45zVq1Risg_48x48.png",
+          "data_hora": "2025-07-28 20:30", "local": "Arena do Grêmio"
+        },
     ],
     "Libertadores 2025": [
         # === OITAVAS DE FINAL (IDA) ===
