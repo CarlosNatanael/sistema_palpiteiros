@@ -1,8 +1,8 @@
 ========== APP ============
 
-cd /home/CarlosNatanael/.virtualenvs/meu-ambiente-de-palpites
-cd /home/CarlosNatanael/sistema_palpiteiros
 
+cd /home/CarlosNatanael/sistema_palpiteiros
+source /home/CarlosNatanael/.virtualenvs/meu-ambiente-de-palpites/bin/activate
 
 # Backup do arquivo palpites.db
 tar -czvf backup_palpites_$(date +%Y-%m-%d_%H-%M-%S).tar.gz palpites.db
@@ -10,7 +10,12 @@ tar -czvf backup_palpites_$(date +%Y-%m-%d_%H-%M-%S).tar.gz palpites.db
 ========= API =============
 
 cd /home/sinapsedev/sistema_palpiteiros
-cd /home/sinapsedev/.virtualenvs/meu-ambiente-de-palpites
+source /home/sinapsedev/.virtualenvs/meu-ambiente-de-palpites/bin/activate
 
 # Backup do arquivo api_data.db
 tar -czvf backup_api_$(date +%Y-%m-%d_%H-%M-%S).tar.gz api_data.db
+
+
+================== COMANDOS GIT ===================
+
+git pull origin main < Comando para baixar ultimas commit
