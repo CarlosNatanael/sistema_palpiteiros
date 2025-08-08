@@ -15,66 +15,66 @@ API_DB_PATH = os.path.join(BASE_DIR, 'api_data.db')
 NOVOS_JOGOS_E_CAMPEONATOS = {
   "Brasileirão 2025": [
     {
-      "id": 2035, "rodada": 6, "fase": "grupos",
-      "time1_nome": "Sport Recife", "time1_sigla": "SPO", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/u9Ydy0qt6JJjWhTaI6r10A_48x48.png",
-      "time2_nome": "Bahia", "time2_sigla": "BAH", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/nIdbR6qIUDyZUBO9vojSPw_48x48.png",
-      "data_hora": "2025-08-02 16:00", "local": "Ilha do Retiro"
+      "id": 2045, "rodada": 7, "fase": "grupos",
+      "time1_nome": "Bragantino", "time1_sigla": "BGT", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/lMyw2zn1Z4cdkaxKJWnsQw_48x48.png",
+      "time2_nome": "Internacional", "time2_sigla": "INT", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/OWVFKuHrQuf4q2Wk0hEmSA_48x48.png",
+      "data_hora": "2025-08-09 18:30", "local": "Nabi Abi Chedid"
     },
     {
-      "id": 2036, "rodada": 6, "fase": "grupos",
-      "time1_nome": "Mirassol", "time1_sigla": "MIR", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/5J3JY7fcdiDYU5rbPW7AKA_48x48.png",
-      "time2_nome": "Vasco da Gama", "time2_sigla": "VAS", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/hHwT8LwRmYCAGxQ-STLxYA_48x48.png",
-      "data_hora": "2025-08-02 18:30", "local": "Estádio José Maria de Campos Maia"
+      "id": 2046, "rodada": 7, "fase": "grupos",
+      "time1_nome": "São Paulo", "time1_sigla": "SAO", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/4w2Z97Hf9CSOqICK3a8AxQ_48x48.png",
+      "time2_nome": "EC Vitória", "time2_sigla": "VIT", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/LHSM6VchpkI4NIptoSTHOg_48x48.png",
+      "data_hora": "2025-08-09 18:30", "local": "Morumbis"
     },
     {
-      "id": 2037, "rodada": 6, "fase": "grupos",
-      "time1_nome": "Fluminense", "time1_sigla": "FLU", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/fCMxMMDF2AZPU7LzYKSlig_48x48.png",
-      "time2_nome": "Grêmio", "time2_sigla": "GRE", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/Ku-73v_TW9kpex-IEGb0ZA_48x48.png",
-      "data_hora": "2025-08-02 21:00", "local": "Maracanã"
+      "id": 2047, "rodada": 7, "fase": "grupos",
+      "time1_nome": "Flamengo", "time1_sigla": "FLA", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/orE554NToSkH6nuwofe7Yg_48x48.png",
+      "time2_nome": "Mirassol", "time2_sigla": "MIR", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/5J3JY7fcdiDYU5rbPW7AKA_48x48.png",
+      "data_hora": "2025-08-09 18:30", "local": "Maracanã"
     },
     {
-      "id": 2038, "rodada": 6, "fase": "grupos",
-      "time1_nome": "Corinthians", "time1_sigla": "COR", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/tCMSqgXVHROpdCpQhzTo1g_48x48.png",
-      "time2_nome": "Fortaleza", "time2_sigla": "FOR", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/me10ephzRxdj45zVq1Risg_48x48.png",
-      "data_hora": "2025-08-03 16:00", "local": "Neo Química Arena"
+      "id": 2048, "rodada": 7, "fase": "grupos",
+      "time1_nome": "Fortaleza", "time1_sigla": "FOR", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/me10ephzRxdj45zVq1Risg_48x48.png",
+      "time2_nome": "Botafogo", "time2_sigla": "BOT", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/KLDWYp-H8CAOT9H_JgizRg_48x48.png",
+      "data_hora": "2025-08-09 20:30", "local": "Arena Castelão"
     },
     {
-      "id": 2039, "rodada": 6, "fase": "grupos",
-      "time1_nome": "Botafogo", "time1_sigla": "BOT", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/KLDWYp-H8CAOT9H_JgizRg_48x48.png",
-      "time2_nome": "Cruzeiro", "time2_sigla": "CRU", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/Tcv9X__nIh-6wFNJPMwIXQ_48x48.png",
-      "data_hora": "2025-08-03 16:00", "local": "Nilton Santos"
+      "id": 2049, "rodada": 7, "fase": "grupos",
+      "time1_nome": "Bahia", "time1_sigla": "BAH", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/nIdbR6qIUDyZUBO9vojSPw_48x48.png",
+      "time2_nome": "Fluminense", "time2_sigla": "FLU", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/fCMxMMDF2AZPU7LzYKSlig_48x48.png",
+      "data_hora": "2025-08-09 21:00", "local": "Arena Fonte Nova"
     },
     {
-      "id": 2040, "rodada": 6, "fase": "grupos",
-      "time1_nome": "Ceará SC", "time1_sigla": "CEA", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/mSl0cz3i2t8uv4zcprobOg_48x48.png",
-      "time2_nome": "Flamengo", "time2_sigla": "FLA", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/orE554NToSkH6nuwofe7Yg_48x48.png",
-      "data_hora": "2025-08-03 18:30", "local": "Arena Castelão"
+      "id": 2051, "rodada": 7, "fase": "grupos",
+      "time1_nome": "Palmeiras", "time1_sigla": "PAL", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/7spurne-xDt2p6C0imYYNA_48x48.png",
+      "time2_nome": "Ceará SC", "time2_sigla": "CEA", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/mSl0cz3i2t8uv4zcprobOg_48x48.png",
+      "data_hora": "2025-08-10 16:00", "local": "Allianz Parque"
     },
     {
-      "id": 2041, "rodada": 6, "fase": "grupos",
-      "time1_nome": "Atlético-MG", "time1_sigla": "CAM", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/q9fhEsgpuyRq58OgmSndcQ_48x48.png",
-      "time2_nome": "Bragantino", "time2_sigla": "BGT", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/lMyw2zn1Z4cdkaxKJWnsQw_48x48.png",
-      "data_hora": "2025-08-03 18:30", "local": "Arena MRV"
+      "id": 2052, "rodada": 7, "fase": "grupos",
+      "time1_nome": "Vasco da Gama", "time1_sigla": "VAS", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/hHwT8LwRmYCAGxQ-STLxYA_48x48.png",
+      "time2_nome": "Atlético-MG", "time2_sigla": "CAM", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/q9fhEsgpuyRq58OgmSndcQ_48x48.png",
+      "data_hora": "2025-08-10 16:00", "local": "São Januário"
     },
     {
-      "id": 2042, "rodada": 6, "fase": "grupos",
-      "time1_nome": "EC Vitória", "time1_sigla": "VIT", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/LHSM6VchpkI4NIptoSTHOg_48x48.png",
-      "time2_nome": "Palmeiras", "time2_sigla": "PAL", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/7spurne-xDt2p6C0imYYNA_48x48.png",
-      "data_hora": "2025-08-03 19:30", "local": "Barradão"
+      "id": 2053, "rodada": 7, "fase": "grupos",
+      "time1_nome": "Cruzeiro", "time1_sigla": "CRU", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/Tcv9X__nIh-6wFNJPMwIXQ_48x48.png",
+      "time2_nome": "Santos", "time2_sigla": "SAN", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/VHdNOT6wWOw_vJ38GMjMzg_48x48.png",
+      "data_hora": "2025-08-10 18:30", "local": "Mineirão"
     },
     {
-      "id": 2043, "rodada": 6, "fase": "grupos",
-      "time1_nome": "Internacional", "time1_sigla": "INT", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/OWVFKuHrQuf4q2Wk0hEmSA_48x48.png",
-      "time2_nome": "São Paulo", "time2_sigla": "SAO", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/4w2Z97Hf9CSOqICK3a8AxQ_48x48.png",
-      "data_hora": "2025-08-03 20:30", "local": "Beira-Rio"
+      "id": 2054, "rodada": 7, "fase": "grupos",
+      "time1_nome": "Grêmio", "time1_sigla": "GRE", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/Ku-73v_TW9kpex-IEGb0ZA_48x48.png",
+      "time2_nome": "Sport Recife", "time2_sigla": "SPO", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/u9Ydy0qt6JJjWhTaI6r10A_48x48.png",
+      "data_hora": "2025-08-10 20:30", "local": "Arena do Grêmio"
     },
     {
-      "id": 2044, "rodada": 6, "fase": "grupos",
-      "time1_nome": "Santos", "time1_sigla": "SAN", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/VHdNOT6wWOw_vJ38GMjMzg_48x48.png",
-      "time2_nome": "Juventude", "time2_sigla": "JUV", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/JrXw-m4Dov0gE2Sh6XJQMQ_48x48.png",
-      "data_hora": "2025-08-04 20:00", "local": "Vila Belmiro"
+      "id": 2055, "rodada": 7, "fase": "grupos",
+      "time1_nome": "Juventude", "time1_sigla": "JUV", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/JrXw-m4Dov0gE2Sh6XJQMQ_48x48.png",
+      "time2_nome": "Corinthians", "time2_sigla": "COR", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/tCMSqgXVHROpdCpQhzTo1g_48x48.png",
+      "data_hora": "2025-08-11 20:00", "local": "Alfredo Jaconi"
     }
-  ] 
+  ]
 }
 
 def atualizar_banco_de_jogos():
