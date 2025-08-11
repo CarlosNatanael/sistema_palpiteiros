@@ -1,6 +1,5 @@
 ========== APP ============
 
-
 cd /home/CarlosNatanael/sistema_palpiteiros
 source /home/CarlosNatanael/.virtualenvs/meu-ambiente-de-palpites/bin/activate
 
@@ -14,7 +13,6 @@ source /home/sinapsedev/.virtualenvs/meu-ambiente-de-palpites/bin/activate
 
 # Backup do arquivo api_data.db
 tar -czvf backup_api_$(date +%Y-%m-%d_%H-%M-%S).tar.gz api_data.db
-
 
 ================== COMANDOS GIT ===================
 
