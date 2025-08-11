@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Palpites da Rodada {{ rodada_exibida_num }}</title>
     <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
-    <!-- Usando Bootstrap 5 e Ícones -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='palpites.css') }}">
@@ -99,7 +98,7 @@
                                                 <strong>{{ palpite.gol_time1 }} x {{ palpite.gol_time2 }}</strong>
                                                 <small class="text-muted">({{ palpite.resultado }})</small>
                                                 
-                                                {% if jogo.fase == 'mata-mata' %}
+                                                {% if jogo.fase == 'mata-mata' and palpite.quem_avanca %}
                                                     <small class="text-muted">(Avança: {{ palpite.quem_avanca }})</small>
                                                 {% endif %}
                                             </div>
@@ -107,7 +106,7 @@
                                                 <span>Resultado Real</span>
                                                 {% if jogo.placar_time1 is not none %}
                                                     <strong>{{ jogo.placar_time1 }} x {{ jogo.placar_time2 }}</strong>
-                                                    {% if jogo.status == 'Finalizado' and jogo.fase == 'mata-mata' %}
+                                                    {% if (jogo.status == 'Finalizado' or jogo.status == 'Processado') and jogo.fase == 'mata-mata' and jogo.time_que_avancou %}
                                                         <small class="text-muted">(Avançou: {{ jogo.time_que_avancou }})</small>
                                                     {% endif %}
                                                 {% else %}
@@ -115,12 +114,12 @@
                                                 {% endif %}
                                             </div>
                                             </div>
-                                            {% if jogo.status == 'Finalizado' %}
+                                            {% if jogo.status == 'Finalizado' or jogo.status == 'Processado' %}
                                                 {% set resultado_real_texto = '' %}
                                                 {% if jogo.placar_time1 > jogo.placar_time2 %}
-                                                    {% set resultado_real_texto = 'Vitória Casa' %}
+                                                    {% set resultado_real_texto = 'Vitória (Casa)' %}
                                                 {% elif jogo.placar_time2 > jogo.placar_time1 %}
-                                                    {% set resultado_real_texto = 'Vitória Fora' %}
+                                                    {% set resultado_real_texto = 'Vitória (Fora)' %}
                                                 {% else %}
                                                     {% set resultado_real_texto = 'Empate' %}
                                                 {% endif %}
@@ -130,14 +129,13 @@
                                             {% endif %}
                                             <div class="palpite-status">
                                                 {% set status_lower = palpite.status|lower %}
-                                                {% set badge_color = 'secondary' %} {# Cor padrão (cinza) para "Pendente" #}
-
+                                                {% set badge_color = 'secondary' %}
                                                 {% if 'acerto total' in status_lower %}
-                                                    {% set badge_color = 'success' %} {# Verde para acerto total #}
+                                                    {% set badge_color = 'success' %}
                                                 {% elif 'acerto' in status_lower %}
-                                                    {% set badge_color = 'primary' %} {# Azul para acertos parciais #}
+                                                    {% set badge_color = 'primary' %}
                                                 {% elif 'erro' in status_lower %}
-                                                    {% set badge_color = 'danger' %}  {# Vermelho para erro #}
+                                                    {% set badge_color = 'danger' %}
                                                 {% endif %}
 
                                                 <span class="badge rounded-pill bg-{{ badge_color }}">{{ palpite.status }}</span>
@@ -164,7 +162,6 @@
         </div>
     </footer>
     
-    <!-- Usando o script do Bootstrap 5 que já inclui o Popper.js -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

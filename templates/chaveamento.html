@@ -32,7 +32,6 @@
                         <li class="nav-item"><a class="nav-link" href="{{ url_for('campeao_geral') }}">Campeão Palpiteiros</a></li>
                         <li class="nav-item"><a class="nav-link" href="{{ url_for('regra') }}">Regras</a></li>
                     </ul>
-
                     <ul class="navbar-nav">
                         {% if session.logged_in %}
                         <li class="nav-item dropdown">
@@ -63,170 +62,149 @@
             <div class="text-center mb-4 animate__animated animate__fadeIn">
                 <h1 class="display-4 fw-bold text-success">CHAVEAMENTO DO MATA-MATA</h1>
                 <p class="lead text-muted">Acompanhe o caminho até a glória!</p>
-                <div class="d-flex justify-content-center mb-3">
-                    <div class="btn-group" role="group">
-                        <button type="button" class="btn btn-outline-success" id="zoomInBtn">
-                            <i class="bi bi-zoom-in"></i>
-                        </button>
-                        <button type="button" class="btn btn-outline-success" id="zoomOutBtn">
-                            <i class="bi bi-zoom-out"></i>
-                        </button>
-                        <button type="button" class="btn btn-outline-success" id="resetZoomBtn">
-                            <i class="bi bi-zoom-reset"></i>
-                        </button>
-                    </div>
-                </div>
             </div>
             
             <div class="bracket-container">
-                <div class="bracket" id="bracket">
-                    <!-- Oitavas de Final -->
+                <div class="bracket">
                     <div class="round oitavas">
-                        <div class="round-header">
-                            <i class="bi bi-trophy-fill me-2"></i>Oitavas de Final
-                        </div>
-                        {% for jogo in oitavas %}
-                        <div class="matchup" data-game-id="{{ jogo.id if jogo else '' }}">
-                            <div class="team {% if jogo and jogo.time_que_avancou == jogo.time1_nome %}winner{% endif %}">
-                                <img src="{{ jogo.time1_img if jogo else 'https://placehold.co/40x40/eee/006400?text=?' }}" 
-                                     class="team-logo" 
-                                     alt="{{ jogo.time1_nome if jogo else 'A definir' }}"
-                                     onerror="this.src='https://placehold.co/40x40/eee/006400?text=?'">
-                                <span class="team-name">{{ jogo.time1_nome if jogo else 'A definir' }}</span>
-                                <span class="team-score">{{ jogo.placar_time1 if jogo and jogo.placar_time1 is not none else '-' }}</span>
-                            </div>
-                            <div class="team {% if jogo and jogo.time_que_avancou == jogo.time2_nome %}winner{% endif %}">
-                                <img src="{{ jogo.time2_img if jogo else 'https://placehold.co/40x40/eee/006400?text=?' }}" 
-                                     class="team-logo" 
-                                     alt="{{ jogo.time2_nome if jogo else 'A definir' }}"
-                                     onerror="this.src='https://placehold.co/40x40/eee/006400?text=?'">
-                                <span class="team-name">{{ jogo.time2_nome if jogo else 'A definir' }}</span>
-                                <span class="team-score">{{ jogo.placar_time2 if jogo and jogo.placar_time2 is not none else '-' }}</span>
-                            </div>
-                            {% if jogo %}
-                            <div class="match-info">
-                                <small class="text-muted">{{ jogo.data|format_date if jogo.data else '' }}</small>
+                        <div class="round-header"><i class="bi bi-trophy-fill me-2"></i>Oitavas de Final</div>
+                        {% for confronto in oitavas %}
+                        <div class="confronto-wrapper mb-4 p-2 border rounded shadow-sm">
+                            {% set ida = confronto.ida %}
+                            {% if ida %}
+                            <div class="matchup">
+                                <div class="team">
+                                    <img src="{{ ida.time1_img }}" class="team-logo" alt="{{ ida.time1_nome }}">
+                                    <span class="team-name">{{ ida.time1_nome }}</span>
+                                    <span class="team-score">{{ ida.placar_time1 if ida.placar_time1 is not none else '-' }}</span>
+                                </div>
+                                <div class="team">
+                                    <img src="{{ ida.time2_img }}" class="team-logo" alt="{{ ida.time2_nome }}">
+                                    <span class="team-name">{{ ida.time2_nome }}</span>
+                                    <span class="team-score">{{ ida.placar_time2 if ida.placar_time2 is not none else '-' }}</span>
+                                </div>
+                                <div class="match-info">
+                                    <span class="badge bg-light text-dark">Ida</span>
+                                    <button type="button" class="btn btn-sm btn-outline-secondary ms-2" data-bs-toggle="modal" data-bs-target="#modal-{{ ida.id }}">
+                                        Ver Palpites
+                                    </button>
+                                </div>
                             </div>
                             {% endif %}
-                        </div>
-                        {% endfor %}
-                    </div>
-                
-                    <!-- Quartas de Final -->
-                    <div class="round quartas">
-                        <div class="round-header">
-                            <i class="bi bi-trophy-fill me-2"></i>Quartas de Final
-                        </div>
-                        {% for jogo in quartas %}
-                        <div class="matchup" data-game-id="{{ jogo.dados_jogo.id if jogo.dados_jogo else '' }}">
-                            <div class="team {% if jogo.dados_jogo and jogo.dados_jogo.time_que_avancou == jogo.time1.nome %}winner{% endif %}">
-                                <img src="{{ jogo.time1.img }}" 
-                                     class="team-logo" 
-                                     alt="{{ jogo.time1.nome }}"
-                                     onerror="this.src='https://placehold.co/40x40/eee/006400?text=?'">
-                                <span class="team-name">{{ jogo.time1.nome }}</span>
-                                <span class="team-score">{{ jogo.dados_jogo.placar_time1 if jogo.dados_jogo and jogo.dados_jogo.placar_time1 is not none else '-' }}</span>
-                            </div>
-                            <div class="team {% if jogo.dados_jogo and jogo.dados_jogo.time_que_avancou == jogo.time2.nome %}winner{% endif %}">
-                                <img src="{{ jogo.time2.img }}" 
-                                     class="team-logo" 
-                                     alt="{{ jogo.time2.nome }}"
-                                     onerror="this.src='https://placehold.co/40x40/eee/006400?text=?'">
-                                <span class="team-name">{{ jogo.time2.nome }}</span>
-                                <span class="team-score">{{ jogo.dados_jogo.placar_time2 if jogo.dados_jogo and jogo.dados_jogo.placar_time2 is not none else '-' }}</span>
-                            </div>
-                            {% if jogo.dados_jogo %}
-                            <div class="match-info">
-                                <small class="text-muted">{{ jogo.dados_jogo.data|format_date if jogo.dados_jogo.data else '' }}</small>
-                            </div>
-                            {% endif %}
-                        </div>
-                        {% endfor %}
-                    </div>
-                
-                    <!-- Semifinais -->
-                    <div class="round semis">
-                        <div class="round-header">
-                            <i class="bi bi-trophy-fill me-2"></i>Semifinais
-                        </div>
-                        {% for jogo in semis %}
-                        <div class="matchup" data-game-id="{{ jogo.dados_jogo.id if jogo.dados_jogo else '' }}">
-                            <div class="team {% if jogo.dados_jogo and jogo.dados_jogo.time_que_avancou == jogo.time1.nome %}winner{% endif %}">
-                                <img src="{{ jogo.time1.img }}" 
-                                     class="team-logo" 
-                                     alt="{{ jogo.time1.nome }}"
-                                     onerror="this.src='https://placehold.co/40x40/eee/006400?text=?'">
-                                <span class="team-name">{{ jogo.time1.nome }}</span>
-                                <span class="team-score">{{ jogo.dados_jogo.placar_time1 if jogo.dados_jogo and jogo.dados_jogo.placar_time1 is not none else '-' }}</span>
-                            </div>
-                            <div class="team {% if jogo.dados_jogo and jogo.dados_jogo.time_que_avancou == jogo.time2.nome %}winner{% endif %}">
-                                <img src="{{ jogo.time2.img }}" 
-                                     class="team-logo" 
-                                     alt="{{ jogo.time2.nome }}"
-                                     onerror="this.src='https://placehold.co/40x40/eee/006400?text=?'">
-                                <span class="team-name">{{ jogo.time2.nome }}</span>
-                                <span class="team-score">{{ jogo.dados_jogo.placar_time2 if jogo.dados_jogo and jogo.dados_jogo.placar_time2 is not none else '-' }}</span>
-                            </div>
-                            {% if jogo.dados_jogo %}
-                            <div class="match-info">
-                                <small class="text-muted">{{ jogo.dados_jogo.data|format_date if jogo.dados_jogo.data else '' }}</small>
-                            </div>
-                            {% endif %}
-                        </div>
-                        {% endfor %}
-                    </div>
-                
-                    <!-- Final -->
-                    <div class="round final">
-                        <div class="round-header">
-                            <i class="bi bi-trophy-fill me-2"></i>Final
-                        </div>
-                        {% for jogo in final %}
-                        <div class="matchup" data-game-id="{{ jogo.dados_jogo.id if jogo.dados_jogo else '' }}">
-                            <div class="team {% if jogo.dados_jogo and jogo.dados_jogo.time_que_avancou == jogo.time1.nome %}winner{% endif %}">
-                                <img src="{{ jogo.time1.img }}" 
-                                     class="team-logo" 
-                                     alt="{{ jogo.time1.nome }}"
-                                     onerror="this.src='https://placehold.co/40x40/eee/006400?text=?'">
-                                <span class="team-name">{{ jogo.time1.nome }}</span>
-                                <span class="team-score">{{ jogo.dados_jogo.placar_time1 if jogo.dados_jogo and jogo.dados_jogo.placar_time1 is not none else '-' }}</span>
-                            </div>
-                            <div class="team {% if jogo.dados_jogo and jogo.dados_jogo.time_que_avancou == jogo.time2.nome %}winner{% endif %}">
-                                <img src="{{ jogo.time2.img }}" 
-                                     class="team-logo" 
-                                     alt="{{ jogo.time2.nome }}"
-                                     onerror="this.src='https://placehold.co/40x40/eee/006400?text=?'">
-                                <span class="team-name">{{ jogo.time2.nome }}</span>
-                                <span class="team-score">{{ jogo.dados_jogo.placar_time2 if jogo.dados_jogo and jogo.dados_jogo.placar_time2 is not none else '-' }}</span>
-                            </div>
-                            {% if jogo.dados_jogo %}
-                            <div class="match-info">
-                                <small class="text-muted">{{ jogo.dados_jogo.data|format_date if jogo.dados_jogo.data else '' }}</small>
-                            </div>
-                            {% endif %}
-                        </div>
-                        {% endfor %}
-                    </div>
 
-                    <!-- Campeão -->
-                    <div class="round champion">
-                        <div class="round-header">
-                            <i class="bi bi-trophy-fill me-2"></i>Campeão
-                        </div>
-                        <div class="matchup">
-                            <div class="team winner champion-box animate__animated animate__pulse animate__infinite">
-                                <i class="bi bi-trophy-fill champion-trophy"></i>
-                                <img src="{{ campeao.img }}" 
-                                     class="team-logo" 
-                                     alt="{{ campeao.nome }}"
-                                     onerror="this.src='https://placehold.co/80x80/eee/006400?text=?'">
-                                <span class="team-name">{{ campeao.nome }}</span>
+                            {% set volta = confronto.volta %}
+                            {% if volta %}
+                             <div class="matchup mt-2">
+                                <div class="team">
+                                    <img src="{{ volta.time1_img }}" class="team-logo" alt="{{ volta.time1_nome }}">
+                                    <span class="team-name">{{ volta.time1_nome }}</span>
+                                    <span class="team-score">{{ volta.placar_time1 if volta.placar_time1 is not none else '-' }}</span>
+                                </div>
+                                <div class="team">
+                                    <img src="{{ volta.time2_img }}" class="team-logo" alt="{{ volta.time2_nome }}">
+                                    <span class="team-name">{{ volta.time2_nome }}</span>
+                                    <span class="team-score">{{ volta.placar_time2 if volta.placar_time2 is not none else '-' }}</span>
+                                </div>
+                                <div class="match-info">
+                                    <span class="badge bg-light text-dark">Volta</span>
+                                    <button type="button" class="btn btn-sm btn-outline-secondary ms-2" data-bs-toggle="modal" data-bs-target="#modal-{{ volta.id }}">
+                                        Ver Palpites
+                                    </button>
+                                </div>
                             </div>
+                            {% endif %}
+                        </div>
+                        {% endfor %}
+                    </div>
+                    </div>
+            </div>
+        </div>
+
+        {% for confronto in oitavas %}
+            {% for jogo in [confronto.ida, confronto.volta] if jogo %}
+            <div class="modal fade" id="modal-{{ jogo.id }}" tabindex="-1">
+                <div class="modal-dialog modal-lg modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Palpites: {{ jogo.time1_nome }} vs {{ jogo.time2_nome }}</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="card bg-light mb-4">
+                                <div class="card-body text-center">
+                                    <h6 class="card-title text-uppercase">Resultado Real</h6>
+                                    <p class="card-text display-6">
+                                        {% if jogo.placar_time1 is not none %}
+                                            <strong>{{ jogo.placar_time1 }} x {{ jogo.placar_time2 }}</strong>
+                                        {% else %}
+                                            <span class="text-muted">- x -</span>
+                                        {% endif %}
+                                    </p>
+                                    {% if jogo.status == 'Finalizado' or jogo.status == 'Processado' %}
+                                        {% set resultado_real_texto = '' %}
+                                        {% if jogo.placar_time1 > jogo.placar_time2 %}
+                                            {% set resultado_real_texto = 'Vitória (Casa)' %}
+                                        {% elif jogo.placar_time2 > jogo.placar_time1 %}
+                                            {% set resultado_real_texto = 'Vitória (Fora)' %}
+                                        {% else %}
+                                            {% set resultado_real_texto = 'Empate' %}
+                                        {% endif %}
+                                        <div class="resultado-final text-center text-muted">
+                                            (Resultado do jogo: <strong>{{ resultado_real_texto }}</strong>)
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            {% if jogo.palpites %}
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-hover table-sm">
+                                        <thead class="table-dark">
+                                            <tr>
+                                                <th>Palpiteiro</th>
+                                                <th>Placar</th>
+                                                <th>Resultado</th>
+                                                {% if jogo.rodada is odd %}
+                                                    <th>Avança</th>
+                                                {% endif %}
+                                                <th>Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for palpite in jogo.palpites %}
+                                            <tr>
+                                                <td>{{ palpite.nome }}</td>
+                                                <td><strong>{{ palpite.gol_time1 }} x {{ palpite.gol_time2 }}</strong></td>
+                                                <td>{{ palpite.resultado }}</td>
+                                                {% if jogo.rodada is odd %}
+                                                    <td>{{ palpite.quem_avanca or 'N/A' }}</td>
+                                                {% endif %}
+                                                <td>
+                                                    {% set status_lower = palpite.status|lower %}
+                                                    {% set badge_color = 'secondary' %}
+                                                    {% if 'acerto total' in status_lower %}
+                                                        {% set badge_color = 'success' %}
+                                                    {% elif 'acerto' in status_lower %}
+                                                        {% set badge_color = 'primary' %}
+                                                    {% elif 'erro' in status_lower %}
+                                                        {% set badge_color = 'danger' %}
+                                                    {% endif %}
+                                                    <span class="badge rounded-pill bg-{{ badge_color }}">{{ palpite.status }}</span>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            {% else %}
+                                <p class="text-center text-muted">Ainda não há palpites para este jogo.</p>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+            {% endfor %}
+        {% endfor %}
     </main>
 
     <footer class="bg-dark text-white py-3 mt-auto">
@@ -236,42 +214,5 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        // Controle de zoom
-        const bracket = document.getElementById('bracket');
-        let currentScale = 1;
-        
-        document.getElementById('zoomInBtn').addEventListener('click', () => {
-            currentScale = Math.min(currentScale + 0.1, 1.5);
-            bracket.style.transform = `scale(${currentScale})`;
-        });
-        
-        document.getElementById('zoomOutBtn').addEventListener('click', () => {
-            currentScale = Math.max(currentScale - 0.1, 0.7);
-            bracket.style.transform = `scale(${currentScale})`;
-        });
-        
-        document.getElementById('resetZoomBtn').addEventListener('click', () => {
-            currentScale = 1;
-            bracket.style.transform = `scale(${currentScale})`;
-        });
-
-        // Adiciona efeito de hover nos jogos
-        document.querySelectorAll('.matchup').forEach(matchup => {
-            matchup.addEventListener('mouseenter', () => {
-                matchup.style.boxShadow = '0 0 15px rgba(0, 100, 0, 0.3)';
-            });
-            matchup.addEventListener('mouseleave', () => {
-                matchup.style.boxShadow = '';
-            });
-        });
-
-        // Anima os times vencedores
-        setTimeout(() => {
-            document.querySelectorAll('.winner').forEach(winner => {
-                winner.classList.add('animate__animated', 'animate__tada');
-            });
-        }, 1000);
-    </script>
 </body>
 </html>

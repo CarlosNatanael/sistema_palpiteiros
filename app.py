@@ -237,28 +237,56 @@ def adicionar_palpites():
 
 @app.route('/chaveamento')
 def chaveamento():
-    # Pega os jogos como uma lista para facilitar a filtragem
-    jogos_api = get_jogos_from_api(as_dict=False)
+    conn = get_db()
+    jogos_api_map = get_jogos_from_api(as_dict=True)
     
-    # Filtra apenas jogos de mata-mata direto da API
-    jogos_mata_mata = [j for j in jogos_api if j.get('fase') == 'mata-mata']
+    resultados_db = conn.execute("SELECT * FROM jogos").fetchall()
+    resultados_map = {res['id']: dict(res) for res in resultados_db}
     
-    # Lógica para separar as fases do mata-mata
-    # Por enquanto, apenas as oitavas estão sendo populadas.
-    oitavas = sorted([j for j in jogos_mata_mata if j.get('rodada') == 1], key=lambda x: x['id'])
+    palpites_db = conn.execute("SELECT * FROM palpites").fetchall()
+    palpites_por_jogo = defaultdict(list)
+    for palpite in palpites_db:
+        palpites_por_jogo[palpite['game_id']].append(dict(palpite))
+
+    # Agrupa os confrontos de mata-mata pelo confronto_id
+    confrontos_mata_mata = defaultdict(lambda: {'ida': None, 'volta': None})
+    for game_id, jogo_api in jogos_api_map.items():
+        if jogo_api.get('fase') == 'mata-mata' and jogo_api.get('confronto_id'):
+            jogo_completo = jogo_api.copy()
+            if game_id in resultados_map:
+                jogo_completo.update(resultados_map[game_id])
+            jogo_completo['palpites'] = sorted(palpites_por_jogo.get(game_id, []), key=lambda p: p['nome'])
+            
+            # Decide se é jogo de ida (rodada ímpar) ou volta (rodada par)
+            if jogo_completo['rodada'] % 2 != 0:
+                confrontos_mata_mata[jogo_completo['confronto_id']]['ida'] = jogo_completo
+            else:
+                confrontos_mata_mata[jogo_completo['confronto_id']]['volta'] = jogo_completo
     
-    # As fases seguintes (quartas, semis, etc.) ainda não têm lógica para serem montadas.
-    # Elas serão implementadas no futuro.
-    quartas = []
-    semis = []
-    final = []
+    confrontos_ordenados = sorted(confrontos_mata_mata.values(), key=lambda c: c['ida']['id'] if c.get('ida') else 0)
+
+    # --- LÓGICA ATUALIZADA PARA TODAS AS FASES ---
+    # Define os ranges de confronto_id para cada fase
+    oitavas = [c for c in confrontos_ordenados if c['ida']['confronto_id'] <= 8]
+    quartas = [c for c in confrontos_ordenados if 8 < c['ida']['confronto_id'] <= 12]
+    semis = [c for c in confrontos_ordenados if 12 < c['ida']['confronto_id'] <= 14]
+    final = [c for c in confrontos_ordenados if c['ida']['confronto_id'] == 15]
+    
     campeao = {'nome': 'A definir', 'img': 'https://placehold.co/80x80/eee/006400?text=?'}
+    if final and final[0]['ida'].get('time_que_avancou'):
+        winner_name = final[0]['ida']['time_que_avancou']
+        winner_img = ''
+        if final[0]['ida']['time1_nome'] == winner_name:
+            winner_img = final[0]['ida']['time1_img']
+        else:
+            winner_img = final[0]['ida']['time2_img']
+        campeao = {'nome': winner_name, 'img': winner_img}
 
     return render_template('chaveamento.html', 
-                           oitavas=oitavas, 
-                           quartas=quartas, 
-                           semis=semis, 
-                           final=final, 
+                           oitavas=oitavas,
+                           quartas=quartas,
+                           semis=semis,
+                           final=final,
                            campeao=campeao)
 
 @app.route('/estatisticas')

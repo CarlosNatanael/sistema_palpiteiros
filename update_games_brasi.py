@@ -9,9 +9,7 @@ API_DB_PATH = os.path.join(BASE_DIR, 'api_data.db')
 # ====================================================================
 #  COLOQUE AQUI OS NOVOS JOGOS QUE VOCÊ QUER ADICIONAR OU ATUALIZAR
 # ====================================================================
-# Exemplo: Adicionando a Rodada 2 do Brasileirão
-# Se um jogo com o mesmo 'id' já existir, ele será atualizado.
-# Se não existir, será inserido.
+# APENAS OS JOGOS DO BRASILEIRÃO
 NOVOS_JOGOS_E_CAMPEONATOS = {
   "Brasileirão 2025": [
     {
