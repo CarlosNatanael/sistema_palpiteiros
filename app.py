@@ -151,20 +151,23 @@ def get_api_data(endpoint="jogos"):
 @app.route('/adicionar_palpites', methods=['GET', 'POST'])
 def adicionar_palpites():
     conn = get_db()
+    
     if request.method == 'POST':
-        # A lógica do POST já pega os jogos filtrados do GET, então não precisa de alteração de fuso aqui.
         nome = request.form.get('nome')
         rodada_selecionada = int(request.form.get('rodada_selecionada'))
         campeonato = request.form.get('campeonato_selecionado')
 
+        if not nome:
+            flash('Você precisa selecionar o seu nome para salvar os palpites.', 'warning')
+            return redirect(url_for('adicionar_palpites', campeonato_selecionado=campeonato, rodada_selecionada=rodada_selecionada))
+
         cursor = conn.cursor()
         cursor.execute("SELECT id FROM pontuacao WHERE nome = ?", (nome,))
-        palpiteiro_existente = cursor.fetchone()
-        if not palpiteiro_existente:
+        if not cursor.fetchone():
             conn.execute("INSERT INTO pontuacao (nome) VALUES (?)", (nome,))
 
         jogos_api = get_api_data("jogos") or []
-
+        
         fuso_horario_brasil = pytz.timezone('America/Sao_Paulo')
         agora_brasil = datetime.now(fuso_horario_brasil)
         agora_str = agora_brasil.strftime('%Y-%m-%d %H:%M')
@@ -175,47 +178,52 @@ def adicionar_palpites():
             j['rodada'] == rodada_selecionada and 
             j.get('data_hora', '') > agora_str
         ]
-
+        
+        palpites_feitos = 0
         for jogo in jogos_da_rodada_para_palpite:
             game_id = jogo['id']
-            if f'gol_time1_{game_id}' in request.form:
-                gol_time1 = int(request.form[f'gol_time1_{game_id}'])
-                gol_time2 = int(request.form[f'gol_time2_{game_id}'])
-                resultado_palpite = request.form[f'resultado_{game_id}']
+            
+            # --- CÓDIGO CORRIGIDO AQUI ---
+            gol_time1_str = request.form.get(f'gol_time1_{game_id}')
+            gol_time2_str = request.form.get(f'gol_time2_{game_id}')
+            resultado_palpite = request.form.get(f'resultado_{game_id}')
+
+            if gol_time1_str and gol_time2_str and resultado_palpite:
+                gol_time1 = int(gol_time1_str)
+                gol_time2 = int(gol_time2_str)
                 quem_avanca = request.form.get(f'quem_avanca_{game_id}')
+
                 conn.execute("DELETE FROM palpites WHERE nome = ? AND game_id = ?", (nome, game_id))
+                
                 conn.execute(
                     "INSERT INTO palpites (nome, rodada, game_id, time1, time2, gol_time1, gol_time2, resultado, status, quem_avanca) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
                     (nome, rodada_selecionada, game_id, jogo['time1_nome'], jogo['time2_nome'], gol_time1, gol_time2, resultado_palpite, 'Pendente', quem_avanca)
                 )
+                palpites_feitos += 1
+        
         conn.commit()
-        flash('Palpites registrados com sucesso!', 'success')
+        if palpites_feitos > 0:
+            flash(f'{palpites_feitos} palpite(s) registrado(s) com sucesso!', 'success')
+        else:
+            flash('Nenhum palpite novo foi preenchido para salvar.', 'info')
+
         return redirect(url_for('adicionar_palpites', campeonato_selecionado=campeonato, rodada_selecionada=rodada_selecionada))
 
-    # --- LÓGICA DO GET (com a correção de fuso) ---
+    # A lógica do GET (para exibir a página) permanece a mesma
     campeonato_selecionado = request.args.get('campeonato_selecionado')
     rodada_selecionada = request.args.get('rodada_selecionada', type=int)
     campeonatos = get_api_data("campeonatos") or []
     rodadas_disponiveis = []
     jogos_filtrados = []
-
     if campeonato_selecionado:
         jogos_api = get_api_data() or []
-
         fuso_horario_brasil = pytz.timezone('America/Sao_Paulo')
         agora_brasil = datetime.now(fuso_horario_brasil)
         agora_str = agora_brasil.strftime('%Y-%m-%d %H:%M')
-
-
-        jogos_do_campeonato = [
-            j for j in jogos_api if 
-            j['campeonato'] == campeonato_selecionado
-        ]
-
+        jogos_do_campeonato = [j for j in jogos_api if j['campeonato'] == campeonato_selecionado]
         if jogos_do_campeonato:
             rodadas_disponiveis = sorted(list(set(j['rodada'] for j in jogos_do_campeonato if j.get('data_hora', '') > agora_str)))
-
-        if rodada_selecionada and rodada_selecionada in rodadas_disponiveis:
+        if rodada_selecionada:
             jogos_filtrados = [j for j in jogos_do_campeonato if j['rodada'] == rodada_selecionada and j.get('data_hora', '') > agora_str]
 
     palpiteiros = ["Ariel", "Arthur", "Carlos", "Celso", "Gabriel", "Lucas"]

@@ -57,6 +57,17 @@
     </header>
 
     <main style="padding-top: 80px;">
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} w-75 mx-auto text-center" role="alert">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
         <h1>ADICIONAR NOVO PALPITE</h1>
         
         <div class="form-container">
@@ -114,9 +125,9 @@
                                 <span class="team-sigla"><strong>{{ jogo.time1_sigla }}</strong></span>
                             </div>
                             <div class="score-input-group">
-                                <input type="number" name="gol_time1_{{ jogo.id }}" class="score-input" min="0" max="99" placeholder="-" required />
+                                <input type="number" name="gol_time1_{{ jogo.id }}" class="score-input" min="0" max="99" placeholder="-"/>
                                 <span class="separator">x</span>
-                                <input type="number" name="gol_time2_{{ jogo.id }}" class="score-input" min="0" max="99" placeholder="-" required />
+                                <input type="number" name="gol_time2_{{ jogo.id }}" class="score-input" min="0" max="99" placeholder="-"/>
                             </div>
                             <div class="team-display">
                                 <span class="team-sigla"><strong>{{ jogo.time2_sigla }}</strong></span>
@@ -126,7 +137,7 @@
 
                         <div class="result-prediction-group">
                             <label for="resultado_{{ jogo.id }}">Resultado</label>
-                            <select id="resultado_{{ jogo.id }}" name="resultado_{{ jogo.id }}" class="form-select" required>
+                            <select id="resultado_{{ jogo.id }}" name="resultado_{{ jogo.id }}" class="form-select">
                                 <option value="" disabled selected>Selecione o resultado</option>
                                 <option value="Vitória (Casa)">Vitória (Casa)</option>
                                 <option value="Empate">Empate</option>
@@ -137,7 +148,7 @@
                         {% if jogo.fase == 'mata-mata' and jogo.rodada is odd %}
                         <div class="result-prediction-group mt-2">
                             <label for="quem_avanca_{{ jogo.id }}">Quem Avança no Confronto?</label>
-                            <select id="quem_avanca_{{ jogo.id }}" name="quem_avanca_{{ jogo.id }}" class="form-select" required>
+                            <select id="quem_avanca_{{ jogo.id }}" name="quem_avanca_{{ jogo.id }}" class="form-select">
                                 <option value="" disabled selected>Selecione quem avança</option>
                                 <option value="{{ jogo.time1_nome }}">{{ jogo.time1_nome }}</option>
                                 <option value="{{ jogo.time2_nome }}">{{ jogo.time2_nome }}</option>
