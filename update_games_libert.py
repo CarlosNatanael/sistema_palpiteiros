@@ -15,19 +15,19 @@ NOVOS_JOGOS_E_CAMPEONATOS = {
           "id": 3001, "rodada": 1, "fase": "mata-mata", "confronto_id": 1,
           "time1_nome": "Fortaleza", "time1_sigla": "FOR", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/me10ephzRxdj45zVq1Risg_48x48.png",
           "time2_nome": "Vélez Sarsfield", "time2_sigla": "VEL", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/EG7pVKQAW2mvbnKsMoMbYA_48x48.png",
-          "data_hora": "2025-08-13 19:00", "local": "Arena Castelão"
+          "data_hora": "2025-08-12 19:00", "local": "Arena Castelão"
         },
         {
           "id": 3002, "rodada": 1, "fase": "mata-mata", "confronto_id": 2,
           "time1_nome": "Peñarol", "time1_sigla": "PEN", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/dO-HNzx-ozLofoWOj7kr9g_48x48.png",
           "time2_nome": "Racing", "time2_sigla": "RAC", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/wi-J-3U7th2bpIB_Uy9Euw_48x48.png",
-          "data_hora": "2025-08-13 21:30", "local": "Campeón del Siglo"
+          "data_hora": "2025-08-12 21:30", "local": "Campeón del Siglo"
         },
         {
           "id": 3003, "rodada": 1, "fase": "mata-mata", "confronto_id": 3,
           "time1_nome": "Atlético Nacional", "time1_sigla": "ATL", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/i6-Yda76iPfeYEg4JcNbuw_48x48.png",
           "time2_nome": "São Paulo", "time2_sigla": "SAO", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/4w2Z97Hf9CSOqICK3a8AxQ_48x48.png",
-          "data_hora": "2025-08-13 21:30", "local": "Atanasio Girardot"
+          "data_hora": "2025-08-12 21:30", "local": "Atanasio Girardot"
         },
         {
           "id": 3004, "rodada": 1, "fase": "mata-mata", "confronto_id": 4,
@@ -45,19 +45,19 @@ NOVOS_JOGOS_E_CAMPEONATOS = {
           "id": 3006, "rodada": 1, "fase": "mata-mata", "confronto_id": 6,
           "time1_nome": "Flamengo", "time1_sigla": "FLA", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/orE554NToSkH6nuwofe7Yg_48x48.png",
           "time2_nome": "Internacional", "time2_sigla": "INT", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/OWVFKuHrQuf4q2Wk0hEmSA_48x48.png",
-          "data_hora": "2025-08-14 21:30", "local": "Maracanã"
+          "data_hora": "2025-08-13 21:30", "local": "Maracanã"
         },
         {
           "id": 3007, "rodada": 1, "fase": "mata-mata", "confronto_id": 7,
           "time1_nome": "Universitario", "time1_sigla": "UNI", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/HfG2HscVnIAKV-aSmLcY-A_48x48.png",
           "time2_nome": "Palmeiras", "time2_sigla": "PAL", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/7spurne-xDt2p6C0imYYNA_48x48.png",
-          "data_hora": "2025-08-15 21:00", "local": "Estadio Monumental"
+          "data_hora": "2025-08-14 21:00", "local": "Estadio Monumental"
         },
         {
           "id": 3008, "rodada": 1, "fase": "mata-mata", "confronto_id": 8,
           "time1_nome": "Cerro Porteño", "time1_sigla": "CER", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/q_2P3cWhPBE6a_0bB-xLAQ_48x48.png",
           "time2_nome": "Estudiantes", "time2_sigla": "EST", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/nDfL4YLZSNWXZniXushVag_48x48.png",
-          "data_hora": "2025-08-15 21:00", "local": "La Nueva Olla"
+          "data_hora": "2025-08-13 21:00", "local": "La Nueva Olla"
         },
         # === OITAVAS DE FINAL - VOLTA (Rodada 2) ===
         {
