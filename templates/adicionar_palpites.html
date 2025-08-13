@@ -6,8 +6,6 @@
     <title>Adicionar Palpite</title>
     <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
     <link rel="stylesheet" href="{{ url_for('static', filename='adipalpites.css') }}">    
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
 </head>
@@ -65,7 +63,7 @@
             <form id="filtroForm" action="{{ url_for('adicionar_palpites') }}" method="GET">
                 <div class="form-group mb-3">
                     <label for="campeonato_selecionado">Selecione o Campeonato</label>
-                    <select id="campeonato_selecionado" name="campeonato_selecionado" class="form-control" onchange="document.getElementById('filtroForm').submit();">
+                    <select id="campeonato_selecionado" name="campeonato_selecionado" class="form-select" onchange="document.getElementById('filtroForm').submit();">
                         <option value="" disabled {% if not campeonato_selecionado %}selected{% endif %}>Escolha um campeonato...</option>
                         {% for camp in campeonatos %}
                         <option value="{{ camp }}" {% if camp == campeonato_selecionado %}selected{% endif %}>{{ camp }}</option>
@@ -76,7 +74,7 @@
                 {% if campeonato_selecionado %}
                 <div class="form-group">
                     <label for="rodada_selecionada">Selecione a Rodada</label>
-                    <select id="rodada_selecionada" name="rodada_selecionada" class="form-control" onchange="this.form.submit();">
+                    <select id="rodada_selecionada" name="rodada_selecionada" class="form-select" onchange="this.form.submit();">
                         <option value="" disabled {% if not rodada_selecionada %}selected{% endif %}>Escolha uma rodada...</option>
                         {% for rodada_num in rodadas %}
                         <option value="{{ rodada_num }}" {% if rodada_num == rodada_selecionada %}selected{% endif %}>{{ rodada_num }}ª Rodada</option>
@@ -95,7 +93,7 @@
                 
                 <div class="form-group">
                     <label for="nome">Nome do Palpiteiro</label>
-                    <select id="nome" name="nome" class="form-control" required>
+                    <select id="nome" name="nome" class="form-select" required>
                         <option value="" disabled selected>Selecione seu nome</option>
                         {% for palpiteiro in palpiteiros %}
                         <option value="{{ palpiteiro }}">{{ palpiteiro }}</option>
@@ -128,7 +126,7 @@
 
                         <div class="result-prediction-group">
                             <label for="resultado_{{ jogo.id }}">Resultado</label>
-                            <select id="resultado_{{ jogo.id }}" name="resultado_{{ jogo.id }}" class="form-control" required>
+                            <select id="resultado_{{ jogo.id }}" name="resultado_{{ jogo.id }}" class="form-select" required>
                                 <option value="" disabled selected>Selecione o resultado</option>
                                 <option value="Vitória (Casa)">Vitória (Casa)</option>
                                 <option value="Empate">Empate</option>
@@ -139,7 +137,7 @@
                         {% if jogo.fase == 'mata-mata' and jogo.rodada is odd %}
                         <div class="result-prediction-group mt-2">
                             <label for="quem_avanca_{{ jogo.id }}">Quem Avança no Confronto?</label>
-                            <select id="quem_avanca_{{ jogo.id }}" name="quem_avanca_{{ jogo.id }}" class="form-control" required>
+                            <select id="quem_avanca_{{ jogo.id }}" name="quem_avanca_{{ jogo.id }}" class="form-select" required>
                                 <option value="" disabled selected>Selecione quem avança</option>
                                 <option value="{{ jogo.time1_nome }}">{{ jogo.time1_nome }}</option>
                                 <option value="{{ jogo.time2_nome }}">{{ jogo.time2_nome }}</option>
@@ -161,9 +159,8 @@
             <p class="mb-0">© Desenvolvido por Carlos Natanael</p>
         </div>
     </footer>
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
 </body>
 </html>
