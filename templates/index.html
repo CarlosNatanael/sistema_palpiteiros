@@ -111,7 +111,10 @@
                                         {% elif loop.index == 2 %}
                                             <span class="badge bg-silver">{{ loop.index }}º</span>
                                         {% elif loop.index == 3 %}
-                                            <span class="badge bg-bronze">{{ loop.index }}º</span>
+                                        <!-- bronze -->
+                                            <span class="badge bg-secondary">{{ loop.index }}º</span>
+                                        {% elif loop.last %}
+                                            <span class="badge bg-danger">{{ loop.index }}º</span>
                                         {% else %}
                                             <span class="badge bg-secondary">{{ loop.index }}º</span>
                                         {% endif %}
