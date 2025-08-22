@@ -393,6 +393,15 @@ DADOS_DOS_CAMPEONATOS = {
           "time2_nome": "Cruzeiro", "time2_sigla": "CRU", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/Tcv9X__nIh-6wFNJPMwIXQ_48x48.png",
           "data_hora": "2025-08-18 20:00", "local": "Estádio José Maria de Campos Maia"
         },
+         # === RODADA 9 ===
+        {
+          "id": 2067, "rodada": 9, "fase": "grupos",
+          "time1_nome": "Juventude", "time1_sigla": "JUV", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/JrXw-m4Dov0gE2Sh6XJQMQ_48x48.png",
+          "time2_nome": "Vasco da Gama", "time2_sigla": "VAS", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/hHwT8LwRmYCAGxQ-STLxYA_48x48.png",
+          "data_hora": "2025-08-20 19:00", "local": "Alfredo Jaconi"
+        },
+        # === RODADA 10 ===
+        
     ],
     "Libertadores 2025": [
         # === OITAVAS DE FINAL (IDA) ===
