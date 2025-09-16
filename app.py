@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, flash, ses
 from collections import defaultdict
 from datetime import datetime
 from functools import wraps
-# from config import API_BASE_URL
+from config import API_BASE_URL
 import requests
 import sqlite3
 import pytz
@@ -21,7 +21,7 @@ ADMIN_PASSWORD = "pokemar16#"
 TEMPORADA_ATUAL = "2ª Temporada" 
 
 # ==== TESTE LOCAL =======
-API_BASE_URL = "http://127.0.0.1:5001/api/v1"
+# API_BASE_URL = "http://127.0.0.1:5001/api/v1"
 
 # --- Conexão com o Banco de Dados ---
 def get_db():
@@ -896,5 +896,5 @@ def deletar_anuncio(anuncio_id):
     flash('Anúncio apagado com sucesso!', 'success')
     return redirect(url_for('gerenciar_anuncios'))
 
-if __name__ == '__main__':
-    app.run(debug=True,host="0.0.0.0",port=5000)
+# if __name__ == '__main__':
+#     app.run(debug=True,host="0.0.0.0",port=5000)
