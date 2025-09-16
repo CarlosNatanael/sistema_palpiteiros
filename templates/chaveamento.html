@@ -61,66 +61,55 @@
         <div class="container-fluid py-4">
             <div class="text-center mb-4 animate__animated animate__fadeIn">
                 <h1 class="display-4 fw-bold text-success">CHAVEAMENTO DO MATA-MATA</h1>
-                <p class="lead text-muted">Acompanhe o caminho até a Glória Eterna!</p>
+                <p class="lead text-muted">Acompanhe o caminho até a glória!</p>
             </div>
             
             <div class="bracket-container">
                 <div class="bracket">
                     <div class="round oitavas">
-                        <div class="round-header"><i class="bi bi-trophy-fill me-2"></i>Oitavas de Final</div>
+                        <div class="round-header"><i class="bi bi-trophy-fill me-2"></i>Oitavas</div>
                         {% for confronto in oitavas %}
-                        <div class="confronto-wrapper mb-4 p-2 border rounded shadow-sm">
-                            {% set ida = confronto.ida %}
-                            {% if ida %}
-                            <div class="matchup">
-                                <div class="team">
-                                    <img src="{{ ida.time1_img }}" class="team-logo" alt="{{ ida.time1_nome }}">
-                                    <span class="team-name">{{ ida.time1_nome }}</span>
-                                    <span class="team-score">{{ ida.placar_time1 if ida.placar_time1 is not none else '-' }}</span>
-                                </div>
-                                <div class="team">
-                                    <img src="{{ ida.time2_img }}" class="team-logo" alt="{{ ida.time2_nome }}">
-                                    <span class="team-name">{{ ida.time2_nome }}</span>
-                                    <span class="team-score">{{ ida.placar_time2 if ida.placar_time2 is not none else '-' }}</span>
-                                </div>
-                                <div class="match-info">
-                                    <span class="badge bg-light text-dark">Ida</span>
-                                    <button type="button" class="btn btn-sm btn-outline-secondary ms-2" data-bs-toggle="modal" data-bs-target="#modal-{{ ida.id }}">
-                                        Ver Palpites
-                                    </button>
-                                </div>
-                            </div>
-                            {% endif %}
-
-                            {% set volta = confronto.volta %}
-                            {% if volta %}
-                             <div class="matchup mt-2">
-                                <div class="team">
-                                    <img src="{{ volta.time1_img }}" class="team-logo" alt="{{ volta.time1_nome }}">
-                                    <span class="team-name">{{ volta.time1_nome }}</span>
-                                    <span class="team-score">{{ volta.placar_time1 if volta.placar_time1 is not none else '-' }}</span>
-                                </div>
-                                <div class="team">
-                                    <img src="{{ volta.time2_img }}" class="team-logo" alt="{{ volta.time2_nome }}">
-                                    <span class="team-name">{{ volta.time2_nome }}</span>
-                                    <span class="team-score">{{ volta.placar_time2 if volta.placar_time2 is not none else '-' }}</span>
-                                </div>
-                                <div class="match-info">
-                                    <span class="badge bg-light text-dark">Volta</span>
-                                    <button type="button" class="btn btn-sm btn-outline-secondary ms-2" data-bs-toggle="modal" data-bs-target="#modal-{{ volta.id }}">
-                                        Ver Palpites
-                                    </button>
-                                </div>
-                            </div>
-                            {% endif %}
-                        </div>
+                            {% include 'partials/_confronto.html' %}
                         {% endfor %}
                     </div>
+
+                    <div class="round quartas">
+                        <div class="round-header"><i class="bi bi-trophy-fill me-2"></i>Quartas</div>
+                        {% for confronto in quartas %}
+                            {% include 'partials/_confronto.html' %}
+                        {% endfor %}
                     </div>
+
+                    <div class="round semis">
+                        <div class="round-header"><i class="bi bi-trophy-fill me-2"></i>Semifinal</div>
+                        {% for confronto in semis %}
+                            {% include 'partials/_confronto.html' %}
+                        {% endfor %}
+                    </div>
+
+                    <div class="round final">
+                        <div class="round-header"><i class="bi bi-trophy-fill me-2"></i>Final</div>
+                        {% for confronto in final %}
+                            {% include 'partials/_confronto.html' %}
+                        {% endfor %}
+                    </div>
+
+                    <div class="round champion">
+                        <div class="round-header"><i class="bi bi-trophy-fill me-2"></i>Campeão</div>
+                        <div class="matchup">
+                            <div class="team winner champion-box">
+                                <i class="bi bi-trophy-fill champion-trophy"></i>
+                                <img src="{{ campeao.img }}" class="team-logo" alt="{{ campeao.nome }}">
+                                <span class="team-name">{{ campeao.nome }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
-        {% for confronto in oitavas %}
+        {% set todos_os_confrontos = oitavas + quartas + semis + final %}
+        {% for confronto in todos_os_confrontos %}
             {% for jogo in [confronto.ida, confronto.volta] if jogo %}
             <div class="modal fade" id="modal-{{ jogo.id }}" tabindex="-1">
                 <div class="modal-dialog modal-lg modal-dialog-centered">
@@ -130,75 +119,7 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                         </div>
                         <div class="modal-body">
-                            <div class="card bg-light mb-4">
-                                <div class="card-body text-center">
-                                    <h6 class="card-title text-uppercase">Resultado Real</h6>
-                                    <p class="card-text display-6">
-                                        {% if jogo.placar_time1 is not none %}
-                                            <strong>{{ jogo.placar_time1 }} x {{ jogo.placar_time2 }}</strong>
-                                        {% else %}
-                                            <span class="text-muted">- x -</span>
-                                        {% endif %}
-                                    </p>
-                                    {% if jogo.status == 'Finalizado' or jogo.status == 'Processado' %}
-                                        {% set resultado_real_texto = '' %}
-                                        {% if jogo.placar_time1 > jogo.placar_time2 %}
-                                            {% set resultado_real_texto = 'Vitória (Casa)' %}
-                                        {% elif jogo.placar_time2 > jogo.placar_time1 %}
-                                            {% set resultado_real_texto = 'Vitória (Fora)' %}
-                                        {% else %}
-                                            {% set resultado_real_texto = 'Empate' %}
-                                        {% endif %}
-                                        <div class="resultado-final text-center text-muted">
-                                            (Resultado do jogo: <strong>{{ resultado_real_texto }}</strong>)
-                                        </div>
-                                    {% endif %}
-                                </div>
-                            </div>
-
-                            {% if jogo.palpites %}
-                                <div class="table-responsive">
-                                    <table class="table table-striped table-hover table-sm">
-                                        <thead class="table-dark">
-                                            <tr>
-                                                <th>Palpiteiro</th>
-                                                <th>Placar</th>
-                                                <th>Resultado</th>
-                                                {% if jogo.rodada is odd %}
-                                                    <th>Avança</th>
-                                                {% endif %}
-                                                <th>Status</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                        {% for palpite in jogo.palpites %}
-                                            <tr>
-                                                <td>{{ palpite.nome }}</td>
-                                                <td><strong>{{ palpite.gol_time1 }} x {{ palpite.gol_time2 }}</strong></td>
-                                                <td>{{ palpite.resultado }}</td>
-                                                {% if jogo.rodada is odd %}
-                                                    <td>{{ palpite.quem_avanca or 'N/A' }}</td>
-                                                {% endif %}
-                                                <td>
-                                                    {% set status_lower = palpite.status|lower %}
-                                                    {% set badge_color = 'secondary' %}
-                                                    {% if 'acerto total' in status_lower %}
-                                                        {% set badge_color = 'success' %}
-                                                    {% elif 'acerto' in status_lower %}
-                                                        {% set badge_color = 'primary' %}
-                                                    {% elif 'erro' in status_lower %}
-                                                        {% set badge_color = 'danger' %}
-                                                    {% endif %}
-                                                    <span class="badge rounded-pill bg-{{ badge_color }}">{{ palpite.status }}</span>
-                                                </td>
-                                            </tr>
-                                        {% endfor %}
-                                        </tbody>
-                                    </table>
-                                </div>
-                            {% else %}
-                                <p class="text-center text-muted">Ainda não há palpites para este jogo.</p>
-                            {% endif %}
+                           {% include 'partials/_modal_content.html' %}
                         </div>
                     </div>
                 </div>

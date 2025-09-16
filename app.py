@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, flash, ses
 from collections import defaultdict
 from datetime import datetime
 from functools import wraps
-from config import API_BASE_URL
+# from config import API_BASE_URL
 import requests
 import sqlite3
 import pytz
@@ -21,7 +21,7 @@ ADMIN_PASSWORD = "pokemar16#"
 TEMPORADA_ATUAL = "2ª Temporada" 
 
 # ==== TESTE LOCAL =======
-# API_BASE_URL = "http://127.0.0.1:5001/api/v1"
+API_BASE_URL = "http://127.0.0.1:5001/api/v1"
 
 # --- Conexão com o Banco de Dados ---
 def get_db():
@@ -249,7 +249,6 @@ def chaveamento():
     for palpite in palpites_db:
         palpites_por_jogo[palpite['game_id']].append(dict(palpite))
 
-    # Agrupa os confrontos de mata-mata pelo confronto_id
     confrontos_mata_mata = defaultdict(lambda: {'ida': None, 'volta': None})
     for game_id, jogo_api in jogos_api_map.items():
         if jogo_api.get('fase') == 'mata-mata' and jogo_api.get('confronto_id'):
@@ -258,7 +257,6 @@ def chaveamento():
                 jogo_completo.update(resultados_map[game_id])
             jogo_completo['palpites'] = sorted(palpites_por_jogo.get(game_id, []), key=lambda p: p['nome'])
             
-            # Decide se é jogo de ida (rodada ímpar) ou volta (rodada par)
             if jogo_completo['rodada'] % 2 != 0:
                 confrontos_mata_mata[jogo_completo['confronto_id']]['ida'] = jogo_completo
             else:
@@ -266,15 +264,13 @@ def chaveamento():
     
     confrontos_ordenados = sorted(confrontos_mata_mata.values(), key=lambda c: c['ida']['id'] if c.get('ida') else 0)
 
-    # --- LÓGICA ATUALIZADA PARA TODAS AS FASES ---
-    # Define os ranges de confronto_id para cada fase
-    oitavas = [c for c in confrontos_ordenados if c['ida']['confronto_id'] <= 8]
-    quartas = [c for c in confrontos_ordenados if 8 < c['ida']['confronto_id'] <= 12]
-    semis = [c for c in confrontos_ordenados if 12 < c['ida']['confronto_id'] <= 14]
-    final = [c for c in confrontos_ordenados if c['ida']['confronto_id'] == 15]
+    oitavas = [c for c in confrontos_ordenados if c.get('ida') and 1 <= c['ida']['confronto_id'] <= 8]
+    quartas = [c for c in confrontos_ordenados if c.get('ida') and 9 <= c['ida']['confronto_id'] <= 12]
+    semis =   [c for c in confrontos_ordenados if c.get('ida') and 13 <= c['ida']['confronto_id'] <= 14]
+    final =   [c for c in confrontos_ordenados if c.get('ida') and c['ida']['confronto_id'] == 15]
     
     campeao = {'nome': 'A definir', 'img': 'https://placehold.co/80x80/eee/006400?text=?'}
-    if final and final[0]['ida'].get('time_que_avancou'):
+    if final and final[0].get('ida') and final[0]['ida'].get('time_que_avancou'):
         winner_name = final[0]['ida']['time_que_avancou']
         winner_img = ''
         if final[0]['ida']['time1_nome'] == winner_name:
@@ -900,5 +896,5 @@ def deletar_anuncio(anuncio_id):
     flash('Anúncio apagado com sucesso!', 'success')
     return redirect(url_for('gerenciar_anuncios'))
 
-# if __name__ == '__main__':
-#     app.run(debug=True,host="0.0.0.0",port=5000)
+if __name__ == '__main__':
+    app.run(debug=True,host="0.0.0.0",port=5000)

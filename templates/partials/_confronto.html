@@ -1,0 +1,45 @@
+<div class="confronto-wrapper mb-4 p-2 border rounded shadow-sm">
+    {% set ida = confronto.ida %}
+    {% if ida %}
+    <div class="matchup">
+        <div class="team">
+            <img src="{{ ida.time1_img }}" class="team-logo" alt="{{ ida.time1_nome }}">
+            <span class="team-name">{{ ida.time1_nome }}</span>
+            <span class="team-score">{{ ida.placar_time1 if ida.placar_time1 is not none else '-' }}</span>
+        </div>
+        <div class="team">
+            <img src="{{ ida.time2_img }}" class="team-logo" alt="{{ ida.time2_nome }}">
+            <span class="team-name">{{ ida.time2_nome }}</span>
+            <span class="team-score">{{ ida.placar_time2 if ida.placar_time2 is not none else '-' }}</span>
+        </div>
+        <div class="match-info">
+            <span class="badge bg-light text-dark">Ida</span>
+            <button type="button" class="btn btn-sm btn-outline-secondary ms-2" data-bs-toggle="modal" data-bs-target="#modal-{{ ida.id }}">
+                Ver Palpites
+            </button>
+        </div>
+    </div>
+    {% endif %}
+
+    {% set volta = confronto.volta %}
+    {% if volta %}
+     <div class="matchup mt-2">
+        <div class="team">
+            <img src="{{ volta.time1_img }}" class="team-logo" alt="{{ volta.time1_nome }}">
+            <span class="team-name">{{ volta.time1_nome }}</span>
+            <span class="team-score">{{ volta.placar_time1 if volta.placar_time1 is not none else '-' }}</span>
+        </div>
+        <div class="team">
+            <img src="{{ volta.time2_img }}" class="team-logo" alt="{{ volta.time2_nome }}">
+            <span class="team-name">{{ volta.time2_nome }}</span>
+            <span class="team-score">{{ volta.placar_time2 if volta.placar_time2 is not none else '-' }}</span>
+        </div>
+        <div class="match-info">
+            <span class="badge bg-light text-dark">Volta</span>
+            <button type="button" class="btn btn-sm btn-outline-secondary ms-2" data-bs-toggle="modal" data-bs-target="#modal-{{ volta.id }}">
+                Ver Palpites
+            </button>
+        </div>
+    </div>
+    {% endif %}
+</div>

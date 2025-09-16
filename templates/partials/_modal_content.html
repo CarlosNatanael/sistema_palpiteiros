@@ -1,0 +1,69 @@
+<div class="card bg-light mb-4">
+    <div class="card-body text-center">
+        <h6 class="card-title text-uppercase">Resultado Real</h6>
+        <p class="card-text display-6">
+            {% if jogo.placar_time1 is not none %}
+                <strong>{{ jogo.placar_time1 }} x {{ jogo.placar_time2 }}</strong>
+            {% else %}
+                <span class="text-muted">- x -</span>
+            {% endif %}
+        </p>
+        {% if jogo.status == 'Finalizado' or jogo.status == 'Processado' %}
+            {% set resultado_real_texto = '' %}
+            {% if jogo.placar_time1 > jogo.placar_time2 %}
+                {% set resultado_real_texto = 'Vitória (Casa)' %}
+            {% elif jogo.placar_time2 > jogo.placar_time1 %}
+                {% set resultado_real_texto = 'Vitória (Fora)' %}
+            {% else %}
+                {% set resultado_real_texto = 'Empate' %}
+            {% endif %}
+            <div class="resultado-final text-center text-muted">
+                (Resultado do jogo: <strong>{{ resultado_real_texto }}</strong>)
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+{% if jogo.palpites %}
+    <div class="table-responsive">
+        <table class="table table-striped table-hover table-sm">
+            <thead class="table-dark">
+                <tr>
+                    <th>Palpiteiro</th>
+                    <th>Placar</th>
+                    <th>Resultado</th>
+                    {% if jogo.rodada is odd %}
+                        <th>Avança</th>
+                    {% endif %}
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for palpite in jogo.palpites %}
+                <tr>
+                    <td>{{ palpite.nome }}</td>
+                    <td><strong>{{ palpite.gol_time1 }} x {{ palpite.gol_time2 }}</strong></td>
+                    <td>{{ palpite.resultado }}</td>
+                    {% if jogo.rodada is odd %}
+                        <td>{{ palpite.quem_avanca or 'N/A' }}</td>
+                    {% endif %}
+                    <td>
+                        {% set status_lower = palpite.status|lower %}
+                        {% set badge_color = 'secondary' %}
+                        {% if 'acerto total' in status_lower %}
+                            {% set badge_color = 'success' %}
+                        {% elif 'acerto' in status_lower %}
+                            {% set badge_color = 'primary' %}
+                        {% elif 'erro' in status_lower %}
+                            {% set badge_color = 'danger' %}
+                        {% endif %}
+                        <span class="badge rounded-pill bg-{{ badge_color }}">{{ palpite.status }}</span>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% else %}
+    <p class="text-center text-muted">Ainda não há palpites para este jogo.</p>
+{% endif %}
