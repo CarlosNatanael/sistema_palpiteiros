@@ -13,10 +13,16 @@ API_DB_PATH = os.path.join(BASE_DIR, 'api_data.db')
 NOVOS_JOGOS_E_CAMPEONATOS = {
   "Brasileirão 2025": [
     {
-      "id": 2099, "rodada": 13, "fase": "grupos",
-      "time1_nome": "Botafogo", "time1_sigla": "BOT", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/KLDWYp-H8CAOT9H_JgizRg_48x48.png",
-      "time2_nome": "Mirassol", "time2_sigla": "MIR", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/5J3JY7fcdiDYU5rbPW7AKA_48x48.png",
-      "data_hora": "2025-09-17 19:30", "local": "Estádio Nilton Santos"
+      "id": 2100, "rodada": 14, "fase": "grupos",
+      "time1_nome": "Vasco da Gama", "time1_sigla": "VAS", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/hHwT8LwRmYCAGxQ-STLxYA_48x48.png",
+      "time2_nome": "Bahia", "time2_sigla": "BAH", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/nIdbR6qIUDyZUBO9vojSPw_48x48.png",
+      "data_hora": "2025-09-24 19:30", "local": "São Januário"
+    },
+    {
+      "id": 2101, "rodada": 14, "fase": "grupos",
+      "time1_nome": "Grêmio", "time1_sigla": "GRE", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/Ku-73v_TW9kpex-IEGb0ZA_48x48.png",
+      "time2_nome": "Botafogo", "time2_sigla": "BOT", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/KLDWYp-H8CAOT9H_JgizRg_48x48.png",
+      "data_hora": "2025-09-24 19:30", "local": "Arena do Grêmio"
     },
   ]
 }
