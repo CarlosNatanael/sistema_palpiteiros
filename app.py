@@ -887,6 +887,10 @@ def gerenciar_anuncios():
     anuncios = conn.execute('SELECT * FROM anuncios ORDER BY data_criacao DESC').fetchall()
     return render_template('gerenciar_anuncios.html', anuncios=anuncios)
 
+@app.route('/copa_do_mundo')
+def copa_do_mundo():
+    return render_template('copa_do_mundo.html')
+
 @app.route('/admin/anuncios/delete/<int:anuncio_id>', methods=['POST'])
 @login_required
 def deletar_anuncio(anuncio_id):
