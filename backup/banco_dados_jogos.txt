@@ -786,6 +786,25 @@ DADOS_DOS_CAMPEONATOS = {
           "time2_nome": "Sport Recife", "time2_sigla": "SPO", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/u9Ydy0qt6JJjWhTaI6r10A_48x48.png",
           "data_hora": "2025-10-05 20:30", "local": "Mineirão"
         },
+        # === 18 RODADA ===
+        {
+          "id": 2132, "rodada": 18, "fase": "grupos",
+          "time1_nome": "Atlético-MG", "time1_sigla": "CAM", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/q9fhEsgpuyRq58OgmSndcQ_48x48.png",
+          "time2_nome": "Sport Recife", "time2_sigla": "SPO", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/u9Ydy0qt6JJjWhTaI6r10A_48x48.png",
+          "data_hora": "2025-10-08 19:00", "local": "Arena MRV"
+        },
+        {
+          "id": 2133, "rodada": 18, "fase": "grupos",
+          "time1_nome": "Mirassol", "time1_sigla": "MIR", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/5J3JY7fcdiDYU5rbPW7AKA_48x48.png",
+          "time2_nome": "Fluminense", "time2_sigla": "FLU", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/fCMxMMDF2AZPU7LzYKSlig_48x48.png",
+          "data_hora": "2025-10-08 21:00", "local": "Estádio José Maria de Campos Maia"
+        },
+        {
+          "id": 2134, "rodada": 18, "fase": "grupos",
+          "time1_nome": "Palmeiras", "time1_sigla": "PAL", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/7spurne-xDt2p6C0imYYNA_48x48.png",
+          "time2_nome": "Juventude", "time2_sigla": "JUV", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/JrXw-m4Dov0gE2Sh6XJQMQ_48x48.png",
+          "data_hora": "2025-10-11 19:00", "local": "Allianz Parque"
+        },
     ],
     "Libertadores 2025": [
         # === OITAVAS DE FINAL - IDA (Rodada 1) ===

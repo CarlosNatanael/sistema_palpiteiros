@@ -1,7 +1,7 @@
 ========== APP ============
 
-cd /home/CarlosNatanael/sistema_palpiteiros
-source /home/CarlosNatanael/.virtualenvs/meu-ambiente-de-palpites/bin/activate
+cd /home/Palpiteiros/sistema_palpiteiros
+source /home/Palpiteiros/.virtualenvs/meu-ambiente-de-palpites/bin/activate
 
 # Backup do arquivo palpites.db
 tar -czvf backup_palpites_$(date +%Y-%m-%d_%H-%M-%S).tar.gz palpites.db
