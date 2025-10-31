@@ -10,32 +10,13 @@ API_DB_PATH = os.path.join(BASE_DIR, 'api_data.db')
 # APENAS OS JOGOS DO LIBERTADORES
 NOVOS_JOGOS_E_CAMPEONATOS = {
     "Libertadores 2025": [
-        # === SEMI FINAIS (IDA) - Rodada 5 ===
+        # === FINAL - Rodada 7 ===
         {
-          "id": 3025, "rodada": 5, "fase": "mata-mata", "confronto_id": 13,
-          "time1_nome": "Flamengo", "time1_sigla": "FLA", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/orE554NToSkH6nuwofe7Yg_48x48.png",
-          "time2_nome": "Racing", "time2_sigla": "RAC", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/wi-J-3U7th2bpIB_Uy9Euw_48x48.png",
-          "data_hora": "2025-10-22 21:30", "local": "Maracanã"
-        },
-        {
-          "id": 3026, "rodada": 5, "fase": "mata-mata", "confronto_id": 14,
-          "time1_nome": "LDU", "time1_sigla": "LDU", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/Iuk3Emwfmii37cXTu4qJEQ_48x48.png",
-          "time2_nome": "Palmeiras", "time2_sigla": "PAL", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/7spurne-xDt2p6C0imYYNA_48x48.png",
-          "data_hora": "2025-10-23 21:30", "local": "Estadio Rodrigo Paz Delgado"
-        },
-        # === SEMI FINAIS (IDA) - Rodada 6 ===
-        {
-          "id": 3027, "rodada": 6, "fase": "mata-mata", "confronto_id": 13,
-          "time1_nome": "Racing", "time1_sigla": "RAC", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/wi-J-3U7th2bpIB_Uy9Euw_48x48.png",
-          "time2_nome": "Flamengo", "time2_sigla": "FLA", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/orE554NToSkH6nuwofe7Yg_48x48.png",
-          "data_hora": "2025-10-29 21:30", "local": "El Cilindro"
-        },
-        {
-          "id": 3028, "rodada": 6, "fase": "mata-mata", "confronto_id": 14,
+          "id": 3029, "rodada": 7, "fase": "mata-mata", "confronto_id": 15,
           "time1_nome": "Palmeiras", "time1_sigla": "PAL", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/7spurne-xDt2p6C0imYYNA_48x48.png",
-          "time2_nome": "LDU", "time2_sigla": "LDU", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/Iuk3Emwfmii37cXTu4qJEQ_48x48.png",
-          "data_hora": "2025-10-30 21:30", "local": "Allianz Parque"
-        },
+          "time2_nome": "Flamengo", "time2_sigla": "FLA", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/orE554NToSkH6nuwofe7Yg_48x48.png",
+          "data_hora": "2025-11-29 19:00", "local": "Estádio Monumental"
+        }
     ]
 }
 
