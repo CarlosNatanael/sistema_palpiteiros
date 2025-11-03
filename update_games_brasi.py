@@ -55,19 +55,19 @@ NOVOS_JOGOS_E_CAMPEONATOS = {
       "data_hora": "2025-11-05 21:30", "local": "Morumbis"
     },
     {
-      "id": 2155, "rodada": 21, "fase": "grupos",
+      "id": 2162, "rodada": 21, "fase": "grupos",
       "time1_nome": "Fluminense", "time1_sigla": "FLU", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/fCMxMMDF2AZPU7LzYKSlig_48x48.png",
       "time2_nome": "Mirassol", "time2_sigla": "MIR", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/5J3JY7fcdiDYU5rbPW7AKA_48x48.png",
       "data_hora": "2025-11-06 19:30", "local": "Maracanã"
     },
     {
-      "id": 2162, "rodada": 21, "fase": "grupos",
+      "id": 2163, "rodada": 21, "fase": "grupos",
       "time1_nome": "Ceará SC", "time1_sigla": "CEA", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/mSl0cz3i2t8uv4zcprobOg_48x48.png",
       "time2_nome": "Fortaleza", "time2_sigla": "FOR", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/me10ephzRxdj45zVq1Risg_48x48.png",
       "data_hora": "2025-11-06 20:00", "local": "Arena Castelão"
     },
     {
-      "id": 2163, "rodada": 21, "fase": "grupos",
+      "id": 2164, "rodada": 21, "fase": "grupos",
       "time1_nome": "Palmeiras", "time1_sigla": "PAL", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/7spurne-xDt2p6C0imYYNA_48x48.png",
       "time2_nome": "Santos", "time2_sigla": "SAN", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/VHdNOT6wWOw_vJ38GMjMzg_48x48.png",
       "data_hora": "2025-11-06 21:30", "local": "Allianz Parque"
