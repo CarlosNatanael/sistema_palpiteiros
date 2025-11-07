@@ -1,0 +1,64 @@
+{
+  "Brasileirão 2025": [
+    {
+      "id": 2164, "rodada": 33, "fase": "grupos",
+      "time1_nome": "Sport Recife", "time1_sigla": "SPO", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/n742s-y-1Oq2-B2yBE3LCw_48x48.png",
+      "time2_nome": "Atlético-MG", "time2_sigla": "CAM", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/1EuG4tmTCf-2hgu9L-AEuQ_48x48.png",
+      "data_hora": "2025-11-08 16:00", "local": "Ilha do Retiro"
+    },
+    {
+      "id": 4002, "rodada": 33, "fase": "grupos",
+      "time1_nome": "Vasco da Gama", "time1_sigla": "VAS", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/gs-Luc133h2o-6AMA2-gLA_48x48.png",
+      "time2_nome": "Juventude", "time2_sigla": "JUV", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/JrXw-m4Dov0gE2Sh6XJQMQ_48x48.png",
+      "data_hora": "2025-11-08 18:00", "local": "São Januário"
+    },
+    {
+      "id": 4003, "rodada": 33, "fase": "grupos",
+      "time1_nome": "Internacional", "time1_sigla": "INT", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/OWVFKuHrV0-yh_2w582k2Q_48x48.png",
+      "time2_nome": "Bahia", "time2_sigla": "BAH", "time2_img": "httpsS://ssl.gstatic.com/onebox/media/sports/logos/nS_r-TMdF-i2I56oItY-gA_48x48.png",
+      "data_hora": "2025-11-08 18:30", "local": "Beira-Rio"
+    },
+    {
+      "id": 4004, "rodada": 33, "fase": "grupos",
+      "time1_nome": "São Paulo", "time1_sigla": "SAO", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/gpT56lP6T8TF3j7iKz0R0w_48x48.png",
+      "time2_nome": "Bragantino", "time2_sigla": "BGT", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/lMyw26s8e-4T2e7Hfy-8-g_48x48.png",
+      "data_hora": "2025-11-08 21:00", "local": "Morumbis"
+    },
+    {
+      "id": 4005, "rodada": 33, "fase": "grupos",
+      "time1_nome": "EC Vitória", "time1_sigla": "VIT", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/N_5-n_o4gD2s52T2xEb18A_48x48.png",
+      "time2_nome": "Botafogo", "time2_sigla": "BOT", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/KLDWYp-Hs47n754i-K_y7w_48x48.png",
+      "data_hora": "2025-11-09 16:00", "local": "Barradão"
+    },
+    {
+      "id": 4006, "rodada": 33, "fase": "grupos",
+      "time1_nome": "Cruzeiro", "time1_sigla": "CRU", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/Tcv9F__nIh-6wFNyr-soYA_48x48.png",
+      "time2_nome": "Fluminense", "time2_sigla": "FLU", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/fCMxMMDF2AZPU7LzYKSlig_48x48.png",
+      "data_hora": "2025-11-09 16:00", "local": "Mineirão"
+    },
+    {
+      "id": 4007, "rodada": 33, "fase": "grupos",
+      "time1_nome": "Corinthians", "time1_sigla": "COR", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/tCMSqgXVHROpdCpQhzTo1g_48x48.png",
+      "time2_nome": "Ceará SC", "time2_sigla": "CEA", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/mSl0cz3i2t8uv4zcprobOg_48x48.png",
+      "data_hora": "2025-11-09 16:00", "local": "Neo Química Arena"
+    },
+    {
+      "id": 4008, "rodada": 33, "fase": "grupos",
+      "time1_nome": "Flamengo", "time1_sigla": "FLA", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/orE554NToSkH6nuXhNm_HQ_48x48.png",
+      "time2_nome": "Santos", "time2_sigla": "SAN", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/VHdNOT6_2QO9esR2ltJ60g_48x48.png",
+      "data_hora": "2025-11-09 18:30", "local": "Maracanã"
+    },
+    {
+      "id": 4009, "rodada": 33, "fase": "grupos",
+      "time1_nome": "Fortaleza", "time1_sigla": "FOR", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/f_3_JC24js02G40x5i9ifA_48x48.png",
+      "time2_nome": "Grêmio", "time2_sigla": "GRE", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/Ku-73v_TW9kpex-IEGb0ZA_48x48.png",
+      "data_hora": "2025-11-09 20:30", "local": "Arena Castelão"
+    },
+    {
+      "id": 4010, "rodada": 33, "fase": "grupos",
+      "time1_nome": "Mirassol", "time1_sigla": "MIR", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/634u9Jv1sK4iA-v49z2c-Q_48x48.png",
+      "time2_nome": "Palmeiras", "time2_sigla": "PAL", "time2_img": "httpsServices://ssl.gstatic.com/onebox/media/sports/logos/7sp_Y3_2_o-4V2oY2S7RCA_48x48.png",
+      "data_hora": "2025-11-09 20:30", "local": "Estádio José Maria de Campos Maia"
+    }
+  ]
+}
