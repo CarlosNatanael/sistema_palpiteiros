@@ -988,6 +988,67 @@ DADOS_DOS_CAMPEONATOS = {
           "time2_nome": "Santos", "time2_sigla": "SAN", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/VHdNOT6wWOw_vJ38GMjMzg_48x48.png",
           "data_hora": "2025-11-06 21:30", "local": "Allianz Parque"
         },
+        # === RODADA 22 ===
+        {
+          "id": 2165, "rodada": 22, "fase": "grupos",
+          "time1_nome": "Sport Recife", "time1_sigla": "SPO", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/u9Ydy0qt6JJjWhTaI6r10A_48x48.png",
+          "time2_nome": "Atlético-MG", "time2_sigla": "CAM", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/q9fhEsgpuyRq58OgmSndcQ_48x48.png",
+          "data_hora": "2025-11-08 16:00", "local": "Ilha do Retiro"
+        },
+        {
+          "id": 2166, "rodada": 22, "fase": "grupos",
+          "time1_nome": "Vasco da Gama", "time1_sigla": "VAS", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/hHwT8LwRmYCAGxQ-STLxYA_48x48.png",
+          "time2_nome": "Juventude", "time2_sigla": "JUV", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/JrXw-m4Dov0gE2Sh6XJQMQ_48x48.png",
+          "data_hora": "2025-11-08 18:00", "local": "São Januário"
+        },
+        {
+          "id": 2167, "rodada": 22, "fase": "grupos",
+          "time1_nome": "Internacional", "time1_sigla": "INT", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/OWVFKuHrQuf4q2Wk0hEmSA_48x48.png",
+          "time2_nome": "Bahia", "time2_sigla": "BAH", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/nIdbR6qIUDyZUBO9vojSPw_48x48.png",
+          "data_hora": "2025-11-08 18:30", "local": "Beira-Rio"
+        },
+        {
+          "id": 2168, "rodada": 22, "fase": "grupos",
+          "time1_nome": "São Paulo", "time1_sigla": "SAO", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/4w2Z97Hf9CSOqICK3a8AxQ_48x48.png",
+          "time2_nome": "Bragantino", "time2_sigla": "BGT", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/lMyw2zn1Z4cdkaxKJWnsQw_48x48.png",
+          "data_hora": "2025-11-08 21:00", "local": "Morumbis"
+        },
+        {
+          "id": 2169, "rodada": 22, "fase": "grupos",
+          "time1_nome": "EC Vitória", "time1_sigla": "VIT", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/LHSM6VchpkI4NIptoSTHOg_48x48.png",
+          "time2_nome": "Botafogo", "time2_sigla": "BOT", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/KLDWYp-H8CAOT9H_JgizRg_48x48.png",
+          "data_hora": "2025-11-09 16:00", "local": "Barradão"
+        },
+        {
+          "id": 2170, "rodada": 22, "fase": "grupos",
+          "time1_nome": "Cruzeiro", "time1_sigla": "CRU", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/Tcv9X__nIh-6wFNJPMwIXQ_48x48.png",
+          "time2_nome": "Fluminense", "time2_sigla": "FLU", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/fCMxMMDF2AZPU7LzYKSlig_48x48.png",
+          "data_hora": "2025-11-09 16:00", "local": "Mineirão"
+        },
+        {
+          "id": 2171, "rodada": 22, "fase": "grupos",
+          "time1_nome": "Corinthians", "time1_sigla": "COR", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/tCMSqgXVHROpdCpQhzTo1g_48x48.png",
+          "time2_nome": "Ceará SC", "time2_sigla": "CEA", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/mSl0cz3i2t8uv4zcprobOg_48x48.png",
+          "data_hora": "2025-11-09 16:00", "local": "Neo Química Arena"
+        },
+        {
+          "id": 2172, "rodada": 22, "fase": "grupos",
+          "time1_nome": "Flamengo", "time1_sigla": "FLA", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/orE554NToSkH6nuwofe7Yg_48x48.png",
+          "time2_nome": "Santos", "time2_sigla": "SAN", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/VHdNOT6wWOw_vJ38GMjMzg_48x48.png",
+          "data_hora": "2025-11-09 18:30", "local": "Maracanã"
+        },
+        {
+          "id": 2173, "rodada": 22, "fase": "grupos",
+          "time1_nome": "Fortaleza", "time1_sigla": "FOR", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/me10ephzRxdj45zVq1Risg_48x48.png",
+          "time2_nome": "Grêmio", "time2_sigla": "GRE", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/Ku-73v_TW9kpex-IEGb0ZA_48x48.png",
+          "data_hora": "2025-11-09 20:30", "local": "Arena Castelão"
+        },
+        {
+          "id": 2174, "rodada": 22, "fase": "grupos",
+          "time1_nome": "Mirassol", "time1_sigla": "MIR", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/5J3JY7fcdiDYU5rbPW7AKA_48x48.png",
+          "time2_nome": "Palmeiras", "time2_sigla": "PAL", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/7spurne-xDt2p6C0imYYNA_48x48.png",
+          "data_hora": "2025-11-09 20:30", "local": "Estádio José Maria de Campos Maia"
+        },
     ],
     "Libertadores 2025": [
         # === OITAVAS DE FINAL - IDA (Rodada 1) ===
