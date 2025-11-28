@@ -792,21 +792,38 @@ def set_champion():
     conn = get_db()
     cursor = conn.cursor()
 
-    all_teams_db = conn.execute('''
-        SELECT DISTINCT time1_nome as name, time1_img as img_src FROM jogos
-        UNION
-        SELECT DISTINCT time2_nome as name, time2_img as img_src FROM jogos
-        ORDER BY name
-    ''').fetchall()
+    # --- CORREÇÃO: Buscar times da API em vez do banco de dados ---
+    jogos_api = get_api_data("jogos") or []
+    teams_dict = {}
+
+    # Varre todos os jogos da API para extrair os times e imagens únicos
+    for jogo in jogos_api:
+        # Adiciona Time 1
+        if jogo['time1_nome'] not in teams_dict:
+            teams_dict[jogo['time1_nome']] = {
+                'name': jogo['time1_nome'], 
+                'img_src': jogo['time1_img']
+            }
+        # Adiciona Time 2
+        if jogo['time2_nome'] not in teams_dict:
+            teams_dict[jogo['time2_nome']] = {
+                'name': jogo['time2_nome'], 
+                'img_src': jogo['time2_img']
+            }
+    
+    # Ordena os times por nome
+    all_teams_list = sorted(teams_dict.values(), key=lambda t: t['name'])
+    # -------------------------------------------------------------
 
     if request.method == 'POST':
         campeao_nome = request.form['campeao_nome']
         
-        campeao_info = next((team for team in all_teams_db if team['name'] == campeao_nome), None)
+        # Procura o time escolhido na lista que criamos acima
+        campeao_info = next((team for team in all_teams_list if team['name'] == campeao_nome), None)
         campeao_img = campeao_info['img_src'] if campeao_info else None
 
-        # Limpa o campeão anterior e insere o novo (assumindo apenas 1 campeão mundial)
         try:
+            # Limpa o campeão anterior e define o novo
             cursor.execute('DELETE FROM campeao_mundial')
             cursor.execute(
                 'INSERT INTO campeao_mundial (time_campeao, time_campeao_img, data_definicao) VALUES (?, ?, ?)',
@@ -822,11 +839,15 @@ def set_champion():
             
         return redirect(url_for('set_champion'))
 
-    campeao_atual = conn.execute('SELECT time_campeao, time_campeao_img FROM campeao_mundial LIMIT 1').fetchone()
-    
+    # Busca o campeão atual para exibir na tela (se houver)
+    # A tabela campeao_mundial deve existir. Se der erro aqui, avise.
+    try:
+        campeao_atual = conn.execute('SELECT time_campeao, time_campeao_img FROM campeao_mundial LIMIT 1').fetchone()
+    except sqlite3.OperationalError:
+        campeao_atual = None
 
     print("\n[LOG] Acessando página de definição de campeão\n")
-    return render_template('set_champion.html', teams=all_teams_db, campeao_atual=campeao_atual)
+    return render_template('set_champion.html', teams=all_teams_list, campeao_atual=campeao_atual)
 
 @app.route('/campeao_geral')
 def campeao_geral():
@@ -900,5 +921,5 @@ def deletar_anuncio(anuncio_id):
     flash('Anúncio apagado com sucesso!', 'success')
     return redirect(url_for('gerenciar_anuncios'))
 
-# if __name__ == '__main__':
-#     app.run(debug=True,host="0.0.0.0",port=5000)
+if __name__ == '__main__':
+    app.run(debug=True,host="0.0.0.0",port=5000)
