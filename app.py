@@ -949,5 +949,5 @@ def deletar_anuncio(anuncio_id):
     flash('Anúncio apagado com sucesso!', 'success')
     return redirect(url_for('gerenciar_anuncios'))
 
-if __name__ == '__main__':
-    app.run(debug=True,host="0.0.0.0",port=5000)
+# if __name__ == '__main__':
+#     app.run(debug=True,host="0.0.0.0",port=5000)
