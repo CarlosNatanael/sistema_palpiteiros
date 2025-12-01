@@ -159,7 +159,7 @@
 
     <main style="padding-top: 80px;">
         <div class="admin-container">
-            <h1>DEFINIR CAMPEÃO MUNDIAL</h1>
+            <h2 class="mb-4 text-center">🏆 Definir Campeão Real</h2>
 
             {% with messages = get_flashed_messages(with_categories=true) %}
                 {% if messages %}
@@ -169,33 +169,76 @@
                 {% endif %}
             {% endwith %}
 
-            {% if campeao_atual %}
-                <div class="current-champion-display">
-                    <h2>Campeão Atual:</h2>
-                    <p>
-                        <img src="{{ campeao_atual.time_campeao_img }}" alt="{{ campeao_atual.time_campeao }}"/>
-                        <strong>{{ campeao_atual.time_campeao }}</strong>
-                    </p>
+        <div class="container mt-5">
+
+            <div class="card shadow mb-4">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0">Selecionar Vencedor da Competição</h5>
                 </div>
-            {% else %}
-                <div class="current-champion-display">
-                    <h2>Campeão Atual:</h2>
-                    <p>Nenhum campeão definido ainda.</p>
+                <div class="card-body">
+                    <form method="POST" action="{{ url_for('set_champion') }}">
+
+                        <div class="mb-3">
+                            <label for="campeonato_selecionado" class="form-label">Campeonato:</label>
+                            <select class="form-select" name="campeonato_selecionado" id="campeonato_selecionado" required>
+                                <option value="" disabled selected>Selecione o Campeonato...</option>
+                                {% for camp in campeonatos %}
+                                    <option value="{{ camp }}">{{ camp }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    
+                        <div class="mb-3">
+                            <label for="campeao_nome" class="form-label">Time Campeão:</label>
+                            <select class="form-select" name="campeao_nome" id="campeao_nome" required>
+                                <option value="" disabled selected>Selecione o Time...</option>
+                                {% for team in teams %}
+                                    <option value="{{ team.name }}">{{ team.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    
+                        <button type="submit" class="btn btn-success w-100">💾 Salvar Campeão</button>
+                    </form>
                 </div>
+            </div>
+        
+            {% if campeoes_atuais %}
+            <div class="card shadow">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0">Campeões Definidos</h5>
+                </div>
+                <div class="card-body p-0">
+                    <table class="table table-striped mb-0">
+                        <thead>
+                            <tr>
+                                <th>Campeonato</th>
+                                <th>Campeão</th>
+                                <th>Data</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for camp in campeoes_atuais %}
+                            <tr>
+                                <td><strong>{{ camp.campeonato }}</strong></td>
+                                <td>
+                                    {% if camp.time_campeao_img %}
+                                        <img src="{{ camp.time_campeao_img }}" alt="{{ camp.time_campeao }}" width="30" height="30" class="me-2">
+                                    {% endif %}
+                                    {{ camp.time_campeao }}
+                                </td>
+                                <td>{{ camp.data_definicao }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
             {% endif %}
-
-            <form method="POST">
-                <div class="form-group" style="margin-top: 30px;">
-                    <label for="campeao_nome">Selecione o Time Campeão:</label>
-                    <select id="campeao_nome" name="campeao_nome" class="selectpicker form-control" data-live-search="true" title="Escolha o campeão..." required>
-                        {% for team in teams %}
-                            <option value="{{ team.name }}" data-content="<img src='{{ team.img_src }}' class='team-icon'/> {{ team.name }}">{{ team.name }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-
-                <button type="submit" class="btn btn-primary btn-block">Definir Campeão</button>
-            </form>
+        
+            <div class="text-center mt-4">
+                <a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary">Voltar ao Painel</a>
+            </div>
         </div>
     </main>
 

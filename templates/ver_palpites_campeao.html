@@ -63,50 +63,97 @@
     <main style="padding-top: 80px;">
         <h1>PALPITES DE CAMPEÃO</h1>
 
-        {% if campeao_real %}
-        <div class="stat-card" style="max-width: 400px; margin: 30px auto;">
-            <h2>CAMPEÃO REAL DO MUNDIAL</h2>
-            <p style="font-size: 1.5em; font-weight: bold; color: #006400;">
-                <img src="{{ campeao_real.time_campeao_img }}" alt="{{ campeao_real.time_campeao }}" style="width: 40px; height: 40px; vertical-align: middle; margin-right: 10px;"/>
-                {{ campeao_real.time_campeao }}
-            </p>
-            <small>Definido em: {{ campeao_real.data_definicao.split(' ')[0] | format_date_br }}</small>
-        </div>
-        {% else %}
-        <div class="stat-card" style="max-width: 400px; margin: 30px auto;">
-            <h2>CAMPEÃO REAL Brasileirão/Libertadores</h2>
-            <p>Ainda não definido pelo Admin.</p>
-        </div>
-        {% endif %}
-
-        {% if palpites %}
-        <div class="table-container" style="max-width: 700px;">
-            <h3>PALPITES DOS USUÁRIOS</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Nome</th>
-                        <th>Palpite de Campeão</th>
-                        <th>Data do Palpite</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for palpite in palpites %}
-                    <tr>
-                        <td>{{ palpite.nome }}</td>
-                        <td><strong>{{ palpite.campeonato }}</strong></td> <td>
-                            <img src="{{ palpite.time_campeao_img }}" alt="{{ palpite.time_campeao }}" style="width: 24px; height: 24px; vertical-align: middle; margin-right: 8px;"/>
-                            {{ palpite.time_campeao }}
-                        </td>
-                        <td>{{ palpite.data_palpite.split(' ')[0] | format_date_br }}</td>
-                    </tr>
+        <div class="container mt-5">
+            
+            <div class="mb-5">
+                <h2 class="text-center text-warning mb-4">🏆 Campeões Oficiais Definidos</h2>
+                
+                {% if campeoes_reais %}
+                <div class="row justify-content-center">
+                    {% for camp_nome, dados in campeoes_reais.items() %}
+                    <div class="col-md-4 mb-3">
+                        <div class="card border-warning shadow-sm">
+                            <div class="card-header bg-warning text-dark text-center fw-bold">
+                                {{ dados.campeonato }}
+                            </div>
+                            <div class="card-body text-center">
+                                {% if dados.time_campeao_img %}
+                                    <img src="{{ dados.time_campeao_img }}" alt="{{ dados.time_campeao }}" width="60" class="mb-2">
+                                {% endif %}
+                                <h4 class="card-title">{{ dados.time_campeao }}</h4>
+                                <small class="text-muted">Definido em: {{ dados.data_definicao }}</small>
+                            </div>
+                        </div>
+                    </div>
                     {% endfor %}
-                </tbody>
-            </table>
+                </div>
+                {% else %}
+                <div class="alert alert-secondary text-center">
+                    Nenhum campeão oficial definido ainda pelo Admin.
+                </div>
+                {% endif %}
+            </div>
+        
+            <hr class="my-5">
+        
+            <h2 class="text-center mb-4">🔮 Palpites da Galera</h2>
+        
+            {% if palpites %}
+            <div class="table-responsive shadow rounded">
+                <table class="table table-hover align-middle mb-0 bg-white">
+                    <thead class="bg-dark text-white">
+                        <tr>
+                            <th>Palpiteiro</th>
+                            <th>Campeonato</th>
+                            <th>Time Escolhido</th>
+                            <th>Data do Palpite</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for palpite in palpites %}
+                            {% set acertou = False %}
+                            {% set status = "Pendente" %}
+                            {% set bg_class = "" %}
+                            
+                            {% if palpite.campeonato in campeoes_reais %}
+                                {% if campeoes_reais[palpite.campeonato]['time_campeao'] == palpite.time_campeao %}
+                                    {% set acertou = True %}
+                                    {% set status = "🏆 ACERTOU!" %}
+                                    {% set bg_class = "table-success" %}
+                                {% else %}
+                                    {% set status = "❌ Errou" %}
+                                    {% set bg_class = "table-danger" %}
+                                {% endif %}
+                            {% endif %}
+                    
+                            <tr class="{{ bg_class }}">
+                                <td class="fw-bold">{{ palpite.nome }}</td>
+                                <td>{{ palpite.campeonato }}</td>
+                                <td>
+                                    {% if palpite.time_campeao_img %}
+                                        <img src="{{ palpite.time_campeao_img }}" width="30" height="30" class="me-2 rounded-circle border">
+                                    {% endif %}
+                                    {{ palpite.time_campeao }}
+                                </td>
+                                <td>{{ palpite.data_palpite }}</td>
+                                <td class="fw-bold">
+                                    {{ status }}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="alert alert-info text-center shadow-sm">
+                <h4>Nenhum palpite registrado ainda!</h4>
+                <p>Vá em "Palpitar Campeão" e faça sua aposta.</p>
+                <a href="{{ url_for('palpite_campeao') }}" class="btn btn-primary mt-2">Fazer Palpite Agora</a>
+            </div>
+            {% endif %}
+        
         </div>
-        {% else %}
-        <p class="no-games-message">Nenhum palpite de campeão registrado ainda.</p>
-        {% endif %}
     </main>
 
     <footer class="bg-dark text-white py-3 mt-auto">

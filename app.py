@@ -775,16 +775,39 @@ def palpite_campeao():
 @app.route('/ver_palpites_campeao')
 def ver_palpites_campeao():
     conn = get_db()
+    
+    # 1. Garante que a tabela de palpites existe (para não dar erro)
+    conn.execute('''
+        CREATE TABLE IF NOT EXISTS palpite_campeao (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            nome TEXT,
+            campeonato TEXT,
+            time_campeao TEXT,
+            time_campeao_img TEXT,
+            data_palpite TEXT
+        )
+    ''')
+    
+    # 2. Busca os palpites dos usuários
     palpites = conn.execute('''
         SELECT p.nome, p.campeonato, p.time_campeao, p.data_palpite, p.time_campeao_img
         FROM palpite_campeao p
         ORDER BY p.campeonato ASC, p.nome ASC
     ''').fetchall()
     
-    campeoes_reais = conn.execute('SELECT * FROM campeao_real').fetchall()
-    campeoes_map = {c['campeonato']: dict(c) for c in campeoes_reais}
+    # 3. Busca os campeões oficiais definidos pelo Admin
+    # Se a tabela não existir (admin nunca definiu), cria vazia ou ignora
+    try:
+        campeoes_db = conn.execute('SELECT * FROM campeao_real').fetchall()
+    except sqlite3.OperationalError:
+        campeoes_db = []
 
-    return render_template('ver_palpites_campeao.html', palpites=palpites, campeoes_reais=campeoes_map)
+    # Cria o mapa para conferência (usado para pintar de verde quem acertou)
+    campeoes_map = {c['campeonato']: dict(c) for c in campeoes_db}
+
+    return render_template('ver_palpites_campeao.html', 
+                           palpites=palpites, 
+                           campeoes_reais=campeoes_map)
 
 @app.route('/admin/set_champion', methods=['GET', 'POST'])
 @login_required
@@ -792,62 +815,67 @@ def set_champion():
     conn = get_db()
     cursor = conn.cursor()
 
-    # --- CORREÇÃO: Buscar times da API em vez do banco de dados ---
+    # 1. Garante que a tabela correta (campeao_real) existe
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS campeao_real (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            campeonato TEXT NOT NULL UNIQUE,
+            time_campeao TEXT,
+            time_campeao_img TEXT,
+            data_definicao TEXT
+        )
+    ''')
+    conn.commit()
+
+    # 2. Busca lista de times da API para o dropdown
     jogos_api = get_api_data("jogos") or []
     teams_dict = {}
-
-    # Varre todos os jogos da API para extrair os times e imagens únicos
     for jogo in jogos_api:
-        # Adiciona Time 1
         if jogo['time1_nome'] not in teams_dict:
-            teams_dict[jogo['time1_nome']] = {
-                'name': jogo['time1_nome'], 
-                'img_src': jogo['time1_img']
-            }
-        # Adiciona Time 2
+            teams_dict[jogo['time1_nome']] = {'name': jogo['time1_nome'], 'img_src': jogo['time1_img']}
         if jogo['time2_nome'] not in teams_dict:
-            teams_dict[jogo['time2_nome']] = {
-                'name': jogo['time2_nome'], 
-                'img_src': jogo['time2_img']
-            }
+            teams_dict[jogo['time2_nome']] = {'name': jogo['time2_nome'], 'img_src': jogo['time2_img']}
     
-    # Ordena os times por nome
     all_teams_list = sorted(teams_dict.values(), key=lambda t: t['name'])
-    # -------------------------------------------------------------
+    
+    # 3. Busca lista de campeonatos da API
+    campeonatos_list = get_api_data("campeonatos") or []
 
     if request.method == 'POST':
-        campeao_nome = request.form['campeao_nome']
+        campeonato_selecionado = request.form.get('campeonato_selecionado')
+        campeao_nome = request.form.get('campeao_nome')
         
-        # Procura o time escolhido na lista que criamos acima
+        if not campeonato_selecionado or not campeao_nome:
+            flash('Por favor, selecione o campeonato e o time campeão.', 'warning')
+            return redirect(url_for('set_champion'))
+
+        # Encontra a imagem do time
         campeao_info = next((team for team in all_teams_list if team['name'] == campeao_nome), None)
         campeao_img = campeao_info['img_src'] if campeao_info else None
+        data_hoje = datetime.now().strftime('%Y-%m-%d %H:%M')
 
         try:
-            # Limpa o campeão anterior e define o novo
-            cursor.execute('DELETE FROM campeao_mundial')
-            cursor.execute(
-                'INSERT INTO campeao_mundial (time_campeao, time_campeao_img, data_definicao) VALUES (?, ?, ?)',
-                (campeao_nome, campeao_img, datetime.now().strftime('%Y-%m-%d %H:%M'))
-            )
+            # Usa INSERT OR REPLACE para atualizar se já existir um campeão para esse campeonato
+            cursor.execute('''
+                INSERT OR REPLACE INTO campeao_real (campeonato, time_campeao, time_campeao_img, data_definicao)
+                VALUES (?, ?, ?, ?)
+            ''', (campeonato_selecionado, campeao_nome, campeao_img, data_hoje))
+            
             conn.commit()
-            print(f"\n[LOG] Campeão definido: {campeao_nome}\n")
-            flash(f'Campeão mundial definido como {campeao_nome}!', 'success')
+            flash(f'Campeão do {campeonato_selecionado} definido como {campeao_nome}!', 'success')
         except Exception as e:
             conn.rollback()
-            print(f"\n[LOG] Erro ao definir campeão: {str(e)}\n")
             flash(f'Erro ao definir campeão: {e}', 'danger')
             
         return redirect(url_for('set_champion'))
 
-    # Busca o campeão atual para exibir na tela (se houver)
-    # A tabela campeao_mundial deve existir. Se der erro aqui, avise.
-    try:
-        campeao_atual = conn.execute('SELECT time_campeao, time_campeao_img FROM campeao_mundial LIMIT 1').fetchone()
-    except sqlite3.OperationalError:
-        campeao_atual = None
+    # Busca os campeões atuais para exibir na lista
+    campeoes_atuais = conn.execute('SELECT * FROM campeao_real').fetchall()
 
-    print("\n[LOG] Acessando página de definição de campeão\n")
-    return render_template('set_champion.html', teams=all_teams_list, campeao_atual=campeao_atual)
+    return render_template('set_champion.html', 
+                           teams=all_teams_list, 
+                           campeonatos=campeonatos_list,
+                           campeoes_atuais=campeoes_atuais)
 
 @app.route('/campeao_geral')
 def campeao_geral():
