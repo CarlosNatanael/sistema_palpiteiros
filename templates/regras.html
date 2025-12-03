@@ -67,7 +67,6 @@
         </div>
 
         <div class="row g-4">
-            <!-- Card de Pontuação -->
             <div class="col-lg-6">
                 <div class="card h-100 shadow-sm">
                     <div class="card-header bg-dark text-white">
@@ -95,7 +94,6 @@
                 </div>
             </div>
 
-            <!-- Card de Bônus e Regras Gerais -->
             <div class="col-lg-6">
                 <div class="card h-100 shadow-sm">
                     <div class="card-header bg-warning">
@@ -112,17 +110,15 @@
                             <li class="mb-2"><i class="bi bi-lock-fill text-secondary me-2"></i>Não é possível alterar um palpite após o bloqueio.</li>
                             <li><i class="bi bi-arrow-repeat text-primary me-2"></i>A pontuação é atualizada pelo administrador após o fim dos jogos da rodada.</li>
                         </ul>
-                        <!-- Botão Palpite Campeão Re-adicionado -->
                         <div class="mt-auto text-center">
-                           <!-- <a href="{{ url_for('palpite_campeao') }}" class="btn btn-dark">Fazer Palpite de Campeão</a> -->
-                        </div>
+                           </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Card de Premiação Re-adicionado -->
-        <div class="row justify-content-center mt-4">
+        <div class="row g-4 mt-4">
+            
             <div class="col-lg-6">
                 <div class="card h-100 shadow-sm">
                     <div class="card-header" style="background-color: #d4af37;">
@@ -132,12 +128,40 @@
                         <p class="fs-5"><strong>Prêmio para o Top 2:</strong></p>
                         <p><strong>1º Lugar:</strong> Uma camiseta do time do coração.</p>
                         <p><strong>2º Lugar:</strong> Uma torre de chopp.</p>
-                        <div class="mt-auto text-center">
-                            <a href="{{ url_for('historico_campeoes') }} " class="btn btn-dark">Atual campeão</a>
+                        <div class="mt-auto text-center pt-3">
+                            <a href="{{ url_for('historico_campeoes') }} " class="btn btn-dark">Ver Galeria de Campeões</a>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <div class="col-lg-6">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-header bg-secondary text-white">
+                        <h3 class="card-title mb-0"><i class="bi bi-info-circle-fill me-2"></i>Ficha Técnica</h3>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span><i class="bi bi-code-slash text-primary me-2"></i>Desenvolvedor</span>
+                                <span class="fw-bold">Carlos Natanael</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span><i class="bi bi-shield-lock-fill text-success me-2"></i>Moderação & Admin</span>
+                                <span class="fw-bold">Gabriel (Alemão)</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span><i class="bi bi-calendar-event me-2"></i>Temporada Atual</span>
+                                <span class="badge bg-dark">2ª Temporada</span>
+                            </li>
+                        </ul>
+                        <div class="text-center mt-3 text-muted">
+                            <small>Dúvidas? Fale com um dos moderadores.</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </main>
 
