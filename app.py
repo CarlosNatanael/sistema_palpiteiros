@@ -16,8 +16,10 @@ DB_PATH = os.path.join(BASE_DIR, 'palpites.db')
 # --- Configurações de Administrador ---
 app = Flask(__name__)
 app.secret_key = 'ALJDHA76797#%*#JKOL'
-ADMIN_USERNAME = "admin"
-ADMIN_PASSWORD = "pokemar16#"
+MODERADORES = {
+    "admin" : "pokemar16",
+    "gabriel" : "25dez01"
+}
 TEMPORADA_ATUAL = "2ª Temporada" 
 
 # ==== TESTE LOCAL =======
@@ -369,9 +371,14 @@ def estatisticas():
 @app.route('/admin/award_bonus', methods=['POST'])
 @login_required
 def award_bonus():
-    if request.form.get('password') != ADMIN_PASSWORD:
-        print("\n[LOG] Tentativa de conceder bônus com senha incorreta")
-        flash('Senha de administrador incorreta!', 'danger')
+    # Pega o usuário que está logado
+    usuario_atual = session.get('username')
+    senha_digitada = request.form.get('password')
+
+    # Verifica se a senha digitada é a senha correta DESTE usuário
+    if not usuario_atual or MODERADORES.get(usuario_atual) != senha_digitada:
+        print("\n[LOG] Tentativa de bônus com senha incorreta")
+        flash('Senha incorreta!', 'danger')
         return redirect(url_for('admin_dashboard'))
 
     nome_jogador = request.form.get('nome_jogador')
@@ -502,15 +509,18 @@ def exibir_rodada(numero):
 def login():
     if request.method == 'POST':
         username = request.form.get('username')
+        password = request.form.get('password')
         ip_cliente = request.remote_addr
         
-        if username == ADMIN_USERNAME and request.form.get('password') == ADMIN_PASSWORD:
+        # VERIFICAÇÃO NOVA: Olha se o usuário existe na lista e se a senha bate
+        if username in MODERADORES and MODERADORES[username] == password:
             session['logged_in'] = True
-            print(f"\n[LOG - login]: Login BEM-SUCEDIDO para '{username}' a partir do IP {ip_cliente}.\n")
-            flash('Login realizado com sucesso!', 'success')
+            session['username'] = username  # Guardamos quem logou para usar depois
+            print(f"\n[LOG - login]: Login BEM-SUCEDIDO para '{username}' IP {ip_cliente}.\n")
+            flash(f'Bem-vindo, {username}!', 'success')
             return redirect(url_for('admin_dashboard'))
         else:
-            print(f"\n[LOG - login]: Tentativa de login FALHOU para '{username}' a partir do IP {ip_cliente}.\n")
+            print(f"\n[LOG - login]: Falha para '{username}' IP {ip_cliente}.\n")
             flash('Nome de usuário ou senha incorretos.', 'danger')
     return render_template('login.html')
 
@@ -949,5 +959,5 @@ def deletar_anuncio(anuncio_id):
     flash('Anúncio apagado com sucesso!', 'success')
     return redirect(url_for('gerenciar_anuncios'))
 
-# if __name__ == '__main__':
-#     app.run(debug=True,host="0.0.0.0",port=5000)
+if __name__ == '__main__':
+    app.run(debug=True,host="0.0.0.0",port=5000)
