@@ -536,9 +536,19 @@ def logout():
 @login_required
 def admin_dashboard():
     conn = get_db()
-    # Estas consultas precisam que o DB já esteja criado com as tabelas certas.
-    pontuacao_geral = conn.execute("SELECT nome FROM pontuacao ORDER BY nome").fetchall()
-    campeao_atual = conn.execute("SELECT nome FROM campeao_palpiteiros WHERE id = 1").fetchone()
+    pontuacao_geral = [
+        {'nome': 'Ariel'},
+        {'nome': 'Arthur'},
+        {'nome': 'Carlos'},
+        {'nome': 'Celso'},
+        {'nome': 'Gabriel'},
+        {'nome': 'Lucas'}
+    ]
+    try:
+        campeao_atual = conn.execute("SELECT nome FROM campeao_palpiteiros WHERE id = 1").fetchone()
+    except sqlite3.OperationalError:
+        campeao_atual = None
+        
     return render_template('admin_dashboard.html', pontuacao_geral=pontuacao_geral, campeao_atual=campeao_atual)
 
 @app.route('/admin/set_campeao_palpiteiro', methods=['POST'])
