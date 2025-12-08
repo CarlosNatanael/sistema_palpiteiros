@@ -536,19 +536,9 @@ def logout():
 @login_required
 def admin_dashboard():
     conn = get_db()
-    pontuacao_geral = [
-        {'nome': 'Ariel'},
-        {'nome': 'Arthur'},
-        {'nome': 'Carlos'},
-        {'nome': 'Celso'},
-        {'nome': 'Gabriel'},
-        {'nome': 'Lucas'}
-    ]
-    try:
-        campeao_atual = conn.execute("SELECT nome FROM campeao_palpiteiros WHERE id = 1").fetchone()
-    except sqlite3.OperationalError:
-        campeao_atual = None
-        
+    # Estas consultas precisam que o DB já esteja criado com as tabelas certas.
+    pontuacao_geral = conn.execute("SELECT nome FROM pontuacao ORDER BY nome").fetchall()
+    campeao_atual = conn.execute("SELECT nome FROM campeao_palpiteiros WHERE id = 1").fetchone()
     return render_template('admin_dashboard.html', pontuacao_geral=pontuacao_geral, campeao_atual=campeao_atual)
 
 @app.route('/admin/set_campeao_palpiteiro', methods=['POST'])
@@ -969,5 +959,5 @@ def deletar_anuncio(anuncio_id):
     flash('Anúncio apagado com sucesso!', 'success')
     return redirect(url_for('gerenciar_anuncios'))
 
-if __name__ == '__main__':
-    app.run(debug=True,host="0.0.0.0",port=5000)
+# if __name__ == '__main__':
+#     app.run(debug=True,host="0.0.0.0",port=5000)

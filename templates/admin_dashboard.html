@@ -188,7 +188,11 @@
             <div class="form-group">
                 <label for="campeao_nome">Selecione o Campeão:</label>
                 <select name="campeao_nome" id="campeao_nome" class="form-control" required>
-                    </select>
+                    <option value="" disabled selected>Escolha o Campeão...</option>
+                    {% for jogador in pontuacao_geral %}
+                        <option value="{{ jogador.nome }}">{{ jogador.nome }}</option>
+                    {% endfor %}
+                </select>
             </div>
             <button type="submit" class="btn btn-warning w-100 mt-2">Coroar Campeão</button>
             </form>
