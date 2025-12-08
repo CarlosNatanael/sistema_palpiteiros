@@ -198,6 +198,27 @@
             </form>
         </div>
     </div>
+    <hr>
+        
+        <div class="admin-section border border-danger p-4 rounded" style="background-color: #fff5f5;">
+            <h3 class="text-danger"><i class="bi bi-exclamation-triangle-fill"></i> Iniciar Nova Temporada</h3>
+            <p class="text-muted">
+                <strong>Cuidado:</strong> Esta ação vai <u>ZERAR</u> a pontuação, acertos e erros de <strong>TODOS</strong> os jogadores.
+                Faça isso apenas quando a temporada atual acabar e o campeão já estiver salvo no Histórico.
+            </p>
+            
+            <form action="{{ url_for('reset_season') }}" method="POST" onsubmit="return confirm('TEM CERTEZA ABSOLUTA? Isso vai apagar toda a pontuação atual!');">
+                <div class="form-group">
+                    <label for="password_reset" class="text-danger font-weight-bold">Confirme sua Senha de Admin:</label>
+                    <input type="password" id="password_reset" name="password" class="form-control border-danger" placeholder="Sua senha..." required>
+                </div>
+                <button type="submit" class="btn btn-danger btn-lg btn-block">
+                    <i class="bi bi-arrow-counterclockwise"></i> ZERAR PONTUAÇÃO E INICIAR NOVA TEMPORADA
+                </button>
+            </form>
+        </div>
+
+        <br><br>
     </main>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

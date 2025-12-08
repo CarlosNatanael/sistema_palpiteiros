@@ -20,7 +20,7 @@ MODERADORES = {
     "admin" : "pokemar16",
     "gabriel" : "25dez01"
 }
-TEMPORADA_ATUAL = "2ª Temporada" 
+TEMPORADA_ATUAL = "3ª Temporada" 
 
 # ==== TESTE LOCAL =======
 # API_BASE_URL = "http://127.0.0.1:5001/api/v1"
@@ -949,6 +949,36 @@ def gerenciar_anuncios():
 @app.route('/copa_do_mundo')
 def copa_do_mundo():
     return render_template('copa_do_mundo.html')
+
+@app.route('/admin/reset_season', methods=['POST'])
+@login_required
+def reset_season():
+    usuario_atual = session.get('username')
+    senha_digitada = request.form.get('password')
+    
+    if not usuario_atual or MODERADORES.get(usuario_atual) != senha_digitada:
+        flash('Senha incorreta! A temporada não foi reiniciada.', 'danger')
+        return redirect(url_for('admin_dashboard'))
+
+    conn = get_db()
+    cursor = conn.cursor()
+
+    try:
+        cursor.execute("UPDATE pontuacao SET pontos = 0, acertos = 0, erros = 0, pontos_bonus = 0")
+        cursor.execute("DELETE FROM jogos")
+        cursor.execute("DELETE FROM palpites")
+        cursor.execute("DELETE FROM palpite_campeao")
+        cursor.execute("DELETE FROM campeao_real")
+        conn.commit()
+        
+        print("\n[LOG] NOVA TEMPORADA INICIADA! DADOS ANTIGOS APAGADOS.\n")
+        flash('Temporada reiniciada com sucesso! Pontos zerados e jogos antigos removidos.', 'success')
+    except Exception as e:
+        conn.rollback()
+        print(f"\n[LOG] Erro ao reiniciar temporada: {e}")
+        flash(f'Erro ao reiniciar temporada: {e}', 'danger')
+
+    return redirect(url_for('admin_dashboard'))
 
 @app.route('/admin/anuncios/delete/<int:anuncio_id>', methods=['POST'])
 @login_required
