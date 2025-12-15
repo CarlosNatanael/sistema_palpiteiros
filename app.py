@@ -946,10 +946,6 @@ def gerenciar_anuncios():
     anuncios = conn.execute('SELECT * FROM anuncios ORDER BY data_criacao DESC').fetchall()
     return render_template('gerenciar_anuncios.html', anuncios=anuncios)
 
-@app.route('/copa_do_mundo')
-def copa_do_mundo():
-    return render_template('copa_do_mundo.html')
-
 @app.route('/admin/reset_season', methods=['POST'])
 @login_required
 def reset_season():
@@ -993,5 +989,5 @@ def deletar_anuncio(anuncio_id):
 # def manutencao():
 #     return render_template('manut.html')
 
-if __name__ == '__main__':
-    app.run(debug=True,host="0.0.0.0",port=5000)
+# if __name__ == '__main__':
+#     app.run(debug=True,host="0.0.0.0",port=5000)
