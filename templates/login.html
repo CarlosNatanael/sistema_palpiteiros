@@ -1,24 +1,24 @@
-<!DOCTYPE html>
-<html lang="pt">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login de Administrador</title>
-    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+{% extends "base.html" %}
+
+{% block title %}Login de Administrador{% endblock %}
+
+{% block styles %}
     <style>
-        /* Estilos específicos para a página de login */
+        /* Mantendo o seu estilo original de centralização */
+        /* O body já vem do base.html, mas podemos forçar a cor de fundo aqui */
         body {
-            background-color: #f0f2f5; /* Um cinza claro de fundo */
+            background-color: #f0f2f5; 
+        }
+        
+        /* Ajuste para centralizar verticalmente o conteúdo dentro do main */
+        main {
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            padding: 20px;
-            box-sizing: border-box;
+            min-height: 80vh; /* Ocupa altura para centralizar */
         }
+
         .login-container {
             background-color: #ffffff;
             padding: 40px;
@@ -73,6 +73,8 @@
         .btn-login:hover {
             background-color: #004d00;
         }
+        
+        /* Ajuste para as mensagens flash dentro do card de login */
         .flash-message {
             margin-top: 20px;
             padding: 10px;
@@ -83,10 +85,12 @@
         .flash-message.alert-success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
         .flash-message.alert-danger { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
     </style>
-</head>
-<body class="site-container">
+{% endblock %}
+
+{% block content %}
     <div class="login-container">
         <h1>LOGIN ADMIN</h1>
+        
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
                 {% for category, message in messages %}
@@ -94,6 +98,7 @@
                 {% endfor %}
             {% endif %}
         {% endwith %}
+
         <form method="POST">
             <div class="form-group">
                 <label for="username">Usuário:</label>
@@ -106,13 +111,10 @@
             <button type="submit" class="btn-login">Entrar</button>
         </form>
     </div>
-    <div class="text-center mt-4 mb-5">
-        <a href="{{ url_for('index') }}" class="btn btn-success btn-lg">
+
+    <div class="text-center mt-4">
+        <a href="{{ url_for('index') }}" class="btn btn-secondary">
             <i class="bi bi-arrow-left-circle-fill me-2"></i>Voltar à Pontuação Geral
         </a>
     </div>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-</body>
-</html>
+{% endblock %}
