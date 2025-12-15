@@ -1,179 +1,108 @@
-<!DOCTYPE html>
-<html lang="pt">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Regras - Sistema de Palpites</title>
-    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
-    <link rel="stylesheet" href="{{ url_for('static', filename='regra.css') }}">    
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
-</head>
-<body class="site-container">
-    <header>
-        <nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="background-color: #006400 !important;">
-            <div class="container-fluid">
-                <a class="navbar-brand d-flex align-items-center" href="{{ url_for('index') }}">
-                    <i class="bi bi-trophy me-2"></i>
-                    <span>Tabela pontuação</span>
-                </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav mx-auto">
-                        <li class="nav-item"><a class="nav-link" href="{{ url_for('index') }}">Pontuação</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{ url_for('estatisticas') }}">Estatísticas</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{ url_for('exibir_palpites') }}">Palpites</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{ url_for('chaveamento') }}">Chaveamento</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{ url_for('copa_do_mundo') }}">Copa do Mundo</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{ url_for('adicionar_palpites') }}">Adicionar Palpite</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{ url_for('ver_palpites_campeao') }}">Palpites Campeão</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{ url_for('campeao_geral') }}">Campeão Palpiteiros</a></li>
-                        <li class="nav-item"><a class="nav-link active" href="{{ url_for('regra') }}">Regras</a></li>
-                    </ul>
+{% extends "base.html" %}
 
-                    <ul class="navbar-nav">
-                        {% if session.logged_in %}
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownAdmin" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="bi bi-gear-fill me-1"></i>Admin
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownAdmin">
-                                <li><a class="dropdown-item" href="{{ url_for('admin_dashboard') }}">Painel Admin</a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="{{ url_for('logout') }}">Sair</a></li>
-                            </ul>
-                        </li>
-                        {% else %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url_for('login') }}">
-                                <i class="bi bi-box-arrow-in-right me-1"></i>Login
-                            </a>
-                        </li>
-                        {% endif %}
+{% block title %}Regras - Sistema de Palpites{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='regra.css') }}">
+{% endblock %}
+
+{% block content %}
+    <div class="text-center mb-5">
+        <h1 class="display-4 fw-bold" style="color: #006400;">REGRAS DO JOGO</h1>
+        <p class="lead text-muted">Entenda como funciona a pontuação e os bônus.</p>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-lg-6">
+            <div class="card h-100 shadow-sm">
+                <div class="card-header bg-dark text-white">
+                    <h3 class="card-title mb-0"><i class="bi bi-file-ruled-fill me-2"></i>Sistema de Pontuação</h3>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-subtitle mb-2 text-muted">Partidas Brasileirão</h5>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item d-flex justify-content-between align-items-center">Acerto do Placar + Resultado <span class="badge bg-success rounded-pill">4 pts</span></li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">Acerto Apenas do Placar <span class="badge bg-info text-dark rounded-pill">2 pts</span></li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">Acertar apenas o resultado <span class="badge bg-primary rounded-pill">1 pt</span></li>
+                    </ul>
+                    <hr>
+                    <h5 class="card-subtitle mb-2 text-muted">Partidas Mata-Mata</h5>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item d-flex justify-content-between align-items-center">Placar + Resultado + Avanço <span class="badge bg-success rounded-pill">5 pts</span></li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">Placar + Resultado <span class="badge bg-info text-dark rounded-pill">4 pts</span></li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">Placar + Avanço <span class="badge bg-info text-dark rounded-pill">3 pts</span></li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">Resultado + Avanço <span class="badge bg-secondary rounded-pill">2 pts</span></li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">Apenas o Placar <span class="badge bg-secondary rounded-pill">2 pts</span></li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">Apenas o Resultado <span class="badge bg-primary rounded-pill">1 pt</span></li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">Apenas quem Avança <span class="badge bg-primary rounded-pill">1 pt</span></li>
                     </ul>
                 </div>
             </div>
-        </nav>
-    </header>
-
-     <main class="container py-5" style="padding-top: 80px !important;">
-        <div class="text-center mb-5">
-            <h1 class="display-4 fw-bold" style="color: #006400;">REGRAS DO JOGO</h1>
-            <p class="lead text-muted">Entenda como funciona a pontuação e os bônus.</p>
         </div>
 
-        <div class="row g-4">
-            <div class="col-lg-6">
-                <div class="card h-100 shadow-sm">
-                    <div class="card-header bg-dark text-white">
-                        <h3 class="card-title mb-0"><i class="bi bi-file-ruled-fill me-2"></i>Sistema de Pontuação</h3>
-                    </div>
-                    <div class="card-body">
-                        <h5 class="card-subtitle mb-2 text-muted">Partidas Brasileirão</h5>
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item d-flex justify-content-between align-items-center">Acerto do Placar + Resultado <span class="badge bg-success rounded-pill">4 pts</span></li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center">Acerto Apenas do Placar <span class="badge bg-info text-dark rounded-pill">2 pts</span></li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center">Acertar apenas o resultado <span class="badge bg-primary rounded-pill">1 pt</span></li>
-                        </ul>
-                        <hr>
-                        <h5 class="card-subtitle mb-2 text-muted">Partidas Mata-Mata</h5>
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item d-flex justify-content-between align-items-center">Placar + Resultado + Avanço <span class="badge bg-success rounded-pill">5 pts</span></li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center">Placar + Resultado <span class="badge bg-info text-dark rounded-pill">4 pts</span></li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center">Placar + Avanço <span class="badge bg-info text-dark rounded-pill">3 pts</span></li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center">Resultado + Avanço <span class="badge bg-secondary rounded-pill">2 pts</span></li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center">Apenas o Placar <span class="badge bg-secondary rounded-pill">2 pts</span></li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center">Apenas o Resultado <span class="badge bg-primary rounded-pill">1 pt</span></li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center">Apenas quem Avança <span class="badge bg-primary rounded-pill">1 pt</span></li>
-                        </ul>
-                    </div>
+        <div class="col-lg-6">
+            <div class="card h-100 shadow-sm">
+                <div class="card-header bg-warning">
+                    <h3 class="card-title mb-0"><i class="bi bi-star-fill me-2"></i>Bônus e Regras Gerais</h3>
+                </div>
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-subtitle mb-2 text-muted">Bônus Adicionais</h5>
+                    <p><strong>Bônus por Sequência:</strong> Acerte 3 palpites seguidos (qualquer tipo de acerto) na mesma rodada para ganhar um bônus de <strong>3 pontos</strong>. Errou? A sequência zera!</p>
+                    <p><strong>Bônus do Campeão:</strong> Acertar o grande campeão do torneio rende <strong>5 pontos</strong> extras ao final da competição.</p>
+                    <hr>
+                    <h5 class="card-subtitle mb-2 text-muted">Regras dos Palpites</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><i class="bi bi-x-circle-fill text-danger me-2"></i>Os palpites são bloqueados no horário de início de cada partida.</li>
+                        <li class="mb-2"><i class="bi bi-lock-fill text-secondary me-2"></i>Não é possível alterar um palpite após o bloqueio.</li>
+                        <li><i class="bi bi-arrow-repeat text-primary me-2"></i>A pontuação é atualizada pelo administrador após o fim dos jogos da rodada.</li>
+                    </ul>
                 </div>
             </div>
+        </div>
+    </div>
 
-            <div class="col-lg-6">
-                <div class="card h-100 shadow-sm">
-                    <div class="card-header bg-warning">
-                        <h3 class="card-title mb-0"><i class="bi bi-star-fill me-2"></i>Bônus e Regras Gerais</h3>
-                    </div>
-                    <div class="card-body d-flex flex-column">
-                        <h5 class="card-subtitle mb-2 text-muted">Bônus Adicionais</h5>
-                        <p><strong>Bônus por Sequência:</strong> Acerte 3 palpites seguidos (qualquer tipo de acerto) na mesma rodada para ganhar um bônus de <strong>3 pontos</strong>. Errou? A sequência zera!</p>
-                        <p><strong>Bônus do Campeão:</strong> Acertar o grande campeão do torneio rende <strong>5 pontos</strong> extras ao final da competição.</p>
-                        <hr>
-                        <h5 class="card-subtitle mb-2 text-muted">Regras dos Palpites</h5>
-                        <ul class="list-unstyled">
-                            <li class="mb-2"><i class="bi bi-x-circle-fill text-danger me-2"></i>Os palpites são bloqueados no horário de início de cada partida.</li>
-                            <li class="mb-2"><i class="bi bi-lock-fill text-secondary me-2"></i>Não é possível alterar um palpite após o bloqueio.</li>
-                            <li><i class="bi bi-arrow-repeat text-primary me-2"></i>A pontuação é atualizada pelo administrador após o fim dos jogos da rodada.</li>
-                        </ul>
-                        <div class="mt-auto text-center">
-                           </div>
+    <div class="row g-4 mt-4">
+        <div class="col-lg-6">
+            <div class="card h-100 shadow-sm">
+                <div class="card-header" style="background-color: #d4af37;">
+                    <h3 class="card-title mb-0 text-dark"><i class="bi bi-award-fill me-2"></i>Premiação</h3>
+                </div>
+                <div class="card-body">
+                    <p class="fs-5"><strong>Prêmio para o Top 2:</strong></p>
+                    <p><strong>1º Lugar:</strong> Uma camiseta do time do coração.</p>
+                    <p><strong>2º Lugar:</strong> Uma torre de chopp.</p>
+                    <div class="mt-auto text-center pt-3">
+                        <a href="{{ url_for('historico_campeoes') }} " class="btn btn-dark">Ver Galeria de Campeões</a>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="row g-4 mt-4">
-            
-            <div class="col-lg-6">
-                <div class="card h-100 shadow-sm">
-                    <div class="card-header" style="background-color: #d4af37;">
-                        <h3 class="card-title mb-0 text-dark"><i class="bi bi-award-fill me-2"></i>Premiação</h3>
-                    </div>
-                    <div class="card-body">
-                        <p class="fs-5"><strong>Prêmio para o Top 2:</strong></p>
-                        <p><strong>1º Lugar:</strong> Uma camiseta do time do coração.</p>
-                        <p><strong>2º Lugar:</strong> Uma torre de chopp.</p>
-                        <div class="mt-auto text-center pt-3">
-                            <a href="{{ url_for('historico_campeoes') }} " class="btn btn-dark">Ver Galeria de Campeões</a>
-                        </div>
+        <div class="col-lg-6">
+            <div class="card h-100 shadow-sm">
+                <div class="card-header bg-secondary text-white">
+                    <h3 class="card-title mb-0"><i class="bi bi-info-circle-fill me-2"></i>Ficha Técnica</h3>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span><i class="bi bi-code-slash text-primary me-2"></i>Desenvolvedor</span>
+                            <span class="fw-bold">Carlos Natanael</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span><i class="bi bi-shield-lock-fill text-success me-2"></i>Moderação & Admin</span>
+                            <span class="fw-bold">Equipe Palpiteiros</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span><i class="bi bi-calendar-event me-2"></i>Temporada Atual</span>
+                            <span class="badge bg-dark">2ª Temporada</span>
+                        </li>
+                    </ul>
+                    <div class="text-center mt-3 text-muted">
+                        <small>Dúvidas? Fale com um dos moderadores.</small>
                     </div>
                 </div>
             </div>
-
-            <div class="col-lg-6">
-                <div class="card h-100 shadow-sm">
-                    <div class="card-header bg-secondary text-white">
-                        <h3 class="card-title mb-0"><i class="bi bi-info-circle-fill me-2"></i>Ficha Técnica</h3>
-                    </div>
-                    <div class="card-body">
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                <span><i class="bi bi-code-slash text-primary me-2"></i>Desenvolvedor</span>
-                                <span class="fw-bold">Carlos Natanael</span>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                <span><i class="bi bi-shield-lock-fill text-success me-2"></i>Moderação & Admin</span>
-                                <span class="fw-bold">Gabriel (Alemão)</span>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                <span><i class="bi bi-calendar-event me-2"></i>Temporada Atual</span>
-                                <span class="badge bg-dark">2ª Temporada</span>
-                            </li>
-                        </ul>
-                        <div class="text-center mt-3 text-muted">
-                            <small>Dúvidas? Fale com um dos moderadores.</small>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
         </div>
-    </main>
-
-    <footer class="bg-dark text-white py-3 mt-auto">
-        <div class="container text-center">
-            <p class="mb-0">© Desenvolvido por Carlos Natanael</p>
-        </div>
-    </footer>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-</body>
-</html>
+    </div>
+{% endblock %}
