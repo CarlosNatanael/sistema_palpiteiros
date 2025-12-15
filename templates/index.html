@@ -1,65 +1,12 @@
-<!DOCTYPE html>
-<html lang="pt">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tabela de Pontuação</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
-    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
-<body>
-    <header>
-        <nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="background-color: #006400 !important;">
-            <div class="container-fluid">
-                <a class="navbar-brand d-flex align-items-center" href="{{ url_for('index') }}">
-                    <i class="bi bi-trophy me-2"></i>
-                    <span>Tabela pontuação</span>
-                </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav mx-auto">
-                        <li class="nav-item"><a class="nav-link active" href="{{ url_for('index') }}">Pontuação</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{ url_for('estatisticas') }}">Estatísticas</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{ url_for('exibir_palpites') }}">Palpites</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{ url_for('chaveamento') }}">Chaveamento</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{ url_for('copa_do_mundo') }}">Copa do Mundo</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{ url_for('adicionar_palpites') }}">Adicionar Palpite</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{ url_for('ver_palpites_campeao') }}">Palpites Campeão</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{ url_for('campeao_geral') }}">Campeão Palpiteiros</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{ url_for('regra') }}">Regras</a></li>
-                    </ul>
+{% extends "base.html" %}
 
-                    <ul class="navbar-nav">
-                        {% if session.logged_in %}
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownAdmin" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="bi bi-gear-fill me-1"></i>Admin
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownAdmin">
-                                <li><a class="dropdown-item" href="{{ url_for('admin_dashboard') }}">Painel Admin</a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="{{ url_for('logout') }}">Sair</a></li>
-                            </ul>
-                        </li>
-                        {% else %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url_for('login') }}">
-                                <i class="bi bi-box-arrow-in-right me-1"></i>Login
-                            </a>
-                        </li>
-                        {% endif %}
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header>
-    <main style="padding-top: 80px;">
+{% block title %}Sistema de Palpites{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+{% endblock %}
+
+{% block content %}
             <div class="text-center mb-4">
                 <h1 class="display-5 fw-bold" style="color: #006400;">TABELA DE PONTUAÇÃO</h1>
             </div>
@@ -225,9 +172,4 @@
             </div>
             {% endif %}
             </div>
-    </main>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-</body>
-</html>
+{% endblock %}

@@ -1,13 +1,9 @@
-<!DOCTYPE html>
-<html lang="pt">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Admin</title>
-    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"> <style>
+{% extends "base.html" %}
+
+{% block title %}Painel Admin - Sistema de Palpites{% endblock %}
+
+{% block styles %}
+    <style>
         /* Estilos específicos para o dashboard admin */
         .admin-dashboard-container {
             background-color: #ffffff;
@@ -70,86 +66,40 @@
         .admin-action-card a.btn:hover {
             background-color: #004d00;
         }
-        .flash-message {
-            margin-bottom: 20px;
-            padding: 10px;
-            border-radius: 5px;
-            font-weight: bold;
-            text-align: center;
-        }
-        .flash-message.alert-success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
-        .flash-message.alert-info { background-color: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; }
     </style>
-</head>
-<body>
-    <header>
-        <nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="background-color: #006400 !important;">
-            <div class="container-fluid">
-                <a class="navbar-brand d-flex align-items-center" href="{{ url_for('index') }}">
-                    <i class="bi bi-trophy me-2"></i>
-                    <span>Tabela pontuação</span>
-                </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav mx-auto">
-                        <li class="nav-item"><a class="nav-link" href="{{ url_for('index') }}">Pontuação</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{ url_for('estatisticas') }}">Estatísticas</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{ url_for('exibir_palpites') }}">Palpites</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{ url_for('chaveamento') }}">Chaveamento</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{ url_for('copa_do_mundo') }}">Copa do Mundo</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{ url_for('adicionar_palpites') }}">Adicionar Palpite</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{ url_for('ver_palpites_campeao') }}">Palpites Campeão</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{ url_for('campeao_geral') }}">Campeão Palpiteiros</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{ url_for('regra') }}">Regras</a></li>
-                        <li class="nav-item"><a class="nav-link active" href="{{ url_for('admin_dashboard') }}">Painel Admin</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{ url_for('logout') }}">Sair</a></li>
-                    </ul>
-                </div>
+{% endblock %}
+
+{% block content %}
+    <div class="admin-dashboard-container">
+        <h1>PAINEL DE ADMINISTRAÇÃO</h1>
+
+        <div class="admin-actions">
+            <div class="admin-action-card">
+                <h2>Atualizar Resultados</h2>
+                <p>Defina os placares dos jogos que já aconteceram.</p>
+                <a href="{{ url_for('set_game_result') }}" class="btn">Definir Resultados</a>
             </div>
-        </nav>
-    </header>
-
-    <main style="padding-top: 80px;">
-        <div class="admin-dashboard-container">
-            <h1>PAINEL DE ADMINISTRAÇÃO</h1>
-
-            {% with messages = get_flashed_messages(with_categories=true) %}
-                {% if messages %}
-                    {% for category, message in messages %}
-                        <div class="flash-message alert-{{ category }}">{{ message }}</div>
-                    {% endfor %}
-                {% endif %}
-            {% endwith %}
-
-            <div class="admin-actions">
-                <div class="admin-action-card">
-                    <h2>Atualizar Resultados</h2>
-                    <p>Defina os placares dos jogos que já aconteceram.</p>
-                    <a href="{{ url_for('set_game_result') }}" class="btn">Definir Resultados</a>
-                </div>
-                <div class="admin-action-card">
-                    <h2>Recalcular Pontuação</h2>
-                    <p>Recalcule as pontuações de todos os palpiteiros com base nos resultados.</p>
-                    <a href="{{ url_for('atualizar_pontuacao_admin') }}" class="btn">Atualizar Pontuação</a>
-                </div>
-                <div class="admin-action-card">
-                    <h2>Palpite Campeão</h2>
-                    <p>Veja e defina o campeão real do Mundial.</p>
-                    <a href="{{ url_for('set_champion') }}" class="btn">Definir Campeão</a>
-                </div>
-                <div class="admin-action-card">
-                    <h2>Ver Palpites de Campeão</h2>
-                    <p>Visualize os palpites de campeão registrados pelos usuários.</p>
-                    <a href="{{ url_for('ver_palpites_campeao') }}" class="btn">Ver Palpites</a>
-                </div>
-                <div class="admin-action-card">
-                    <h2>Gerenciar Anúncios</h2>
-                    <p>Adicione ou remova avisos na página inicial.</p>
-                    <a href="{{ url_for('gerenciar_anuncios') }}" class="btn">Gerenciar Anúncios</a>
-                </div>
+            <div class="admin-action-card">
+                <h2>Recalcular Pontuação</h2>
+                <p>Recalcule as pontuações de todos os palpiteiros com base nos resultados.</p>
+                <a href="{{ url_for('atualizar_pontuacao_admin') }}" class="btn">Atualizar Pontuação</a>
             </div>
+            <div class="admin-action-card">
+                <h2>Palpite Campeão</h2>
+                <p>Veja e defina o Campeão Real</p>
+                <a href="{{ url_for('set_champion') }}" class="btn">Definir Campeão</a>
+            </div>
+            <div class="admin-action-card">
+                <h2>Ver Palpites de Campeão</h2>
+                <p>Visualize os palpites de campeão registrados pelos usuários.</p>
+                <a href="{{ url_for('ver_palpites_campeao') }}" class="btn">Ver Palpites</a>
+            </div>
+            <div class="admin-action-card">
+                <h2>Gerenciar Anúncios</h2>
+                <p>Adicione ou remova avisos na página inicial.</p>
+                <a href="{{ url_for('gerenciar_anuncios') }}" class="btn">Gerenciar Anúncios</a>
+            </div>
+        </div>
         <hr>
         <div class="admin-section">
             <h3>Conceder Bônus por Sequência</h3>
@@ -159,7 +109,7 @@
                     <label for="nome_jogador">Selecione o Palpiteiro:</label>
                     <select id="nome_jogador" name="nome_jogador" class="form-control" required>
                         <option value="" disabled selected>Escolha um jogador...</option>
-                        {% for jogador in pontuacao_geral %} {# Você precisa passar 'pontuacao_geral' para este template #}
+                        {% for jogador in pontuacao_geral %}
                             <option value="{{ jogador.nome }}">{{ jogador.nome }}</option>
                         {% endfor %}
                     </select>
@@ -197,13 +147,13 @@
             <button type="submit" class="btn btn-warning w-100 mt-2">Coroar Campeão</button>
             </form>
         </div>
-    </div>
-    <hr>
+
+        <hr>
         
         <div class="admin-section border border-danger p-4 rounded" style="background-color: #fff5f5;">
             <h3 class="text-danger"><i class="bi bi-exclamation-triangle-fill"></i> Iniciar Nova Temporada</h3>
             <p class="text-muted">
-                <strong>Cuidado:</strong> Esta ação vai <u>ZERAR</u> a pontuação, acertos e erros de <strong>TODOS</strong> os jogadores.
+                <strong>Cuidado:</strong> Esta ação vai <u>ZERAR</u> a pontuação, acertos e erros de <strong>TODOS</strong> os jogadores e <u>APAGAR</u> os jogos e palpites antigos.
                 Faça isso apenas quando a temporada atual acabar e o campeão já estiver salvo no Histórico.
             </p>
             
@@ -213,38 +163,11 @@
                     <input type="password" id="password_reset" name="password" class="form-control border-danger" placeholder="Sua senha..." required>
                 </div>
                 <button type="submit" class="btn btn-danger btn-lg btn-block">
-                    <i class="bi bi-arrow-counterclockwise"></i> ZERAR PONTUAÇÃO E INICIAR NOVA TEMPORADA
+                    <i class="bi bi-arrow-counterclockwise"></i> ZERAR TUDO E INICIAR NOVA TEMPORADA
                 </button>
             </form>
         </div>
 
         <br><br>
-    </main>
-
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script>
-    document.getElementById('game_id').addEventListener('change', function() {
-        var selectJogo = this;
-        var selectedOption = selectJogo.options[selectJogo.selectedIndex];
-
-        // Supondo que você tenha acesso aos dados dos times no template,
-        // ou você pode extrair dos 'data-tokens' como já faz.
-        // Esta é uma forma simplificada.
-        var time1 = selectedOption.dataset.time1;
-        var time2 = selectedOption.dataset.time2;
-
-        var selectAvanca = document.getElementById('time_que_avancou');
-        selectAvanca.innerHTML = '<option value="">-- Nenhum / Jogo de Grupo --</option>'; // Limpa opções antigas
-
-        if (time1 && time2) {
-            var option1 = new Option(time1, time1);
-            var option2 = new Option(time2, time2);
-            selectAvanca.add(option1);
-            selectAvanca.add(option2);
-        }
-    });
-    </script>
-</body>
-</html>
+    </div>
+{% endblock %}
