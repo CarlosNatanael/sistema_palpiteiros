@@ -1002,10 +1002,9 @@ def reset_season():
     
     return redirect(url_for('admin_dashboard'))
 
-# Rotas removidas/simplificadas (comentadas para referência):
-# - /rodadas (estava incompleta)
-# - /rodada/<int:numero> (redundante com outras rotas)
-# - Funções duplicadas
+# @app.route('/')
+# def manutencao():
+#     return render_template('manut.html')
 
 # if __name__ == '__main__':
 #     app.run(debug=True, host="0.0.0.0", port=5000)
