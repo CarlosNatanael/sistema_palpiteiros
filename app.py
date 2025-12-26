@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, flash, ses
 from collections import defaultdict
 from datetime import datetime
 from functools import wraps
-# from config import API_BASE_URL
+from config import API_BASE_URL
 import requests
 import sqlite3
 import pytz
@@ -23,7 +23,7 @@ MODERADORES = {
 TEMPORADA_ATUAL = "3ª Temporada" 
 
 # ==== TESTE LOCAL =======
-API_BASE_URL = "http://127.0.0.1:5001/api/v1"
+# API_BASE_URL = "http://127.0.0.1:5001/api/v1"
 
 # --- Conexão com o Banco de Dados ---
 def get_db():
