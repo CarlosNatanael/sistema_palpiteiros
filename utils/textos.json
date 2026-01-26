@@ -6,6 +6,12 @@
         ]
     },
     {
+        "titulo": "Atlhetico-PR",
+        "texto": [
+            "https://ssl.gstatic.com/onebox/media/sports/logos/9LkdBR4L5plovKM8eIy7nQ_48x48.png"
+        ]
+    },
+    {
         "titulo": "Bahia",
         "texto": [
             "https://ssl.gstatic.com/onebox/media/sports/logos/nIdbR6qIUDyZUBO9vojSPw_48x48.png"
@@ -24,15 +30,21 @@
         ]
     },
     {
-        "titulo": "Ceará",
-        "texto": [
-            "https://ssl.gstatic.com/onebox/media/sports/logos/mSl0cz3i2t8uv4zcprobOg_48x48.png"
-        ]
-    },
-    {
         "titulo": "Corinthians",
         "texto": [
             "https://ssl.gstatic.com/onebox/media/sports/logos/tCMSqgXVHROpdCpQhzTo1g_48x48.png"
+        ]
+    },
+    {
+        "titulo": "Curitiba",
+        "texto": [
+            "https://ssl.gstatic.com/onebox/media/sports/logos/LaFlBADLmsjHfGTehCYtuA_48x48.png"
+        ]
+    },
+    {
+        "titulo": "Chapecoense",
+        "texto": [
+            "https://ssl.gstatic.com/onebox/media/sports/logos/K7JQUKTRsuXfO9YrD5dq5g_48x48.png"
         ]
     },
     {
@@ -54,12 +66,6 @@
         ]
     },
     {
-        "titulo": "Fortaleza",
-        "texto": [
-            "https://ssl.gstatic.com/onebox/media/sports/logos/me10ephzRxdj45zVq1Risg_48x48.png"
-        ]
-    },
-    {
         "titulo": "Grêmio",
         "texto": [
             "https://ssl.gstatic.com/onebox/media/sports/logos/Ku-73v_TW9kpex-IEGb0ZA_48x48.png"
@@ -69,12 +75,6 @@
         "titulo": "Internacional",
         "texto": [
             "https://ssl.gstatic.com/onebox/media/sports/logos/OWVFKuHrQuf4q2Wk0hEmSA_48x48.png"
-        ]
-    },
-    {
-        "titulo": "Juventude",
-        "texto": [
-            "https://ssl.gstatic.com/onebox/media/sports/logos/JrXw-m4Dov0gE2Sh6XJQMQ_48x48.png"
         ]
     },
     {
@@ -102,12 +102,6 @@
         ]
     },
     {
-        "titulo": "Sport",
-        "texto": [
-            "https://ssl.gstatic.com/onebox/media/sports/logos/u9Ydy0qt6JJjWhTaI6r10A_48x48.png"
-        ]
-    },
-    {
         "titulo": "Vasco",
         "texto": [
             "https://ssl.gstatic.com/onebox/media/sports/logos/hHwT8LwRmYCAGxQ-STLxYA_48x48.png"
@@ -117,6 +111,12 @@
         "titulo": "Vitória",
         "texto": [
             "https://ssl.gstatic.com/onebox/media/sports/logos/LHSM6VchpkI4NIptoSTHOg_48x48.png"
+        ]
+    },
+    {
+        "titulo": "Remo",
+        "texto": [
+            "https://ssl.gstatic.com/onebox/media/sports/logos/bENrK5iSMF6sXrEkDNNxng_48x48.png"
         ]
     }
 ]
