@@ -4,13 +4,8 @@ import os
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 API_DB_PATH = os.path.join(BASE_DIR, 'api_data.db')
 
-# ====================================================================
-#  COLOQUE AQUI OS NOVOS JOGOS QUE VOCÊ QUER ADICIONAR OU ATUALIZAR
-# ====================================================================
-# APENAS OS JOGOS DO LIBERTADORES
 NOVOS_JOGOS_E_CAMPEONATOS = {
-    "Libertadores 2025": [
-        # === FINAL - Rodada 7 ===
+    "Libertadores 2026": [
         {
           "id": 3029, "rodada": 7, "fase": "mata-mata", "confronto_id": 15,
           "time1_nome": "Palmeiras", "time1_sigla": "PAL", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/7spurne-xDt2p6C0imYYNA_48x48.png",

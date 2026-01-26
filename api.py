@@ -9,7 +9,6 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DB_PATH = os.path.join(BASE_DIR, 'api_data.db')
 
 def get_db_connection():
-    # Use a variável DB_PATH com o caminho completo
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
     return conn
@@ -29,5 +28,5 @@ def get_campeonatos():
     return jsonify([row['campeonato'] for row in campeonatos])
 
 # === FLASK INTERNO ====
-if __name__ == '__main__':
-    api_app.run(port=5001)
+# if __name__ == '__main__':
+#     api_app.run(port=5001)

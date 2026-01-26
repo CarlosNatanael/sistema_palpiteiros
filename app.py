@@ -983,10 +983,10 @@ def reset_season():
     if not usuario_atual or MODERADORES.get(usuario_atual) != senha_digitada:
         flash('Senha incorreta! A temporada não foi reiniciada.', 'danger')
         return redirect(url_for('admin_dashboard'))
-    
+
     conn = get_db()
     cursor = conn.cursor()
-    
+
     try:
         cursor.execute("UPDATE pontuacao SET pontos = 0, acertos = 0, erros = 0, pontos_bonus = 0")
         cursor.execute("DELETE FROM jogos")
@@ -994,12 +994,13 @@ def reset_season():
         cursor.execute("DELETE FROM palpite_campeao")
         cursor.execute("DELETE FROM campeao_real")
         conn.commit()
-        
+        print("\n[LOG] NOVA TEMPORADA INICIADA! DADOS ANTIGOS APAGADOS.\n")
         flash('Temporada reiniciada com sucesso! Pontos zerados e jogos antigos removidos.', 'success')
     except Exception as e:
         conn.rollback()
+        print(f"\n[LOG] Erro ao reiniciar temporada: {e}")
         flash(f'Erro ao reiniciar temporada: {e}', 'danger')
-    
+
     return redirect(url_for('admin_dashboard'))
 
 # @app.route('/')
