@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, flash, ses
 from collections import defaultdict
 from datetime import datetime
 from functools import wraps
-from config import MODERADORES
+from config import API_BASE_URL, MODERADORES
 import requests
 import sqlite3
 import pytz
@@ -10,7 +10,7 @@ import os
 
 
 # ==== TESTE LOCAL =======
-API_BASE_URL = "http://127.0.0.1:5001/api/v1"
+# API_BASE_URL = "http://127.0.0.1:5001/api/v1"
 
 # --- Configurações ---
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -1007,5 +1007,5 @@ def reset_season():
 # def manutencao():
 #     return render_template('manut.html')
 
-if __name__ == '__main__':
-    app.run(debug=True, host="0.0.0.0", port=5000)
+# if __name__ == '__main__':
+#     app.run(debug=True, host="0.0.0.0", port=5000)
