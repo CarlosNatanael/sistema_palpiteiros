@@ -7,16 +7,64 @@ API_DB_PATH = os.path.join(BASE_DIR, 'api_data.db')
 NOVOS_JOGOS_E_CAMPEONATOS = {
   "Brasileirão 2026": [
     {
-      "id": 2001, "rodada": 1, "fase": "grupos",
-      "time1_nome": "Atlético-MG", "time1_sigla": "CAM", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/q9fhEsgpuyRq58OgmSndcQ_48x48.png",
-      "time2_nome": "Vasco da Gama", "time2_sigla": "VAS", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/hHwT8LwRmYCAGxQ-STLxYA_48x48.png",
-      "data_hora": "2025-12-07 16:00", "local": "Arena MRV"
+      "id": 1001, "rodada": 1, "fase": "grupos",
+      "time1_nome": "EC Vitória", "time1_sigla": "VIT", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/LHSM6VchpkI4NIptoSTHOg_48x48.png",
+      "time2_nome": "Remo", "time2_sigla": "REM", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/bENrK5iSMF6sXrEkDNNxng_48x48.png",
+      "data_hora": "2026-01-28 19:00", "local": "Barradão"
     },
     {
-      "id": 2002, "rodada": 1, "fase": "grupos",
-      "time1_nome": "Internacional", "time1_sigla": "INT", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/OWVFKuHrQuf4q2Wk0hEmSA_48x48.png",
+      "id": 1002, "rodada": 1, "fase": "grupos",
+      "time1_nome": "Atlético-MG", "time1_sigla": "CAM", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/q9fhEsgpuyRq58OgmSndcQ_48x48.png",
+      "time2_nome": "Palmeiras", "time2_sigla": "PAL", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/7spurne-xDt2p6C0imYYNA_48x48.png",
+      "data_hora": "2026-01-28 19:00", "local": "Arena MRV"
+    },
+    {
+      "id": 1003, "rodada": 1, "fase": "grupos",
+      "time1_nome": "Coritiba", "time1_sigla": "CFC", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/LaFlBADLmsjHfGTehCYtuA_48x48.png",
       "time2_nome": "Bragantino", "time2_sigla": "BGT", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/lMyw2zn1Z4cdkaxKJWnsQw_48x48.png",
-      "data_hora": "2025-12-07 16:00", "local": "Beira-Rio"
+      "data_hora": "2026-01-28 19:00", "local": "Couto Pereira"
+    },
+    {
+      "id": 1004, "rodada": 1, "fase": "grupos",
+      "time1_nome": "Internacional", "time1_sigla": "INT", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/OWVFKuHrQuf4q2Wk0hEmSA_48x48.png",
+      "time2_nome": "Athletico-PR", "time2_sigla": "CAP", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/9LkdBR4L5plovKM8eIy7nQ_48x48.png",
+      "data_hora": "2026-01-28 19:00", "local": "Beira-Rio"
+    },
+    {
+      "id": 1005, "rodada": 1, "fase": "grupos",
+      "time1_nome": "Fluminense", "time1_sigla": "FLU", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/fCMxMMDF2AZPU7LzYKSlig_48x48.png",
+      "time2_nome": "Grêmio", "time2_sigla": "GRE", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/Ku-73v_TW9kpex-IEGb0ZA_48x48.png",
+      "data_hora": "2026-01-28 19:30", "local": "Maracanã"
+    },
+    {
+      "id": 1006, "rodada": 1, "fase": "grupos",
+      "time1_nome": "Chapecoense", "time1_sigla": "CHA", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/K7JQUKTRsuXfO9YrD5dq5g_48x48.png",
+      "time2_nome": "Santos", "time2_sigla": "SAN", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/VHdNOT6wWOw_vJ38GMjMzg_48x48.png",
+      "data_hora": "2026-01-28 20:00", "local": "Arena Condá"
+    },
+    {
+      "id": 1007, "rodada": 1, "fase": "grupos",
+      "time1_nome": "Corinthians", "time1_sigla": "COR", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/tCMSqgXVHROpdCpQhzTo1g_48x48.png",
+      "time2_nome": "Bahia", "time2_sigla": "BAH", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/nIdbR6qIUDyZUBO9vojSPw_48x48.png",
+      "data_hora": "2026-01-28 20:00", "local": "Neo Química Arena"
+    },
+    {
+      "id": 1008, "rodada": 1, "fase": "grupos",
+      "time1_nome": "São Paulo", "time1_sigla": "SAO", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/4w2Z97Hf9CSOqICK3a8AxQ_48x48.png",
+      "time2_nome": "Flamengo", "time2_sigla": "FLA", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/orE554NToSkH6nuwofe7Yg_48x48.png",
+      "data_hora": "2026-01-28 21:30", "local": "Morumbis"
+    },
+    {
+      "id": 1009, "rodada": 1, "fase": "grupos",
+      "time1_nome": "Mirassol", "time1_sigla": "MIR", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/5J3JY7fcdiDYU5rbPW7AKA_48x48.png",
+      "time2_nome": "Vasco da Gama", "time2_sigla": "VAS", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/hHwT8LwRmYCAGxQ-STLxYA_48x48.png",
+      "data_hora": "2026-01-29 20:00", "local": "Estádio José Maria de Campos Maia"
+    },
+    {
+      "id": 1010, "rodada": 1, "fase": "grupos",
+      "time1_nome": "Botafogo", "time1_sigla": "BOT", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/KLDWYp-H8CAOT9H_JgizRg_48x48.png",
+      "time2_nome": "Cruzeiro", "time2_sigla": "CRU", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/Tcv9X__nIh-6wFNJPMwIXQ_48x48.png",
+      "data_hora": "2026-01-29 21:30", "local": "Nilton Santos"
     }
   ]
 }
