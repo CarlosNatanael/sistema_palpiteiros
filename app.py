@@ -19,7 +19,7 @@ DB_PATH = os.path.join(BASE_DIR, 'palpites.db')
 app = Flask(__name__)
 app.secret_key = 'ALJDHA76797#%*#JKOL'
 TEMPORADA_ATUAL = "3ª Temporada"
-PALPITEIROS = ["Ariel", "Arthur", "Carlos", "Celso", "Gabriel", "Lucas", "IA", "Jordan"]
+PALPITEIROS = ["Ariel", "Arthur", "Carlos", "Gabriel", "Lucas", "Jordan"]
 
 # --- Banco de Dados ---
 def get_db():
