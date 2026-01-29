@@ -28,5 +28,5 @@ def get_campeonatos():
     return jsonify([row['campeonato'] for row in campeonatos])
 
 # === FLASK INTERNO ====
-# if __name__ == '__main__':
-#     api_app.run(port=5001)
+if __name__ == '__main__':
+    api_app.run(debug=True, port=5001)

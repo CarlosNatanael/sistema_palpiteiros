@@ -1002,12 +1002,14 @@ def reset_season():
 
     return redirect(url_for('admin_dashboard'))
 
+@app.context_processor
+def injetar_variaveis_globais():
+    return dict(temporada_atual=TEMPORADA_ATUAL)
+
 # @app.route('/')
 # def manutencao():
 #     return render_template('manut.html')
 
-# ==== TESTE LOCAL =======
-# API_BASE_URL = "http://127.0.0.1:5001/api/v1"
-
-# if __name__ == '__main__':
-#     app.run(debug=True, host="0.0.0.0", port=5000)
+# === FLASK INTERNO ====
+if __name__ == '__main__':
+    app.run(debug=True, host="0.0.0.0", port=5000)

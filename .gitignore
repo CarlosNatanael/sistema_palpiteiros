@@ -12,6 +12,7 @@ notes.txt
 
 # Distribution / packaging
 config.py
+run_local.py
 .Python
 build/
 develop-eggs/
