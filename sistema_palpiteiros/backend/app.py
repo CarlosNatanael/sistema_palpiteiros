@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, flash, ses
 from collections import defaultdict
 from datetime import datetime
 from functools import wraps
-from config import MODERADORES
+from config import API_BASE_URL, MODERADORES
 import requests
 import sqlite3
 import pytz
