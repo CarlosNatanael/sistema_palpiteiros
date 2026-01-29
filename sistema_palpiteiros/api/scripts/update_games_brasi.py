@@ -2,7 +2,7 @@ import sqlite3
 import os
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-API_DB_PATH = os.path.join(BASE_DIR, 'api_data.db')
+API_DB_PATH = os.path.join(BASE_DIR, '..', 'api_data.db')
 
 NOVOS_JOGOS_E_CAMPEONATOS = {
   "Brasileirão 2026": [

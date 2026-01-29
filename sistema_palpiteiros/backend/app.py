@@ -12,7 +12,10 @@ import os
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DB_PATH = os.path.join(BASE_DIR, 'palpites.db')
 
-app = Flask(__name__)
+TEMPLATE_DIR = os.path.join(BASE_DIR, '..', 'frontend', 'templates')
+STATIC_DIR = os.path.join(BASE_DIR, '..', 'frontend', 'static')
+
+app = Flask(__name__, template_folder=TEMPLATE_DIR, static_folder=STATIC_DIR)
 app.secret_key = 'ALJDHA76797#%*#JKOL'
 TEMPORADA_ATUAL = "3ª Temporada"
 PALPITEIROS = ["Ariel", "Arthur", "Carlos", "Gabriel", "Lucas", "Jordan"]
