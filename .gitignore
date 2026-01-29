@@ -6,7 +6,7 @@ __pycache__/
 # Ignorar banco de dados
 *.sqlite3
 *.db
-
+notes.txt
 # C extensions
 *.so
 
