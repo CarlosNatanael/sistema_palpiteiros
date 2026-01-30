@@ -8,10 +8,6 @@ API_DB_PATH = os.path.join(BASE_DIR, '..', 'api_data.db')
 NOVOS_JOGOS_E_CAMPEONATOS = {
   "Copa do Mundo 2026": [
     {
-      "id": 2207, "rodada": 27, "fase": "grupos",
-      "time1_nome": "Mirassol", "time1_sigla": "MIR", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/5J3JY7fcdiDYU5rbPW7AKA_48x48.png",
-      "time2_nome": "Flamengo", "time2_sigla": "FLA", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/orE554NToSkH6nuwofe7Yg_48x48.png",
-      "data_hora": "2025-12-06 18:30", "local": "Estádio José Maria de Campos Maia"
     }
   ]
 }

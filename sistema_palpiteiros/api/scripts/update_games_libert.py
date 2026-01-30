@@ -7,10 +7,6 @@ API_DB_PATH = os.path.join(BASE_DIR, '..', 'api_data.db')
 NOVOS_JOGOS_E_CAMPEONATOS = {
     "Libertadores 2026": [
         {
-          "id": 3029, "rodada": 7, "fase": "mata-mata", "confronto_id": 15,
-          "time1_nome": "Palmeiras", "time1_sigla": "PAL", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/7spurne-xDt2p6C0imYYNA_48x48.png",
-          "time2_nome": "Flamengo", "time2_sigla": "FLA", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/orE554NToSkH6nuwofe7Yg_48x48.png",
-          "data_hora": "2025-11-29 19:00", "local": "Estádio Monumental"
         }
     ]
 }
