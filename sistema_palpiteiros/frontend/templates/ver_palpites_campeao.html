@@ -91,12 +91,10 @@
                     </tbody>
                 </table>
             </div>
-            {% else %}
             <div class="alert alert-info text-center shadow-sm">
-                <h4>Nenhum palpite registrado ainda!</h4>
-                <p>Vá em "Palpitar Campeão" e faça sua aposta.</p>
                 <a href="{{ url_for('palpite_campeao') }}" class="btn btn-primary mt-2">Fazer Palpite Agora</a>
             </div>
+            {% else %}
             {% endif %}
         </div>
 {% endblock %}
