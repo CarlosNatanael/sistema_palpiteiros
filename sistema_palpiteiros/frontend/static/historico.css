@@ -1,118 +1,76 @@
-/* Adicione isso ao seu arquivo CSS existente */
-
-/* Efeito de gradiente no cabeçalho */
-.gallery-header {
-    background: linear-gradient(135deg, #006400 0%, #228B22 100%);
-    color: white;
-    padding: 2rem 1rem;
-    border-radius: 0.75rem;
-    margin-bottom: 2rem;
-    box-shadow: 0 4px 12px rgba(0, 100, 0, 0.15);
+/* Fundo da Página mais escuro para destacar o ouro */
+body {
+    background-color: #1a1a1a;
+    background-image: radial-gradient(circle at center, #2b2b2b 0%, #1a1a1a 100%);
 }
 
-.gallery-header h1 {
-    color: white;
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
-}
-
-.gallery-header .lead {
-    color: rgba(255, 255, 255, 0.85) !important;
-}
-
-/* Melhorias nos cards de troféus */
-.trophy-plaque {
-    background: white;
-    border: none;
-    border-radius: 0.75rem;
-    padding: 1.5rem;
-    text-align: center;
-    height: 100%;
-    transition: all 0.3s ease;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+.trophy-card {
+    background: linear-gradient(145deg, #2c2c2c, #1f1f1f);
+    border: 1px solid #444;
+    border-radius: 15px;
     position: relative;
     overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
 }
 
-.trophy-plaque::before {
-    content: "";
+.trophy-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(212, 175, 55, 0.2); /* Brilho dourado ao passar o mouse */
+    border-color: #d4af37;
+}
+
+/* Faixa do Ano no topo */
+.trophy-year {
+    background-color: #d4af37; /* Dourado */
+    color: #000;
+    font-weight: 900;
+    font-size: 1.2rem;
+    text-align: center;
+    padding: 5px 0;
+    clip-path: polygon(0 0, 100% 0, 100% 80%, 50% 100%, 0 80%);
     position: absolute;
     top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, #006400 0%, #FFD700 100%);
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    z-index: 10;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.5);
 }
 
-.trophy-plaque:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 8px 20px rgba(0, 100, 0, 0.2);
+.trophy-body {
+    padding: 3.5rem 1.5rem 1.5rem 1.5rem; /* Padding top maior por causa do ano */
 }
 
-.trophy-icon {
-    font-size: 3.5rem;
-    color: #FFD700;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+.campeonato-title {
+    color: #aaa;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
     margin-bottom: 0.5rem;
 }
 
-.trophy-season {
-    font-size: 1.3rem;
-    font-weight: 700;
-    color: #006400;
-    margin: 0.5rem 0;
+.champion-name {
+    color: #fff;
+    font-weight: 800;
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    background: -webkit-linear-gradient(#fff, #ccc);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
-/* Melhorias no accordion */
-.accordion-item {
-    margin-bottom: 1.5rem;
-    border: none;
-    border-radius: 0.75rem !important;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+.vice-text {
+    color: #666;
+    font-size: 0.85rem;
 }
 
-.accordion-button {
-    font-size: 1.4rem;
-    padding: 1.25rem 1.5rem;
-    border-radius: 0.75rem !important;
+.trophy-footer {
+    background-color: rgba(0,0,0,0.2);
+    padding: 10px 15px;
+    border-top: 1px solid #333;
 }
 
-.accordion-button:not(.collapsed) {
-    background: linear-gradient(135deg, #006400 0%, #228B22 100%);
-}
-
-.accordion-body {
-    padding: 1.5rem;
-}
-
-/* Botão de voltar melhorado */
-.btn-success {
-    background: linear-gradient(135deg, #006400 0%, #228B22 100%);
-    border: none;
-    padding: 0.75rem 2rem;
-    font-weight: 600;
-    box-shadow: 0 2px 8px rgba(0, 100, 0, 0.2);
-    transition: all 0.3s ease;
-}
-
-.btn-success:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 100, 0, 0.3);
-}
-
-/* Rodapé melhorado */
-footer {
-    background: linear-gradient(135deg, #222 0%, #000 100%);
-    padding: 1.5rem 0;
-    margin-top: 3rem;
-}
-
-/* Responsividade */
-@media (max-width: 768px) {
-    .accordion-button {
-        font-size: 1.2rem;
-    }
-    
-    .trophy-plaque {
-        padding: 1rem;
-    }
-}
+/* Ícones específicos */
+.bi-trophy-fill { color: #d4af37; }

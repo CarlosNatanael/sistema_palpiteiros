@@ -99,7 +99,7 @@ def index():
         return render_template('index.html', anuncios=anuncios)
     
     # Lógica de rodadas
-    todas_rodadas = sorted(set(j['rodada'] for j in jogos_api_map.values()))
+    todas_rodadas = sorted(set(j['rodada'] for j in jogos_api_map.values())) # type: ignore
     rodada_ativa = request.args.get('rodada', type=int)
     
     if not rodada_ativa or rodada_ativa not in todas_rodadas:
@@ -123,7 +123,7 @@ def index():
     jogos_futuros_por_campeonato = defaultdict(list)
     jogos_passados_por_campeonato = defaultdict(list)
     
-    for jogo_id, jogo_base in jogos_api_map.items():
+    for jogo_id, jogo_base in jogos_api_map.items(): # type: ignore
         if jogo_base.get('rodada') == rodada_ativa:
             jogo = jogo_base.copy()
             if jogo_id in resultados_map:
@@ -165,7 +165,7 @@ def adicionar_palpites():
 def processar_palpites(conn):
     """Processa o envio de palpites."""
     nome = request.form.get('nome')
-    rodada_selecionada = int(request.form.get('rodada_selecionada'))
+    rodada_selecionada = int(request.form.get('rodada_selecionada')) # type: ignore
     campeonato = request.form.get('campeonato_selecionado')
     
     if not nome:
@@ -277,7 +277,7 @@ def chaveamento():
     
     # Organizar confrontos do mata-mata
     confrontos_mata_mata = defaultdict(lambda: {'ida': None, 'volta': None})
-    for game_id, jogo_api in jogos_api_map.items():
+    for game_id, jogo_api in jogos_api_map.items(): # type: ignore
         if jogo_api.get('fase') == 'mata-mata' and jogo_api.get('confronto_id'):
             jogo_completo = jogo_api.copy()
             if game_id in resultados_map:
@@ -291,19 +291,19 @@ def chaveamento():
                 confrontos_mata_mata[jogo_completo['confronto_id']]['volta'] = jogo_completo
     
     confrontos_ordenados = sorted(confrontos_mata_mata.values(), 
-                                 key=lambda c: c['ida']['id'] if c.get('ida') else 0)
+                                 key=lambda c: c['ida']['id'] if c.get('ida') else 0) # type: ignore
     
     # Separar por fases
-    oitavas = [c for c in confrontos_ordenados if c.get('ida') and 1 <= c['ida']['confronto_id'] <= 8]
-    quartas = [c for c in confrontos_ordenados if c.get('ida') and 9 <= c['ida']['confronto_id'] <= 12]
-    semis = [c for c in confrontos_ordenados if c.get('ida') and 13 <= c['ida']['confronto_id'] <= 14]
-    final = [c for c in confrontos_ordenados if c.get('ida') and c['ida']['confronto_id'] == 15]
+    oitavas = [c for c in confrontos_ordenados if c.get('ida') and 1 <= c['ida']['confronto_id'] <= 8] # type: ignore
+    quartas = [c for c in confrontos_ordenados if c.get('ida') and 9 <= c['ida']['confronto_id'] <= 12] # type: ignore
+    semis = [c for c in confrontos_ordenados if c.get('ida') and 13 <= c['ida']['confronto_id'] <= 14] # type: ignore
+    final = [c for c in confrontos_ordenados if c.get('ida') and c['ida']['confronto_id'] == 15] # type: ignore
     
     # Determinar campeão
     campeao = {'nome': 'A definir', 'img': 'https://placehold.co/80x80/eee/006400?text=?'}
-    if final and final[0].get('ida') and final[0]['ida'].get('time_que_avancou'):
-        winner_name = final[0]['ida']['time_que_avancou']
-        winner_img = final[0]['ida']['time1_img'] if final[0]['ida']['time1_nome'] == winner_name else final[0]['ida']['time2_img']
+    if final and final[0].get('ida') and final[0]['ida'].get('time_que_avancou'): # type: ignore
+        winner_name = final[0]['ida']['time_que_avancou'] # type: ignore
+        winner_img = final[0]['ida']['time1_img'] if final[0]['ida']['time1_nome'] == winner_name else final[0]['ida']['time2_img'] # type: ignore
         campeao = {'nome': winner_name, 'img': winner_img}
     
     return render_template('chaveamento.html', 
@@ -379,7 +379,7 @@ def calcular_sequencias_acertos(conn):
     palpites_com_data = []
     for palpite in palpites_db:
         palpite_dict = dict(palpite)
-        jogo_info = jogos_api_map.get(palpite['game_id'])
+        jogo_info = jogos_api_map.get(palpite['game_id']) # type: ignore
         if jogo_info:
             palpite_dict['data_hora'] = jogo_info.get('data_hora', '')
             palpites_com_data.append(palpite_dict)
@@ -460,7 +460,7 @@ def exibir_palpites():
             jogos_api_map[res['id']].update(dict(res))
     
     # Lógica de rodadas
-    rodadas_existentes = sorted(set(j['rodada'] for j in jogos_api_map.values()))
+    rodadas_existentes = sorted(set(j['rodada'] for j in jogos_api_map.values())) # type: ignore
     rodada_param = request.args.get('rodada', type=int)
     
     if rodada_param and rodada_param in rodadas_existentes:
@@ -566,17 +566,30 @@ def set_campeao_palpiteiro():
     flash(f'{nome_campeao} foi coroado Campeão da {temporada} ({competicao})!', 'success')
     return redirect(url_for('admin_dashboard'))
 
-@app.route('/historico')
+@app.route('/historico_campeoes')
 def historico_campeoes():
     conn = get_db()
-    campeoes_db = conn.execute("SELECT * FROM campeao_palpiteiros ORDER BY nome ASC, temporada ASC").fetchall()
+    historico = conn.execute('SELECT * FROM historico_campeoes ORDER BY ano DESC').fetchall()
     
-    campeoes_agrupados = defaultdict(list)
-    for campeao_data in campeoes_db:
-        campeao_dict = dict(campeao_data)
-        campeoes_agrupados[campeao_dict['nome']].append(campeao_dict)
-    
-    return render_template('historico.html', campeoes_agrupados=campeoes_agrupados)
+    contagem_titulos = {}
+    historico_processado = []
+
+    for item in sorted(historico, key=lambda x: x['ano']):
+        nome = item['campeao']
+        tipo_camp = item['campeonato']
+        
+        if nome not in contagem_titulos:
+            contagem_titulos[nome] = 0
+        contagem_titulos[nome] += 1
+        
+        novo_item = dict(item)
+        novo_item['numero_do_titulo'] = contagem_titulos[nome]
+        historico_processado.append(novo_item)
+
+    historico_processado.reverse()
+
+    return render_template('historico.html', campeoes=historico_processado)
+
 
 @app.route('/admin/set_game_result', methods=['GET', 'POST'])
 @login_required
@@ -738,21 +751,17 @@ def calcular_pontuacao_palpite(palpite, resultado_jogo, info_jogo):
     
     return 0, "Erro (0 pts)"
 
-def is_palpite_campeao_aberto():
+def is_palpite_campeao_aberto(): # type: ignore
     """Verifica no banco se os palpites de campeão estão liberados."""
     conn = get_db()
-    # Cria a tabela se não existir (para não dar erro na primeira vez)
     conn.execute('''
         CREATE TABLE IF NOT EXISTS configuracoes (
             chave TEXT PRIMARY KEY, 
             valor TEXT
         )
     ''')
-    
-    # Busca a configuração (1 = Aberto, 0 = Fechado)
     row = conn.execute("SELECT valor FROM configuracoes WHERE chave = 'palpite_campeao_ativo'").fetchone()
-    
-    # Se não tiver configuração salva, assume que está FECHADO (0) por segurança
+
     if not row:
         conn.execute("INSERT INTO configuracoes (chave, valor) VALUES ('palpite_campeao_ativo', '0')")
         conn.commit()
@@ -762,9 +771,7 @@ def is_palpite_campeao_aberto():
 
 # --- ATUALIZE O CONTEXT PROCESSOR ---
 def is_palpite_campeao_aberto():
-    """Verifica no banco se os palpites de campeão estão liberados."""
     conn = get_db()
-    # Cria a tabela se não existir (para não dar erro na primeira vez)
     conn.execute('''
         CREATE TABLE IF NOT EXISTS configuracoes (
             chave TEXT PRIMARY KEY, 
@@ -772,10 +779,7 @@ def is_palpite_campeao_aberto():
         )
     ''')
     
-    # Busca a configuração (1 = Aberto, 0 = Fechado)
     row = conn.execute("SELECT valor FROM configuracoes WHERE chave = 'palpite_campeao_ativo'").fetchone()
-    
-    # Se não tiver configuração salva, assume que está FECHADO (0) por segurança
     if not row:
         conn.execute("INSERT INTO configuracoes (chave, valor) VALUES ('palpite_campeao_ativo', '0')")
         conn.commit()
