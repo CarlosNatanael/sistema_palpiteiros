@@ -1,76 +1,63 @@
-/* Fundo da Página mais escuro para destacar o ouro */
+/* Fundo Elegante */
 body {
-    background-color: #1a1a1a;
-    background-image: radial-gradient(circle at center, #2b2b2b 0%, #1a1a1a 100%);
+    background-color: #121212;
+    background-image: linear-gradient(to bottom, #1a1a1a, #000);
+    min-height: 100vh;
 }
 
-.trophy-card {
-    background: linear-gradient(145deg, #2c2c2c, #1f1f1f);
-    border: 1px solid #444;
+/* Card da Lenda (Menu Principal) */
+.lenda-card {
+    background: linear-gradient(145deg, #252525, #1a1a1a);
+    border: 1px solid #333;
     border-radius: 15px;
-    position: relative;
-    overflow: hidden;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+    transition: all 0.3s ease;
+    cursor: pointer;
 }
 
-.trophy-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(212, 175, 55, 0.2); /* Brilho dourado ao passar o mouse */
+.lenda-card:hover {
+    transform: translateY(-10px);
     border-color: #d4af37;
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
 }
 
-/* Faixa do Ano no topo */
-.trophy-year {
-    background-color: #d4af37; /* Dourado */
-    color: #000;
-    font-weight: 900;
-    font-size: 1.2rem;
-    text-align: center;
-    padding: 5px 0;
-    clip-path: polygon(0 0, 100% 0, 100% 80%, 50% 100%, 0 80%);
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
+.avatar-lenda {
     width: 80px;
-    z-index: 10;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+    height: 80px;
+    background-color: #d4af37;
+    color: #000;
+    font-size: 2.5rem;
+    font-weight: bold;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
 }
 
-.trophy-body {
-    padding: 3.5rem 1.5rem 1.5rem 1.5rem; /* Padding top maior por causa do ano */
+/* Estilo do Troféu Real */
+.real-trophy {
+    max-height: 150px; /* Tamanho padrão da taça */
+    transition: transform 0.2s ease, filter 0.2s ease;
+    cursor: pointer;
 }
 
-.campeonato-title {
-    color: #aaa;
-    font-size: 0.9rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 0.5rem;
+.real-trophy:hover {
+    transform: scale(1.1);
+    filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.6)); /* Brilho dourado forte */
 }
 
-.champion-name {
-    color: #fff;
-    font-weight: 800;
-    font-size: 1.8rem;
-    margin-bottom: 0.5rem;
-    text-transform: uppercase;
-    background: -webkit-linear-gradient(#fff, #ccc);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+/* Modal Estilizado */
+.modal-content {
+    background-color: #1a1a1a;
+    border: 1px solid #444;
 }
 
-.vice-text {
-    color: #666;
-    font-size: 0.85rem;
+.modal-header {
+    border-bottom: 1px solid #333;
 }
 
-.trophy-footer {
-    background-color: rgba(0,0,0,0.2);
-    padding: 10px 15px;
-    border-top: 1px solid #333;
+.badge.bg-secondary {
+    background-color: #333 !important;
+    border: 1px solid #555;
 }
-
-/* Ícones específicos */
-.bi-trophy-fill { color: #d4af37; }

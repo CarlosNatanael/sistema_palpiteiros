@@ -569,30 +569,39 @@ def set_campeao_palpiteiro():
 @app.route('/historico')
 def historico_campeoes():
     conn = get_db()
-    historico_db = conn.execute('SELECT * FROM campeao_palpiteiros ORDER BY temporada ASC').fetchall()
     
-    contagem_titulos = {}
-    historico_processado = []
-
+    # Pegamos todos os títulos ordenados por temporada
+    historico_db = conn.execute('SELECT * FROM campeao_palpiteiros ORDER BY temporada DESC').fetchall()
+    
+    # Agrupamento: Nome do Jogador -> Lista de Títulos
+    galeria_lendas = defaultdict(list)
+    
     for item in historico_db:
-        nome = item['nome']
-        if nome not in contagem_titulos:
-            contagem_titulos[nome] = 0
-        contagem_titulos[nome] += 1
-        
-        novo_item = {
+        nome_comp = item['competicao'].lower()
+        if 'brasileir' in nome_comp:
+            img_trofeu = 'trofeus/brasileirao.png'
+        elif 'libertadores' in nome_comp:
+            img_trofeu = 'trofeus/libertadores.png'
+        elif 'copa' in nome_comp:
+            img_trofeu = 'trofeus/copa_brasil.png'
+        elif 'super' in nome_comp:
+            img_trofeu = 'trofeus/super_mundial.png'
+        else:
+            img_trofeu = 'trofeus/generico.png' # Caso crie um camp novo
+            
+        dados_titulo = {
             'ano': item['temporada'],
             'campeonato': item['competicao'],
-            'campeao': item['nome'],
-            'vice_campeao': item.keys().__contains__('vice_campeao') and item['vice_campeao'] or None,
-            'numero_do_titulo': contagem_titulos[nome]
+            'pontos': item['pontos'],
+            'acertos': item['acertos'],
+            'erros': item['erros'],
+            'imagem': img_trofeu
         }
         
-        historico_processado.append(novo_item)
+        galeria_lendas[item['nome']].append(dados_titulo)
 
-    historico_processado.reverse()
-
-    return render_template('historico.html', campeoes=historico_processado)
+    # Convertendo para dicionário normal para o Jinja ler fácil
+    return render_template('historico.html', galeria=dict(galeria_lendas))
 
 
 @app.route('/admin/set_game_result', methods=['GET', 'POST'])

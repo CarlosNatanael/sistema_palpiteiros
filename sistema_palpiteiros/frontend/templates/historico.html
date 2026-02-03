@@ -1,66 +1,88 @@
 {% extends "base.html" %}
 
-{% block title %}Galeria de Troféus{% endblock %}
+{% block title %}Sala de Troféus{% endblock %}
 
 {% block styles %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/historico.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='historico.css') }}">
 {% endblock %}
 
 {% block content %}
 <div class="container py-5">
-    <div class="text-center mb-5">
-        <h1 class="display-4 fw-bold text-uppercase" style="color: #d4af37; text-shadow: 2px 2px 4px #000;">
-            <i class="bi bi-trophy-fill me-3"></i>Galeria de Lendas
+    
+    <div class="text-center mb-5 fade-in">
+        <h1 class="display-4 fw-bold text-uppercase" style="color: #d4af37; text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);">
+            <i class="bi bi-bank2 me-3"></i>Hall da Fama
         </h1>
-        <p class="lead text-light">Hall da Fama do Sistema Palpiteiros</p>
+        <p class="lead text-light">Clique em uma lenda para visitar sua sala de troféus.</p>
     </div>
 
-    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-        {% for camp in campeoes %}
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 justify-content-center">
+        {% for nome_lenda, titulos in galeria.items() %}
         <div class="col">
-            <div class="trophy-card h-100">
-                
-                <div class="trophy-year">
-                    <span>{{ camp.ano }}</span>
-                </div>
+            <div class="lenda-card h-100 text-center p-4" data-bs-toggle="modal" data-bs-target="#modal-{{ nome_lenda | replace(' ', '-') }}">
+                <div class="avatar-lenda mb-3">
+                    {{ nome_lenda[0] }} </div>
+                <h2 class="text-white fw-bold">{{ nome_lenda }}</h2>
+                <span class="badge bg-warning text-dark fs-6 mt-2">
+                    <i class="bi bi-trophy-fill"></i> {{ titulos|length }} Títulos
+                </span>
+                <p class="text-muted mt-3 small">Clique para ver a coleção</p>
+            </div>
+        </div>
 
-                <div class="trophy-body text-center">
+        <div class="modal fade" id="modal-{{ nome_lenda | replace(' ', '-') }}" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content bg-dark border-warning">
                     
-                    <div class="trophy-icon mb-3">
-                        {% if 'Brasileirão' in camp.campeonato %}
-                            <i class="bi bi-trophy text-warning" style="font-size: 4rem; filter: drop-shadow(0 0 10px gold);"></i>
-                        {% elif 'Copa' in camp.campeonato %}
-                            <i class="bi bi-cup-fill text-success" style="font-size: 4rem; filter: drop-shadow(0 0 10px green);"></i>
-                        {% elif 'Libertadores' in camp.campeonato %}
-                            <i class="bi bi-globe-americas text-primary" style="font-size: 4rem; filter: drop-shadow(0 0 10px blue);"></i>
-                        {% else %}
-                            <i class="bi bi-award-fill text-info" style="font-size: 4rem;"></i>
-                        {% endif %}
+                    <div class="modal-header border-secondary">
+                        <h5 class="modal-title text-warning fw-bold">
+                            <i class="bi bi-collection-fill me-2"></i>Sala de Troféus: {{ nome_lenda }}
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
 
-                    <h3 class="campeonato-title">{{ camp.campeonato }}</h3>
-                    <h2 class="champion-name">{{ camp.campeao }}</h2>
-                    
-                    {% if camp.vice_campeao %}
-                    <p class="vice-text mb-0"><small>Vice: {{ camp.vice_campeao }}</small></p>
-                    {% endif %}
-                </div>
+                    <div class="modal-body p-4 text-center">
+                        <div class="row justify-content-center">
+                            {% for titulo in titulos %}
+                            <div class="col-md-4 col-6 mb-4">
+                                
+                                <div class="trofeu-container" type="button" data-bs-toggle="collapse" data-bs-target="#stats-{{ nome_lenda|replace(' ','') }}-{{ loop.index }}">
+                                    <img src="{{ url_for('static', filename=titulo.imagem) }}" 
+                                         class="img-fluid real-trophy drop-shadow" 
+                                         alt="{{ titulo.campeonato }}">
+                                    
+                                    <div class="mt-2 text-white fw-bold small">{{ titulo.campeonato }}</div>
+                                    <div class="badge bg-secondary">{{ titulo.ano }}</div>
+                                </div>
 
-                <div class="trophy-footer d-flex justify-content-between align-items-center">
-                    <span class="badge bg-dark border border-warning text-warning">
-                        <i class="bi bi-star-fill me-1"></i> {{ camp.numero_do_titulo }}º Título
-                    </span>
-                    <small class="text-muted fw-bold">TEMPORADA {{ camp.ano }}</small>
+                                <div class="collapse mt-2" id="stats-{{ nome_lenda|replace(' ','') }}-{{ loop.index }}">
+                                    <div class="card card-body bg-secondary text-white p-2 small border-0">
+                                        <div class="d-flex justify-content-between">
+                                            <span>Pontos:</span> <strong>{{ titulo.pontos }}</strong>
+                                        </div>
+                                        <div class="d-flex justify-content-between text-success">
+                                            <span>Acertos:</span> <strong>{{ titulo.acertos }}</strong>
+                                        </div>
+                                        <div class="d-flex justify-content-between text-danger">
+                                            <span>Erros:</span> <strong>{{ titulo.erros }}</strong>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    
                 </div>
             </div>
         </div>
         {% endfor %}
     </div>
 
-    {% if not campeoes %}
-    <div class="text-center mt-5 text-white">
-        <i class="bi bi-hourglass-split display-1"></i>
-        <h3>Nenhuma lenda forjada ainda...</h3>
+    {% if not galeria %}
+    <div class="text-center mt-5 text-muted">
+        <h3>A galeria ainda está vazia...</h3>
     </div>
     {% endif %}
 </div>
