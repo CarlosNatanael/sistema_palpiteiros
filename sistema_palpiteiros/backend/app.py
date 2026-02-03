@@ -738,10 +738,79 @@ def calcular_pontuacao_palpite(palpite, resultado_jogo, info_jogo):
     
     return 0, "Erro (0 pts)"
 
+def is_palpite_campeao_aberto():
+    """Verifica no banco se os palpites de campeão estão liberados."""
+    conn = get_db()
+    # Cria a tabela se não existir (para não dar erro na primeira vez)
+    conn.execute('''
+        CREATE TABLE IF NOT EXISTS configuracoes (
+            chave TEXT PRIMARY KEY, 
+            valor TEXT
+        )
+    ''')
+    
+    # Busca a configuração (1 = Aberto, 0 = Fechado)
+    row = conn.execute("SELECT valor FROM configuracoes WHERE chave = 'palpite_campeao_ativo'").fetchone()
+    
+    # Se não tiver configuração salva, assume que está FECHADO (0) por segurança
+    if not row:
+        conn.execute("INSERT INTO configuracoes (chave, valor) VALUES ('palpite_campeao_ativo', '0')")
+        conn.commit()
+        return False
+        
+    return row['valor'] == '1'
+
+# --- ATUALIZE O CONTEXT PROCESSOR ---
+def is_palpite_campeao_aberto():
+    """Verifica no banco se os palpites de campeão estão liberados."""
+    conn = get_db()
+    # Cria a tabela se não existir (para não dar erro na primeira vez)
+    conn.execute('''
+        CREATE TABLE IF NOT EXISTS configuracoes (
+            chave TEXT PRIMARY KEY, 
+            valor TEXT
+        )
+    ''')
+    
+    # Busca a configuração (1 = Aberto, 0 = Fechado)
+    row = conn.execute("SELECT valor FROM configuracoes WHERE chave = 'palpite_campeao_ativo'").fetchone()
+    
+    # Se não tiver configuração salva, assume que está FECHADO (0) por segurança
+    if not row:
+        conn.execute("INSERT INTO configuracoes (chave, valor) VALUES ('palpite_campeao_ativo', '0')")
+        conn.commit()
+        return False
+        
+    return row['valor'] == '1'
+
+@app.context_processor
+def injetar_variaveis_globais():
+    return dict(
+        temporada_atual=TEMPORADA_ATUAL,
+        palpites_campeao_aberto=is_palpite_campeao_aberto()
+    )
+
+@app.route('/admin/toggle_palpite_campeao', methods=['POST'])
+@login_required
+def toggle_palpite_campeao():
+    conn = get_db()
+    esta_aberto = is_palpite_campeao_aberto()
+    novo_valor = '0' if esta_aberto else '1'
+    
+    conn.execute("UPDATE configuracoes SET valor = ? WHERE chave = 'palpite_campeao_ativo'", (novo_valor,))
+    conn.commit()
+    
+    status_msg = "LIBERADOS" if novo_valor == '1' else "BLOQUEADOS"
+    flash(f'Palpites de Campeão foram {status_msg} com sucesso!', 'success')
+    return redirect(url_for('admin_dashboard'))
+
 @app.route('/palpite_campeao', methods=['GET', 'POST'])
 def palpite_campeao():
+    if not is_palpite_campeao_aberto():
+        flash('Os palpites para campeão estão encerrados no momento!', 'warning')
+        return redirect(url_for('ver_palpites_campeao'))
+
     conn = get_db()
-    
     if request.method == 'POST':
         return registrar_palpite_campeao(conn)
     
@@ -1001,10 +1070,6 @@ def reset_season():
         flash(f'Erro ao reiniciar temporada: {e}', 'danger')
 
     return redirect(url_for('admin_dashboard'))
-
-@app.context_processor
-def injetar_variaveis_globais():
-    return dict(temporada_atual=TEMPORADA_ATUAL)
 
 # @app.route('/')
 # def manutencao():

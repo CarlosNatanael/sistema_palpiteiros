@@ -7,9 +7,21 @@
 {% endblock %}
 
 {% block content %}
-        <h1>PALPITES DE CAMPEÃO</h1>
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1>PALPITES DE CAMPEÃO</h1>
+            
+            {% if palpites_campeao_aberto %}
+                <a href="{{ url_for('palpite_campeao') }}" class="btn btn-success btn-lg shadow animate-pulse">
+                    <i class="bi bi-trophy-fill me-2"></i>FAZER MEU PALPITE
+                </a>
+            {% else %}
+                <button class="btn btn-secondary" disabled>
+                    <i class="bi bi-lock-fill me-2"></i>Palpites Encerrados
+                </button>
+            {% endif %}
+        </div>
 
-        <div class="container mt-5">
+        <div class="container mt-4">
             
             <div class="mb-5">
                 <h2 class="text-center text-warning mb-4">🏆 Campeões Oficiais Definidos</h2>
@@ -91,10 +103,11 @@
                     </tbody>
                 </table>
             </div>
-            <div class="alert alert-info text-center shadow-sm">
-                <a href="{{ url_for('palpite_campeao') }}" class="btn btn-primary mt-2">Fazer Palpite Agora</a>
-            </div>
             {% else %}
+            <div class="alert alert-info text-center shadow-sm">
+                <h4>Nenhum palpite registrado ainda!</h4>
+                <p>Seja o primeiro a tentar a sorte.</p>
+            </div>
             {% endif %}
         </div>
 {% endblock %}
