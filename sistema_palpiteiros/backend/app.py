@@ -566,24 +566,28 @@ def set_campeao_palpiteiro():
     flash(f'{nome_campeao} foi coroado Campeão da {temporada} ({competicao})!', 'success')
     return redirect(url_for('admin_dashboard'))
 
-@app.route('/historico_campeoes')
+@app.route('/historico')
 def historico_campeoes():
     conn = get_db()
-    historico = conn.execute('SELECT * FROM historico_campeoes ORDER BY ano DESC').fetchall()
+    historico_db = conn.execute('SELECT * FROM campeao_palpiteiros ORDER BY temporada ASC').fetchall()
     
     contagem_titulos = {}
     historico_processado = []
 
-    for item in sorted(historico, key=lambda x: x['ano']):
-        nome = item['campeao']
-        tipo_camp = item['campeonato']
-        
+    for item in historico_db:
+        nome = item['nome']
         if nome not in contagem_titulos:
             contagem_titulos[nome] = 0
         contagem_titulos[nome] += 1
         
-        novo_item = dict(item)
-        novo_item['numero_do_titulo'] = contagem_titulos[nome]
+        novo_item = {
+            'ano': item['temporada'],
+            'campeonato': item['competicao'],
+            'campeao': item['nome'],
+            'vice_campeao': item.keys().__contains__('vice_campeao') and item['vice_campeao'] or None,
+            'numero_do_titulo': contagem_titulos[nome]
+        }
+        
         historico_processado.append(novo_item)
 
     historico_processado.reverse()
