@@ -527,9 +527,32 @@ def admin_dashboard():
     conn = get_db()
     pontuacao_geral = conn.execute("SELECT nome FROM pontuacao ORDER BY nome").fetchall()
     campeao_atual = conn.execute("SELECT nome FROM campeao_palpiteiros WHERE id = 1").fetchone()
+
+    jogos_db = conn.execute("SELECT * FROM jogos WHERE status = 'Adiado'").fetchall()
+    jogos_api_map = get_jogos_from_api(as_dict=True)
+
+    jogo_adiados = []
+    for jogo in jogos_db:
+        info_api = jogos_api_map.get(jogo['id'])
+        if info_api:
+            jogo_completo = dict(info_api)
+            jogo_completo.update(dict(jogo))
+            jogo_completo.append(jogo_completo)
+
     return render_template('admin_dashboard.html', 
                           pontuacao_geral=pontuacao_geral, 
-                          campeao_atual=campeao_atual)
+                          campeao_atual=campeao_atual,
+                          jogo_adiados=jogo_adiados)
+
+
+@app.route('/admin/reativar_jogo/<int:game_id>', methods=['POST'])
+@login_required
+def reativar_jogo(game_id):
+    conn = get_db()
+    conn.execute("DELETE FROM jogos WHERE id = ?", (game_id))
+    conn.commit()
+    flash('Partida reativada com sucesso! Ela voltará a ficar disponível como "Pendente/Ao Vivo".', 'success')
+    return redirect(url_for('admin_dashboard'))
 
 @app.route('/admin/set_campeao_palpiteiro', methods=['POST'])
 @login_required
@@ -623,11 +646,16 @@ def set_game_result():
 def salvar_resultado_jogo(conn):
     """Salva o resultado de um jogo."""
     game_id = int(request.form['game_id'])
-    placar1 = int(request.form['placar_time1'])
-    placar2 = int(request.form['placar_time2'])
-    avancou = request.form.get('time_que_avancou')
     
-    status_jogo = 'Finalizado' if request.form.get('status_finalizado') else 'Ao Vivo'
+    status_jogo = request.form.get('status_jogo', 'Ao Vivo')
+    
+    placar1_raw = request.form.get('placar_time1')
+    placar2_raw = request.form.get('placar_time2')
+    
+    placar1 = int(placar1_raw) if placar1_raw else 0
+    placar2 = int(placar2_raw) if placar2_raw else 0
+    
+    avancou = request.form.get('time_que_avancou')
     
     cursor = conn.cursor()
     cursor.execute("SELECT id FROM jogos WHERE id = ?", (game_id,))
@@ -640,7 +668,7 @@ def salvar_resultado_jogo(conn):
                       (game_id, placar1, placar2, status_jogo, avancou))
     
     conn.commit()
-    flash(f'Resultado do jogo {game_id} salvo como "{status_jogo}".', 'success')
+    flash(f'Resultado do jogo salvo como "{status_jogo}".', 'success')
     
     return redirect(url_for('set_game_result', 
                            campeonato_selecionado=request.form.get('campeonato_selecionado'), 
