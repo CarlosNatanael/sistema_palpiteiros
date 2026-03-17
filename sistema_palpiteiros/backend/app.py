@@ -570,17 +570,14 @@ def set_campeao_palpiteiro():
 def historico_campeoes():
     conn = get_db()
     
-    # Pegamos todos os títulos ordenados por temporada
     historico_db = conn.execute('SELECT * FROM campeao_palpiteiros ORDER BY temporada DESC').fetchall()
-    
-    # Agrupamento: Nome do Jogador -> Lista de Títulos
+
     galeria_lendas = defaultdict(list)
     
     for item in historico_db:
         nome_comp = item['competicao'].lower()
-        imagens_trofeus = [] # Agora é uma LISTA de troféus!
+        imagens_trofeus = []
         
-        # Usa 'if' soltos para poder acumular mais de uma taça
         if 'brasileir' in nome_comp:
             imagens_trofeus.append('trofeus/brasileirao.png')
         
@@ -596,7 +593,6 @@ def historico_campeoes():
         if 'mundial' in nome_comp and 'copa' not in nome_comp:
             imagens_trofeus.append('trofeus/super_mundial.png')
             
-        # Se por acaso não achar nenhuma palavra-chave, põe o genérico
         if not imagens_trofeus:
             imagens_trofeus.append('trofeus/generico.png')
             
@@ -606,7 +602,7 @@ def historico_campeoes():
             'pontos': item['pontos'],
             'acertos': item['acertos'],
             'erros': item['erros'],
-            'imagens': imagens_trofeus # Manda a lista inteira para o HTML
+            'imagens': imagens_trofeus
         }
         
         galeria_lendas[item['nome']].append(dados_titulo)
