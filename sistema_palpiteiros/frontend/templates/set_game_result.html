@@ -112,14 +112,29 @@
                     <input type="password" id="password" name="password" class="form-control" required>
                 </div>
 
-                <div class="form-group form-check mt-3 text-start">
-                    <input type="checkbox" class="form-check-input" id="status_finalizado" name="status_finalizado" value="true">
-                    <label class="form-check-label" for="status_finalizado">
-                        <strong>Marcar como Jogo Finalizado?</strong>
-                        <small class="form-text text-muted">
-                            Marque esta caixa APENAS se o jogo já terminou. A pontuação só será calculada para jogos finalizados.
-                        </small>
-                    </label>
+                <div class="form-group mt-3 text-start p-3 border rounded bg-light">
+                    <label class="mb-2 text-dark"><strong>Status da Partida:</strong></label>
+                    
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="radio" name="status_jogo" id="status_aovivo" value="Ao Vivo" checked onchange="togglePlacar(true)">
+                        <label class="form-check-label text-dark" for="status_aovivo">
+                            <strong>Ao Vivo / Pendente</strong> (Jogo ainda não acabou)
+                        </label>
+                    </div>
+                    
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="radio" name="status_jogo" id="status_finalizado" value="Finalizado" onchange="togglePlacar(true)">
+                        <label class="form-check-label text-success" for="status_finalizado">
+                            <strong>Finalizado</strong> (A pontuação será calculada com o placar acima)
+                        </label>
+                    </div>
+
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="status_jogo" id="status_adiado" value="Adiado" onchange="togglePlacar(false)">
+                        <label class="form-check-label text-danger" for="status_adiado">
+                            <strong>Adiado</strong> (Ocultar partida, placar não obrigatório)
+                        </label>
+                    </div>
                 </div>
 
                 <button type="submit" class="btn btn-primary btn-block">Definir Resultado</button>
@@ -157,6 +172,18 @@
                 selectAvanca.innerHTML = '';
             }
         });
+        function togglePlacar(isRequired) {
+            const placar1 = document.querySelector('input[name="placar_time1"]');
+            const placar2 = document.querySelector('input[name="placar_time2"]');
+            
+            placar1.required = isRequired;
+            placar2.required = isRequired;
+            
+            if(!isRequired) {
+                placar1.value = '';
+                placar2.value = '';
+            }
+        }
     </script>
 </body>
 </html>

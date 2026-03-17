@@ -167,6 +167,58 @@
                 {% endif %}
             </form>
         </div>
+
+        <hr>
+
+        <div class="admin-section border border-warning p-4 rounded" style="background-color: #fffdf5;">
+            <h3 class="text-warning" style="text-shadow: 1px 1px 1px #333;">
+                <i class="bi bi-clock-history text-dark"></i> Partidas Adiadas
+            </h3>
+            <p class="text-muted mb-4">
+                Gerencie as partidas que foram marcadas como "Adiado". Quando a partida for reagendada pela confederação, clique em <strong>Reativar</strong> para que ela volte a aceitar placares.
+            </p>
+
+            {% if jogos_adiados %}
+            <div class="table-responsive">
+                <table class="table table-hover table-bordered align-middle text-center bg-white shadow-sm">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Rodada</th>
+                            <th>Campeonato</th>
+                            <th>Confronto</th>
+                            <th>Ação</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for jogo in jogos_adiados %}
+                        <tr>
+                            <td class="fw-bold">{{ jogo.rodada }}ª Rodada</td>
+                            <td>{{ jogo.campeonato }}</td>
+                            <td>
+                                {% if jogo.time1_img %}<img src="{{ jogo.time1_img }}" width="30" class="me-2">{% endif %}
+                                {{ jogo.time1_nome }}
+                                <span class="mx-2 text-danger fw-bold">X</span>
+                                {{ jogo.time2_nome }}
+                                {% if jogo.time2_img %}<img src="{{ jogo.time2_img }}" width="30" class="ms-2">{% endif %}
+                            </td>
+                            <td>
+                                <form action="{{ url_for('reativar_jogo', game_id=jogo.id) }}" method="POST" onsubmit="return confirm('Deseja reativar esta partida?');">
+                                    <button type="submit" class="btn btn-success btn-sm fw-bold">
+                                        <i class="bi bi-arrow-repeat"></i> Reativar Partida
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="alert alert-secondary text-center">
+                <strong><i class="bi bi-check-circle text-success"></i> Tudo em dia!</strong> Nenhuma partida adiada no momento.
+            </div>
+            {% endif %}
+        </div>
         
         <hr>
 
