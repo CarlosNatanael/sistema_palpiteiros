@@ -578,16 +578,27 @@ def historico_campeoes():
     
     for item in historico_db:
         nome_comp = item['competicao'].lower()
+        imagens_trofeus = [] # Agora é uma LISTA de troféus!
+        
+        # Usa 'if' soltos para poder acumular mais de uma taça
         if 'brasileir' in nome_comp:
-            img_trofeu = 'trofeus/brasileirao.png'
-        elif 'libertadores' in nome_comp:
-            img_trofeu = 'trofeus/libertadores.png'
-        elif 'copa' in nome_comp:
-            img_trofeu = 'trofeus/copa_brasil.png'
-        elif 'super' in nome_comp:
-            img_trofeu = 'trofeus/super_mundial.png'
-        else:
-            img_trofeu = 'trofeus/generico.png' # Caso crie um camp novo
+            imagens_trofeus.append('trofeus/brasileirao.png')
+        
+        if 'libertadores' in nome_comp:
+            imagens_trofeus.append('trofeus/libertadores.png')
+            
+        if 'copa do brasil' in nome_comp or ('copa' in nome_comp and 'mundo' not in nome_comp):
+            imagens_trofeus.append('trofeus/copa_brasil.png')
+            
+        if 'copa do mundo' in nome_comp:
+            imagens_trofeus.append('trofeus/copa_do_mundo.png')
+            
+        if 'mundial' in nome_comp and 'copa' not in nome_comp:
+            imagens_trofeus.append('trofeus/super_mundial.png')
+            
+        # Se por acaso não achar nenhuma palavra-chave, põe o genérico
+        if not imagens_trofeus:
+            imagens_trofeus.append('trofeus/generico.png')
             
         dados_titulo = {
             'ano': item['temporada'],
@@ -595,12 +606,11 @@ def historico_campeoes():
             'pontos': item['pontos'],
             'acertos': item['acertos'],
             'erros': item['erros'],
-            'imagem': img_trofeu
+            'imagens': imagens_trofeus # Manda a lista inteira para o HTML
         }
         
         galeria_lendas[item['nome']].append(dados_titulo)
 
-    # Convertendo para dicionário normal para o Jinja ler fácil
     return render_template('historico.html', galeria=dict(galeria_lendas))
 
 

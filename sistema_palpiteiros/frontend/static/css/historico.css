@@ -61,3 +61,39 @@ body {
     background-color: #333 !important;
     border: 1px solid #555;
 }
+
+/* Estilo do Troféu Real */
+.real-trophy {
+    max-height: 110px; /* Um pouco menor para caberem duas confortavelmente */
+    width: auto;
+    transition: transform 0.2s ease, filter 0.2s ease;
+    cursor: pointer;
+}
+
+.real-trophy:hover {
+    transform: scale(1.15);
+    filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.8));
+}
+
+/* Container de cada troféu (Dá um fundo sutil e margem de clique) */
+.trofeu-container {
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.trofeu-container:hover {
+    background: rgba(212, 175, 55, 0.05); /* Fundo amarelado bem fraco */
+    border: 1px solid #d4af37;
+}
+
+/* Placa do nome do campeonato (Efeito Placa de Troféu) */
+.placa-campeonato {
+    background: linear-gradient(to bottom, #2a2a2a, #111);
+    border: 1px solid #444;
+    border-radius: 6px;
+    padding: 8px 4px;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.1), 0 2px 4px rgba(0,0,0,0.5);
+    border-bottom: 2px solid #d4af37; /* Detalhe dourado embaixo */
+    word-wrap: break-word; /* Força nomes longos a quebrarem de linha bonito */
+}

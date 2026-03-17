@@ -46,13 +46,24 @@
                             {% for titulo in titulos %}
                             <div class="col-md-4 col-6 mb-4">
                                 
-                                <div class="trofeu-container" type="button" data-bs-toggle="collapse" data-bs-target="#stats-{{ nome_lenda|replace(' ','') }}-{{ loop.index }}">
-                                    <img src="{{ url_for('static', filename=titulo.imagem) }}" 
-                                         class="img-fluid real-trophy drop-shadow" 
-                                         alt="{{ titulo.campeonato }}">
+                                <div class="trofeu-container p-2 rounded" type="button" data-bs-toggle="collapse" data-bs-target="#stats-{{ nome_lenda|replace(' ','') }}-{{ loop.index }}">
                                     
-                                    <div class="mt-2 text-white fw-bold small">{{ titulo.campeonato }}</div>
-                                    <div class="badge bg-secondary">{{ titulo.ano }}</div>
+                                    <div class="d-flex justify-content-center align-items-end gap-2 mb-2" style="min-height: 100px;">
+                                        {% for img_caminho in titulo.imagens %}
+                                            <img src="{{ url_for('static', filename=img_caminho) }}" 
+                                                 class="img-fluid real-trophy drop-shadow" 
+                                                 alt="Troféu">
+                                        {% endfor %}
+                                    </div>
+                                    
+                                    <div class="placa-campeonato mt-3">
+                                        <div class="text-white fw-bold lh-sm text-uppercase" style="font-size: 0.75rem;">
+                                            {{ titulo.campeonato }}
+                                        </div>
+                                        <div class="badge bg-dark border border-secondary mt-2">
+                                            {{ titulo.ano }}
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <div class="collapse mt-2" id="stats-{{ nome_lenda|replace(' ','') }}-{{ loop.index }}">
