@@ -20,9 +20,10 @@
         {% for nome_lenda, titulos in galeria.items() %}
         <div class="col">
             <div class="lenda-card h-100 text-center p-4" data-bs-toggle="modal" data-bs-target="#modal-{{ nome_lenda | replace(' ', '-') }}">
-                <div class="avatar-lenda mb-3">
-                    {{ nome_lenda[0] }} </div>
-                <h2 class="text-white fw-bold">{{ nome_lenda }}</h2>
+                <div class="icone-destaque mb-3">
+                    <i class="class=bi bi-trophy me-2" style="font-size: 2.5rem; filter: drop-shadow(0 0 10px rgba(255,193,7,0.5));"></i>
+                </div>
+                <h2 class="text-black fw-bold">{{ nome_lenda }}</h2>
                 <span class="badge bg-warning text-dark fs-6 mt-2">
                     <i class="bi bi-trophy-fill"></i> {{ titulos|length }} Títulos
                 </span>
