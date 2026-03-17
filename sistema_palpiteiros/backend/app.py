@@ -531,18 +531,18 @@ def admin_dashboard():
     jogos_db = conn.execute("SELECT * FROM jogos WHERE status = 'Adiado'").fetchall()
     jogos_api_map = get_jogos_from_api(as_dict=True)
 
-    jogo_adiados = []
+    jogos_adiados = []
     for jogo in jogos_db:
         info_api = jogos_api_map.get(jogo['id'])
         if info_api:
             jogo_completo = dict(info_api)
             jogo_completo.update(dict(jogo))
-            jogo_completo.append(jogo_completo)
-
+            jogos_adiados.append(jogo_completo)
+            
     return render_template('admin_dashboard.html', 
                           pontuacao_geral=pontuacao_geral, 
                           campeao_atual=campeao_atual,
-                          jogo_adiados=jogo_adiados)
+                          jogos_adiados=jogos_adiados)
 
 
 @app.route('/admin/reativar_jogo/<int:game_id>', methods=['POST'])
