@@ -117,7 +117,13 @@
                             <span class="team-sigla">{{ jogo.time1_sigla }}</span>
                         </div>
                         <div class="match-center">
-                            <div class="match-date">{{ jogo.data_hora }}</div>
+                            {% if jogo.status == 'Adiado' %}
+                                <span class="badge bg-danger px-2 py-1 shadow-sm text-uppercase mt-1" style="letter-spacing: 1px; font-size: 0.7rem;">
+                                    <i class="bi bi-exclamation-octagon-fill"></i> Adiado
+                                </span>
+                            {% else %}
+                                <div class="match-date">{{ jogo.data_hora }}</div>
+                            {% endif %}
                         </div>
                         <div class="team team-away">
                             <span class="team-sigla">{{ jogo.time2_sigla }}</span>
@@ -143,7 +149,11 @@
                             <span class="team-sigla">{{ jogo.time1_sigla }}</span>
                         </div>
                         <div class="match-center">
-                            {% if jogo.status == 'Processado' or jogo.status == 'Finalizado' %}
+                            {% if jogo.status == 'Adiado' %}
+                                <span class="badge bg-danger px-2 py-1 shadow-sm text-uppercase mt-1" style="letter-spacing: 1px; font-size: 0.7rem;">
+                                    <i class="bi bi-exclamation-octagon-fill"></i> Adiado
+                                </span>
+                            {% elif jogo.status == 'Processado' or jogo.status == 'Finalizado' %}
                                 <div class="match-status finished">FIM</div>
                                 <div class="match-score">{{ jogo.placar_time1 }} - {{ jogo.placar_time2 }}</div>
                             {% elif jogo.status == 'Ao Vivo' %}
