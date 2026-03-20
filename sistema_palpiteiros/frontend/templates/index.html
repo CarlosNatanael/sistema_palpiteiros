@@ -141,7 +141,24 @@
                 <h3 class="card-title mb-3"><i class="fa-solid fa-futbol me-2"></i>Resultados Anteriores</h3>
                 {% for campeonato, jogos in jogos_passados_por_campeonato.items() %}
                 <div class="table-container mb-4">
-                    <h4 class="oI"><i class="bi bi-trophy me-2"></i>{{ campeonato }}</h4>
+                    <div class="campeonato-header text-center mb-3">
+                        {% set camp_lower = campeonato | lower %}
+                        {% set logo_file = 'logos/generico.png' %}
+                        
+                        {% if 'brasileir' in camp_lower %}{% set logo_file = 'logos/brasileirao.png' %}
+                        {% elif 'libertadores' in camp_lower %}{% set logo_file = 'logos/libertadores.png' %}
+                        {% elif 'copa do brasil' in camp_lower %}{% set logo_file = 'logos/copa_do_mundo.png' %}
+                        {% endif %}
+
+                        <img src="{{ url_for('static', filename=logos) }}" 
+                             alt="{{ campeonato }}" 
+                             class="campeonato-logo"
+                             onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                        
+                        <h4 class="oI text-start fallback-title" style="display: none; margin: 0;">
+                            <i class="bi bi-trophy me-2"></i>{{ campeonato }}
+                        </h4>
+                    </div>
                     {% for jogo in jogos %}
                     <div class="result-row">
                         <div class="team team-home">

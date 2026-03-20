@@ -927,3 +927,32 @@ footer {
 .aviso-icon-v2.aviso-success { background-color: #198754; } /* Verde (Sucesso) */
 .aviso-icon-v2.aviso-warning { background-color: #ffc107; } /* Amarelo (Atenção) */
 .aviso-icon-v2.aviso-danger  { background-color: #dc3545; } /* Vermelho (Urgente) */
+
+/* --- LOGOS DOS CAMPEONATOS (Issue #16) --- */
+.campeonato-header {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.05);
+}
+
+.campeonato-logo {
+    max-height: 45px;
+    max-width: 250px;
+    width: auto;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+    transition: transform 0.2s ease;
+}
+
+.campeonato-logo:hover {
+    transform: scale(1.05);
+}
+
+@media (max-width: 400px) {
+    .campeonato-logo {
+        max-height: 35px;
+    }
+}
