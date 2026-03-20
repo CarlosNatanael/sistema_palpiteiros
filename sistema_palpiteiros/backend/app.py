@@ -7,6 +7,7 @@ import requests
 import sqlite3
 import pytz
 import os
+import re
 
 # --- Configurações ---
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -478,8 +479,26 @@ def exibir_palpites():
     
     # Agrupar palpites
     palpites_agrupados = defaultdict(list)
+    pontos_da_rodada = defaultdict(int)
+
     for palpite in palpites_db:
-        palpites_agrupados[palpite['nome']].append(dict(palpite))
+        palpite_dict = dict(palpite)
+        nome = palpite_dict['nome']
+        palpites_agrupados[nome].append(palpite_dict)
+
+        status = palpite_dict.get('status', '')
+        match = re.search(r'\((\d+)\s*pts?\)', status)
+        if match:
+            pontos_da_rodada[nome] += int(match.group(1))
+    
+    craque_nome = None
+    craque_pontos = 0
+    if pontos_da_rodada:
+        maior_pontuacao = max(pontos_da_rodada.values())
+        if maior_pontuacao > 0:
+            melhores = [n for n, pts in pontos_da_rodada.items() if pts == maior_pontuacao]
+            craque_nome = " & ".join(melhores)
+            craque_pontos = maior_pontuacao
     
     # Navegação entre rodadas
     idx_rodada = rodadas_existentes.index(rodada_para_exibir) if rodada_para_exibir in rodadas_existentes else -1
@@ -496,7 +515,9 @@ def exibir_palpites():
         tem_proxima=tem_proxima,
         proxima_rodada=proxima_rodada,
         tem_anterior=tem_anterior,
-        anterior_rodada=anterior_rodada
+        anterior_rodada=anterior_rodada,
+        craque_nome=craque_nome,
+        craque_pontos=craque_pontos
     )
 
 @app.route('/login', methods=['GET', 'POST'])
