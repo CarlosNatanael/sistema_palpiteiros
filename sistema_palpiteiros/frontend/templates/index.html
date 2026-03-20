@@ -109,7 +109,25 @@
                 <h3 class="card-title mb-3"><i class="bi bi-calendar-event me-2"></i>Próximos Jogos</h3>
                 {% for campeonato, jogos in jogos_futuros_por_campeonato.items() %}
                 <div class="table-container mb-4">
-                    <h4 class="oI"><i class="bi bi-trophy me-2"></i>{{ campeonato }}</h4>
+                    <div class="campeonato-header text-center mb-3">
+                        {% set camp_lower = campeonato | lower %}
+                        
+                        {% if 'brasileir' in camp_lower %}
+                            <img src="{{ url_for('static', filename='logos/brasileirao.png') }}" alt="{{ campeonato }}" class="campeonato-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                            <h4 class="oI text-center fallback-title" style="display: none; margin: 0;"><i class="bi bi-trophy me-2"></i>{{ campeonato }}</h4>
+                            
+                        {% elif 'libertadores' in camp_lower %}
+                            <img src="{{ url_for('static', filename='logos/Libertadores.png') }}" alt="{{ campeonato }}" class="campeonato-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                            <h4 class="oI text-center fallback-title" style="display: none; margin: 0;"><i class="bi bi-trophy me-2"></i>{{ campeonato }}</h4>
+                            
+                        {% elif 'mundo' in camp_lower or 'mundial' in camp_lower %}
+                            <img src="{{ url_for('static', filename='logos/copo_do_mundo.png') }}" alt="{{ campeonato }}" class="campeonato-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                            <h4 class="oI text-center fallback-title" style="display: none; margin: 0;"><i class="bi bi-trophy me-2"></i>{{ campeonato }}</h4>
+                            
+                        {% else %}
+                            <h4 class="oI text-center" style="margin: 0;"><i class="bi bi-trophy me-2"></i>{{ campeonato }}</h4>
+                        {% endif %}
+                    </div>
                     {% for jogo in jogos %}
                     <div class="match-row">
                         <div class="team team-home">
@@ -150,7 +168,7 @@
                         {% elif 'copa do brasil' in camp_lower %}{% set logo_file = 'logos/copa_do_mundo.png' %}
                         {% endif %}
 
-                        <img src="{{ url_for('static', filename=logos) }}" 
+                        <img src="{{ url_for('static', filename=logo_file) }}" 
                              alt="{{ campeonato }}" 
                              class="campeonato-logo"
                              onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
