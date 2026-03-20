@@ -517,7 +517,8 @@ def exibir_palpites():
         tem_anterior=tem_anterior,
         anterior_rodada=anterior_rodada,
         craque_nome=craque_nome,
-        craque_pontos=craque_pontos
+        craque_pontos=craque_pontos,
+        pontos_da_rodada=pontos_da_rodada
     )
 
 @app.route('/login', methods=['GET', 'POST'])
