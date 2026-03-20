@@ -20,6 +20,26 @@
                     {% if tem_proxima %}<a href="{{ url_for('exibir_palpites', rodada=proxima_rodada) }}" class="btn btn-outline-secondary">Rodada {{ proxima_rodada }} &raquo;</a>{% else %}<span></span>{% endif %}
                 </nav>
 
+                {% if craque_nome %}
+                <div class="row justify-content-center mb-4 mt-2">
+                    <div class="col-md-10 col-lg-8">
+                        <div class="card shadow-sm border-0" style="border-radius: 12px; background: linear-gradient(135deg, #f1c40f 0%, #f39c12 100%);">
+                            <div class="card-body text-center py-3">
+                                <h6 class="text-uppercase fw-bold mb-1" style="letter-spacing: 2px; color: rgba(0,0,0,0.6);">
+                                    <i class="bi bi-star-fill"></i> Craque da Rodada {{ rodada_exibida_num }} <i class="bi bi-star-fill"></i>
+                                </h6>
+                                <h2 class="mb-0 text-uppercase text-dark" style="text-shadow: 1px 1px 0px rgba(255,255,255,0.4); font-weight: 900;">
+                                    {{ craque_nome }} 
+                                    <span class="badge bg-dark text-warning ms-2 shadow" style="font-size: 1.1rem; vertical-align: middle;">
+                                        {{ craque_pontos }} pts
+                                    </span>
+                                </h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+
                 {% if palpites_agrupados %}
                 <div class="accordion" id="accordionPalpites">
                     {% for nome, palpites_do_jogador in palpites_agrupados.items() %}
