@@ -1,109 +1,243 @@
 {% extends "base.html" %}
 
-{% block title %}Regras - Sistema de Palpites{% endblock %}
+{% block title %}Livro de Regras - Sistema de Palpites{% endblock %}
 
 {% block styles %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/regra.css') }}">
+<style>
+    .regras-header {
+        background: linear-gradient(135deg, #111 0%, #2a2a2a 100%);
+        color: #d4af37;
+        padding: 40px 20px;
+        border-radius: 12px;
+        margin-bottom: 40px;
+        text-align: center;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+        border: 1px solid #d4af37;
+    }
+    
+    /* Estilização do Menu Lateral */
+    .nav-pills .nav-link {
+        color: #555;
+        font-weight: bold;
+        border-radius: 8px;
+        margin-bottom: 8px;
+        padding: 12px 20px;
+        text-align: left;
+        transition: all 0.2s ease;
+        border: 1px solid transparent;
+    }
+    .nav-pills .nav-link:hover {
+        background-color: #f8f9fa;
+        border-color: #eee;
+    }
+    
+    /* 🐛 CORREÇÃO DO BUG AQUI: Adicionado !important */
+    .nav-pills .nav-link.active {
+        background-color: #006400 !important;
+        color: #ffffff !important;
+        box-shadow: 0 4px 10px rgba(0,100,0,0.2) !important;
+    }
+    /* Opcional: Garante que os ícones fiquem brancos também quando selecionados */
+    .nav-pills .nav-link.active i {
+        color: #ffffff !important;
+    }
+    
+    /* Estilização dos Cards de Regra */
+    .rule-card {
+        border: none;
+        border-left: 5px solid #006400;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        margin-bottom: 20px;
+        transition: transform 0.2s ease;
+    }
+    .rule-card:hover {
+        transform: translateX(5px);
+    }
+    .points-badge {
+        font-size: 1.1rem;
+        padding: 10px 15px;
+        border-radius: 8px;
+        min-width: 100px;
+        text-align: center;
+    }
+</style>
 {% endblock %}
 
 {% block content %}
-    <div class="text-center mb-5">
-        <h1 class="display-4 fw-bold" style="color: #006400;">REGRAS DO JOGO</h1>
-        <p class="lead text-muted">Entenda como funciona a pontuação e os bônus.</p>
+<div class="container pb-5">
+    
+    <div class="regras-header">
+        <h1 class="fw-black text-uppercase mb-2" style="letter-spacing: 2px;">
+            <i class="bi bi-book-half me-2"></i> Livro de Regras
+        </h1>
+        <p class="text-light mb-0 fs-5" style="opacity: 0.9;">Tudo o que você precisa saber para se tornar a próxima Lenda da liga.</p>
     </div>
 
-    <div class="row g-4">
-        <div class="col-lg-6">
-            <div class="card h-100 shadow-sm">
-                <div class="card-header bg-dark text-white">
-                    <h3 class="card-title mb-0"><i class="bi bi-file-ruled-fill me-2"></i>Sistema de Pontuação</h3>
-                </div>
-                <div class="card-body">
-                    <h5 class="card-subtitle mb-2 text-muted">Partidas Brasileirão</h5>
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item d-flex justify-content-between align-items-center">Acerto do Placar + Resultado <span class="badge bg-success rounded-pill">4 pts</span></li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">Acerto Apenas do Placar <span class="badge bg-info text-dark rounded-pill">2 pts</span></li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">Acertar apenas o resultado <span class="badge bg-primary rounded-pill">1 pt</span></li>
-                    </ul>
-                    <hr>
-                    <h5 class="card-subtitle mb-2 text-muted">Partidas Mata-Mata</h5>
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item d-flex justify-content-between align-items-center">Placar + Resultado + Avanço <span class="badge bg-success rounded-pill">5 pts</span></li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">Placar + Resultado <span class="badge bg-info text-dark rounded-pill">4 pts</span></li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">Placar + Avanço <span class="badge bg-info text-dark rounded-pill">3 pts</span></li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">Resultado + Avanço <span class="badge bg-secondary rounded-pill">2 pts</span></li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">Apenas o Placar <span class="badge bg-secondary rounded-pill">2 pts</span></li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">Apenas o Resultado <span class="badge bg-primary rounded-pill">1 pt</span></li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">Apenas quem Avança <span class="badge bg-primary rounded-pill">1 pt</span></li>
-                    </ul>
-                </div>
+    <div class="row">
+        <div class="col-lg-3 mb-4">
+            <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                <button class="nav-link active" id="tab-brasileirao" data-bs-toggle="pill" data-bs-target="#content-brasileirao" type="button" role="tab">
+                    <i class="bi bi-trophy-fill me-2 text-warning"></i> Pontos Corridos
+                </button>
+                <button class="nav-link" id="tab-matamata" data-bs-toggle="pill" data-bs-target="#content-matamata" type="button" role="tab">
+                    <i class="bi bi-diagram-3-fill me-2 text-primary"></i> Mata-Mata
+                </button>
+                <button class="nav-link" id="tab-bonus" data-bs-toggle="pill" data-bs-target="#content-bonus" type="button" role="tab">
+                    <i class="bi bi-fire me-2 text-danger"></i> Bônus
+                </button>
+                <button class="nav-link" id="tab-premiacao" data-bs-toggle="pill" data-bs-target="#content-premiacao" type="button" role="tab">
+                    <i class="bi bi-cash-coin me-2 text-success"></i> Premiação
+                </button>
+                <button class="nav-link" id="tab-sobre" data-bs-toggle="pill" data-bs-target="#content-sobre" type="button" role="tab">
+                    <i class="bi bi-house-heart-fill me-2 text-info"></i> Sobre o Site
+                </button>
+                <button class="nav-link" id="tab-ficha" data-bs-toggle="pill" data-bs-target="#content-ficha" type="button" role="tab">
+                    <i class="bi bi-info-circle-fill me-2 text-secondary"></i> Ficha Técnica
+                </button>
             </div>
         </div>
 
-        <div class="col-lg-6">
-            <div class="card h-100 shadow-sm">
-                <div class="card-header bg-warning">
-                    <h3 class="card-title mb-0"><i class="bi bi-star-fill me-2"></i>Bônus e Regras Gerais</h3>
-                </div>
-                <div class="card-body d-flex flex-column">
-                    <h5 class="card-subtitle mb-2 text-muted">Bônus Adicionais</h5>
-                    <p><strong>Bônus por Sequência:</strong> Acerte 3 palpites seguidos (qualquer tipo de acerto) na mesma rodada para ganhar um bônus de <strong>3 pontos</strong>. Errou? A sequência zera!</p>
-                    <p><strong>Bônus do Campeão:</strong> Acertar o grande campeão do torneio rende <strong>5 pontos</strong> extras ao final da competição.</p>
-                    <hr>
-                    <h5 class="card-subtitle mb-2 text-muted">Regras dos Palpites</h5>
-                    <ul class="list-unstyled">
-                        <li class="mb-2"><i class="bi bi-x-circle-fill text-danger me-2"></i>Os palpites são bloqueados no horário de início de cada partida.</li>
-                        <li class="mb-2"><i class="bi bi-lock-fill text-secondary me-2"></i>Não é possível alterar um palpite após o bloqueio.</li>
-                        <li><i class="bi bi-arrow-repeat text-primary me-2"></i>A pontuação é atualizada pelo administrador após o fim dos jogos da rodada.</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
+        <div class="col-lg-9">
+            <div class="tab-content bg-white p-4 rounded shadow-sm border" id="v-pills-tabContent">
+                
+                <div class="tab-pane fade show active" id="content-brasileirao" role="tabpanel">
+                    <h3 class="fw-bold text-dark border-bottom pb-3 mb-4">Brasileirão (Pontos Corridos)</h3>
+                    
+                    <div class="card rule-card card-body">
+                        <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+                            <div>
+                                <h5 class="fw-bold text-success mb-1">Acerto na Mosca (Resultado Exato)</h5>
+                                <p class="text-muted mb-0">Você acertou o número de gols de cada time e quem ganhou. Ex: Palpitou 2x1 e o jogo foi 2x1.</p>
+                            </div>
+                            <span class="badge bg-success points-badge shadow">+4 Pontos</span>
+                        </div>
+                    </div>
 
-    <div class="row g-4 mt-4">
-        <div class="col-lg-6">
-            <div class="card h-100 shadow-sm">
-                <div class="card-header" style="background-color: #d4af37;">
-                    <h3 class="card-title mb-0 text-dark"><i class="bi bi-award-fill me-2"></i>Premiação</h3>
-                </div>
-                <div class="card-body">
-                    <p class="fs-5"><strong>Prêmio para o Top 2:</strong></p>
-                    <p><strong>1º Lugar:</strong> Uma camiseta do time do coração.</p>
-                    <p><strong>2º Lugar:</strong> Uma torre de chopp.</p>
-                </div>
-            </div>
-        </div>
+                    <div class="card rule-card card-body" style="border-left-color: #0d6efd;">
+                        <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+                            <div>
+                                <h5 class="fw-bold text-primary mb-1">Acerto de Placar</h5>
+                                <p class="text-muted mb-0">Você acertou o número de gols (mas errou quem ganhou). Ex: Palpitou 2x0 e o jogo foi 2x0.</p>
+                            </div>
+                            <span class="badge bg-primary points-badge shadow">+2 Pontos</span>
+                        </div>
+                    </div>
 
-        <div class="col-lg-6">
-            <div class="card h-100 shadow-sm">
-                <div class="card-header bg-secondary text-white">
-                    <h3 class="card-title mb-0"><i class="bi bi-info-circle-fill me-2"></i>Ficha Técnica</h3>
+                    <div class="card rule-card card-body" style="border-left-color: #ffc107;">
+                        <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+                            <div>
+                                <h5 class="fw-bold text-warning mb-1">Acerto Simples (Vencedor ou Empate)</h5>
+                                <p class="text-muted mb-0">Acertou apenas quem venceu ou que seria empate. Ex: Palpitou 1x0 e o jogo foi 3x0.</p>
+                            </div>
+                            <span class="badge bg-warning text-dark points-badge shadow">+1 Ponto</span>
+                        </div>
+                    </div>
                 </div>
-                <div class="card-body">
-                    <ul class="list-group list-group-flush">
+
+                <div class="tab-pane fade" id="content-matamata" role="tabpanel">
+                    <h3 class="fw-bold text-dark border-bottom pb-3 mb-4">Copas (Mata-Mata)</h3>
+                    <p class="text-muted mb-4">Nas fases eliminatórias, além do placar do jogo, você pontua ao acertar a equipe que avança de fase.</p>
+                    
+                    <div class="card rule-card card-body" style="border-left-color: #6f42c1;">
+                        <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+                            <div>
+                                <h5 class="fw-bold mb-1" style="color: #6f42c1;">Acerto de Classificação</h5>
+                                <p class="text-muted mb-0">Pontuação extra concedida ao acertar qual time avança para a próxima fase (independente se foi nos pênaltis).</p>
+                            </div>
+                            <span class="badge points-badge shadow" style="background-color: #6f42c1;">+1 Ponto Extra</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="content-bonus" role="tabpanel">
+                    <h3 class="fw-bold text-dark border-bottom pb-3 mb-4">Sistema de Bônus (Streaks)</h3>
+                    
+                    <div class="text-center mb-4 mt-3">
+                        <i class="bi bi-fire text-danger" style="font-size: 4rem;"></i>
+                        <h4 class="fw-bold mt-2">Sequência On Fire!</h4>
+                    </div>
+                    
+                    <div class="alert alert-danger shadow-sm border-0 bg-opacity-10">
+                        <h5 class="alert-heading fw-bold text-danger"><i class="bi bi-exclamation-triangle-fill me-2"></i> Como Funciona?</h5>
+                        <p class="mb-0 text-dark">Se um palpiteiro conseguir emplacar uma sequência de <strong>3 acertos consecutivos</strong> (de qualquer tipo: placar exato, vencedor, etc. Sem nenhum erro no meio da sequência), ele entra no modo "On Fire" e recebe imediatamente <strong>+3 Pontos de Bônus</strong> na tabela geral!</p>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="content-premiacao" role="tabpanel">
+                    <h3 class="fw-bold text-dark border-bottom pb-3 mb-4">Premiação da Temporada</h3>
+                    <div class="alert alert-success text-center py-5">
+                        <i class="bi bi-cash-stack mb-3 d-block" style="font-size: 3rem;"></i>
+                        <h4 class="fw-bold">A definir pela Liga</h4>
+                        <p class="mb-0">Combine com os participantes o valor da inscrição e como o pote final será dividido entre os primeiros colocados!</p>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="content-sobre" role="tabpanel">
+                    <h3 class="fw-bold text-dark border-bottom pb-3 mb-4">A História do Palpiteiros</h3>
+                    
+                    <div class="text-center mb-4">
+                        <i class="bi bi-rocket-takeoff-fill text-info mb-3 d-block" style="font-size: 3.5rem;"></i>
+                        <p class="fs-5 text-muted fw-bold fst-italic">"A paixão pelo futebol e a resenha entre amigos, agora em um só lugar."</p>
+                    </div>
+                    
+                    <div class="card bg-light border-0 p-4 shadow-sm">
+                        <p class="mb-3">
+                            O <strong>Sistema de Palpites</strong> nasceu em 2024 com um objetivo muito simples: acabar com as planilhas confusas e automatizar a brincadeira. 
+                        </p>
+                        <p class="mb-3">
+                            O que começou como uma ferramenta local tomou proporções enormes. Hoje, tenho muito orgulho em dizer que este é um projeto <em>Open Source</em> (código aberto) de destaque. A estrutura que você usa hoje foi avaliada e utilizada como projeto para o <strong>Programa de Desenvolvedores do Google</strong>, além de ter servido como portfólio oficial para a minha aprovação no seleto <strong>Programa de Desenvolvedores da NVIDIA</strong>.
+                        </p>
+                        <p class="mb-4">
+                            Nada disso seria possível sem a nossa comunidade. Deixo aqui o meu sincero agradecimento a todos os mantenedores do código, moderadores e a cada palpiteiro que participa ativamente. Os feedbacks de vocês foram o combustível para essa evolução incrível do site.
+                        </p>
+                        
+                        <hr class="my-3">
+                        
+                        <div class="text-center mt-3">
+                            <p class="mb-1 fw-bold text-success fs-5">
+                                Prepare seus palpites e que vença o melhor!
+                            </p>
+                            <p class="text-muted small mt-2 mb-0">
+                                <em>— Carlos Natanael</em>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="content-ficha" role="tabpanel">
+                    <h3 class="fw-bold text-dark border-bottom pb-3 mb-4">Ficha Técnica & Suporte</h3>
+                    
+                    <ul class="list-group list-group-flush mb-4">
                         <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <span><i class="bi bi-code-slash text-primary me-2"></i>Desenvolvedor</span>
-                            <span class="fw-bold">Carlos Natanael</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <span><i class="bi bi-shield-lock-fill text-success me-2"></i>Moderação & Admin</span>
-                            <span class="fw-bold">Alemão</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <span><i class="bi bi-calendar-event me-2"></i>Temporada Atual</span>
+                            <span><i class="bi bi-calendar-event me-2"></i><strong>Temporada Atual</strong></span>
                             <span class="badge bg-dark">{{ temporada_atual }}</span>
                         </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                            <strong>Versão do Sistema</strong>
+                            <span class="badge bg-dark rounded-pill">v1.1.0</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                            <span><strong>Desenvolvedores</strong> <i class="bi bi-code-slash text-primary me-2"></i></span>
+                            <span>Carlos Natanael / Marc</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                            <span><strong>Moderação & Admin</strong> <i class="bi bi-shield-lock-fill text-success me-2"></i></span>
+                            <span>Alemão / Lucas</span>
+                        </li>
                     </ul>
-                    
-                    <div class="text-center mt-4 border-top pt-3">
-                        <p class="text-muted small mb-2">Encontrou um bug ou tem uma ideia?</p>
-                        <a href="https://github.com/CarlosNatanael/sistema_palpiteiros/issues" target="_blank" class="btn btn-outline-dark btn-sm">
-                            <i class="bi bi-github me-1"></i> Abrir Reporte / Sugestão
+
+                    <div class="card bg-light border-0 text-center p-4">
+                        <h5 class="fw-bold mb-2">Encontrou um Bug ou tem uma ideia?</h5>
+                        <p class="text-muted small mb-3">Ajude-nos a melhorar o sistema reportando falhas diretamente no repositório oficial.</p>
+                        <a href="https://github.com/CarlosNatanael/sistema_palpiteiros/issues" target="_blank" class="btn btn-dark fw-bold">
+                            <i class="bi bi-github me-2"></i> Abrir Issue no GitHub
                         </a>
                     </div>
                 </div>
+
             </div>
         </div>
     </div>
+</div>
 {% endblock %}
