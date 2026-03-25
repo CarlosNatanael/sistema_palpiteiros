@@ -61,6 +61,44 @@ def login_required(f):
         return f(*args, **kwargs)
     return decorated_function
 
+
+# --- Roles ---
+def role_required(*roles):
+    def wrapper(f):
+        @wraps(f)
+        def decorated_function(*args, **kwargs):
+            if 'login_in' not in session:
+                flash('Você precisa estar logado.', 'danger')
+                return redirect(url_for('login'))
+            
+            user_role = session.get('role', 'editor')
+
+            if user_role != 'master' and user_role not in roles:
+                flash('Acesso negado: O seu cargo não tem permissão para essa área', 'danger')
+                return redirect(url_for('admin_dashboard'))
+            return f(*args, **kwargs)
+        return decorated_function
+    return wrapper
+
+
+@app.route('/admin/criar_palpiteiro', methods=['POST'])
+@role_required('moderador', 'master')
+def criar_palpiteiro():
+    nome = request.form.get('novo_palpiteiro')
+    if nome:
+        conn = get_db()
+        try:
+            existe = conn.execute("SELECT id FROM pontuacao WHERE nome = ?", (nome,)).fetchone()
+            if existe:
+                flash(f'O palpiteiro "{nome}" já existe no sistema.', 'warning')
+            else:
+                conn.execute("INSERT INTO pontuacao (nome) VALUES (?)", (nome,))
+                conn.commit()
+                flash(f'Palpiteiro "{nome}" adicionado com sucesso!', 'success')
+        except Exception as e:
+            flash(f'Erro ao criar palpiteiro: {e}', 'danger')
+    return redirect(url_for('admin_dashboard'))
+
 # --- Filtros Jinja2 ---
 @app.template_filter('format_date_br')
 def format_date_br_filter(date_str):
@@ -405,13 +443,14 @@ def calcular_sequencias_acertos(conn):
     return sequencias
 
 @app.route('/admin/award_bonus', methods=['POST'])
-@login_required
+@role_required('moderador', 'master')
 def award_bonus():
     """Concede bônus a um jogador."""
     usuario_atual = session.get('username')
     senha_digitada = request.form.get('password')
     
-    if not usuario_atual or MODERADORES.get(usuario_atual) != senha_digitada:
+    user_data = MODERADORES.get(usuario_atual)
+    if not user_data or user_data.get('password') != senha_digitada:
         flash('Senha incorreta!', 'danger')
         return redirect(url_for('admin_dashboard'))
     
@@ -526,14 +565,17 @@ def login():
     if request.method == 'POST':
         username = request.form.get('username')
         password = request.form.get('password')
+
+        user_data = MODERADORES.get(username)
         
-        if username in MODERADORES and MODERADORES[username] == password:
+        if user_data and user_data.get('password') == password:
             session['logged_in'] = True
             session['username'] = username
+            session['role'] = user_data.get('role', 'editor')
             flash(f'Bem-vindo, {username}!', 'success')
             return redirect(url_for('admin_dashboard'))
         else:
-            flash('Nome de usuário ou senha incorretos.', 'danger')
+            flash('Nome de usuario ou senha incorretos', 'danger')
     
     return render_template('login.html')
 
@@ -568,7 +610,7 @@ def admin_dashboard():
 
 
 @app.route('/admin/reativar_jogo/<int:game_id>', methods=['POST'])
-@login_required
+@role_required('master')
 def reativar_jogo(game_id):
     conn = get_db()
     conn.execute("DELETE FROM jogos WHERE id = ?", (game_id))
@@ -577,7 +619,7 @@ def reativar_jogo(game_id):
     return redirect(url_for('admin_dashboard'))
 
 @app.route('/admin/set_campeao_palpiteiro', methods=['POST'])
-@login_required
+@role_required('master')
 def set_campeao_palpiteiro():
     conn = get_db()
     nome_campeao = request.form.get('campeao_nome')
@@ -864,7 +906,7 @@ def injetar_variaveis_globais():
     )
 
 @app.route('/admin/toggle_palpite_campeao', methods=['POST'])
-@login_required
+@role_required('master')
 def toggle_palpite_campeao():
     conn = get_db()
     esta_aberto = is_palpite_campeao_aberto()
@@ -986,7 +1028,7 @@ def ver_palpites_campeao():
                            campeoes_reais=campeoes_map)
 
 @app.route('/admin/set_champion', methods=['GET', 'POST'])
-@login_required
+@role_required('master')
 def set_champion():
     conn = get_db()
     cursor = conn.cursor()
@@ -1068,7 +1110,7 @@ def campeao_geral():
                           temporada_atual=TEMPORADA_ATUAL)
 
 @app.route('/admin/manage_games', methods=['GET', 'POST'])
-@login_required
+@role_required('master')
 def manage_games():
     conn = get_db()
     
@@ -1084,7 +1126,7 @@ def manage_games():
     return render_template('manage_games.html', jogos=jogos)
 
 @app.route('/admin/anuncios', methods=['GET', 'POST'])
-@login_required
+@role_required('moderador', 'master')
 def gerenciar_anuncios():
     conn = get_db()
     
@@ -1107,7 +1149,7 @@ def gerenciar_anuncios():
     return render_template('gerenciar_anuncios.html', anuncios=anuncios)
 
 @app.route('/admin/anuncios/delete/<int:anuncio_id>', methods=['POST'])
-@login_required
+@role_required('moderador', 'master')
 def deletar_anuncio(anuncio_id):
     conn = get_db()
     conn.execute('DELETE FROM anuncios WHERE id = ?', (anuncio_id,))
@@ -1116,12 +1158,13 @@ def deletar_anuncio(anuncio_id):
     return redirect(url_for('gerenciar_anuncios'))
 
 @app.route('/admin/reset_season', methods=['POST'])
-@login_required
+@role_required('master')
 def reset_season():
     usuario_atual = session.get('username')
     senha_digitada = request.form.get('password')
     
-    if not usuario_atual or MODERADORES.get(usuario_atual) != senha_digitada:
+    user_data = MODERADORES.get(usuario_atual)
+    if not user_data or user_data.get('password') != senha_digitada:
         flash('Senha incorreta! A temporada não foi reiniciada.', 'danger')
         return redirect(url_for('admin_dashboard'))
 
