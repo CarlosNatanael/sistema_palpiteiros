@@ -67,7 +67,7 @@ def role_required(*roles):
     def wrapper(f):
         @wraps(f)
         def decorated_function(*args, **kwargs):
-            if 'login_in' not in session:
+            if 'logged_in' not in session:
                 flash('Você precisa estar logado.', 'danger')
                 return redirect(url_for('login'))
             
