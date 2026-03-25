@@ -29,4 +29,5 @@ def get_campeonatos():
 
 # === FLASK INTERNO ====
 if __name__ == '__main__':
-    api_app.run(debug=True, port=5001)
+    modo_debug = os.environ.get('FLASK_DEBUG', 'False').lower() in ['true', '1']
+    api_app.run(debug=modo_debug, port=5001)
