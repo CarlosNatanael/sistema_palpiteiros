@@ -84,161 +84,182 @@
                 <p>Recalcule as pontuações de todos os palpiteiros com base nos resultados.</p>
                 <a href="{{ url_for('atualizar_pontuacao_admin') }}" class="btn">Atualizar Pontuação</a>
             </div>
-            <div class="admin-action-card">
-                <h2>Palpite Campeão</h2>
-                <p>Veja e defina o Campeão Real</p>
-                <a href="{{ url_for('set_champion') }}" class="btn">Definir Campeão</a>
-            </div>
-            <div class="admin-action-card">
-                <h2>Ver Palpites de Campeão</h2>
-                <p>Visualize os palpites de campeão registrados pelos usuários.</p>
-                <a href="{{ url_for('ver_palpites_campeao') }}" class="btn">Ver Palpites</a>
-            </div>
-            <div class="admin-action-card">
-                <h2>Gerenciar Anúncios</h2>
-                <p>Adicione ou remova avisos na página inicial.</p>
-                <a href="{{ url_for('gerenciar_anuncios') }}" class="btn">Gerenciar Anúncios</a>
-            </div>
+            {% if session.role == 'master' %}
+                <div class="admin-action-card">
+                    <h2>Palpite Campeão</h2>
+                    <p>Veja e defina o Campeão Real</p>
+                    <a href="{{ url_for('set_champion') }}" class="btn">Definir Campeão</a>
+                </div>
+            {% endif %}
+            {% if session.role == 'master' %}
+                <div class="admin-action-card">
+                    <h2>Ver Palpites de Campeão</h2>
+                    <p>Visualize os palpites de campeão registrados pelos usuários.</p>
+                    <a href="{{ url_for('ver_palpites_campeao') }}" class="btn">Ver Palpites</a>
+                </div>
+            {% endif %}
+            {% if session.role in ['master', 'moderador'] %}
+                <div class="admin-action-card">
+                    <h2>Gerenciar Anúncios</h2>
+                    <p>Adicione ou remova avisos na página inicial.</p>
+                    <a href="{{ url_for('gerenciar_anuncios') }}" class="btn">Gerenciar Anúncios</a>
+                </div>
+            {% endif %}
+            {% if session.role in ['master', 'moderador'] %}
+                <div class="admin-section border border-info p-4 rounded mt-4" style="background-color: #f0f8ff;">
+                    <h4 class="text-info"><i class="bi bi-person-plus-fill"></i> Adicionar Novo Palpiteiro</h4>
+                    <form action="{{ url_for('criar_palpiteiro') }}" method="POST" class="d-flex mt-3">
+                        <input type="text" name="novo_palpiteiro" class="form-control me-2" placeholder="Nome do jogador..." required>
+                        <button type="submit" class="btn btn-info text-white fw-bold">Adicionar</button>
+                    </form>
+                </div>
+            {% endif %}
         </div>
         <hr>
-        <div class="admin-section">
-            <h3>Conceder Bônus por Sequência</h3>
-            <p>Use esta função para dar 3 pontos de bônus para um jogador que atingiu 3 ou mais acertos seguidos (verificar na página de Estatísticas).</p>
-            <form action="{{ url_for('award_bonus') }}" method="POST">
+        {% if session.role in ['master', 'moderador'] %}
+            <div class="admin-section">
+                <h3>Conceder Bônus por Sequência</h3>
+                <p>Use esta função para dar 3 pontos de bônus para um jogador que atingiu 3 ou mais acertos seguidos (verificar na página de Estatísticas).</p>
+                <form action="{{ url_for('award_bonus') }}" method="POST">
+                    <div class="form-group">
+                        <label for="nome_jogador">Selecione o Palpiteiro:</label>
+                        <select id="nome_jogador" name="nome_jogador" class="form-control" required>
+                            <option value="" disabled selected>Escolha um jogador...</option>
+                            {% for jogador in pontuacao_geral %}
+                                <option value="{{ jogador.nome }}">{{ jogador.nome }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Senha do Admin:</label>
+                        <input type="password" id="password" name="password" class="form-control" required>
+                    </div>
+                    <button type="submit" class="btn btn-warning">Conceder Bônus de 3 Pontos</button>
+                </form>
+            </div>
+        {% endif %}
+        <hr>
+        {% if session.role == 'master' %}
+            <div class="admin-section">
+                <h2>Definir Campeão dos Palpiteiros</h2>
+                <form action="{{ url_for('set_campeao_palpiteiro') }}" method="POST" class="mt-3">
                 <div class="form-group">
-                    <label for="nome_jogador">Selecione o Palpiteiro:</label>
-                    <select id="nome_jogador" name="nome_jogador" class="form-control" required>
-                        <option value="" disabled selected>Escolha um jogador...</option>
+                    <label for="temporada">Nome da Temporada (ex: 1ª Temporada)</label>
+                    <input type="text" name="temporada" id="temporada" class="form-control" placeholder="Ex: 1ª Temporada" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="competicao">Competição (ex: Super Mundial, Brasileirão/Libertadores)</label>
+                    <input type="text" name="competicao" id="competicao" class="form-control" placeholder="Ex: Super Mundial da FIFA" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="campeao_nome">Selecione o Campeão:</label>
+                    <select name="campeao_nome" id="campeao_nome" class="form-control" required>
+                        <option value="" disabled selected>Escolha o Campeão...</option>
                         {% for jogador in pontuacao_geral %}
                             <option value="{{ jogador.nome }}">{{ jogador.nome }}</option>
                         {% endfor %}
                     </select>
                 </div>
-                <div class="form-group">
-                    <label for="password">Senha do Admin:</label>
-                    <input type="password" id="password" name="password" class="form-control" required>
+                <button type="submit" class="btn btn-warning w-100 mt-2">Coroar Campeão</button>
+                </form>
+            </div>
+        {% endif %}
+        <hr>
+        {% if session.role == 'master' %}
+            <div class="admin-action-card" style="border: 2px solid {% if palpites_campeao_aberto %}#28a745{% else %}#dc3545{% endif %};">
+                <h2>Palpites de Campeão</h2>
+                <p>Status: 
+                    {% if palpites_campeao_aberto %}
+                        <span class="badge bg-success">ABERTO</span>
+                    {% else %}
+                        <span class="badge bg-danger">FECHADO</span>
+                    {% endif %}
+                </p>
+                <form action="{{ url_for('toggle_palpite_campeao') }}" method="POST">
+                    {% if palpites_campeao_aberto %}
+                        <button type="submit" class="btn btn-danger">BLOQUEAR Palpites</button>
+                    {% else %}
+                        <button type="submit" class="btn btn-success">LIBERAR Palpites</button>
+                    {% endif %}
+                </form>
+            </div>
+        {% endif %}
+
+        <hr>
+        {% if session.role == 'master' %}
+            <div class="admin-section border border-warning p-4 rounded" style="background-color: #fffdf5;">
+                <h3 class="text-warning" style="text-shadow: 1px 1px 1px #333;">
+                    <i class="bi bi-clock-history text-dark"></i> Partidas Adiadas
+                </h3>
+                <p class="text-muted mb-4">
+                    Gerencie as partidas que foram marcadas como "Adiado". Quando a partida for reagendada pela confederação, clique em <strong>Reativar</strong> para que ela volte a aceitar placares.
+                </p>
+
+                {% if jogos_adiados %}
+                <div class="table-responsive">
+                    <table class="table table-hover table-bordered align-middle text-center bg-white shadow-sm">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Rodada</th>
+                                <th>Campeonato</th>
+                                <th>Confronto</th>
+                                <th>Ação</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for jogo in jogos_adiados %}
+                            <tr>
+                                <td class="fw-bold">{{ jogo.rodada }}ª Rodada</td>
+                                <td>{{ jogo.campeonato }}</td>
+                                <td>
+                                    {% if jogo.time1_img %}<img src="{{ jogo.time1_img }}" width="30" class="me-2">{% endif %}
+                                    {{ jogo.time1_nome }}
+                                    <span class="mx-2 text-danger fw-bold">X</span>
+                                    {{ jogo.time2_nome }}
+                                    {% if jogo.time2_img %}<img src="{{ jogo.time2_img }}" width="30" class="ms-2">{% endif %}
+                                </td>
+                                <td>
+                                    <form action="{{ url_for('reativar_jogo', game_id=jogo.id) }}" method="POST" onsubmit="return confirm('Deseja reativar esta partida?');">
+                                        <button type="submit" class="btn btn-success btn-sm fw-bold">
+                                            <i class="bi bi-arrow-repeat"></i> Reativar Partida
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
                 </div>
-                <button type="submit" class="btn btn-warning">Conceder Bônus de 3 Pontos</button>
-            </form>
-        </div>
-        <hr>
-        <div class="admin-section">
-            <h2>Definir Campeão dos Palpiteiros</h2>
-            <form action="{{ url_for('set_campeao_palpiteiro') }}" method="POST" class="mt-3">
-            <div class="form-group">
-                <label for="temporada">Nome da Temporada (ex: 1ª Temporada)</label>
-                <input type="text" name="temporada" id="temporada" class="form-control" placeholder="Ex: 1ª Temporada" required>
-            </div>
-
-            <div class="form-group">
-                <label for="competicao">Competição (ex: Super Mundial, Brasileirão/Libertadores)</label>
-                <input type="text" name="competicao" id="competicao" class="form-control" placeholder="Ex: Super Mundial da FIFA" required>
-            </div>
-
-            <div class="form-group">
-                <label for="campeao_nome">Selecione o Campeão:</label>
-                <select name="campeao_nome" id="campeao_nome" class="form-control" required>
-                    <option value="" disabled selected>Escolha o Campeão...</option>
-                    {% for jogador in pontuacao_geral %}
-                        <option value="{{ jogador.nome }}">{{ jogador.nome }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-            <button type="submit" class="btn btn-warning w-100 mt-2">Coroar Campeão</button>
-            </form>
-        </div>
-
-        <hr>
-        
-        <div class="admin-action-card" style="border: 2px solid {% if palpites_campeao_aberto %}#28a745{% else %}#dc3545{% endif %};">
-            <h2>Palpites de Campeão</h2>
-            <p>Status: 
-                {% if palpites_campeao_aberto %}
-                    <span class="badge bg-success">ABERTO</span>
                 {% else %}
-                    <span class="badge bg-danger">FECHADO</span>
+                <div class="alert alert-secondary text-center">
+                    <strong><i class="bi bi-check-circle text-success"></i> Tudo em dia!</strong> Nenhuma partida adiada no momento.
+                </div>
                 {% endif %}
-            </p>
-            <form action="{{ url_for('toggle_palpite_campeao') }}" method="POST">
-                {% if palpites_campeao_aberto %}
-                    <button type="submit" class="btn btn-danger">BLOQUEAR Palpites</button>
-                {% else %}
-                    <button type="submit" class="btn btn-success">LIBERAR Palpites</button>
-                {% endif %}
-            </form>
-        </div>
-
-        <hr>
-
-        <div class="admin-section border border-warning p-4 rounded" style="background-color: #fffdf5;">
-            <h3 class="text-warning" style="text-shadow: 1px 1px 1px #333;">
-                <i class="bi bi-clock-history text-dark"></i> Partidas Adiadas
-            </h3>
-            <p class="text-muted mb-4">
-                Gerencie as partidas que foram marcadas como "Adiado". Quando a partida for reagendada pela confederação, clique em <strong>Reativar</strong> para que ela volte a aceitar placares.
-            </p>
-
-            {% if jogos_adiados %}
-            <div class="table-responsive">
-                <table class="table table-hover table-bordered align-middle text-center bg-white shadow-sm">
-                    <thead class="table-dark">
-                        <tr>
-                            <th>Rodada</th>
-                            <th>Campeonato</th>
-                            <th>Confronto</th>
-                            <th>Ação</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for jogo in jogos_adiados %}
-                        <tr>
-                            <td class="fw-bold">{{ jogo.rodada }}ª Rodada</td>
-                            <td>{{ jogo.campeonato }}</td>
-                            <td>
-                                {% if jogo.time1_img %}<img src="{{ jogo.time1_img }}" width="30" class="me-2">{% endif %}
-                                {{ jogo.time1_nome }}
-                                <span class="mx-2 text-danger fw-bold">X</span>
-                                {{ jogo.time2_nome }}
-                                {% if jogo.time2_img %}<img src="{{ jogo.time2_img }}" width="30" class="ms-2">{% endif %}
-                            </td>
-                            <td>
-                                <form action="{{ url_for('reativar_jogo', game_id=jogo.id) }}" method="POST" onsubmit="return confirm('Deseja reativar esta partida?');">
-                                    <button type="submit" class="btn btn-success btn-sm fw-bold">
-                                        <i class="bi bi-arrow-repeat"></i> Reativar Partida
-                                    </button>
-                                </form>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
             </div>
-            {% else %}
-            <div class="alert alert-secondary text-center">
-                <strong><i class="bi bi-check-circle text-success"></i> Tudo em dia!</strong> Nenhuma partida adiada no momento.
-            </div>
-            {% endif %}
-        </div>
+        {% endif %}
         
         <hr>
-
-        <div class="admin-section border border-danger p-4 rounded" style="background-color: #fff5f5;">
-            <h3 class="text-danger"><i class="bi bi-exclamation-triangle-fill"></i> Iniciar Nova Temporada</h3>
-            <p class="text-muted">
-                <strong>Cuidado:</strong> Esta ação vai <u>ZERAR</u> a pontuação, acertos e erros de <strong>TODOS</strong> os jogadores e <u>APAGAR</u> os jogos e palpites antigos.
-                Faça isso apenas quando a temporada atual acabar e o campeão já estiver salvo no Histórico.
-            </p>
-            
-            <form action="{{ url_for('reset_season') }}" method="POST" onsubmit="return confirm('TEM CERTEZA ABSOLUTA? Isso vai apagar toda a pontuação atual!');">
-                <div class="form-group">
-                    <label for="password_reset" class="text-danger font-weight-bold">Confirme sua Senha de Admin:</label>
-                    <input type="password" id="password_reset" name="password" class="form-control border-danger" placeholder="Sua senha..." required>
-                </div>
-                <button type="submit" class="btn btn-danger btn-lg btn-block">
-                    <i class="bi bi-arrow-counterclockwise"></i> ZERAR TUDO E INICIAR NOVA TEMPORADA
-                </button>
-            </form>
-        </div>
+        {% if session.role == 'master' %}
+            <div class="admin-section border border-danger p-4 rounded" style="background-color: #fff5f5;">
+                <h3 class="text-danger"><i class="bi bi-exclamation-triangle-fill"></i> Iniciar Nova Temporada</h3>
+                <p class="text-muted">
+                    <strong>Cuidado:</strong> Esta ação vai <u>ZERAR</u> a pontuação, acertos e erros de <strong>TODOS</strong> os jogadores e <u>APAGAR</u> os jogos e palpites antigos.
+                    Faça isso apenas quando a temporada atual acabar e o campeão já estiver salvo no Histórico.
+                </p>
+                
+                <form action="{{ url_for('reset_season') }}" method="POST" onsubmit="return confirm('TEM CERTEZA ABSOLUTA? Isso vai apagar toda a pontuação atual!');">
+                    <div class="form-group">
+                        <label for="password_reset" class="text-danger font-weight-bold">Confirme sua Senha de Admin:</label>
+                        <input type="password" id="password_reset" name="password" class="form-control border-danger" placeholder="Sua senha..." required>
+                    </div>
+                    <button type="submit" class="btn btn-danger btn-lg btn-block">
+                        <i class="bi bi-arrow-counterclockwise"></i> ZERAR TUDO E INICIAR NOVA TEMPORADA
+                    </button>
+                </form>
+            </div>
+        {% endif %}
 
         <br><br>
     </div>
