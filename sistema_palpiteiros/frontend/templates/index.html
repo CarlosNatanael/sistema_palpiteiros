@@ -7,214 +7,233 @@
 {% endblock %}
 
 {% block content %}
-            <div class="text-center mb-4">
-                <h1 class="display-5 fw-bold" style="color: #006400;">TABELA DE PONTUAÇÃO</h1>
+            <div class="text-center mb-4 mt-3">
+                <h1 class="display-5 fw-bold" style="color: #006400; text-shadow: 1px 1px 2px rgba(255,255,255,0.8);">TABELA DE PONTUAÇÃO</h1>
             </div>
 
-            {% if anuncios %}
-            <div class="avisos-painel-v2 mb-5">
-                {% for anuncio in anuncios %}
-                <div class="aviso-card-v2 animate__animated animate__fadeInUp" style="animation-delay: {{ loop.index * 100 }}ms;">
-                    <div class="aviso-icon-v2 aviso-{{ anuncio.tipo }}">
-                        {% if anuncio.tipo == 'success' %}
-                            <i class="bi bi-check-circle-fill"></i>
-                        {% elif anuncio.tipo == 'warning' %}
-                            <i class="bi bi-exclamation-triangle-fill"></i>
-                        {% elif anuncio.tipo == 'danger' %}
-                            <i class="bi bi-exclamation-octagon-fill"></i>
-                        {% else %}
-                            <i class="bi bi-info-circle-fill"></i>
-                        {% endif %}
-                    </div>
-                    <div class="aviso-texto-v2">
-                        <h5 class="aviso-titulo-v2">{{ anuncio.titulo }}</h5>
-                        <p class="aviso-mensagem-v2 mb-0">{{ anuncio.mensagem }}</p>
-                    </div>
-                </div>
-                {% endfor %}
-            </div>
-            {% endif %}
-            <div class="card shadow-sm mb-5">
-                <div class="card-header bg-dark text-white">
-                    <h3 class="card-title mb-0"><i class="bi bi-bar-chart-fill me-2"></i>Classificação Geral</h3>
-                </div>
-                <div class="card-body p-0">
-                    <div class="table-responsive">
-                        <table class="table table-striped table-hover mb-0">
-                            <thead class="table-dark">
-                                <tr>
-                                    <th class="text-center"></th>
-                                    <th>Palpiteiro</th>
-                                    <th class="text-center">Pts</th>
-                                    <th class="text-center">Acertos</th>
-                                    <th class="text-center">Erros</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for jogador in pontuacao %}
-                                <tr class="align-middle">
-                                    <td class="text-center">
-                                        {% if loop.index == 1 %}
-                                            <span class="badge bg-gold">{{ loop.index }}º</span>
-                                        {% elif loop.index == 2 %}
-                                            <span class="badge bg-silver">{{ loop.index }}º</span>
-                                        {% elif loop.index == 3 %}
-                                        <!-- bronze -->
-                                            <span class="badge bg-secondary">{{ loop.index }}º</span>
-                                        {% elif loop.last %}
-                                            <span class="badge bg-danger">{{ loop.index }}º</span>
-                                        {% else %}
-                                            <span class="badge bg-secondary">{{ loop.index }}º</span>
-                                        {% endif %}
-                                    </td>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <strong class="player-name">{{ jogador.nome }}</strong>
-                                        </div>
-                                    </td>
-                                    <td class="pri">{{ jogador.total_pontos }}</td>
-                                    <td class="text-center text-success fw-bold">{{ jogador.acertos }}</td>
-                                    <td class="text-center text-danger fw-bold">{{ jogador.erros }}</td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <h2>RODADA {{ rodada_ativa }}</h2>
-            <div class="rodada-navigation">
-                {% if tem_anterior %}
-                    <a href="{{ url_for('index', rodada=anterior_rodada) }}" class="nav-arrow left-arrow">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M15 18l-6-6 6-6"/>
-                        </svg>
-                        Rodada {{ anterior_rodada }}
-                    </a>
-                {% endif %}
-
-                {% if tem_proxima %}
-                    <a href="{{ url_for('index', rodada=proxima_rodada) }}" class="nav-arrow right-arrow">
-                        Rodada {{ proxima_rodada }}
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M9 18l6-6-6-6"/>
-                        </svg>
-                    </a>
-                {% endif %}
-            </div>
-
-            {% if jogos_futuros_por_campeonato %}
-            <div class="resultadoJogo mt-4">
-                <h3 class="card-title mb-3"><i class="bi bi-calendar-event me-2"></i>Próximos Jogos</h3>
-                {% for campeonato, jogos in jogos_futuros_por_campeonato.items() %}
-                <div class="table-container mb-4">
-                    <div class="campeonato-header text-center mb-3">
-                        {% set camp_lower = campeonato | lower %}
-                        
-                        {% if 'brasileir' in camp_lower %}
-                            <img src="{{ url_for('static', filename='logos/brasileirao.png') }}" alt="{{ campeonato }}" class="campeonato-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                            <h4 class="oI text-center fallback-title" style="display: none; margin: 0;"><i class="bi bi-trophy me-2"></i>{{ campeonato }}</h4>
-                            
-                        {% elif 'libertadores' in camp_lower %}
-                            <img src="{{ url_for('static', filename='logos/Libertadores.png') }}" alt="{{ campeonato }}" class="campeonato-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                            <h4 class="oI text-center fallback-title" style="display: none; margin: 0;"><i class="bi bi-trophy me-2"></i>{{ campeonato }}</h4>
-                            
-                        {% elif 'mundo' in camp_lower or 'mundial' in camp_lower %}
-                            <img src="{{ url_for('static', filename='logos/copo_do_mundo.png') }}" alt="{{ campeonato }}" class="campeonato-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                            <h4 class="oI text-center fallback-title" style="display: none; margin: 0;"><i class="bi bi-trophy me-2"></i>{{ campeonato }}</h4>
-                            
-                        {% else %}
-                            <h4 class="oI text-center" style="margin: 0;"><i class="bi bi-trophy me-2"></i>{{ campeonato }}</h4>
-                        {% endif %}
-                    </div>
-                    {% for jogo in jogos %}
-                    <div class="match-row">
-                        <div class="team team-home">
-                            <img class="team-logo" src="{{ jogo.time1_img }}" alt="{{ jogo.time1_nome }}">
-                            <span class="team-sigla">{{ jogo.time1_sigla }}</span>
+        {% if anuncios %}
+            <div class="row justify-content-center">
+                <div class="col-lg-10"> 
+                    <div class="avisos-painel-v2 mb-4">
+                        {% for anuncio in anuncios %}
+                        <div class="aviso-card-v2 animate__animated animate__fadeInUp" style="animation-delay: {{ loop.index * 100 }}ms;">
+                            <div class="aviso-icon-v2 aviso-{{ anuncio.tipo }}">
+                                {% if anuncio.tipo == 'success' %}
+                                    <i class="bi bi-check-circle-fill"></i>
+                                {% elif anuncio.tipo == 'warning' %}
+                                    <i class="bi bi-exclamation-triangle-fill"></i>
+                                {% elif anuncio.tipo == 'danger' %}
+                                    <i class="bi bi-exclamation-octagon-fill"></i>
+                                {% else %}
+                                    <i class="bi bi-info-circle-fill"></i>
+                                {% endif %}
+                            </div>
+                            <div class="aviso-texto-v2">
+                                <h5 class="aviso-titulo-v2">{{ anuncio.titulo }}</h5>
+                                <p class="aviso-mensagem-v2 mb-0">{{ anuncio.mensagem }}</p>
+                            </div>
                         </div>
-                        <div class="match-center">
-                            {% if jogo.status == 'Adiado' %}
-                                <span class="badge bg-danger px-2 py-1 shadow-sm text-uppercase mt-1" style="letter-spacing: 1px; font-size: 0.7rem;">
-                                    <i class="bi bi-exclamation-octagon-fill"></i> Adiado
-                                </span>
-                            {% else %}
-                                <div class="match-date">{{ jogo.data_hora }}</div>
-                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+        
+            <div class="row justify-content-center mb-5">
+                <div class="col-lg-10"> 
+                    <div class="card shadow-lg border-0 rounded-4 overflow-hidden" style="background: #ffffff;">
+                        <div class="card-header bg-dark text-white py-2 border-0 text-center">
+                            <h5 class="card-title mb-0 fw-bold text-uppercase d-inline-block" style="letter-spacing: 1px;">
+                                <i class="bi bi-trophy-fill text-warning me-2"></i> Classificação Geral
+                            </h5>
                         </div>
-                        <div class="team team-away">
-                            <span class="team-sigla">{{ jogo.time2_sigla }}</span>
-                            <img class="team-logo" src="{{ jogo.time2_img }}" alt="{{ jogo.time2_nome }}">
+                        <div class="card-body p-0">
+                            <div class="table-responsive">
+                                <table class="table table-hover table-sm align-middle mb-0" style="border-collapse: separate; border-spacing: 0;">
+                                    <thead class="text-white text-uppercase text-center" style="background-color: #2a2a2a; font-size: 0.8rem; letter-spacing: 0.5px;">
+                                        <tr>
+                                            <th class="py-2" style="width: 60px;">Pos</th>
+                                            <th class="py-2 text-start">Palpiteiro</th>
+                                            <th class="py-2" style="width: 80px;"><i class="bi bi-star-fill text-warning"></i> Pts</th>
+                                            <th class="py-2" style="width: 90px;"><i class="bi bi-check-circle-fill text-success"></i> Acertos</th>
+                                            <th class="py-2" style="width: 90px;"><i class="bi bi-x-circle-fill text-danger"></i> Erros</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="border-top-0 text-center">
+                                        {% for jogador in pontuacao %}
+                                        <tr class="bg-white" style="border-bottom: 1px solid #eaeaea; transition: background-color 0.2s ease;">
+                                            <td class="py-2">
+                                                {% if loop.index == 1 %}
+                                                    <div class="badge rounded-circle shadow-sm d-flex align-items-center justify-content-center mx-auto" style="background: linear-gradient(135deg, #ffd700, #daa520); font-size: 0.9rem; width: 28px; height: 28px; border: 1px solid #fff; color: #000;">1</div>
+                                                {% elif loop.index == 2 %}
+                                                    <div class="badge rounded-circle shadow-sm d-flex align-items-center justify-content-center mx-auto" style="background: linear-gradient(135deg, #e0e0e0, #9e9e9e); font-size: 0.9rem; width: 28px; height: 28px; border: 1px solid #fff; color: #000;">2</div>
+                                                {% elif loop.index == 3 %}
+                                                    <div class="badge rounded-circle shadow-sm d-flex align-items-center justify-content-center mx-auto" style="background: linear-gradient(135deg, #cd7f32, #8b4513); font-size: 0.9rem; width: 28px; height: 28px; border: 1px solid #fff; color: #fff;">3</div>
+                                                {% else %}
+                                                    <span class="fw-bold text-muted" style="font-size: 0.9rem;">{{ loop.index }}º</span>
+                                                {% endif %}
+                                            </td>
+                                            <td class="py-2 text-start">
+                                                <div class="d-flex align-items-center">
+                                                    <i class="bi bi-person-circle text-secondary me-2" style="font-size: 1.2rem; opacity: 0.8;"></i>
+                                                    <strong class="text-dark" style="font-size: 0.95rem;">{{ jogador.nome }}</strong>
+                                                </div>
+                                            </td>
+                                            <td class="py-2">
+                                                <span class="badge shadow-sm px-2 py-1 rounded-pill" style="background-color: #006400; font-size: 0.9rem;">
+                                                    {{ jogador.total_pontos }}
+                                                </span>
+                                            </td>
+                                            <td class="py-2 fw-bold text-success" style="font-size: 0.95rem;">{{ jogador.acertos }}</td>
+                                            <td class="py-2 fw-bold text-danger" style="font-size: 0.95rem;">{{ jogador.erros }}</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
-                    {% endfor %}
                 </div>
-                {% endfor %}
             </div>
-            {% endif %}
 
-            {% if jogos_passados_por_campeonato %}
-            <div class="resultadoJogo mt-4">
-                <h3 class="card-title mb-3"><i class="fa-solid fa-futbol me-2"></i>Resultados Anteriores</h3>
-                {% for campeonato, jogos in jogos_passados_por_campeonato.items() %}
-                <div class="table-container mb-4">
-                    <div class="campeonato-header text-center mb-3">
-                        {% set camp_lower = campeonato | lower %}
-                        {% set logo_file = 'logos/generico.png' %}
-                        
-                        {% if 'brasileir' in camp_lower %}{% set logo_file = 'logos/brasileirao.png' %}
-                        {% elif 'libertadores' in camp_lower %}{% set logo_file = 'logos/libertadores.png' %}
-                        {% elif 'copa do brasil' in camp_lower %}{% set logo_file = 'logos/copa_do_mundo.png' %}
+            <div class="row justify-content-center mb-5">
+                <div class="col-lg-10">
+                    
+                    <h2 class="text-center text-dark fw-bold" style="text-shadow: 1px 1px 2px rgba(255,255,255,0.8);">RODADA {{ rodada_ativa }}</h2>
+                    <div class="rodada-navigation mb-4">
+                        {% if tem_anterior %}
+                            <a href="{{ url_for('index', rodada=anterior_rodada) }}" class="nav-arrow left-arrow">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M15 18l-6-6 6-6"/>
+                                </svg>
+                                Rodada {{ anterior_rodada }}
+                            </a>
                         {% endif %}
 
-                        <img src="{{ url_for('static', filename=logo_file) }}" 
-                             alt="{{ campeonato }}" 
-                             class="campeonato-logo"
-                             onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                        
-                        <h4 class="oI text-start fallback-title" style="display: none; margin: 0;">
-                            <i class="bi bi-trophy me-2"></i>{{ campeonato }}
-                        </h4>
+                        {% if tem_proxima %}
+                            <a href="{{ url_for('index', rodada=proxima_rodada) }}" class="nav-arrow right-arrow">
+                                Rodada {{ proxima_rodada }}
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M9 18l6-6-6-6"/>
+                                </svg>
+                            </a>
+                        {% endif %}
                     </div>
-                    {% for jogo in jogos %}
-                    <div class="result-row">
-                        <div class="team team-home">
-                            <img class="team-logo" src="{{ jogo.time1_img }}" alt="{{ jogo.time1_nome }}">
-                            <span class="team-sigla">{{ jogo.time1_sigla }}</span>
-                        </div>
-                        <div class="match-center">
-                            {% if jogo.status == 'Adiado' %}
-                                <span class="badge bg-danger px-2 py-1 shadow-sm text-uppercase mt-1" style="letter-spacing: 1px; font-size: 0.7rem;">
-                                    <i class="bi bi-exclamation-octagon-fill"></i> Adiado
-                                </span>
-                            {% elif jogo.status == 'Processado' or jogo.status == 'Finalizado' %}
-                                <div class="match-status finished">FIM</div>
-                                <div class="match-score">{{ jogo.placar_time1 }} - {{ jogo.placar_time2 }}</div>
-                            {% elif jogo.status == 'Ao Vivo' %}
-                                <div class="match-status live">AO VIVO</div>
-                                <div class="match-score">{{ jogo.placar_time1 }} - {{ jogo.placar_time2 }}</div>
-                            {% else %}
-                                <div class="match-score">- x -</div>
-                            {% endif %}
-                        </div>
-                        <div class="team team-away">
-                            <span class="team-sigla">{{ jogo.time2_sigla }}</span>
-                            <img class="team-logo" src="{{ jogo.time2_img }}" alt="{{ jogo.time2_nome }}">
-                        </div>
-                    </div>
-                    {% endfor %}
-                </div>
-                {% endfor %}
-            </div>
-            {% endif %}
 
-            {% if not jogos_futuros_por_campeonato and not jogos_passados_por_campeonato %}
-            <div class="resultadoJogo mt-4">
-                <div class="match-row">
-                    <h4 class="no-games-message"><strong>Nenhum jogo encontrado para esta rodada.</strong></h4>
+                    {% if jogos_futuros_por_campeonato %}
+                    <div class="resultadoJogo mt-4 bg-white p-4 rounded-4 shadow-sm border border-light">
+                        <h3 class="card-title mb-4 fw-bold border-bottom pb-2"><i class="bi bi-calendar-event me-2 text-primary"></i>Próximos Jogos</h3>
+                        {% for campeonato, jogos in jogos_futuros_por_campeonato.items() %}
+                        <div class="table-container mb-4">
+                            <div class="campeonato-header text-center mb-3">
+                                {% set camp_lower = campeonato | lower %}
+                                
+                                {% if 'brasileir' in camp_lower %}
+                                    <img src="{{ url_for('static', filename='logos/brasileirao.png') }}" alt="{{ campeonato }}" class="campeonato-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                                    <h4 class="oI text-center fallback-title" style="display: none; margin: 0;"><i class="bi bi-trophy me-2"></i>{{ campeonato }}</h4>
+                                    
+                                {% elif 'libertadores' in camp_lower %}
+                                    <img src="{{ url_for('static', filename='logos/Libertadores.png') }}" alt="{{ campeonato }}" class="campeonato-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                                    <h4 class="oI text-center fallback-title" style="display: none; margin: 0;"><i class="bi bi-trophy me-2"></i>{{ campeonato }}</h4>
+                                    
+                                {% elif 'mundo' in camp_lower or 'mundial' in camp_lower %}
+                                    <img src="{{ url_for('static', filename='logos/copo_do_mundo.png') }}" alt="{{ campeonato }}" class="campeonato-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                                    <h4 class="oI text-center fallback-title" style="display: none; margin: 0;"><i class="bi bi-trophy me-2"></i>{{ campeonato }}</h4>
+                                    
+                                {% else %}
+                                    <h4 class="oI text-center" style="margin: 0;"><i class="bi bi-trophy me-2"></i>{{ campeonato }}</h4>
+                                {% endif %}
+                            </div>
+                            {% for jogo in jogos %}
+                            <div class="match-row border-bottom py-2">
+                                <div class="team team-home">
+                                    <img class="team-logo" src="{{ jogo.time1_img }}" alt="{{ jogo.time1_nome }}">
+                                    <span class="team-sigla">{{ jogo.time1_sigla }}</span>
+                                </div>
+                                <div class="match-center">
+                                    {% if jogo.status == 'Adiado' %}
+                                        <span class="badge bg-danger px-2 py-1 shadow-sm text-uppercase mt-1" style="letter-spacing: 1px; font-size: 0.7rem;">
+                                            <i class="bi bi-exclamation-octagon-fill"></i> Adiado
+                                        </span>
+                                    {% else %}
+                                        <div class="match-date fw-bold text-muted">{{ jogo.data_hora }}</div>
+                                    {% endif %}
+                                </div>
+                                <div class="team team-away">
+                                    <span class="team-sigla">{{ jogo.time2_sigla }}</span>
+                                    <img class="team-logo" src="{{ jogo.time2_img }}" alt="{{ jogo.time2_nome }}">
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+
+                    {% if jogos_passados_por_campeonato %}
+                    <div class="resultadoJogo mt-4 bg-white p-4 rounded-4 shadow-sm border border-light">
+                        <h3 class="card-title mb-4 fw-bold border-bottom pb-2"><i class="fa-solid fa-futbol me-2 text-success"></i>Resultados Anteriores</h3>
+                        {% for campeonato, jogos in jogos_passados_por_campeonato.items() %}
+                        <div class="table-container mb-4">
+                            <div class="campeonato-header text-center mb-3">
+                                {% set camp_lower = campeonato | lower %}
+                                
+                                {% if 'brasileir' in camp_lower %}
+                                    <img src="{{ url_for('static', filename='logos/brasileirao.png') }}" alt="{{ campeonato }}" class="campeonato-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                                    <h4 class="oI text-center fallback-title" style="display: none; margin: 0;"><i class="bi bi-trophy me-2"></i>{{ campeonato }}</h4>
+                                    
+                                {% elif 'libertadores' in camp_lower %}
+                                    <img src="{{ url_for('static', filename='logos/Libertadores.png') }}" alt="{{ campeonato }}" class="campeonato-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                                    <h4 class="oI text-center fallback-title" style="display: none; margin: 0;"><i class="bi bi-trophy me-2"></i>{{ campeonato }}</h4>
+                                    
+                                {% elif 'mundo' in camp_lower or 'mundial' in camp_lower %}
+                                    <img src="{{ url_for('static', filename='logos/copo_do_mundo.png') }}" alt="{{ campeonato }}" class="campeonato-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                                    <h4 class="oI text-center fallback-title" style="display: none; margin: 0;"><i class="bi bi-trophy me-2"></i>{{ campeonato }}</h4>
+                                    
+                                {% else %}
+                                    <h4 class="oI text-center" style="margin: 0;"><i class="bi bi-trophy me-2"></i>{{ campeonato }}</h4>
+                                {% endif %}
+                            </div>
+                            {% for jogo in jogos %}
+                            <div class="result-row border-bottom py-2">
+                                <div class="team team-home">
+                                    <img class="team-logo" src="{{ jogo.time1_img }}" alt="{{ jogo.time1_nome }}">
+                                    <span class="team-sigla">{{ jogo.time1_sigla }}</span>
+                                </div>
+                                <div class="match-center">
+                                    {% if jogo.status == 'Adiado' %}
+                                        <span class="badge bg-danger px-2 py-1 shadow-sm text-uppercase mt-1" style="letter-spacing: 1px; font-size: 0.7rem;">
+                                            <i class="bi bi-exclamation-octagon-fill"></i> Adiado
+                                        </span>
+                                    {% elif jogo.status == 'Processado' or jogo.status == 'Finalizado' %}
+                                        <div class="match-status finished badge bg-dark text-white mb-1">FIM</div>
+                                        <div class="match-score fs-5 fw-bold">{{ jogo.placar_time1 }} - {{ jogo.placar_time2 }}</div>
+                                    {% elif jogo.status == 'Ao Vivo' %}
+                                        <div class="match-status live badge bg-danger text-white mb-1 pulse-animation">AO VIVO</div>
+                                        <div class="match-score fs-5 fw-bold">{{ jogo.placar_time1 }} - {{ jogo.placar_time2 }}</div>
+                                    {% else %}
+                                        <div class="match-score fs-5 fw-bold text-muted">- x -</div>
+                                    {% endif %}
+                                </div>
+                                <div class="team team-away">
+                                    <span class="team-sigla">{{ jogo.time2_sigla }}</span>
+                                    <img class="team-logo" src="{{ jogo.time2_img }}" alt="{{ jogo.time2_nome }}">
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+
+                    {% if not jogos_futuros_por_campeonato and not jogos_passados_por_campeonato %}
+                    <div class="resultadoJogo mt-4 bg-white p-5 rounded-4 shadow-sm border border-light text-center">
+                        <div class="match-row justify-content-center">
+                            <h4 class="no-games-message text-muted mb-0"><i class="bi bi-calendar-x me-2 fs-3"></i><strong>Nenhum jogo encontrado para esta rodada.</strong></h4>
+                        </div>
+                    </div>
+                    {% endif %}
+
                 </div>
-            </div>
-            {% endif %}
-            </div>
+            </div> 
 {% endblock %}

@@ -4,11 +4,45 @@
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif,-apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue";
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif, -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue";
     margin: 0;
     padding: 0;
-    background-color: #e0e0e0; /* Fundo cinza claro */
-    color: #333; /* Texto principal escuro */
+    color: #333;
+    /* Adicionando uma imagem de fundo: */
+    background-color: #e0e0e0; 
+    background-image: url('https://www.transparenttextures.com/patterns/stardust.png'); /* Exemplo temporário */
+    background-attachment: fixed; /* Faz o fundo ficar parado quando você rola a página */
+    background-size: cover;
+}
+
+/* Conteúdo Principal da Página (Estilo Super Compacto com Fundo Branco) */
+main.container {
+    padding: 30px 20px;
+    
+    /* A MÁGICA: Mudámos de 900px para 700px para espremer bem o centro! */
+    max-width: 1000px !important; 
+    
+    /* Garante a área amarela (margens) gigantes nas laterais */
+    margin: 60px auto !important; 
+    
+    background-color: #ffffff !important; /* Fundo branco garantido */
+    border-radius: 15px; 
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15); 
+    color: #333;
+}
+
+/* Conteúdo Principal da Página */
+main {
+    padding: 30px 20px;
+    max-width: 900px; /* ← A MÁGICA ACONTECE AQUI! Antes era 1200px. Quanto menor o número, maior a borda na tela. */
+    padding-top: 80px; /* Ajuste para não colar no menu superior */
+    flex: 1;
+    margin: 40px auto; /* O 'auto' cria as margens laterais (a área amarela) */
+    
+    background-color: #fff; /* Antes era #ffffff. Deixei transparente para a sua futura imagem de fundo aparecer! */
+    border-radius: 10px;
+    box-shadow: none; /* Removido para não criar um "quadradão" invisível */
+    color: #333;
 }
 
 /* Tabela de Classificação */
@@ -97,19 +131,6 @@ header {
 .dropdown-item:hover, .dropdown-item:focus {
     background-color: var(--light-green);
     color: var(--primary-color);
-}
-
-/* Conteúdo Principal da Página */
-main {
-    padding: 30px 20px;
-    max-width: 1200px;
-    padding-top: calc(var(--navbar-height) + 20px);
-    flex: 1;
-    margin: 20px auto;
-    background-color: #ffffff; /* Fundo branco para o conteúdo principal */
-    border-radius: 10px;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* Sombra mais suave */
-    color: #333; /* Texto principal escuro */
 }
 
 h1, h2 {

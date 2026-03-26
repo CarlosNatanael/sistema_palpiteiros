@@ -4,98 +4,96 @@
 
 {% block styles %}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/esta.css') }}">
+    <style>
+        /* Ajustes finos para ficar bem compacto */
+        .stat-number { font-size: 1.8rem; line-height: 1; }
+        .compact-progress { height: 14px; font-size: 0.7rem; line-height: 14px; border-radius: 10px; }
+        .avatar-md { width: 55px; height: 55px; display: flex; align-items: center; justify-content: center; margin: 0 auto; }
+    </style>
 {% endblock %}
 
 {% block content %}
-        <div class="text-center mb-5">
-            <h1 class="display-4 fw-bold text-success">
-                <i class="bi bi-bar-chart-fill me-2"></i>ESTATÍSTICAS
-            </h1>
-            <p class="lead text-muted">Desempenho dos participantes no campeonato</p>
+        <div class="text-center mb-4 mt-2">
+            <h2 class="fw-bold text-success" style="text-shadow: 1px 1px 2px rgba(255,255,255,0.8); text-transform: uppercase;">
+                <i class="bi bi-bar-chart-fill me-2"></i>Estatísticas
+            </h2>
+            <p class="text-muted small">Desempenho dos participantes no campeonato</p>
         </div>
 
-        <!-- Seção de Destaques -->
-        <div class="row g-4 mb-5">
-            <!-- Maior Pontuador -->
+        <div class="row g-3 mb-4">
             <div class="col-md-6">
-                <div class="card stat-card h-100 border-success">
-                    <div class="card-header bg-success text-white">
-                        <h3 class="card-title mb-0">
-                            <i class="bi bi-trophy-fill me-2"></i>Maior Pontuador
-                        </h3>
+                <div class="card h-100 border-0 shadow-sm rounded-4 bg-white">
+                    <div class="card-header bg-success text-white text-center py-2 border-0">
+                        <h6 class="card-title mb-0 fw-bold text-uppercase" style="font-size: 0.85rem; letter-spacing: 0.5px;">
+                            <i class="bi bi-trophy-fill me-1 text-warning"></i> Maior Pontuador
+                        </h6>
                     </div>
-                    <div class="card-body text-center py-4">
+                    <div class="card-body text-center py-3">
                         {% if maior_pontuador %}
-                        <div class="avatar-lg mb-3 mx-auto">
-                            <div class="avatar-title bg-success bg-opacity-10 text-success rounded-circle fs-2">
-                                <i class="bi bi-award-fill"></i>
-                            </div>
+                        <div class="avatar-md bg-success bg-opacity-10 text-success rounded-circle mb-2 fs-3">
+                            <i class="bi bi-award-fill"></i>
                         </div>
-                        <h2 class="fw-bold">{{ maior_pontuador.nome }}</h2>
-                        <div class="display-4 fw-bold text-success">{{ maior_pontuador.pontos }} pts</div>
+                        <h6 class="fw-bold mb-1 text-dark">{{ maior_pontuador.nome }}</h6>
+                        <div class="stat-number fw-black text-success mt-2">{{ maior_pontuador.pontos }} <span class="fs-6 text-muted fw-normal">pts</span></div>
                         {% else %}
-                        <div class="text-muted">Nenhum dado disponível</div>
+                        <div class="text-muted small">Nenhum dado disponível</div>
                         {% endif %}
                     </div>
                 </div>
             </div>
 
-            <!-- Mais Acertos -->
             <div class="col-md-6">
-                <div class="card stat-card h-100 border-primary">
-                    <div class="card-header bg-primary text-white">
-                        <h3 class="card-title mb-0">
-                            <i class="bi bi-check-circle-fill me-2"></i>Mais Acertos
-                        </h3>
+                <div class="card h-100 border-0 shadow-sm rounded-4 bg-white">
+                    <div class="card-header bg-primary text-white text-center py-2 border-0">
+                        <h6 class="card-title mb-0 fw-bold text-uppercase" style="font-size: 0.85rem; letter-spacing: 0.5px;">
+                            <i class="bi bi-check-circle-fill me-1 text-info"></i> Mais Acertos
+                        </h6>
                     </div>
-                    <div class="card-body text-center py-4">
+                    <div class="card-body text-center py-3">
                         {% if quem_acertou_mais %}
-                        <div class="avatar-lg mb-3 mx-auto">
-                            <div class="avatar-title bg-primary bg-opacity-10 text-primary rounded-circle fs-2">
-                                <i class="bi bi-check2-all"></i>
-                            </div>
+                        <div class="avatar-md bg-primary bg-opacity-10 text-primary rounded-circle mb-2 fs-3">
+                            <i class="bi bi-check2-all"></i>
                         </div>
-                        <h2 class="fw-bold">{{ quem_acertou_mais.nome }}</h2>
-                        <div class="display-4 fw-bold text-primary">{{ quem_acertou_mais.acertos }} acertos</div>
+                        <h6 class="fw-bold mb-1 text-dark">{{ quem_acertou_mais.nome }}</h6>
+                        <div class="stat-number fw-black text-primary mt-2">{{ quem_acertou_mais.acertos }} <span class="fs-6 text-muted fw-normal">acertos</span></div>
                         {% else %}
-                        <div class="text-muted">Nenhum dado disponível</div>
+                        <div class="text-muted small">Nenhum dado disponível</div>
                         {% endif %}
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Tabela Completa de Estatísticas -->
-        <div class="card mb-4">
-            <div class="card-header bg-dark text-white">
-                <h3 class="card-title mb-0">
+        <div class="card mb-4 border-0 shadow-sm rounded-4 overflow-hidden bg-white">
+            <div class="card-header bg-dark text-white py-2 border-0 text-center">
+                <h6 class="card-title mb-0 fw-bold text-uppercase" style="font-size: 0.85rem; letter-spacing: 1px;">
                     <i class="bi bi-table me-2"></i>Estatísticas Completas
-                </h3>
+                </h6>
             </div>
-            <div class="card-body">
+            <div class="card-body p-0">
                 <div class="table-responsive">
-                    <table class="table table-striped table-hover">
-                        <thead class="table-dark">
+                    <table class="table table-hover table-sm align-middle mb-0 text-center" style="font-size: 0.85rem; border-collapse: separate; border-spacing: 0;">
+                        <thead class="text-white text-uppercase" style="background-color: #2a2a2a; font-size: 0.75rem; letter-spacing: 0.5px;">
                             <tr>
-                                <th>Posição</th>
-                                <th>Palpiteiro</th>
-                                <th>Pontos</th>
-                                <th>Acertos</th>
-                                <th>Erros</th>
-                                <th>% Acertos</th>
+                                <th class="py-2" style="width: 50px;">Pos</th>
+                                <th class="py-2 text-start">Palpiteiro</th>
+                                <th class="py-2" style="width: 60px;">Pts</th>
+                                <th class="py-2 text-success" style="width: 70px;">Acertos</th>
+                                <th class="py-2 text-danger" style="width: 70px;">Erros</th>
+                                <th class="py-2" style="width: 100px;">% Acertos</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody class="border-top-0">
                             {% for estatistica in estatisticas_completas %}
-                            <tr>
-                                <td>{{ loop.index }}</td>
-                                <td>{{ estatistica.nome }}</td>
-                                <td>{{ estatistica.pontos }}</td>
-                                <td>{{ estatistica.acertos }}</td>
-                                <td>{{ estatistica.erros }}</td>
-                                <td>
-                                    <div class="progress" style="height: 20px;">
-                                        <div class="progress-bar bg-success" style="width: {{ estatistica.percentual_acertos or 0 }}%">
+                            <tr class="bg-white" style="border-bottom: 1px solid #eaeaea;">
+                                <td class="fw-bold text-muted py-2">{{ loop.index }}º</td>
+                                <td class="text-start fw-bold text-dark py-2">{{ estatistica.nome }}</td>
+                                <td class="py-2"><span class="badge bg-success shadow-sm rounded-pill px-2">{{ estatistica.pontos }}</span></td>
+                                <td class="fw-bold text-success py-2">{{ estatistica.acertos }}</td>
+                                <td class="fw-bold text-danger py-2">{{ estatistica.erros }}</td>
+                                <td class="align-middle py-2">
+                                    <div class="progress compact-progress mt-1 bg-light border shadow-sm">
+                                        <div class="progress-bar bg-success fw-bold text-dark" style="width: {{ estatistica.percentual_acertos or 0 }}%">
                                             {{ estatistica.percentual_acertos or 0 }}%
                                         </div>
                                     </div>
@@ -108,31 +106,30 @@
             </div>
         </div>
 
-        <!-- Sequências de Acertos -->
-        <div class="card">
-            <div class="card-header bg-warning text-dark">
-                <h3 class="card-title mb-0">
+        <div class="card mb-4 border-0 shadow-sm rounded-4 overflow-hidden bg-white">
+            <div class="card-header bg-warning text-dark py-2 border-0 text-center">
+                <h6 class="card-title mb-0 fw-bold text-uppercase" style="font-size: 0.85rem; letter-spacing: 1px;">
                     <i class="bi bi-lightning-fill me-2"></i>Sequências de Acertos
-                </h3>
+                </h6>
             </div>
-            <div class="card-body">
+            <div class="card-body p-0">
                 <div class="table-responsive">
-                    <table class="table table-hover">
-                        <thead>
+                    <table class="table table-hover table-sm align-middle mb-0 text-center" style="font-size: 0.85rem;">
+                        <thead class="bg-light text-uppercase text-muted" style="font-size: 0.75rem;">
                             <tr>
-                                <th>Palpiteiro</th>
-                                <th>Sequência</th>
-                                <th>Status</th>
+                                <th class="py-2 text-start px-4">Palpiteiro</th>
+                                <th class="py-2">Sequência Atual</th>
+                                <th class="py-2">Status</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody class="border-top-0">
                             {% for seq in sequencias %}
-                            <tr class="{{ 'table-success' if seq.sequencia >= 3 }}">
-                                <td>{{ seq.nome }}</td>
-                                <td>{{ seq.sequencia }}</td>
-                                <td>
+                            <tr class="{{ 'bg-success bg-opacity-10' if seq.sequencia >= 3 else 'bg-white' }}" style="border-bottom: 1px solid #eaeaea;">
+                                <td class="text-start px-4 fw-bold text-dark py-2">{{ seq.nome }}</td>
+                                <td class="fw-bold py-2 {{ 'text-success fs-6' if seq.sequencia >= 3 }}">{{ seq.sequencia }} <i class="bi bi-fire text-danger {{ 'd-none' if seq.sequencia < 3 }}"></i></td>
+                                <td class="py-2">
                                     {% if seq.sequencia >= 3 %}
-                                    <span class="badge bg-warning text-dark pulse">{{ seq.bonus }}</span>
+                                    <span class="badge bg-danger shadow-sm">{{ seq.bonus }}</span>
                                     {% else %}
                                     <span class="badge bg-secondary">{{ seq.bonus }}</span>
                                     {% endif %}
@@ -142,9 +139,9 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="alert alert-info mt-3">
-                    <i class="bi bi-info-circle-fill me-2"></i>
-                    Acertar 3 palpites consecutivos concede um bônus de 3 pontos!
+                <div class="alert alert-info m-3 py-2 px-3 text-center border-0 shadow-sm rounded-3" style="font-size: 0.8rem;">
+                    <i class="bi bi-info-circle-fill me-1"></i>
+                    Acertar 3 palpites consecutivos concede um bônus de <strong>3 pontos</strong>!
                 </div>
             </div>
         </div>
