@@ -977,3 +977,89 @@ footer {
         max-height: 35px;
     }
 }
+
+/* =================================== */
+/* DARK MODE - TEMA ESCURO (Issue #15) */
+/* =================================== */
+
+/* Fundo da tela inteira */
+body.dark-mode {
+    background-color: #121212 !important; 
+    color: #e0e0e0 !important;
+    background-image: none; /* Remove papéis de parede claros no modo escuro */
+}
+
+/* Fundo do Cartão Central Principal */
+body.dark-mode main.container {
+    background-color: #1e1e1e !important; 
+    box-shadow: 0 10px 30px rgba(0,0,0,0.8); 
+}
+
+/* Textos e Títulos que precisam brilhar no escuro */
+body.dark-mode h1, 
+body.dark-mode h2, 
+body.dark-mode .text-success {
+    color: #4ade80 !important; /* Verde vibrante (Light Green) para não forçar a vista */
+    border-bottom-color: #228B22;
+}
+
+body.dark-mode .text-dark,
+body.dark-mode h3.text-dark,
+body.dark-mode strong.text-dark {
+    color: #f8f9fa !important; /* Troca o texto preto por quase branco */
+}
+
+body.dark-mode .text-muted {
+    color: #9ca3af !important;
+}
+
+/* Painéis Brancos viram Grafite Escuro */
+body.dark-mode .card, 
+body.dark-mode .bg-white, 
+body.dark-mode .resultadoJogo,
+body.dark-mode .table-container,
+body.dark-mode .match-row,
+body.dark-mode .result-row {
+    background-color: #242424 !important;
+    border-color: #333 !important;
+    color: #e0e0e0 !important;
+}
+
+/* Textos de Tabelas e Jogos */
+body.dark-mode .table, 
+body.dark-mode .table-hover tbody tr,
+body.dark-mode .match-score,
+body.dark-mode .team-sigla {
+    color: #e0e0e0 !important;
+}
+
+/* O Segredo do Dark Mode: Fundo das Tabelas e Efeito Hover (passar o rato) */
+body.dark-mode .table thead {
+    background-color: #111 !important;
+}
+
+body.dark-mode .table-hover tbody tr:hover,
+body.dark-mode .match-row:hover,
+body.dark-mode .result-row:hover {
+    background-color: #1a4325 !important; /* Verde muito escuro da identidade da Liga */
+}
+
+/* Cartões de Anúncio da Página Inicial */
+body.dark-mode .aviso-card-v2 {
+    background-color: #2a2a2a !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+body.dark-mode .aviso-titulo-v2 {
+    color: #4ade80 !important;
+}
+body.dark-mode .aviso-mensagem-v2 {
+    color: #ccc !important;
+}
+body.dark-mode .aviso-texto-v2 {
+    border-left-color: #444 !important;
+}
+
+/* Bordas inferiores das linhas de jogos */
+body.dark-mode .border-bottom {
+    border-bottom-color: #333 !important;
+}
