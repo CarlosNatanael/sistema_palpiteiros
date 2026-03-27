@@ -449,8 +449,8 @@ def award_bonus():
     usuario_atual = session.get('username')
     senha_digitada = request.form.get('password')
     
-    user_data = MODERADORES.get(usuario_atual)
-    if not user_data or user_data.get('password') != senha_digitada:
+    user_data = MODERADORES.get(usuario_atual) # type: ignore
+    if not user_data or user_data.get('password') != senha_digitada: # type: ignore
         flash('Senha incorreta!', 'danger')
         return redirect(url_for('admin_dashboard'))
     
@@ -566,12 +566,12 @@ def login():
         username = request.form.get('username')
         password = request.form.get('password')
 
-        user_data = MODERADORES.get(username)
+        user_data = MODERADORES.get(username) # type: ignore
         
-        if user_data and user_data.get('password') == password:
+        if user_data and user_data.get('password') == password: # type: ignore
             session['logged_in'] = True
             session['username'] = username
-            session['role'] = user_data.get('role', 'editor')
+            session['role'] = user_data.get('role', 'editor') # type: ignore
             flash(f'Bem-vindo, {username}!', 'success')
             return redirect(url_for('admin_dashboard'))
         else:
@@ -597,7 +597,7 @@ def admin_dashboard():
 
     jogos_adiados = []
     for jogo in jogos_db:
-        info_api = jogos_api_map.get(jogo['id'])
+        info_api = jogos_api_map.get(jogo['id']) # type: ignore
         if info_api:
             jogo_completo = dict(info_api)
             jogo_completo.update(dict(jogo))
@@ -1163,8 +1163,8 @@ def reset_season():
     usuario_atual = session.get('username')
     senha_digitada = request.form.get('password')
     
-    user_data = MODERADORES.get(usuario_atual)
-    if not user_data or user_data.get('password') != senha_digitada:
+    user_data = MODERADORES.get(usuario_atual) # type: ignore
+    if not user_data or user_data.get('password') != senha_digitada: # type: ignore
         flash('Senha incorreta! A temporada não foi reiniciada.', 'danger')
         return redirect(url_for('admin_dashboard'))
 
