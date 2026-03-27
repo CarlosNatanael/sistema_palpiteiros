@@ -986,7 +986,14 @@ footer {
 body.dark-mode {
     background-color: #121212 !important; 
     color: #e0e0e0 !important;
-    background-image: none; /* Remove papéis de parede claros no modo escuro */
+    
+    /* A MÁGICA: Adicionando uma imagem de fundo para o modo escuro */
+    /* Você pode trocar este link pela imagem final da liga depois */
+    background-image: linear-gradient(rgba(18, 18, 18, 0.9), rgba(18, 18, 18, 0.9)), 
+                      url('https://www.transparenttextures.com/patterns/black-linen.png') !important;
+    
+    background-attachment: fixed !important; /* Faz o fundo ficar parado */
+    background-size: cover !important;
 }
 
 /* Fundo do Cartão Central Principal */
