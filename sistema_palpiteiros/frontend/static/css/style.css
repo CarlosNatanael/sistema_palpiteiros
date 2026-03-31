@@ -1070,3 +1070,81 @@ body.dark-mode .aviso-texto-v2 {
 body.dark-mode .border-bottom {
     border-bottom-color: #333 !important;
 }
+
+/* =================================================== */
+/* DARK MODE - CORREÇÃO DE FORMULÁRIOS E LISTAS        */
+/* =================================================== */
+
+/* Campos de digitação, selects e textareas */
+body.dark-mode input.form-control,
+body.dark-mode select.form-select,
+body.dark-mode textarea.form-control {
+    background-color: #2a2a2a !important;
+    border-color: #444 !important;
+    color: #e0e0e0 !important;
+}
+
+/* Quando o usuário clica para digitar (efeito focus) */
+body.dark-mode input.form-control:focus,
+body.dark-mode select.form-select:focus {
+    background-color: #333 !important;
+    border-color: #4ade80 !important;
+    color: #ffffff !important;
+    box-shadow: 0 0 0 0.25rem rgba(74, 222, 128, 0.25) !important; /* Brilho verde neon */
+}
+
+/* =================================================== */
+/* DARK MODE - CORREÇÃO DE FORMULÁRIOS E LISTAS        */
+/* =================================================== */
+
+/* Campos desativados ou bloqueados (readonly) */
+body.dark-mode input[readonly], 
+body.dark-mode input:disabled,
+body.dark-mode select:disabled {
+    background-color: #1a1a1a !important;
+    color: #888888 !important;
+    border-color: #333 !important;
+}
+
+/* Correção de caixas cinzas (bg-light), painéis customizados, itens de lista e modais */
+body.dark-mode .bg-light,
+body.dark-mode .list-group-item,
+body.dark-mode .modal-content,
+body.dark-mode .input-group-text,
+body.dark-mode .form-container,          /* Correção do Adicionar Palpites */
+body.dark-mode .palpites-container,      /* Correção da tela de Palpites */
+body.dark-mode .campeao-container,       /* Correção da tela de Campeão */
+body.dark-mode .championship-section {
+    background-color: #242424 !important;
+    border-color: #333 !important;
+    color: #e0e0e0 !important;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.5) !important; /* Ajusta a sombra para o modo escuro */
+}
+
+/* Garante que os títulos dentro desses painéis customizados fiquem legíveis */
+body.dark-mode .form-container h2,
+body.dark-mode .form-container h3,
+body.dark-mode .form-container h4,
+body.dark-mode .palpites-container h3 {
+    color: #4ade80 !important;
+}
+
+/* Caso a tela de palpites use cards de jogos específicos */
+body.dark-mode .game-card {
+    background-color: #1e1e1e !important;
+    border: 1px solid #333 !important;
+}
+
+/* Textos explicativos e Labels de formulários no Modo Escuro */
+body.dark-mode .form-group label,
+body.dark-mode .form-label,
+body.dark-mode label {
+    color: #f8f9fa !important; /* Quase branco, excelente para leitura no escuro */
+    font-weight: 600 !important; /* Deixa a fonte um pouquinho mais grossa para destacar */
+}
+
+/* Garante que pequenos textos de ajuda abaixo dos campos também fiquem visíveis */
+body.dark-mode .form-text,
+body.dark-mode small {
+    color: #aaaaaa !important;
+}
