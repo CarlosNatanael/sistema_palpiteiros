@@ -1,5 +1,6 @@
-## Relatando Vulnerabilidades
+> [!NOTE]
+> Política de Segurança
 
-Por favor, não abra uma Issue pública se encontrar uma falha crítica de segurança no sistema. 
+Se você identificar uma vulnerabilidade de segurança, por favor, não abra uma issue pública. Em vez disso, relate o problema enviando um e-mail para securedev55@gmail.com.
 
-Envie um e-mail diretamente para securedev55@gmail.com  para que eu possa corrigir o problema antes que ele se torne público
+Ao enviar o e-mail, tente incluir o máximo de detalhes possível (passos para reproduzir, impacto e possíveis correções). Agradeço sua colaboração para manter este projeto seguro para todos.
