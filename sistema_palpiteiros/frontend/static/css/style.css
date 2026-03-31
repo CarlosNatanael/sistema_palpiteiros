@@ -1148,3 +1148,87 @@ body.dark-mode .form-text,
 body.dark-mode small {
     color: #aaaaaa !important;
 }
+
+/* =================================================== */
+/* DARK MODE - CORREÇÃO DA TELA DE PALPITES DA RODADA  */
+/* =================================================== */
+
+/* 1. Painel do Craque da Rodada (Transformando em Ouro Escuro) */
+body.dark-mode .card[style*="linear-gradient"] {
+    background: linear-gradient(135deg, #3a2a00 0%, #1e1500 100%) !important; /* Dourado bem escuro */
+    border: 1px solid #f39c12 !important;
+}
+body.dark-mode .card[style*="linear-gradient"] h6,
+body.dark-mode .card[style*="linear-gradient"] h2 {
+    color: #f1c40f !important; /* Devolve a cor amarela/dourada para o texto */
+    text-shadow: none !important;
+}
+body.dark-mode .card[style*="linear-gradient"] .badge {
+    background-color: #f39c12 !important;
+    color: #121212 !important;
+}
+
+/* 2. Caixinhas de Confronto ("Seu Palpite" x "Resultado Real") */
+body.dark-mode .palpite-box {
+    background-color: #1a1a1a !important; /* Fundo quase preto para contrastar */
+    border: 1px solid #333 !important;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3) !important;
+}
+
+/* Textos dentro das caixinhas de palpite */
+body.dark-mode .palpite-box span {
+    color: #9ca3af !important; /* Cinza claro para os rótulos */
+}
+body.dark-mode .palpite-box strong {
+    color: #4ade80 !important; /* Placar em Verde Neon para destacar! */
+    font-size: 1.1rem;
+}
+
+/* 3. Títulos dos Times (Matchup Header) */
+body.dark-mode .matchup-header strong {
+    color: #ffffff !important;
+}
+
+/* 4. Botões de Navegação (Rodada Anterior / Próxima) */
+body.dark-mode .btn-outline-secondary {
+    color: #e0e0e0 !important;
+    border-color: #555 !important;
+}
+body.dark-mode .btn-outline-secondary:hover {
+    background-color: #333 !important;
+    color: #ffffff !important;
+    border-color: #4ade80 !important; /* Efeito neon ao passar o mouse */
+}
+
+/* Remove o fundo branco forçado do card-body no Modo Escuro */
+body.dark-mode .card-body {
+    background-color: transparent !important; 
+    color: #e0e0e0 !important;
+}
+
+/* =================================================== */
+/* DARK MODE - CORREÇÃO DO PAINEL "SEM CAMPEÃO"        */
+/* =================================================== */
+
+body.dark-mode .no-champion {
+    background-color: #242424 !important; /* Fundo grafite elegante */
+    color: #e0e0e0 !important;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5) !important; /* Sombra adaptada para o escuro */
+    border: 1px solid #333 !important;
+}
+
+/* Ajusta as cores dos textos e ícones dentro desse painel */
+body.dark-mode .no-champion h2,
+body.dark-mode .no-champion h3,
+body.dark-mode .no-champion h4 {
+    color: #4ade80 !important; /* Título em verde neon */
+}
+
+body.dark-mode .no-champion p,
+body.dark-mode .no-champion .text-muted {
+    color: #9ca3af !important; /* Texto descritivo em cinza claro */
+}
+
+body.dark-mode .no-champion i {
+    color: #555 !important; /* Ícone gigante um pouco mais suave no escuro */
+}
