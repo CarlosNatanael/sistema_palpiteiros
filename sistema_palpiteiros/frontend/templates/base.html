@@ -31,7 +31,7 @@
                     <ul class="navbar-nav mx-auto">
                         <li class="nav-item"><a class="nav-link" href="{{ url_for('index') }}">Pontuação</a></li>
                         <li class="nav-item"><a class="nav-link" href="{{ url_for('estatisticas') }}">Estatísticas</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{ url_for('exibir_palpites') }}">Palpites</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('exibir_palpites') }}" id="linkZoeiraPalpites">Palpites</a></li>
                         <!-- <li class="nav-item"><a class="nav-link" href="{{ url_for('chaveamento') }}">Chaveamento</a></li> -->
                         <li class="nav-item"><a class="nav-link" href="{{ url_for('adicionar_palpites') }}">Adicionar Palpite</a></li>
                         <li class="nav-item"><a class="nav-link" href="{{ url_for('ver_palpites_campeao') }}">Palpites Campeão</a></li>
@@ -88,16 +88,20 @@
         
     </main>
 
+    <img src="{{ url_for('static', filename='img/dancing-banana.gif') }}" id="bananaRetro" class="dancing-banana" alt="Banana Dançante">
+
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Lógica do Dark Mode
+        // Lógica do Dark Mode + Easter Egg 1º de Abril 🍌
         document.addEventListener('DOMContentLoaded', () => {
             const html = document.documentElement;
             const toggleBtn = document.getElementById('darkModeToggle');
             const icon = toggleBtn.querySelector('i');
+            const banana = document.getElementById('bananaRetro');
+            const linkPalpites = document.getElementById('linkZoeiraPalpites'); // Pega o botão Palpites
             
             // Verifica se o usuário já escolheu o tema escuro antes
             const savedTheme = localStorage.getItem('theme');
@@ -107,14 +111,32 @@
                 icon.classList.replace('bi-moon-stars-fill', 'bi-sun-fill');
             }
 
-            // Ação ao clicar no botão
+            // FUNÇÃO DA ZOEIRA: Solta a banana no centro da tela
+            function soltarBanana(tempoVisivel) {
+                if (banana) {
+                    banana.classList.remove('invade'); 
+                    clearTimeout(window.bananaTimer); 
+                    
+                    setTimeout(() => {
+                        banana.classList.add('invade'); 
+                        window.bananaTimer = setTimeout(() => {
+                            banana.classList.remove('invade');
+                        }, tempoVisivel);
+                    }, 10);
+                }
+            }
+
+            // ARMADILHA 1: Clicou no Modo Escuro (Fica 20 segundos)
             toggleBtn.addEventListener('click', (e) => {
                 e.preventDefault();
-                document.body.classList.toggle('dark-mode');
                 
+                soltarBanana(20000); // Solta a banana por 20 seg
+
+                // Troca o tema do site
+                document.body.classList.toggle('dark-mode');
                 if (document.body.classList.contains('dark-mode')) {
                     html.setAttribute('data-bs-theme', 'dark');
-                    localStorage.setItem('theme', 'dark'); // Salva a escolha
+                    localStorage.setItem('theme', 'dark');
                     icon.classList.replace('bi-moon-stars-fill', 'bi-sun-fill');
                 } else {
                     html.setAttribute('data-bs-theme', 'light');
@@ -122,6 +144,20 @@
                     icon.classList.replace('bi-sun-fill', 'bi-moon-stars-fill');
                 }
             });
+
+            // ARMADILHA 2: Clicou em Palpites (Sequestro de Link)
+            if (linkPalpites) {
+                linkPalpites.addEventListener('click', (e) => {
+                    e.preventDefault(); // Impede o cara de ir pra página na hora!
+                    
+                    soltarBanana(15000); // Solta a banana gigante
+                    
+                    // Deixa a pessoa em desespero por 6 segundos e depois redireciona
+                    setTimeout(() => {
+                        window.location.href = linkPalpites.href;
+                    }, 6000); 
+                });
+            }
         });
     </script>
     

@@ -1232,3 +1232,24 @@ body.dark-mode .no-champion .text-muted {
 body.dark-mode .no-champion i {
     color: #555 !important; /* Ícone gigante um pouco mais suave no escuro */
 }
+
+/* =================================================== */
+/* EASTER EGG 1º DE ABRIL - BANANA DANÇANTE NO CENTRO  */
+/* =================================================== */
+.dancing-banana {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0); /* Fica invisível e encolhida no centro */
+    z-index: 9999;
+    width: 250px; /* Aumentei o tamanho para dar mais destaque! */
+    pointer-events: none; /* Não atrapalha o usuário clicar nas coisas atrás dela */
+    opacity: 0;
+    transition: all 0.5s ease-out; /* Efeito "pulo" suave ao aparecer e sumir */
+}
+
+/* Classe que será ativada pelo botão */
+.dancing-banana.invade {
+    transform: translate(-50%, -50%) scale(1); /* Cresce pro tamanho normal no meio da tela */
+    opacity: 1;
+}
