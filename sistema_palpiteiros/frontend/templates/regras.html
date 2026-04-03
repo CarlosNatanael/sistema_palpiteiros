@@ -208,23 +208,29 @@
                 <div class="tab-pane fade" id="content-ficha" role="tabpanel">
                     <h3 class="fw-bold text-dark border-bottom pb-3 mb-4">Ficha Técnica & Suporte</h3>
                     
-                    <ul class="list-group list-group-flush mb-4">
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <span><i class="bi bi-calendar-event me-2"></i><strong>Temporada Atual</strong></span>
+                    <ul class="list-group list-group-flush mb-4 border rounded-3 shadow-sm overflow-hidden">
+                        <li class="list-group-item d-flex justify-content-between align-items-center px-3 py-3">
+                            <span><i class="bi bi-calendar-event text-warning me-2"></i><strong>Temporada Atual</strong></span>
                             <span class="badge bg-dark">{{ temporada_atual }}</span>
                         </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center px-0">
-                            <strong>Versão do Sistema</strong>
+                        <li class="list-group-item d-flex justify-content-between align-items-center px-3 py-3">
+                            <span><i class="bi bi-info-circle-fill text-info me-2"></i><strong>Versão do Sistema</strong></span>
                             <span class="badge bg-dark rounded-pill">v1.1.0</span>
                         </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center px-0">
-                            <span><strong>Desenvolvedores</strong> <i class="bi bi-code-slash text-primary me-2"></i></span>
-                            <span>Carlos Natanael / Marc</span>
+                        <li class="list-group-item d-flex justify-content-between align-items-center px-3 py-3">
+                            <span><i class="bi bi-code-slash text-primary me-2"></i><strong>Desenvolvedores</strong></span>
+                            <span class="text-muted fw-bold">Carlos Natanael / Marc</span>
                         </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center px-0">
-                            <span><strong>Moderação & Admin</strong> <i class="bi bi-shield-lock-fill text-success me-2"></i></span>
-                            <span>Alemão / Lucas</span>
+                        <li class="list-group-item d-flex justify-content-between align-items-center px-3 py-3">
+                            <span><i class="bi bi-shield-lock-fill text-success me-2"></i><strong>Moderação & Admin</strong></span>
+                            <span class="text-muted fw-bold">Alemão / Lucas</span>
                         </li>
+                        <!-- <li class="list-group-item d-flex justify-content-between align-items-center px-3 py-3">
+                            <span><i class="bi bi-github text-secondary me-2"></i><strong>Repositório Oficial</strong></span>
+                            <a href="https://github.com/carlosnatanael/sistema_palpiteiros" target="_blank">
+                                <img src="https://img.shields.io/github/stars/carlosnatanael/sistema_palpiteiros?style=social" alt="GitHub stars">
+                            </a>
+                        </li> -->
                     </ul>
 
                     <div class="card bg-light border-0 text-center p-4">
