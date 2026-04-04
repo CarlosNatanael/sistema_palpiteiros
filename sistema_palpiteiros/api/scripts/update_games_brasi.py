@@ -7,12 +7,6 @@ API_DB_PATH = os.path.join(BASE_DIR, '..', 'api_data.db')
 NOVOS_JOGOS_E_CAMPEONATOS = {
   "Brasileirão 2026": [
     {
-      "id": 1071, "rodada": 8, "fase": "grupos",
-      "time1_nome": "São Paulo", "time1_sigla": "SAO", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/4w2Z97Hf9CSOqICK3a8AxQ_48x48.png",
-      "time2_nome": "Cruzeiro", "time2_sigla": "CRU", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/Tcv9X__nIh-6wFNJPMwIXQ_48x48.png",
-      "data_hora": "2026-04-04 18:30", "local": "Morumbis"
-    },
-    {
       "id": 1072, "rodada": 8, "fase": "grupos",
       "time1_nome": "Coritiba", "time1_sigla": "CFC", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/LaFlBADLmsjHfGTehCYtuA_48x48.png",
       "time2_nome": "Fluminense", "time2_sigla": "FLU", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/fCMxMMDF2AZPU7LzYKSlig_48x48.png",
