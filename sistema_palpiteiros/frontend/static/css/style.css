@@ -1232,3 +1232,54 @@ body.dark-mode .no-champion .text-muted {
 body.dark-mode .no-champion i {
     color: #555 !important; /* Ícone gigante um pouco mais suave no escuro */
 }
+
+/* =================================================== */
+/* DARK MODE - CORREÇÃO DO PAINEL ADMIN (RESULTADOS)   */
+/* =================================================== */
+
+/* Força os cartões brancos a ficarem grafite */
+body.dark-mode .admin-container,
+body.dark-mode .admin-container .bg-white,
+body.dark-mode .admin-container .card {
+    background-color: #242424 !important; /* Grafite escuro elegante */
+    border-color: #333 !important;
+    color: #e0e0e0 !important;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.5) !important; /* Ajusta a sombra para não ficar estranha no escuro */
+}
+
+/* Campos de placar e selects de status (que usam bg-light) */
+body.dark-mode .admin-container .bg-light {
+    background-color: #1a1a1a !important;
+    border-color: #444 !important;
+    color: #e0e0e0 !important;
+}
+
+/* Garante que os nomes dos times e o "X" do placar fiquem brancos/claros */
+body.dark-mode .team-name-admin {
+    color: #f8f9fa !important;
+}
+body.dark-mode .admin-container span.text-muted {
+    color: #aaaaaa !important;
+}
+
+/* Deixa os títulos das seções mais visíveis e com a identidade neon */
+body.dark-mode .admin-container h2 {
+    color: #4ade80 !important;
+    text-shadow: 0 0 10px rgba(74, 222, 128, 0.3) !important;
+}
+body.dark-mode .admin-container h4,
+body.dark-mode .admin-container h5 {
+    color: #e0e0e0 !important;
+}
+
+/* Caixas de aviso (alertas) no modo escuro */
+body.dark-mode .admin-container .alert-warning {
+    background-color: #332b00 !important;
+    border-color: #665500 !important;
+    color: #f1c40f !important;
+}
+body.dark-mode .admin-container .alert-info {
+    background-color: #002233 !important;
+    border-color: #004466 !important;
+    color: #4db8ff !important;
+}
