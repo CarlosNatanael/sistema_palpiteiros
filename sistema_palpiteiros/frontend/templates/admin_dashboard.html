@@ -132,7 +132,8 @@
     {% if session.role in ['master', 'moderador'] %}
     <h3 class="section-title"><i class="bi bi-people-fill text-info me-2"></i> Comunidade & Gestão</h3>
     <div class="row g-4 mb-4">
-        <div class="col-md-4">
+        
+        <div class="col-md-6 col-lg-3">
             <div class="card admin-card p-4">
                 <div class="text-center">
                     <i class="bi bi-megaphone card-icon text-info"></i>
@@ -143,27 +144,39 @@
             </div>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-6 col-lg-3">
             <div class="card admin-card p-4">
                 <div class="text-center">
                     <i class="bi bi-fire card-icon text-danger"></i>
-                    <h5 class="fw-bold">Bônus por Sequência</h5>
+                    <h5 class="fw-bold">Bônus Sequência</h5>
                     <p class="text-muted small mb-4">Dê +3 pts para quem acertou 3 seguidas.</p>
                 </div>
-                <button class="btn btn-outline-danger mt-auto fw-bold w-100" data-bs-toggle="modal" data-bs-target="#modalBonus">Conceder Bônus</button>
+                <button class="btn btn-outline-danger mt-auto fw-bold w-100" data-bs-toggle="modal" data-bs-target="#modalBonus">Conceder</button>
             </div>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-6 col-lg-3">
+            <div class="card admin-card p-4">
+                <div class="text-center">
+                    <i class="bi bi-star-fill card-icon text-warning"></i>
+                    <h5 class="fw-bold">Craque da Rodada</h5>
+                    <p class="text-muted small mb-4">Dê +1 pt para o(s) líder(es) da semana.</p>
+                </div>
+                <button class="btn btn-outline-warning mt-auto fw-bold w-100" data-bs-toggle="modal" data-bs-target="#modalCraque">Premiar Craque</button>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-3">
             <div class="card admin-card p-4">
                 <div class="text-center">
                     <i class="bi bi-person-plus card-icon text-dark"></i>
                     <h5 class="fw-bold">Novo Palpiteiro</h5>
                     <p class="text-muted small mb-4">Adicione um novo membro na liga.</p>
                 </div>
-                <button class="btn btn-outline-dark mt-auto fw-bold w-100" data-bs-toggle="modal" data-bs-target="#modalPalpiteiro">Adicionar Cadastro</button>
+                <button class="btn btn-outline-dark mt-auto fw-bold w-100" data-bs-toggle="modal" data-bs-target="#modalPalpiteiro">Cadastrar</button>
             </div>
         </div>
+        
     </div>
     {% endif %}
 
@@ -253,6 +266,31 @@
                 </div>
                 <div class="modal-footer border-0 pb-4 px-4">
                     <button type="submit" class="btn btn-danger w-100 fw-bold shadow-sm">Confirmar Bônus</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalCraque" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-warning text-dark border-0">
+                <h5 class="modal-title fw-bold"><i class="bi bi-star-fill"></i> Premiar Craque da Rodada</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form action="{{ url_for('premiar_craque') }}" method="POST">
+                <div class="modal-body p-4">
+                    <p class="text-muted small mb-4">O sistema encontrará o(s) maior(es) pontuador(es) da rodada e aplicará <strong>+1 ponto</strong> na tabela geral. Só pode ser usado uma vez por rodada!</p>
+
+                    <label class="form-label fw-bold text-muted small">Número da Rodada Finalizada</label>
+                    <input type="number" name="rodada_craque" class="form-control mb-4 bg-light" min="1" placeholder="Ex: 5" required>
+
+                    <label class="form-label fw-bold text-muted small">Senha de Confirmação</label>
+                    <input type="password" name="password_craque" class="form-control bg-light" placeholder="Sua senha de admin..." required>
+                </div>
+                <div class="modal-footer border-0 pb-4 px-4">
+                    <button type="submit" class="btn btn-warning w-100 fw-bold shadow-sm"><i class="bi bi-trophy-fill me-1"></i> Confirmar Premiação</button>
                 </div>
             </form>
         </div>
