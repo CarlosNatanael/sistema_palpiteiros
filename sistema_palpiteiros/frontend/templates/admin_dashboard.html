@@ -59,6 +59,21 @@
     
     <div class="admin-header text-center">
         <h1 class="fw-bold mb-2 text-white" style="color: #c5c3d4 !important;"><i class="bi bi-shield-lock-fill me-2"></i> Centro de Comando</h1>
+        
+        <div class="d-flex align-items-center justify-content-center mt-3 text-white" style="opacity: 0.85;">
+            <i class="bi bi-person-circle me-2 fs-4"></i>
+            <span class="fw-light fs-5">Olá,</span>
+            <strong class="ms-2 me-3 fs-4 text-warning">{{ session.username }}</strong>
+            <span class="me-3 fs-5 opacity-50">|</span>
+            
+            {% if session.role == 'master' %}
+                <span class="badge bg-dark rounded-pill px-3 py-2" style="border: 1px solid #40041d; color: #a59fb5; font-size: 0.9rem;">Dev</span>
+            {% elif session.role == 'moderador' %}
+                <span class="badge bg-info text-dark rounded-pill px-3 py-2" style="border: 1px solid #085966; color: #053d57; font-size: 0.9rem;">Moderador</span>
+            {% else %}
+                <span class="badge bg-secondary rounded-pill px-3 py-2 text-white-50" style="border: 1px solid #6a0808; color: #470202; font-size: 0.9rem;">Admin</span>
+            {% endif %}
+        </div>
     </div>
 
     <h3 class="section-title"><i class="bi bi-controller text-success me-2"></i> Operações de Jogo</h3>
@@ -165,7 +180,23 @@
                 <button class="btn btn-outline-warning mt-auto fw-bold w-100" data-bs-toggle="modal" data-bs-target="#modalCraque">Premiar Craque</button>
             </div>
         </div>
+        
+    </div>
+    {% endif %}
 
+    {% if session.role == 'master' %}
+    <h3 class="section-title"><i class="bi bi-shield-check text-primary me-2"></i> Segurança & Equipe</h3>
+    <div class="row g-4 mb-4">
+        <div class="col-md-6 col-lg-4">
+            <div class="card admin-card p-4" style="border-left: 4px solid #0d6efd;">
+                <div class="text-center">
+                    <i class="bi bi-person-badge card-icon text-primary"></i>
+                    <h5 class="fw-bold">Acessos ao Painel</h5>
+                    <p class="text-muted small mb-4">Adicione ou remova moderadores do sistema.</p>
+                </div>
+                <button class="btn btn-outline-primary mt-auto fw-bold w-100" data-bs-toggle="modal" data-bs-target="#modalGerirAdmins">Gerenciar Equipe</button>
+            </div>
+        </div>
         <div class="col-md-6 col-lg-3">
             <div class="card admin-card p-4">
                 <div class="text-center">
@@ -176,7 +207,6 @@
                 <button class="btn btn-outline-dark mt-auto fw-bold w-100" data-bs-toggle="modal" data-bs-target="#modalPalpiteiro">Cadastrar</button>
             </div>
         </div>
-        
     </div>
     {% endif %}
 
@@ -346,6 +376,84 @@
                     <button type="submit" class="btn btn-warning w-100 fw-bold shadow">Eternizar na Sala de Troféus</button>
                 </div>
             </form>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+{% if session.role == 'master' %}
+<div class="modal fade" id="modalGerirAdmins" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content shadow-lg">
+            <div class="modal-header bg-primary text-white border-0">
+                <h5 class="modal-title fw-bold"><i class="bi bi-person-badge me-2"></i> Gestão de Acessos</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body p-4">
+                
+                <h6 class="fw-bold mb-3 text-secondary"><i class="bi bi-list-ul"></i> Equipe Atual</h6>
+                <div class="table-responsive mb-4">
+                    <table class="table table-hover align-middle text-center border">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Usuário</th>
+                                <th>Cargo</th>
+                                <th>Ação</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for admin in lista_admins %}
+                            <tr>
+                                <td>
+                                    {% if admin.role == 'master' %}
+                                        <span class="badge bg-dark">Dev</span>
+                                    {% elif admin.role == 'moderador' %}
+                                        <span class="badge bg-info text-dark">Moderador</span>
+                                    {% else %}
+                                        <span class="badge bg-secondary">Admin</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if admin.username != session.username %}
+                                    <form action="{{ url_for('delete_admin', admin_id=admin.id) }}" method="POST" onsubmit="return confirm('Tem certeza que deseja revogar o acesso de {{ admin.username }}?');">
+                                        <button type="submit" class="btn btn-sm btn-danger fw-bold"><i class="bi bi-trash"></i> Remover</button>
+                                    </form>
+                                    {% else %}
+                                    <span class="text-muted small"><i class="bi bi-lock"></i> Seu usuário</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <hr class="mb-4">
+
+                <h6 class="fw-bold mb-3 text-success"><i class="bi bi-plus-circle"></i> Adicionar Novo Acesso</h6>
+                <form action="{{ url_for('add_admin') }}" method="POST">
+                    <div class="row g-2 align-items-end">
+                        <div class="col-md-4">
+                            <label class="form-label text-muted small fw-bold">Login</label>
+                            <input type="text" name="admin_username" class="form-control" placeholder="Nome de usuário" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label text-muted small fw-bold">Senha</label>
+                            <input type="password" name="admin_password" class="form-control" placeholder="Senha provisória" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label text-muted small fw-bold">Permissão</label>
+                            <select name="admin_role" class="form-select" required>
+                                <option value="editor">Editor (Apenas Placares)</option>
+                                <option value="moderador">Moderador (Gestão & Bônus)</option>
+                                <option value="master">Master (Tudo)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-success mt-4 w-100 fw-bold shadow-sm"><i class="bi bi-check-circle me-1"></i> Criar Acesso</button>
+                </form>
+
+            </div>
         </div>
     </div>
 </div>
