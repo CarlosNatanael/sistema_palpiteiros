@@ -2,6 +2,24 @@
 
 Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.
 
+## [1.1.0] - 2026-04-07
+### Adicionado (Added)
+- **Controle de Acesso em Níveis (RBAC):** Sistema de permissões aprimorado com três níveis.
+- **Gestão de Equipe Visual:** Painel interativo no Admin para listar, criar e revogar acessos de moderadores e editores direto pela interface.
+- **Bônus "Craque da Rodada":** Botão dedicado no painel para conceder +1 Ponto Extra automático ao(s) maior(es) pontuador(es) da semana.
+- **Crachá do Administrador:** Cabeçalho do Centro de Comando agora exibe um crachá elegante com a foto de perfil, nome e badge de cargo do usuário logado.
+
+### Modificado (Changed)
+- **Segurança de Autenticação:** Login agora é dinâmico e consulta a tabela `usuarios_admin` no banco de dados, removendo credenciais do arquivo `config.py`.
+- **Criptografia:** Senhas de administradores agora são salvas e validadas como Hashes irreversíveis utilizando a biblioteca `werkzeug.security`.
+- **UI/UX Pílulas de Data:** As datas dos próximos jogos receberam um design moderno em formato de "pílula" (badge) com ícone de calendário.
+- **Responsividade do Admin:** Botões de salvar, selects de status e siglas de times foram recalibrados para não quebrarem o layout na tela de celulares.
+- **Refinamento do Dark Mode:** Ajustes de contraste em botões *outline*, repaginação completa para leitura noturna no "Livro de Regras" e correção do fundo branco na tela de Definir Resultados.
+
+### Corrigido (Fixed)
+- Bug do AJAX na tela de Resultados, que deixava a página em branco ou revertia os jogos para "Pendente" ao recarregar a tela.
+- Desalinhamento das colunas na tabela de gestão de acessos da equipe no painel Master.
+---
 ## [1.0.0] - 2026-03-17
 ### Adicionado (Added)
 - **Nova Sala de Troféus:** Galeria de Lendas com cards interativos no estilo "Ultimate Team".
