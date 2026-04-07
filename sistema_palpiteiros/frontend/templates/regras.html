@@ -31,13 +31,13 @@
         border-color: #eee;
     }
     
-    /* 🐛 CORREÇÃO DO BUG AQUI: Adicionado !important */
+    /* CORREÇÃO DO BUG AQUI: Adicionado !important */
     .nav-pills .nav-link.active {
         background-color: #006400 !important;
         color: #ffffff !important;
         box-shadow: 0 4px 10px rgba(0,100,0,0.2) !important;
     }
-    /* Opcional: Garante que os ícones fiquem brancos também quando selecionados */
+    /* Garante que os ícones fiquem brancos também quando selecionados */
     .nav-pills .nav-link.active i {
         color: #ffffff !important;
     }
@@ -84,7 +84,7 @@
                     <i class="bi bi-diagram-3-fill me-2 text-primary"></i> Mata-Mata
                 </button>
                 <button class="nav-link" id="tab-bonus" data-bs-toggle="pill" data-bs-target="#content-bonus" type="button" role="tab">
-                    <i class="bi bi-fire me-2 text-danger"></i> Bônus
+                    <i class="bi bi-fire me-2 text-danger"></i> Bônus Especiais
                 </button>
                 <button class="nav-link" id="tab-premiacao" data-bs-toggle="pill" data-bs-target="#content-premiacao" type="button" role="tab">
                     <i class="bi bi-cash-coin me-2 text-success"></i> Premiação
@@ -108,7 +108,7 @@
                         <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
                             <div>
                                 <h5 class="fw-bold text-success mb-1">Acerto na Mosca (Resultado Exato)</h5>
-                                <p class="text-muted mb-0">Você acertou o número de gols de cada time e quem ganhou. Ex: Palpitou 2x1 e o jogo foi 2x1.</p>
+                                <p class="text-muted mb-0">Você acertou o número de gols de cada time e quem ganhou</p>
                             </div>
                             <span class="badge bg-success points-badge shadow">+4 Pontos</span>
                         </div>
@@ -118,7 +118,7 @@
                         <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
                             <div>
                                 <h5 class="fw-bold text-primary mb-1">Acerto de Placar</h5>
-                                <p class="text-muted mb-0">Você acertou o número de gols (mas errou quem ganhou). Ex: Palpitou 2x0 e o jogo foi 2x0.</p>
+                                <p class="text-muted mb-0">Você acertou o número de gols (mas errou quem ganhou)</p>
                             </div>
                             <span class="badge bg-primary points-badge shadow">+2 Pontos</span>
                         </div>
@@ -128,7 +128,7 @@
                         <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
                             <div>
                                 <h5 class="fw-bold text-warning mb-1">Acerto Simples (Vencedor ou Empate)</h5>
-                                <p class="text-muted mb-0">Acertou apenas quem venceu ou que seria empate. Ex: Palpitou 1x0 e o jogo foi 3x0.</p>
+                                <p class="text-muted mb-0">Acertou apenas quem venceu ou que seria empate</p>
                             </div>
                             <span class="badge bg-warning text-dark points-badge shadow">+1 Ponto</span>
                         </div>
@@ -151,16 +151,28 @@
                 </div>
 
                 <div class="tab-pane fade" id="content-bonus" role="tabpanel">
-                    <h3 class="fw-bold text-dark border-bottom pb-3 mb-4">Sistema de Bônus (Streaks)</h3>
+                    <h3 class="fw-bold text-dark border-bottom pb-3 mb-4">Sistema de Bônus</h3>
                     
                     <div class="text-center mb-4 mt-3">
                         <i class="bi bi-fire text-danger" style="font-size: 4rem;"></i>
                         <h4 class="fw-bold mt-2">Sequência On Fire!</h4>
                     </div>
                     
-                    <div class="alert alert-danger shadow-sm border-0 bg-opacity-10">
+                    <div class="alert alert-danger shadow-sm border-0 bg-opacity-10 mb-5">
                         <h5 class="alert-heading fw-bold text-danger"><i class="bi bi-exclamation-triangle-fill me-2"></i> Como Funciona?</h5>
                         <p class="mb-0 text-dark">Se um palpiteiro conseguir emplacar uma sequência de <strong>3 acertos consecutivos</strong> (de qualquer tipo: placar exato, vencedor, etc. Sem nenhum erro no meio da sequência), ele entra no modo "On Fire" e recebe imediatamente <strong>+3 Pontos de Bônus</strong> na tabela geral!</p>
+                    </div>
+
+                    <hr class="border-secondary opacity-25 mb-5">
+
+                    <div class="text-center mb-4">
+                        <i class="bi bi-star-fill text-warning" style="font-size: 4rem; filter: drop-shadow(0px 4px 6px rgba(255, 193, 7, 0.4));"></i>
+                        <h4 class="fw-bold mt-2">Craque da Rodada</h4>
+                    </div>
+                    
+                    <div class="alert alert-warning shadow-sm border-0 bg-opacity-10 mb-3">
+                        <h5 class="alert-heading fw-bold text-dark"><i class="bi bi-trophy-fill text-warning me-2"></i> Como Funciona?</h5>
+                        <p class="mb-0 text-dark">O jogador que atingir a <strong>maior pontuação</strong> em uma única rodada ganha o título de "Craque da Rodada" e fatura <strong>+1 Ponto Extra</strong> na tabela geral. <br><br><em>Nota:</em> Em caso de empate no topo, todos os líderes da rodada dividem a glória e ganham o ponto extra!</p>
                     </div>
                 </div>
 
@@ -169,7 +181,6 @@
                     <div class="alert alert-success text-center py-5">
                         <i class="bi bi-cash-stack mb-3 d-block" style="font-size: 3rem;"></i>
                         <h4 class="fw-bold">A definir pela Liga</h4>
-                        <!-- <p class="mb-0">Combine com os participantes o valor da inscrição e como o pote final será dividido entre os primeiros colocados!</p> -->
                     </div>
                 </div>
 
@@ -225,12 +236,6 @@
                             <span><i class="bi bi-shield-lock-fill text-success me-2"></i><strong>Moderação & Admin</strong></span>
                             <span class="text-muted fw-bold">Alemão / Lucas</span>
                         </li>
-                        <!-- <li class="list-group-item d-flex justify-content-between align-items-center px-3 py-3">
-                            <span><i class="bi bi-github text-secondary me-2"></i><strong>Repositório Oficial</strong></span>
-                            <a href="https://github.com/carlosnatanael/sistema_palpiteiros" target="_blank">
-                                <img src="https://img.shields.io/github/stars/carlosnatanael/sistema_palpiteiros?style=social" alt="GitHub stars">
-                            </a>
-                        </li> -->
                     </ul>
 
                     <div class="card bg-light border-0 text-center p-4">
