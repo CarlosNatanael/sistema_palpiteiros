@@ -41,11 +41,8 @@ def init_admin_db():
                 role TEXT NOT NULL
             )
         ''')
-        admin_count = conn.execute("SELECT COUNT(*) as count FROM usuarios_admin").fetchone()
-        if admin_count['count'] == 0:
-            conn.execute("INSERT INTO usuarios_admin (username, password, role) VALUES (?, ?, ?)")
-            conn.commit()
-            app.admin_db_initialized = True
+        conn.commit()
+        app.admin_db_initialized = True
 
 @app.teardown_appcontext
 def close_db(exception):
