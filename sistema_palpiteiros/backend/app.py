@@ -815,7 +815,18 @@ def renderizar_pagina_resultados(conn):
             rodadas_disponiveis = sorted(set(j['rodada'] for j in jogos_do_campeonato))
         
         if rodada_selecionada and rodada_selecionada in rodadas_disponiveis:
-            jogos_filtrados = [j for j in jogos_do_campeonato if j['rodada'] == rodada_selecionada]
+            # 1. Pega os jogos crus da API
+            jogos_da_rodada = [j for j in jogos_do_campeonato if j['rodada'] == rodada_selecionada]
+            
+            # 2. Busca os resultados que já foram salvos no banco de dados local
+            resultados_db = conn.execute("SELECT * FROM jogos").fetchall()
+            resultados_map = {res['id']: dict(res) for res in resultados_db}
+            
+            # 3. Mescla (cruza) os dados da API com os dados salvos no banco
+            for jogo in jogos_da_rodada:
+                if jogo['id'] in resultados_map:
+                    jogo.update(resultados_map[jogo['id']])
+                jogos_filtrados.append(jogo)
     
     return render_template('set_game_result.html',
         campeonatos=campeonatos,

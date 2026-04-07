@@ -1232,3 +1232,178 @@ body.dark-mode .no-champion .text-muted {
 body.dark-mode .no-champion i {
     color: #555 !important; /* Ícone gigante um pouco mais suave no escuro */
 }
+
+/* =================================================== */
+/* DARK MODE - CORREÇÃO DO PAINEL ADMIN (RESULTADOS)   */
+/* =================================================== */
+
+/* Força os cartões brancos a ficarem grafite */
+body.dark-mode .admin-container,
+body.dark-mode .admin-container .bg-white,
+body.dark-mode .admin-container .card {
+    background-color: #242424 !important; /* Grafite escuro elegante */
+    border-color: #333 !important;
+    color: #e0e0e0 !important;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.5) !important; /* Ajusta a sombra para não ficar estranha no escuro */
+}
+
+/* Campos de placar e selects de status (que usam bg-light) */
+body.dark-mode .admin-container .bg-light {
+    background-color: #1a1a1a !important;
+    border-color: #444 !important;
+    color: #e0e0e0 !important;
+}
+
+/* Garante que os nomes dos times e o "X" do placar fiquem brancos/claros */
+body.dark-mode .team-name-admin {
+    color: #f8f9fa !important;
+}
+body.dark-mode .admin-container span.text-muted {
+    color: #aaaaaa !important;
+}
+
+/* Deixa os títulos das seções mais visíveis e com a identidade neon */
+body.dark-mode .admin-container h2 {
+    color: #4ade80 !important;
+    text-shadow: 0 0 10px rgba(74, 222, 128, 0.3) !important;
+}
+body.dark-mode .admin-container h4,
+body.dark-mode .admin-container h5 {
+    color: #e0e0e0 !important;
+}
+
+/* Caixas de aviso (alertas) no modo escuro */
+body.dark-mode .admin-container .alert-warning {
+    background-color: #332b00 !important;
+    border-color: #665500 !important;
+    color: #f1c40f !important;
+}
+body.dark-mode .admin-container .alert-info {
+    background-color: #002233 !important;
+    border-color: #004466 !important;
+    color: #4db8ff !important;
+}
+
+/* =================================================== */
+/* DESIGN DAS DATAS DOS JOGOS (BADGE/PÍLULA)           */
+/* =================================================== */
+.date-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f8f9fa; /* Fundo cinza bem claro no modo claro */
+    color: #495057; /* Texto chumbo */
+    padding: 6px 16px;
+    border-radius: 50px; /* Deixa as bordas totalmente arredondadas (pílula) */
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-top: 12px;
+    border: 1px solid #e9ecef;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+}
+
+.date-badge i {
+    margin-right: 6px;
+    color: #006400; /* Ícone no verde padrão do seu sistema */
+}
+
+/* Adaptação automática para o Modo Escuro */
+body.dark-mode .date-badge {
+    background-color: #1a1a1a !important; /* Fundo grafite profundo */
+    color: #9ca3af !important; /* Texto cinza claro */
+    border-color: #333 !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3) !important;
+}
+
+body.dark-mode .date-badge i {
+    color: #4ade80 !important; /* Ícone ganha o Verde Neon à noite! */
+}
+
+/* =================================================== */
+/* AJUSTES MOBILE PARA A PÍLULA DE DATA (RESPONSIVO)   */
+/* =================================================== */
+
+/* Remove a margem superior que deixava a data desalinhada verticalmente no desktop e mobile */
+.date-badge {
+    margin-top: 0 !important;
+}
+
+/* Regras exclusivas para telas pequenas (celulares até 576px) */
+@media (max-width: 576px) {
+    /* 1. Compacta a Pílula da Data */
+    .date-badge {
+        font-size: 0.65rem !important; /* Diminui a fonte da data */
+        padding: 4px 6px !important; /* Afina as bordas da pílula */
+        letter-spacing: -0.3px; /* Junta um pouquinho os números para ganhar espaço */
+        white-space: nowrap !important; /* Impede a data de quebrar pela metade */
+    }
+    
+    .date-badge i {
+        font-size: 0.7rem !important;
+        margin-right: 3px !important;
+    }
+
+    /* 2. Força os Escudos e Siglas a ficarem sempre na mesma linha */
+    .match-row .team {
+        display: flex !important;
+        align-items: center !important;
+        flex-wrap: nowrap !important;
+        white-space: nowrap !important; /* Impede a sigla de pular para baixo do escudo */
+    }
+
+    /* 3. Reduz um pouco os itens dos times para abrir caminho para a data */
+    .match-row .team-sigla {
+        font-size: 0.75rem !important; /* Diminui a fonte da sigla (ex: FLU, CUI) */
+        margin: 0 4px !important; /* Reduz o espaço entre o escudo e a letra */
+    }
+
+    .match-row .team-logo {
+        width: 26px !important; /* Escudo ligeiramente menor no celular */
+        height: 26px !important;
+    }
+    
+    .match-center {
+        padding: 0 2px !important; /* Dá um leve respiro no centro */
+    }
+}
+
+/* =================================================== */
+/* AJUSTES MOBILE PARA BOTÕES E CAIXAS DE SELEÇÃO      */
+/* =================================================== */
+@media (max-width: 576px) {
+    
+    /* 1. Encolhe o Botão de "Salvar" (Telas de Admin e Palpites) */
+    .btn-salvar, 
+    .game-controls .btn {
+        height: 38px !important;
+        min-width: 90px !important; /* Tira aquela largura de 120px */
+        font-size: 0.85rem !important;
+        padding: 4px 12px !important;
+        margin-top: 8px !important;
+    }
+    
+    /* 2. Encolhe as caixas de seleção (Status / Quem Avança / etc) */
+    .game-controls select,
+    .status-select {
+        height: 38px !important;
+        font-size: 0.85rem !important;
+        width: 130px !important; /* Limita a largura para não vazar a tela */
+        padding-top: 4px !important;
+        padding-bottom: 4px !important;
+    }
+    
+    /* 3. Se for o botão de Navegação (Rodada Anterior/Próxima) */
+    .nav-arrow {
+        font-size: 0.8rem !important;
+        padding: 6px 12px !important;
+    }
+    .nav-arrow svg {
+        width: 18px !important;
+        height: 18px !important;
+    }
+    
+    /* Centraliza os controles perfeitamente no celular */
+    .game-controls {
+        gap: 8px !important; /* Diminui o espaço entre os botões */
+    }
+}

@@ -150,13 +150,16 @@
                                     <img class="team-logo" src="{{ jogo.time1_img }}" alt="{{ jogo.time1_nome }}">
                                     <span class="team-sigla">{{ jogo.time1_sigla }}</span>
                                 </div>
-                                <div class="match-center">
+                                
+                                <div class="match-center d-flex flex-column align-items-center justify-content-center">
                                     {% if jogo.status == 'Adiado' %}
                                         <span class="badge bg-danger px-2 py-1 shadow-sm text-uppercase mt-1" style="letter-spacing: 1px; font-size: 0.7rem;">
                                             <i class="bi bi-exclamation-octagon-fill"></i> Adiado
                                         </span>
                                     {% else %}
-                                        <div class="match-date fw-bold text-muted">{{ jogo.data_hora }}</div>
+                                        <div class="date-badge">
+                                            <i class="bi bi-calendar-event"></i> {{ jogo.data_hora }}
+                                        </div>
                                     {% endif %}
                                 </div>
                                 <div class="team team-away">

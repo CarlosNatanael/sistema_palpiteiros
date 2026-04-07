@@ -6,61 +6,7 @@ API_DB_PATH = os.path.join(BASE_DIR, '..', 'api_data.db')
 
 NOVOS_JOGOS_E_CAMPEONATOS = {
   "Brasileirão 2026": [
-    {
-      "id": 1061, "rodada": 7, "fase": "grupos",
-      "time1_nome": "Botafogo", "time1_sigla": "BOT", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/KLDWYp-H8CAOT9H_JgizRg_48x48.png",
-      "time2_nome": "Mirassol", "time2_sigla": "MIR", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/5J3JY7fcdiDYU5rbPW7AKA_48x48.png",
-      "data_hora": "2026-04-01 19:30", "local": "Nilton Santos"
-    },
-    {
-      "id": 1062, "rodada": 7, "fase": "grupos",
-      "time1_nome": "Internacional", "time1_sigla": "INT", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/OWVFKuHrQuf4q2Wk0hEmSA_48x48.png",
-      "time2_nome": "São Paulo", "time2_sigla": "SAO", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/4w2Z97Hf9CSOqICK3a8AxQ_48x48.png",
-      "data_hora": "2026-04-01 19:30", "local": "Beira-Rio"
-    },
-    {
-      "id": 1063, "rodada": 7, "fase": "grupos",
-      "time1_nome": "Bahia", "time1_sigla": "BAH", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/nIdbR6qIUDyZUBO9vojSPw_48x48.png",
-      "time2_nome": "Athletico-PR", "time2_sigla": "CAP", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/9LkdBR4L5plovKM8eIy7nQ_48x48.png",
-      "data_hora": "2026-04-01 20:00", "local": "Arena Fonte Nova"
-    },
-    {
-      "id": 1064, "rodada": 7, "fase": "grupos",
-      "time1_nome": "Cruzeiro", "time1_sigla": "CRU", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/Tcv9X__nIh-6wFNJPMwIXQ_48x48.png",
-      "time2_nome": "EC Vitória", "time2_sigla": "VIT", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/LHSM6VchpkI4NIptoSTHOg_48x48.png",
-      "data_hora": "2026-04-01 20:00", "local": "Mineirão"
-    },
-    {
-      "id": 1065, "rodada": 7, "fase": "grupos",
-      "time1_nome": "Coritiba", "time1_sigla": "CFC", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/LaFlBADLmsjHfGTehCYtuA_48x48.png",
-      "time2_nome": "Vasco da Gama", "time2_sigla": "VAS", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/hHwT8LwRmYCAGxQ-STLxYA_48x48.png",
-      "data_hora": "2026-04-01 20:30", "local": "Couto Pereira"
-    },
-    {
-      "id": 1066, "rodada": 7, "fase": "grupos",
-      "time1_nome": "Fluminense", "time1_sigla": "FLU", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/fCMxMMDF2AZPU7LzYKSlig_48x48.png",
-      "time2_nome": "Corinthians", "time2_sigla": "COR", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/tCMSqgXVHROpdCpQhzTo1g_48x48.png",
-      "data_hora": "2026-04-01 21:30", "local": "Maracanã"
-    },
-    {
-      "id": 1067, "rodada": 7, "fase": "grupos",
-      "time1_nome": "Santos", "time1_sigla": "SAN", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/VHdNOT6wWOw_vJ38GMjMzg_48x48.png",
-      "time2_nome": "Remo", "time2_sigla": "REM", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/bENrK5iSMF6sXrEkDNNxng_48x48.png",
-      "data_hora": "2026-04-02 19:00", "local": "Vila Belmiro"
-    },
-    {
-      "id": 1068, "rodada": 7, "fase": "grupos",
-      "time1_nome": "Chapecoense", "time1_sigla": "CHA", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/K7JQUKTRsuXfO9YrD5dq5g_48x48.png",
-      "time2_nome": "Atlético-MG", "time2_sigla": "CAM", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/q9fhEsgpuyRq58OgmSndcQ_48x48.png",
-      "data_hora": "2026-04-02 19:00", "local": "Arena Condá"
-    },
-    {
-      "id": 1069, "rodada": 7, "fase": "grupos",
-      "time1_nome": "Palmeiras", "time1_sigla": "PAL", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/7spurne-xDt2p6C0imYYNA_48x48.png",
-      "time2_nome": "Grêmio", "time2_sigla": "GRE", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/Ku-73v_TW9kpex-IEGb0ZA_48x48.png",
-      "data_hora": "2026-04-02 21:30", "local": "Allianz Parque"
-    },
-    {
+{
       "id": 1070, "rodada": 7, "fase": "grupos",
       "time1_nome": "Bragantino", "time1_sigla": "BGT", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/lMyw2zn1Z4cdkaxKJWnsQw_48x48.png",
       "time2_nome": "Flamengo", "time2_sigla": "FLA", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/orE554NToSkH6nuwofe7Yg_48x48.png",
