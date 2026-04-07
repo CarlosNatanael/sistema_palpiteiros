@@ -404,15 +404,18 @@
                         <tbody>
                             {% for admin in lista_admins %}
                             <tr>
+                                <td class="fw-bold">{{ admin.username }}</td>
+                                
                                 <td>
                                     {% if admin.role == 'master' %}
                                         <span class="badge bg-dark">Dev</span>
                                     {% elif admin.role == 'moderador' %}
                                         <span class="badge bg-info text-dark">Moderador</span>
                                     {% else %}
-                                        <span class="badge bg-secondary">Admin</span>
+                                        <span class="badge bg-secondary">Editor</span>
                                     {% endif %}
                                 </td>
+                                
                                 <td>
                                     {% if admin.username != session.username %}
                                     <form action="{{ url_for('delete_admin', admin_id=admin.id) }}" method="POST" onsubmit="return confirm('Tem certeza que deseja revogar o acesso de {{ admin.username }}?');">
