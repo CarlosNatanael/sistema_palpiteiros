@@ -1,8 +1,9 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session, g
+from werkzeug.security import generate_password_hash, check_password_hash
+from config import API_BASE_URL, MODERADORES
 from collections import defaultdict
 from datetime import datetime
 from functools import wraps
-from config import API_BASE_URL, MODERADORES
 import requests
 import sqlite3
 import pytz
@@ -27,6 +28,24 @@ def get_db():
         g.db = sqlite3.connect(DB_PATH, timeout=10)
         g.db.row_factory = sqlite3.Row
     return g.db
+
+@app.before_request
+def init_admin_db():
+    if not getattr(app, 'admin_db_initialized', False):
+        conn = get_db()
+        conn.execute('''
+            CREATE TABLE IF NOT EXISTS usuarios_admin (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                username TEXT UNIQUE NOT NULL,
+                password TEXT NOT NULL,
+                role TEXT NOT NULL
+            )
+        ''')
+        admin_count = conn.execute("SELECT COUNT(*) as count FROM usuarios_admin").fetchone()
+        if admin_count['count'] == 0:
+            conn.execute("INSERT INTO usuarios_admin (username, password, role) VALUES (?, ?, ?)")
+            conn.commit()
+            app.admin_db_initialized = True
 
 @app.teardown_appcontext
 def close_db(exception):
@@ -452,9 +471,9 @@ def premiar_craque():
     senha_digitada = request.form.get('password_craque')
     
     usuario_atual = session.get('username')
-    user_data = MODERADORES.get(usuario_atual)
+    user_data = conn.execute("SELECT password FROM usuarios_admin WHERE username = ?", (usuario_atual,)).fetchone()
 
-    if not user_data or user_data.get('password') != senha_digitada:
+    if not user_data or not check_password_hash(user_data['password'], senha_digitada):
         flash('Senha incorreta! O bônus do Craque não foi concedido.', 'danger')
         return redirect(url_for('admin_dashboard'))
 
@@ -509,8 +528,10 @@ def award_bonus():
     usuario_atual = session.get('username')
     senha_digitada = request.form.get('password')
     
-    user_data = MODERADORES.get(usuario_atual) # type: ignore
-    if not user_data or user_data.get('password') != senha_digitada: # type: ignore
+    conn = get_db()
+
+    user_data = conn.execute("SELECT password FROM usuarios_admin WHERE username = ?", (usuario_atual,)).fetchone()    
+    if not user_data or not check_password_hash(user_data['password'], senha_digitada):
         flash('Senha incorreta!', 'danger')
         return redirect(url_for('admin_dashboard'))
     
@@ -627,16 +648,18 @@ def login():
         username = request.form.get('username')
         password = request.form.get('password')
 
-        user_data = MODERADORES.get(username) # type: ignore
+        conn = get_db()
+        # Busca o usuário na nova tabela do banco de dados
+        user_data = conn.execute("SELECT * FROM usuarios_admin WHERE username = ?", (username,)).fetchone()
         
-        if user_data and user_data.get('password') == password: # type: ignore
+        if user_data and check_password_hash(user_data['password'], password):
             session['logged_in'] = True
             session['username'] = username
-            session['role'] = user_data.get('role', 'editor') # type: ignore
+            session['role'] = user_data['role']
             flash(f'Bem-vindo, {username}!', 'success')
             return redirect(url_for('admin_dashboard'))
         else:
-            flash('Nome de usuario ou senha incorretos', 'danger')
+            flash('Nome de usuário ou senha incorretos', 'danger')
     
     return render_template('login.html')
 
@@ -658,17 +681,21 @@ def admin_dashboard():
 
     jogos_adiados = []
     for jogo in jogos_db:
-        info_api = jogos_api_map.get(jogo['id']) # type: ignore
+        info_api = jogos_api_map.get(jogo['id'])
         if info_api:
             jogo_completo = dict(info_api)
             jogo_completo.update(dict(jogo))
             jogos_adiados.append(jogo_completo)
             
+    lista_admins = []
+    if session.get('role') == 'master':
+        lista_admins = conn.execute("SELECT id, username, role FROM usuarios_admin ORDER BY role, username").fetchall()
+            
     return render_template('admin_dashboard.html', 
                           pontuacao_geral=pontuacao_geral, 
                           campeao_atual=campeao_atual,
-                          jogos_adiados=jogos_adiados)
-
+                          jogos_adiados=jogos_adiados,
+                          lista_admins=lista_admins)
 
 @app.route('/admin/reativar_jogo/<int:game_id>', methods=['POST'])
 @role_required('master')
@@ -1235,8 +1262,10 @@ def reset_season():
     usuario_atual = session.get('username')
     senha_digitada = request.form.get('password')
     
-    user_data = MODERADORES.get(usuario_atual) # type: ignore
-    if not user_data or user_data.get('password') != senha_digitada: # type: ignore
+    conn = get_db()
+    user_data = conn.execute("SELECT password FROM usuarios_admin WHERE username = ?", (usuario_atual,)).fetchone()
+    
+    if not user_data or not check_password_hash(user_data['password'], senha_digitada):
         flash('Senha incorreta! A temporada não foi reiniciada.', 'danger')
         return redirect(url_for('admin_dashboard'))
 
@@ -1259,6 +1288,40 @@ def reset_season():
 
     return redirect(url_for('admin_dashboard'))
 
+@app.route('/admin/add_admin', methods=['POST'])
+@role_required('master')
+def add_admin():
+    conn = get_db()
+    username = request.form.get('admin_username')
+    password = request.form.get('admin_password')
+    role = request.form.get('admin_role')
+    
+    try:
+        hashed_pw = generate_password_hash(password)
+        conn.execute("INSERT INTO usuarios_admin (username, password, role) VALUES (?, ?, ?)", 
+                     (username, hashed_pw, role))
+        conn.commit()
+        flash(f'Usuário {username} ({role}) criado com sucesso!', 'success')
+    except sqlite3.IntegrityError:
+        flash(f'O usuário "{username}" já existe no sistema.', 'danger')
+        
+    return redirect(url_for('admin_dashboard'))
+
+@app.route('/admin/delete_admin/<int:admin_id>', methods=['POST'])
+@role_required('master')
+def delete_admin(admin_id):
+    conn = get_db()
+    admin = conn.execute("SELECT username FROM usuarios_admin WHERE id = ?", (admin_id,)).fetchone()
+    
+    if admin and admin['username'] == session.get('username'):
+        flash('Erro: Você não pode revogar o seu próprio acesso!', 'danger')
+    else:
+        conn.execute("DELETE FROM usuarios_admin WHERE id = ?", (admin_id,))
+        conn.commit()
+        flash('Acesso revogado com sucesso.', 'success')
+        
+    return redirect(url_for('admin_dashboard'))
+
 # @app.route('/')
 # def manutencao():
 #     return render_template('manut.html')
@@ -1266,4 +1329,4 @@ def reset_season():
 # === FLASK INTERNO ====
 if __name__ == '__main__':
     modo_debug = os.environ.get('FLASK_DEBUG', 'False').lower() in ['true', '1']
-    app.run(debug=modo_debug, host="0.0.0.0", port=5000)
+    app.run(debug=True, host="0.0.0.0", port=5000)
