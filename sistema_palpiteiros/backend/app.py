@@ -1329,4 +1329,4 @@ def delete_admin(admin_id):
 # === FLASK INTERNO ====
 if __name__ == '__main__':
     modo_debug = os.environ.get('FLASK_DEBUG', 'False').lower() in ['true', '1']
-    app.run(debug=True, host="0.0.0.0", port=5000)
+    app.run(debug=modo_debug, host="0.0.0.0", port=5000)
