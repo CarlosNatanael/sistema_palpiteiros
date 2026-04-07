@@ -501,6 +501,66 @@ def premiar_craque():
     
     return redirect(url_for('admin_dashboard'))
 
+# --- FUNÇÕES DE BONUS
+
+@app.route('/admin/premiar_craque', methods=['POST'])
+@role_required('moderador', 'master')
+def premiar_craque():
+    conn = get_db()
+    rodada = request.form.get('rodada_craque', type=int)
+    senha_digitada = request.form.get('password_craque')
+    
+    usuario_atual = session.get('username')
+    user_data = MODERADORES.get(usuario_atual)
+
+    if not user_data or user_data.get('password') != senha_digitada:
+        flash('Senha incorreta! O bônus do Craque não foi concedido.', 'danger')
+        return redirect(url_for('admin_dashboard'))
+
+    if not rodada:
+        flash('Selecione uma rodada válida.', 'warning')
+        return redirect(url_for('admin_dashboard'))
+    conn.execute('''
+        CREATE TABLE IF NOT EXISTS configuracoes (
+            chave TEXT PRIMARY KEY, 
+            valor TEXT
+        )
+    ''')
+    chave_config = f'craque_premiado_rodada_{rodada}'
+    ja_premiado = conn.execute("SELECT valor FROM configuracoes WHERE chave = ?", (chave_config,)).fetchone()
+    
+    if ja_premiado and ja_premiado['valor'] == '1':
+        flash(f'⚠️ O(s) Craque(s) da Rodada {rodada} já receberam o bônus anteriormente!', 'warning')
+        return redirect(url_for('admin_dashboard'))
+    
+    palpites = conn.execute("SELECT nome, status FROM palpites WHERE rodada = ?", (rodada,)).fetchall()
+    pontos_da_rodada = defaultdict(int)
+    for p in palpites:
+        match = re.search(r'\((\d+)\s*pts?\)', p['status'] or '')
+        if match:
+            pontos_da_rodada[p['nome']] += int(match.group(1))
+    
+    if not pontos_da_rodada:
+        flash(f'Nenhum ponto foi processado na Rodada {rodada} ainda. Atualize a pontuação primeiro.', 'info')
+        return redirect(url_for('admin_dashboard'))
+
+    maior_pontuacao = max(pontos_da_rodada.values())
+    if maior_pontuacao == 0:
+        flash('Ninguém pontuou nessa rodada.', 'info')
+        return redirect(url_for('admin_dashboard'))
+
+    craques = [nome for nome, pts in pontos_da_rodada.items() if pts == maior_pontuacao]
+    for craque in craques:
+        conn.execute("UPDATE pontuacao SET pontos_bonus = pontos_bonus + 1 WHERE nome = ?", (craque,))
+
+    conn.execute("INSERT OR REPLACE INTO configuracoes (chave, valor) VALUES (?, '1')", (chave_config,))
+    conn.commit()
+
+    nomes_craques = " e ".join(craques)
+    flash(f'Sucesso! {nomes_craques} fez {maior_pontuacao} pts e recebeu +1 ponto extra como Craque da Rodada {rodada}!', 'success')
+    
+    return redirect(url_for('admin_dashboard'))
+
 @app.route('/admin/award_bonus', methods=['POST'])
 @role_required('moderador', 'master')
 def award_bonus():
