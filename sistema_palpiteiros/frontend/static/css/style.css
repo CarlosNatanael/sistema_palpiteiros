@@ -1407,3 +1407,20 @@ body.dark-mode .date-badge i {
         gap: 8px !important; /* Diminui o espaço entre os botões */
     }
 }
+
+/* Inverte o ícone e o título para branco */
+body.dark-mode .admin-card .text-dark {
+    color: #f8f9fa !important;
+}
+
+/* Inverte as bordas e o texto do botão para branco */
+body.dark-mode .admin-card .btn-outline-dark {
+    color: #f8f9fa !important;
+    border-color: #f8f9fa !important;
+}
+
+/* Ao passar o mouse, o fundo fica branco e o texto fica escuro (efeito inverso) */
+body.dark-mode .admin-card .btn-outline-dark:hover {
+    background-color: #f8f9fa !important;
+    color: #212529 !important;
+}
