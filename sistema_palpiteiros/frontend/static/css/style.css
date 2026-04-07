@@ -1424,3 +1424,75 @@ body.dark-mode .admin-card .btn-outline-dark:hover {
     background-color: #f8f9fa !important;
     color: #212529 !important;
 }
+
+/* =================================================== */
+/* DARK MODE - LIVRO DE REGRAS                         */
+/* =================================================== */
+
+/* 1. Fundo da área principal de conteúdo (tab-content) */
+body.dark-mode .tab-content.bg-white {
+    background-color: #242424 !important;
+    border-color: #333 !important;
+}
+
+/* 2. Força os textos que estão como "text-dark" a ficarem brancos */
+body.dark-mode .tab-content .text-dark {
+    color: #f8f9fa !important;
+}
+
+/* 3. Cards de Regras (aqueles com a bordinha colorida lateral) */
+body.dark-mode .rule-card {
+    background-color: #1a1a1a !important;
+    color: #e0e0e0 !important;
+}
+
+/* 4. Caixas de texto normais (A História / Ficha Técnica) que usam bg-light */
+body.dark-mode .tab-content .bg-light {
+    background-color: #1a1a1a !important;
+    color: #e0e0e0 !important;
+}
+
+/* 5. Menu Lateral (Nav Pills) - Deixa o texto cinza claro quando não selecionado */
+body.dark-mode .nav-pills .nav-link {
+    color: #adb5bd !important; 
+}
+
+/* 5.1 Efeito de passar o mouse no menu lateral no modo escuro */
+body.dark-mode .nav-pills .nav-link:hover:not(.active) {
+    background-color: #333 !important;
+    color: #fff !important;
+}
+
+/* 6. Lista da Ficha Técnica */
+body.dark-mode .list-group-item {
+    background-color: #1a1a1a !important;
+    border-color: #333 !important;
+    color: #e0e0e0 !important;
+}
+
+/* 7. Arruma as bordas divisórias (hr e border-bottom) para não ficarem brilhantes */
+body.dark-mode .tab-content .border-bottom {
+    border-color: #444 !important;
+}
+/* Garante que todos os títulos (H1 a H6) dentro das regras fiquem claros no modo dark */
+body.dark-mode .tab-content h1,
+body.dark-mode .tab-content h2,
+body.dark-mode .tab-content h3,
+body.dark-mode .tab-content h4,
+body.dark-mode .tab-content h5,
+body.dark-mode .tab-content h6 {
+    color: #f8f9fa !important;
+}
+
+/* Ajuste específico para os ícones e avisos dentro dos bônus */
+body.dark-mode .tab-content .alert p {
+    color: #e0e0e0 !important;
+}
+
+/* Mantém o título do "Aviso" vermelho ou amarelo conforme o tipo, mas legível */
+body.dark-mode .alert-danger .alert-heading {
+    color: #ff6b6b !important;
+}
+body.dark-mode .alert-warning .alert-heading {
+    color: #ffcc00 !important;
+}
