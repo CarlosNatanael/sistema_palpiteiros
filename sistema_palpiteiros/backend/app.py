@@ -217,56 +217,52 @@ def adicionar_palpites():
     return renderizar_pagina_palpites(conn)
 
 def processar_palpites(conn):
-    """Processa o envio de palpites."""
+    """Processa o envio de palpites com segurança contra injeção."""
     nome = request.form.get('nome')
-    rodada_selecionada = int(request.form.get('rodada_selecionada')) # type: ignore
+    rodada_selecionada = int(request.form.get('rodada_selecionada'))
     campeonato = request.form.get('campeonato_selecionado')
     
     if not nome:
         flash('Você precisa selecionar o seu nome para salvar os palpites.', 'warning')
-        return redirect(url_for('adicionar_palpites', 
-                               campeonato_selecionado=campeonato, 
-                               rodada_selecionada=rodada_selecionada))
+        return redirect(url_for('adicionar_palpites', campeonato_selecionado=campeonato, rodada_selecionada=rodada_selecionada))
     
-    # Criar jogador se não existir
     cursor = conn.cursor()
     cursor.execute("SELECT id FROM pontuacao WHERE nome = ?", (nome,))
     if not cursor.fetchone():
         conn.execute("INSERT INTO pontuacao (nome) VALUES (?)", (nome,))
     
-    # Processar palpites
     jogos_api = get_api_data("jogos") or []
     agora_str = get_brasil_time().strftime('%Y-%m-%d %H:%M')
     
-    jogos_disponiveis = [
-        j for j in jogos_api 
-        if j['campeonato'] == campeonato and 
-           j['rodada'] == rodada_selecionada and 
-           j.get('data_hora', '') > agora_str
-    ]
+    jogos_disponiveis = [j for j in jogos_api if j['campeonato'] == campeonato and j['rodada'] == rodada_selecionada and j.get('data_hora', '') > agora_str]
     
     palpites_feitos = 0
+    resultados_permitidos = ['Vitória (Casa)', 'Vitória (Fora)', 'Empate'] # BLINDAGEM: Apenas estes valores entram no banco
+    
     for jogo in jogos_disponiveis:
         game_id = jogo['id']
-        gol_time1 = request.form.get(f'gol_time1_{game_id}')
-        gol_time2 = request.form.get(f'gol_time2_{game_id}')
+        gol_time1_raw = request.form.get(f'gol_time1_{game_id}')
+        gol_time2_raw = request.form.get(f'gol_time2_{game_id}')
         resultado = request.form.get(f'resultado_{game_id}')
         
-        if gol_time1 and gol_time2 and resultado:
-            gol_time1 = int(gol_time1)
-            gol_time2 = int(gol_time2)
+        if gol_time1_raw and gol_time2_raw and resultado:
+            try:
+                # BLINDAGEM: Garante que gols são números inteiros, senão ignora
+                gol_time1 = int(gol_time1_raw)
+                gol_time2 = int(gol_time2_raw)
+            except ValueError:
+                continue 
+                
+            if resultado not in resultados_permitidos:
+                continue # BLINDAGEM: Ignora tentativas de injetar texto malicioso no resultado
+                
             quem_avanca = request.form.get(f'quem_avanca_{game_id}')
             
-            # Remove palpite existente
             conn.execute("DELETE FROM palpites WHERE nome = ? AND game_id = ?", (nome, game_id))
-            
-            # Insere novo palpite
             conn.execute("""
-                INSERT INTO palpites (nome, rodada, game_id, time1, time2, 
-                                     gol_time1, gol_time2, resultado, status, quem_avanca) 
+                INSERT INTO palpites (nome, rodada, game_id, time1, time2, gol_time1, gol_time2, resultado, status, quem_avanca) 
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-            """, (nome, rodada_selecionada, game_id, jogo['time1_nome'], 
-                  jogo['time2_nome'], gol_time1, gol_time2, resultado, 'Pendente', quem_avanca))
+            """, (nome, rodada_selecionada, game_id, jogo['time1_nome'], jogo['time2_nome'], gol_time1, gol_time2, resultado, 'Pendente', quem_avanca))
             palpites_feitos += 1
     
     conn.commit()
@@ -274,12 +270,9 @@ def processar_palpites(conn):
     if palpites_feitos > 0:
         flash(f'{palpites_feitos} palpite(s) registrado(s) com sucesso!', 'success')
     else:
-        flash('Nenhum palpite novo foi preenchido para salvar.', 'info')
+        flash('Nenhum palpite válido foi preenchido para salvar.', 'info')
     
-    return redirect(url_for('adicionar_palpites', 
-                           campeonato_selecionado=campeonato, 
-                           rodada_selecionada=rodada_selecionada))
-
+    return redirect(url_for('adicionar_palpites', campeonato_selecionado=campeonato, rodada_selecionada=rodada_selecionada))
 def renderizar_pagina_palpites(conn):
     """Renderiza a página de adicionar palpites."""
     jogadores_db = conn.execute("SELECT nome FROM pontuacao ORDER BY nome").fetchall()
@@ -414,36 +407,27 @@ def estatisticas():
                            rodada_atual_bonus=rodada_atual_bonus)
 
 def calcular_sequencias_acertos(conn):
-    """Calcula sequências de acertos para bônus."""
+    """Calcula sequências de acertos isolando por campeonato para o bônus."""
     jogos_api_map = get_jogos_from_api(as_dict=True)
-    rodada_atual_row = conn.execute(
-        "SELECT MAX(rodada) as rodada FROM palpites WHERE status != 'Pendente'"
-    ).fetchone()
-    
+    rodada_atual_row = conn.execute("SELECT MAX(rodada) as rodada FROM palpites WHERE status != 'Pendente'").fetchone()
     rodada_atual = rodada_atual_row['rodada'] if rodada_atual_row and rodada_atual_row['rodada'] else 0
     
     if rodada_atual == 0:
         return {}
     
-    # Buscar palpites da rodada atual
-    palpites_db = conn.execute("""
-        SELECT nome, status, game_id 
-        FROM palpites 
-        WHERE status != 'Pendente' AND rodada = ?
-    """, (rodada_atual,)).fetchall()
+    palpites_db = conn.execute("SELECT nome, status, game_id FROM palpites WHERE status != 'Pendente' AND rodada = ?", (rodada_atual,)).fetchall()
     
-    # Adicionar data/hora da API
     palpites_com_data = []
     for palpite in palpites_db:
         palpite_dict = dict(palpite)
-        jogo_info = jogos_api_map.get(palpite['game_id']) # type: ignore
+        jogo_info = jogos_api_map.get(palpite['game_id'])
         if jogo_info:
             palpite_dict['data_hora'] = jogo_info.get('data_hora', '')
+            palpite_dict['campeonato'] = jogo_info.get('campeonato', 'Geral') # Traz o campeonato
             palpites_com_data.append(palpite_dict)
     
-    # Ordenar e calcular sequências
-    palpites_ordenados = sorted(palpites_com_data, 
-                               key=lambda p: (p['nome'], p['data_hora']))
+    # BLINDAGEM: Ordena primeiro pelo nome, depois pelo campeonato, depois pela data
+    palpites_ordenados = sorted(palpites_com_data, key=lambda p: (p['nome'], p['campeonato'], p['data_hora']))
     
     sequencias = {}
     for nome_jogador in set(p['nome'] for p in palpites_ordenados):
@@ -869,7 +853,7 @@ def renderizar_pagina_resultados(conn):
 @app.route('/atualizar_pontuacao_admin')
 @login_required
 def atualizar_pontuacao_admin():
-    """Atualiza a pontuação baseada nos jogos finalizados."""
+    """Atualiza a pontuação baseada nos jogos finalizados, prevenindo dupla pontuação."""
     conn = get_db()
     jogos_api_map = get_jogos_from_api(as_dict=True)
     
@@ -879,7 +863,8 @@ def atualizar_pontuacao_admin():
         flash('Nenhum jogo novo marcado como "Finalizado" para calcular a pontuação.', 'info')
         return redirect(url_for('admin_dashboard'))
     
-    palpites = conn.execute("SELECT * FROM palpites").fetchall()
+    # BLINDAGEM: Só puxa palpites que ainda não foram processados (evita double-scoring)
+    palpites = conn.execute("SELECT * FROM palpites WHERE status = 'Pendente'").fetchall()
     resultados_map = {r['id']: dict(r) for r in resultados_db}
     
     atualizacao_pontos = defaultdict(lambda: {'pontos': 0, 'acertos': 0, 'erros': 0})
@@ -898,25 +883,17 @@ def atualizar_pontuacao_admin():
             else:
                 atualizacao_pontos[nome_palpiteiro]['erros'] += 1
             
-            conn.execute("UPDATE palpites SET status = ? WHERE id = ?", 
-                        (status_palpite, palpite['id']))
+            conn.execute("UPDATE palpites SET status = ? WHERE id = ?", (status_palpite, palpite['id']))
     
-    # Atualizar pontuação geral
     for nome, stats in atualizacao_pontos.items():
         conn.execute("""
-            UPDATE pontuacao 
-            SET pontos = pontos + ?, 
-                acertos = acertos + ?, 
-                erros = erros + ?
-            WHERE nome = ?
+            UPDATE pontuacao SET pontos = pontos + ?, acertos = acertos + ?, erros = erros + ? WHERE nome = ?
         """, (stats['pontos'], stats['acertos'], stats['erros'], nome))
     
-    # Marcar jogos como processados
     ids_processados = list(resultados_map.keys())
     if ids_processados:
         placeholders = ','.join('?' for _ in ids_processados)
-        conn.execute(f"UPDATE jogos SET status = 'Processado' WHERE id IN ({placeholders})", 
-                    ids_processados)
+        conn.execute(f"UPDATE jogos SET status = 'Processado' WHERE id IN ({placeholders})", ids_processados)
     
     conn.commit()
     flash('Pontuação acumulada e atualizada com sucesso!', 'success')
