@@ -19,7 +19,7 @@ STATIC_DIR = os.path.join(BASE_DIR, '..', 'frontend', 'static')
 
 app = Flask(__name__, template_folder=TEMPLATE_DIR, static_folder=STATIC_DIR)
 app.secret_key = os.environ.get('SECRET_KEY', os.urandom(24).hex())
-TEMPORADA_ATUAL = "3ª Temporada"
+TEMPORADA_ATUAL = "4ª Temporada"
 
 # --- Banco de Dados ---
 def get_db():
