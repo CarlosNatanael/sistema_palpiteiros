@@ -167,8 +167,9 @@ def index():
         flash("Atenção: A API de jogos parece estar offline.", "warning")
         return render_template('index.html', anuncios=anuncios)
     
-    # Lógica de rodadas
-    todas_rodadas = sorted(set(j['rodada'] for j in jogos_api_map.values())) # type: ignore
+    # Lógica de rodadas com Trava
+    rodada_max = get_rodada_maxima()
+    todas_rodadas = sorted(set(j['rodada'] for j in jogos_api_map.values() if j['rodada'] <= rodada_max))
     rodada_ativa = request.args.get('rodada', type=int)
     
     if not rodada_ativa or rodada_ativa not in todas_rodadas:
@@ -288,6 +289,7 @@ def processar_palpites(conn):
         flash('Nenhum palpite válido foi preenchido para salvar.', 'info')
     
     return redirect(url_for('adicionar_palpites', campeonato_selecionado=campeonato, rodada_selecionada=rodada_selecionada))
+
 def renderizar_pagina_palpites(conn):
     """Renderiza a página de adicionar palpites."""
     jogadores_db = conn.execute("SELECT nome FROM pontuacao ORDER BY nome").fetchall()
@@ -307,9 +309,10 @@ def renderizar_pagina_palpites(conn):
         jogos_do_campeonato = [j for j in jogos_api if j['campeonato'] == campeonato_selecionado]
         
         if jogos_do_campeonato:
+            rodada_max = get_rodada_maxima()
             rodadas_disponiveis = sorted(set(
                 j['rodada'] for j in jogos_do_campeonato 
-                if j.get('data_hora', '') > agora_str
+                if j.get('data_hora', '') > agora_str and j['rodada'] <= rodada_max
             ))
         
         if rodada_selecionada:
@@ -582,8 +585,9 @@ def exibir_palpites():
         if res['id'] in jogos_api_map:
             jogos_api_map[res['id']].update(dict(res))
     
-    # Lógica de rodadas
-    rodadas_existentes = sorted(set(j['rodada'] for j in jogos_api_map.values())) # type: ignore
+    # Lógica de rodadas com Trava
+    rodada_max = get_rodada_maxima()
+    rodadas_existentes = sorted(set(j['rodada'] for j in jogos_api_map.values() if j['rodada'] <= rodada_max))
     rodada_param = request.args.get('rodada', type=int)
     
     if rodada_param and rodada_param in rodadas_existentes:
@@ -973,12 +977,30 @@ def is_palpite_campeao_aberto():
         
     return row['valor'] == '1'
 
+def get_rodada_maxima():
+    """Puxa a rodada máxima liberada para os usuários."""
+    conn = get_db()
+    conn.execute('''
+        CREATE TABLE IF NOT EXISTS configuracoes (
+            chave TEXT PRIMARY KEY, 
+            valor TEXT
+        )
+    ''')
+    row = conn.execute("SELECT valor FROM configuracoes WHERE chave = 'rodada_maxima_liberada'").fetchone()
+    if not row:
+        # Se não existir, por padrão trava na rodada 1
+        conn.execute("INSERT INTO configuracoes (chave, valor) VALUES ('rodada_maxima_liberada', '1')")
+        conn.commit()
+        return 1
+    return int(row['valor'])
+
 @app.context_processor
 def injetar_variaveis_globais():
     return dict(
         temporada_atual=TEMPORADA_ATUAL,
         palpites_campeao_aberto=is_palpite_campeao_aberto(),
-        csrf_token=generate_csrf_token()
+        csrf_token=generate_csrf_token(),
+        rodada_maxima=get_rodada_maxima()
     )
 
 @app.route('/admin/toggle_palpite_campeao', methods=['POST'])
@@ -1300,6 +1322,22 @@ def delete_admin(admin_id):
         conn.execute("DELETE FROM usuarios_admin WHERE id = ?", (admin_id,))
         conn.commit()
         flash('Acesso revogado com sucesso.', 'success')
+        
+    return redirect(url_for('admin_dashboard'))
+
+@app.route('/admin/set_rodada_maxima', methods=['POST'])
+@role_required('moderador', 'master')
+def set_rodada_maxima():
+    conn = get_db()
+    nova_rodada = request.form.get('nova_rodada', type=int)
+    
+    if nova_rodada and nova_rodada > 0:
+        # Atualiza a rodada máxima no banco
+        conn.execute("INSERT OR REPLACE INTO configuracoes (chave, valor) VALUES ('rodada_maxima_liberada', ?)", (str(nova_rodada),))
+        conn.commit()
+        flash(f'Visibilidade liberada até a Rodada {nova_rodada}!', 'success')
+    else:
+        flash('Informe um número de rodada válido.', 'warning')
         
     return redirect(url_for('admin_dashboard'))
 

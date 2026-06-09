@@ -78,7 +78,8 @@
 
     <h3 class="section-title"><i class="bi bi-controller text-success me-2"></i> Operações de Jogo</h3>
     <div class="row g-4">
-        <div class="col-md-6 col-lg-4">
+        
+        <div class="col-md-6 col-lg-3">
             <div class="card admin-card text-center p-4">
                 <i class="bi bi-pencil-square card-icon text-success"></i>
                 <h5 class="fw-bold">Atualizar Resultados</h5>
@@ -87,7 +88,7 @@
             </div>
         </div>
         
-        <div class="col-md-6 col-lg-4">
+        <div class="col-md-6 col-lg-3">
             <div class="card admin-card text-center p-4">
                 <i class="bi bi-calculator card-icon text-primary"></i>
                 <h5 class="fw-bold">Recalcular Pontuação</h5>
@@ -96,8 +97,8 @@
             </div>
         </div>
         
-        {% if session.role == 'master' %}
-        <div class="col-md-12 col-lg-4">
+        {% if session.role in ['master', 'moderador'] %}
+        <div class="col-md-6 col-lg-3">
             <div class="card admin-card text-center p-4" style="background-color: #fffdf5; border: 1px solid #ffeeba;">
                 <i class="bi bi-clock-history card-icon text-warning"></i>
                 <h5 class="fw-bold">Partidas Adiadas</h5>
@@ -112,10 +113,20 @@
                 {% endif %}
             </div>
         </div>
+        
+        <div class="col-md-6 col-lg-3">
+            <div class="card admin-card p-4 text-center">
+                <i class="bi bi-eye-fill card-icon text-info mb-3"></i>
+                <h5 class="fw-bold">Liberar Rodada</h5>
+                <p class="text-muted small mb-4">Controle até qual rodada os palpiteiros podem ver os jogos.</p>
+                <button class="btn btn-outline-info mt-auto fw-bold w-100" data-bs-toggle="modal" data-bs-target="#modalRodadas">Configurar</button>
+            </div>
+        </div>
         {% endif %}
+
     </div>
 
-    {% if session.role == 'master' and jogos_adiados %}
+    {% if session.role in ['master', 'moderador'] and jogos_adiados %}
     <div class="collapse mt-3" id="listaAdiadas">
         <div class="card card-body shadow-sm border-warning">
             <table class="table table-hover align-middle text-center mb-0">
@@ -347,6 +358,36 @@
                 </div>
                 <div class="modal-footer border-0 pb-4 px-4">
                     <button type="submit" class="btn btn-dark w-100 fw-bold shadow-sm">Cadastrar na Liga</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalRodadas" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white border-0">
+                <h5 class="modal-title fw-bold"><i class="bi bi-eye-fill me-2"></i> Controle de Visibilidade</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <form action="{{ url_for('set_rodada_maxima') }}" method="POST">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                <div class="modal-body p-4">
+                    <div class="alert alert-info py-2 small mb-4">
+                        <i class="bi bi-info-circle-fill me-1"></i> A API baixa todos os jogos, mas a galera só verá os jogos que estiverem em rodadas <strong>menores ou iguais</strong> a este número.
+                    </div>
+
+                    <label class="form-label fw-bold text-muted small">Rodada Máxima Visível</label>
+                    <div class="input-group mb-2">
+                        <span class="input-group-text bg-light fw-bold">Rodada</span>
+                        <input type="number" class="form-control form-control-lg" name="nova_rodada" value="{{ rodada_maxima }}" min="1" required>
+                    </div>
+                </div>
+                <div class="modal-footer border-0 pb-4 px-4">
+                    <button type="submit" class="btn btn-primary w-100 fw-bold shadow-sm">
+                        <i class="bi bi-check-circle me-1"></i> Salvar e Liberar
+                    </button>
                 </div>
             </form>
         </div>
