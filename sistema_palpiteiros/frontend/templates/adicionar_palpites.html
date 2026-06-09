@@ -11,6 +11,7 @@
         
         <div class="form-container">
             <form id="filtroForm" action="{{ url_for('adicionar_palpites') }}" method="GET">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
                 <div class="form-group mb-3">
                     <label for="campeonato_selecionado">Selecione o Campeonato</label>
                     <select id="campeonato_selecionado" name="campeonato_selecionado" class="form-select" onchange="document.getElementById('filtroForm').submit();">
@@ -38,6 +39,7 @@
             <hr>
 
             <form id="palpiteForm" action="{{ url_for('adicionar_palpites') }}" method="POST">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
                 <input type="hidden" name="campeonato_selecionado" value="{{ campeonato_selecionado }}">
                 <input type="hidden" name="rodada_selecionada" value="{{ rodada_selecionada }}">
                 

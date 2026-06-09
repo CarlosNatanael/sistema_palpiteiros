@@ -16,6 +16,7 @@
                 </div>
                 <div class="card-body text-start">
                     <form method="POST" action="{{ url_for('gerenciar_anuncios') }}">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
                         
                         <div class="mb-3">
                             <label for="mensagem_padrao" class="form-label">Usar uma Mensagem Padrão</label>
@@ -64,6 +65,7 @@
                             <small>{{ anuncio.mensagem }}</small>
                         </div>
                         <form method="POST" action="{{ url_for('deletar_anuncio', anuncio_id=anuncio.id) }}" onsubmit="return confirm('Tem certeza que deseja apagar este anúncio?');">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
                             <button type="submit" class="btn btn-sm btn-danger">Apagar</button>
                         </form>
                     </li>

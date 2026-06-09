@@ -134,6 +134,7 @@
                 </div>
                 <div class="card-body">
                     <form method="POST" action="{{ url_for('set_champion') }}">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
 
                         <div class="mb-3">
                             <label for="campeonato_selecionado" class="form-label">Campeonato:</label>

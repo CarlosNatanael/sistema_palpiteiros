@@ -133,6 +133,7 @@
                         <td>{{ jogo.time1_nome }} <span class="text-danger fw-bold">X</span> {{ jogo.time2_nome }}</td>
                         <td>
                             <form action="{{ url_for('reativar_jogo', game_id=jogo.id) }}" method="POST">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
                                 <button type="submit" class="btn btn-success btn-sm fw-bold"><i class="bi bi-arrow-repeat"></i> Reativar</button>
                             </form>
                         </td>
@@ -220,6 +221,7 @@
                     {% if palpites_campeao_aberto %}ABERTO{% else %}FECHADO{% endif %}
                 </h4>
                 <form action="{{ url_for('toggle_palpite_campeao') }}" method="POST" class="mt-auto">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
                     <button type="submit" class="btn btn-{% if palpites_campeao_aberto %}danger{% else %}success{% endif %} w-100 fw-bold">
                         {% if palpites_campeao_aberto %}<i class="bi bi-lock-fill"></i> Bloquear{% else %}<i class="bi bi-unlock-fill"></i> Liberar{% endif %}
                     </button>
@@ -261,6 +263,7 @@
             </div>
         </div>
         <form action="{{ url_for('reset_season') }}" method="POST" class="row g-3 align-items-center mt-2" onsubmit="return confirm('ATENÇÃO ABSOLUTA: Isso vai apagar todo o progresso atual. Confirma?');">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
             <div class="col-md-8">
                 <input type="password" name="password" class="form-control border-danger form-control-lg" placeholder="Digite a senha Master para confirmar..." required>
             </div>
@@ -282,6 +285,7 @@
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
             <form action="{{ url_for('award_bonus') }}" method="POST">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
                 <div class="modal-body p-4">
                     <label class="form-label fw-bold text-muted small">Palpiteiro Alvo</label>
                     <select name="nome_jogador" class="form-select mb-4" required>
@@ -310,6 +314,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <form action="{{ url_for('premiar_craque') }}" method="POST">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
                 <div class="modal-body p-4">
                     <p class="text-muted small mb-4">O sistema encontrará o(s) maior(es) pontuador(es) da rodada e aplicará <strong>+1 ponto</strong> na tabela geral. Só pode ser usado uma vez por rodada!</p>
 
@@ -335,6 +340,7 @@
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
             <form action="{{ url_for('criar_palpiteiro') }}" method="POST">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
                 <div class="modal-body p-4">
                     <label class="form-label fw-bold text-muted small">Nome do Jogador</label>
                     <input type="text" name="novo_palpiteiro" class="form-control form-control-lg" placeholder="Ex: João Silva" required>
@@ -357,6 +363,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <form action="{{ url_for('set_campeao_palpiteiro') }}" method="POST">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
                 <div class="modal-body p-4">
                     <label class="form-label fw-bold text-muted small">Edição/Temporada</label>
                     <input type="text" name="temporada" class="form-control mb-3" placeholder="Ex: 3ª Temporada" required>
@@ -419,6 +426,7 @@
                                 <td>
                                     {% if admin.username != session.username %}
                                     <form action="{{ url_for('delete_admin', admin_id=admin.id) }}" method="POST" onsubmit="return confirm('Tem certeza que deseja revogar o acesso de {{ admin.username }}?');">
+                                        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
                                         <button type="submit" class="btn btn-sm btn-danger fw-bold"><i class="bi bi-trash"></i> Remover</button>
                                     </form>
                                     {% else %}
@@ -435,6 +443,7 @@
 
                 <h6 class="fw-bold mb-3 text-success"><i class="bi bi-plus-circle"></i> Adicionar Novo Acesso</h6>
                 <form action="{{ url_for('add_admin') }}" method="POST">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
                     <div class="row g-2 align-items-end">
                         <div class="col-md-4">
                             <label class="form-label text-muted small fw-bold">Login</label>

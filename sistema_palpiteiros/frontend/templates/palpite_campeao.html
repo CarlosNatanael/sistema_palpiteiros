@@ -64,6 +64,7 @@
             <h1 class="text-center mb-4">PALPITE DE CAMPEÃO</h1>
 
             <form id="filtroCampeonatoForm" action="{{ url_for('palpite_campeao') }}" method="GET" class="mb-4">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
                 <div class="form-group">
                     <label for="campeonato_selecionado"><strong>1. Escolha o Campeonato:</strong></label>
                     <select id="campeonato_selecionado" name="campeonato_selecionado" class="form-control" onchange="this.form.submit()">
@@ -79,6 +80,7 @@
 
             {% if campeonato_selecionado %}
             <form id="palpiteForm" action="{{ url_for('palpite_campeao') }}" method="POST">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
                 <input type="hidden" name="campeonato_selecionado" value="{{ campeonato_selecionado }}">
 
                 <div class="form-group">
