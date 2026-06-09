@@ -29,6 +29,21 @@ def get_db():
     return g.db
 
 @app.before_request
+def csrf_protect():
+    # Bloqueia qualquer POST que não tenha o token correto
+    if request.method == "POST":
+        token = session.get('csrf_token', None)
+        if not token or token != request.form.get('csrf_token'):
+            flash('Ação bloqueada por segurança (Token CSRF inválido).', 'danger')
+            return redirect(request.referrer or url_for('index'))
+
+def generate_csrf_token():
+    # Gera um token único por sessão
+    if 'csrf_token' not in session:
+        session['csrf_token'] = os.urandom(24).hex()
+    return session['csrf_token']
+
+@app.before_request
 def init_admin_db():
     if not getattr(app, 'admin_db_initialized', False):
         conn = get_db()
@@ -962,7 +977,8 @@ def is_palpite_campeao_aberto():
 def injetar_variaveis_globais():
     return dict(
         temporada_atual=TEMPORADA_ATUAL,
-        palpites_campeao_aberto=is_palpite_campeao_aberto()
+        palpites_campeao_aberto=is_palpite_campeao_aberto(),
+        csrf_token=generate_csrf_token()
     )
 
 @app.route('/admin/toggle_palpite_campeao', methods=['POST'])
