@@ -1,6 +1,6 @@
 # Changelog - Sistema Palpiteiros
 
-Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.
+Todas as mudanças notáveis neste projeto serão documentadas neste arquivo
 
 ## [1.2.0] - 2026-06-10
 ### Adicionado (Added)
