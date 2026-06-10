@@ -24,6 +24,14 @@
         "texto": ["https://ssl.gstatic.com/onebox/media/sports/logos/optimized/HwYB-wsdd6M2WmLXSkd6Sg_48x48.png"]
     },
     {
+        "titulo": "Arábia Saudita",
+        "texto": ["https://ssl.gstatic.com/onebox/media/sports/logos/optimized/QoAJxO46fHid3_T-7nRZ0Q_48x48.png"]
+    },
+    {
+        "titulo": "Argelia",
+        "texto": ["https://ssl.gstatic.com/onebox/media/sports/logos/optimized/-zzT3_3TWS1ZrjuUr-qs5A_48x48.png"]
+    },
+    {
         "titulo": "Belgica",
         "texto": ["https://ssl.gstatic.com/onebox/media/sports/logos/optimized/6SF7yEoB60bU5knw-M7R5Q_48x48.png"]
     },
@@ -88,6 +96,10 @@
         "texto": ["https://ssl.gstatic.com/onebox/media/sports/logos/optimized/KNmWgtzC7DeN0X-OJEDsMA_48x48.png"]
     },
     {
+        "titulo": "Equador",
+        "texto": ["https://ssl.gstatic.com/onebox/media/sports/logos/optimized/AKqvkBpIyr-iLOK7Ig7-yQ_48x48.png"]
+    },
+    {
         "titulo": "Franca",
         "texto": ["https://ssl.gstatic.com/onebox/media/sports/logos/optimized/z3JEQB3coEAGLCJBEUzQ2A_48x48.png"]
     },
@@ -134,6 +146,10 @@
     {
         "titulo": "Noruega",
         "texto": ["https://ssl.gstatic.com/onebox/media/sports/logos/optimized/lLDKax72TPgU_Hcj0W-DOg_48x48.png"]
+    },
+    {
+        "titulo": "Nova Zelândia",
+        "texto": ["https://ssl.gstatic.com/onebox/media/sports/logos/optimized/U4GV26FjF1W9Aphi7SELhw_48x48.png"]
     },
     {
         "titulo": "Panama",
