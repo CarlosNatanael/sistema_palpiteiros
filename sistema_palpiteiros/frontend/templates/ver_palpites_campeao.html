@@ -63,7 +63,9 @@
                         <tr>
                             <th>Palpiteiro</th>
                             <th>Campeonato</th>
-                            <th>Time Escolhido</th>
+                            <th>Time Escolhido (Campeão)</th>
+                            <!-- NOVA COLUNA AQUI -->
+                            <th>Zebra 🦓</th>
                             <th>Data do Palpite</th>
                             <th>Status</th>
                         </tr>
@@ -92,8 +94,21 @@
                                     {% if palpite.time_campeao_img %}
                                         <img src="{{ palpite.time_campeao_img }}" width="30" height="30" class="me-2 rounded-circle border">
                                     {% endif %}
-                                    {{ palpite.time_campeao }}
+                                    <strong>{{ palpite.time_campeao }}</strong>
                                 </td>
+                                
+                                <!-- DADOS DA ZEBRA AQUI -->
+                                <td>
+                                    {% if palpite.time_zebra %}
+                                        {% if palpite.time_zebra_img %}
+                                            <img src="{{ palpite.time_zebra_img }}" width="30" height="30" class="me-2 rounded-circle border">
+                                        {% endif %}
+                                        <strong>{{ palpite.time_zebra }}</strong>
+                                    {% else %}
+                                        <span class="text-muted small">Sem palpite</span>
+                                    {% endif %}
+                                </td>
+
                                 <td>{{ palpite.data_palpite }}</td>
                                 <td class="fw-bold">
                                     {{ status }}

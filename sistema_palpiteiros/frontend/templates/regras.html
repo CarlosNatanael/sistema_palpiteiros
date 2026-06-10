@@ -83,6 +83,9 @@
                 <button class="nav-link" id="tab-matamata" data-bs-toggle="pill" data-bs-target="#content-matamata" type="button" role="tab">
                     <i class="bi bi-diagram-3-fill me-2 text-primary"></i> Mata-Mata
                 </button>
+                <button class="nav-link" id="tab-campeao" data-bs-toggle="pill" data-bs-target="#content-campeao" type="button" role="tab">
+                    <i class="bi bi-award-fill me-2" style="color: #d4af37;"></i> Palpite Campeão
+                </button>
                 <button class="nav-link" id="tab-bonus" data-bs-toggle="pill" data-bs-target="#content-bonus" type="button" role="tab">
                     <i class="bi bi-fire me-2 text-danger"></i> Bônus Especiais
                 </button>
@@ -226,7 +229,7 @@
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-center px-3 py-3">
                             <span><i class="bi bi-info-circle-fill text-info me-2"></i><strong>Versão do Sistema</strong></span>
-                            <span class="badge bg-dark rounded-pill">v1.1.0</span>
+                            <span class="badge bg-dark rounded-pill">v1.2.0</span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-center px-3 py-3">
                             <span><i class="bi bi-code-slash text-primary me-2"></i><strong>Desenvolvedores</strong></span>
@@ -246,7 +249,30 @@
                         </a>
                     </div>
                 </div>
+                <div class="tab-pane fade" id="content-campeao" role="tabpanel">
+                    <h3 class="fw-bold text-dark border-bottom pb-3 mb-4">Palpite Campeão & Zebra</h3>
+                    <p class="text-muted mb-4">Apostas de longo prazo feitas antes ou no início do torneio. Mostre que você entende de futebol prevendo o grande vencedor e a surpresa da Copa!</p>
+                    
+                    <div class="card rule-card card-body" style="border-left-color: #d4af37;">
+                        <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+                            <div>
+                                <h5 class="fw-bold mb-1" style="color: #d4af37;"><i class="bi bi-trophy-fill me-2"></i>Acertar o Campeão</h5>
+                                <p class="text-muted mb-0">Bônus concedido ao final do torneio se o time que você escolheu levantar a taça.</p>
+                            </div>
+                            <span class="badge points-badge shadow text-dark" style="background-color: #d4af37;">+10 Pontos</span>
+                        </div>
+                    </div>
 
+                    <div class="card rule-card card-body" style="border-left-color: #212529;">
+                        <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+                            <div>
+                                <h5 class="fw-bold text-dark mb-1">🦓 Acertar a Zebra</h5>
+                                <p class="text-muted mb-0">Pontuação especial se a sua aposta de "Zebra" for a grande surpresa do campeonato.</p>
+                            </div>
+                            <span class="badge bg-dark points-badge shadow">+5 Pontos</span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

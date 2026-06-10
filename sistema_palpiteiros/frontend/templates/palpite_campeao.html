@@ -46,7 +46,17 @@
             <div class="form-group mb-4">
                 <label for="time_campeao" class="mb-2 text-muted"><strong>3. Seu Palpite para Campeão de {{ campeonato_selecionado }}:</strong></label>
                 <select id="time_campeao" name="time_campeao" class="form-select form-select-lg" required>
-                    <option value="" disabled selected>Selecione um time...</option>
+                    <option value="" disabled selected>Selecione o Campeão...</option>
+                    {% for time in times %}
+                    <option value="{{ time.name }}">{{ time.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group mb-4">
+                <label for="time_zebra" class="mb-2 text-muted"><strong>4. E quem será a ZEBRA (Surpresa) do torneio? 🦓</strong></label>
+                <select id="time_zebra" name="time_zebra" class="form-select form-select-lg" required>
+                    <option value="" disabled selected>Selecione a Zebra...</option>
                     {% for time in times %}
                     <option value="{{ time.name }}">{{ time.name }}</option>
                     {% endfor %}
@@ -54,7 +64,7 @@
             </div>
             
             <button type="submit" class="btn btn-success btn-lg w-100 mt-2 fw-bold">
-                <i class="bi bi-check-circle me-2"></i>Registrar Palpite
+                <i class="bi bi-check-circle me-2"></i>Registrar Palpites
             </button>
         </form>
     </div>

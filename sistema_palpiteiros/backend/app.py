@@ -1030,21 +1030,30 @@ def palpite_campeao():
     return renderizar_pagina_palpite_campeao()
 
 def registrar_palpite_campeao(conn):
-    """Registra palpite para campeão."""
+    """Registra palpite para campeão e zebra, incluindo escudos."""
     nome = request.form['nome']
     campeonato = request.form['campeonato_selecionado']
     time_campeao = request.form['time_campeao']
+    time_zebra = request.form.get('time_zebra')
     
-    # Buscar imagem do time
+    # Atualiza o banco automaticamente com as novas colunas
+    try:
+        conn.execute("ALTER TABLE palpite_campeao ADD COLUMN time_zebra TEXT")
+        conn.execute("ALTER TABLE palpite_campeao ADD COLUMN time_zebra_img TEXT")
+    except:
+        pass
+    
     jogos_api = get_api_data() or []
     time_campeao_img = None
+    time_zebra_img = None
+    
+    # Busca as imagens na API
     for jogo in jogos_api:
-        if jogo['time1_nome'] == time_campeao:
-            time_campeao_img = jogo['time1_img']
-            break
-        if jogo['time2_nome'] == time_campeao:
-            time_campeao_img = jogo['time2_img']
-            break
+        if not time_campeao_img and time_campeao in (jogo['time1_nome'], jogo['time2_nome']):
+            time_campeao_img = jogo['time1_img'] if jogo['time1_nome'] == time_campeao else jogo['time2_img']
+            
+        if time_zebra and not time_zebra_img and time_zebra in (jogo['time1_nome'], jogo['time2_nome']):
+            time_zebra_img = jogo['time1_img'] if jogo['time1_nome'] == time_zebra else jogo['time2_img']
     
     # Verificar se já existe palpite
     existente = conn.execute('SELECT id FROM palpite_campeao WHERE nome = ? AND campeonato = ?', 
@@ -1052,17 +1061,17 @@ def registrar_palpite_campeao(conn):
     
     if existente:
         conn.execute('''UPDATE palpite_campeao SET time_campeao = ?, time_campeao_img = ?, 
-                      data_palpite = ? WHERE id = ?''', 
-                    (time_campeao, time_campeao_img, datetime.now().strftime('%Y-%m-%d %H:%M'), 
+                      time_zebra = ?, time_zebra_img = ?, data_palpite = ? WHERE id = ?''', 
+                    (time_campeao, time_campeao_img, time_zebra, time_zebra_img, datetime.now().strftime('%Y-%m-%d %H:%M'), 
                      existente['id']))
     else:
         conn.execute('''INSERT INTO palpite_campeao (nome, campeonato, time_campeao, 
-                      time_campeao_img, data_palpite) VALUES (?, ?, ?, ?, ?)''', 
-                    (nome, campeonato, time_campeao, time_campeao_img, 
+                      time_campeao_img, time_zebra, time_zebra_img, data_palpite) VALUES (?, ?, ?, ?, ?, ?, ?)''', 
+                    (nome, campeonato, time_campeao, time_campeao_img, time_zebra, time_zebra_img, 
                      datetime.now().strftime('%Y-%m-%d %H:%M')))
     
     conn.commit()
-    flash('Seu palpite para campeão foi registrado!', 'success')
+    flash('Seus palpites foram registrados com sucesso!', 'success')
     return redirect(url_for('ver_palpites_campeao'))
 
 def renderizar_pagina_palpite_campeao():
@@ -1098,26 +1107,24 @@ def renderizar_pagina_palpite_campeao():
 def ver_palpites_campeao():
     conn = get_db()
     
-    # Criar tabela se não existir
-    conn.execute('''
-        CREATE TABLE IF NOT EXISTS palpite_campeao (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            nome TEXT,
-            campeonato TEXT,
-            time_campeao TEXT,
-            time_campeao_img TEXT,
-            data_palpite TEXT
-        )
-    ''')
+    # Trava de segurança para adicionar colunas se não existirem
+    try:
+        conn.execute("ALTER TABLE palpite_campeao ADD COLUMN time_zebra TEXT")
+    except:
+        pass
+        
+    try:
+        conn.execute("ALTER TABLE palpite_campeao ADD COLUMN time_zebra_img TEXT")
+    except:
+        pass
     
-    # Buscar palpites
+    # Buscar palpites incluindo a imagem da zebra
     palpites = conn.execute('''
-        SELECT p.nome, p.campeonato, p.time_campeao, p.data_palpite, p.time_campeao_img
+        SELECT p.nome, p.campeonato, p.time_campeao, p.data_palpite, p.time_campeao_img, p.time_zebra, p.time_zebra_img
         FROM palpite_campeao p
         ORDER BY p.campeonato ASC, p.nome ASC
     ''').fetchall()
     
-    # Buscar campeões reais
     try:
         campeoes_db = conn.execute('SELECT * FROM campeao_real').fetchall()
     except sqlite3.OperationalError:
