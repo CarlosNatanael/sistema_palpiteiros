@@ -24,9 +24,15 @@
                     <i class="class=bi bi-trophy me-2" style="font-size: 2.5rem; filter: drop-shadow(0 0 10px rgba(255,193,7,0.5));"></i>
                 </div>
                 <h2 class="text-black fw-bold">{{ nome_lenda }}</h2>
+                
+                {% set trofeus_count = namespace(total=0) %}
+                {% for titulo in titulos %}
+                    {% set trofeus_count.total = trofeus_count.total + titulo.imagens|length %}
+                {% endfor %}
                 <span class="badge bg-warning text-dark fs-6 mt-2">
-                    <i class="bi bi-trophy-fill"></i> {{ titulos|length }} Títulos
+                    <i class="bi bi-trophy-fill"></i> {{ trofeus_count.total }} Troféus
                 </span>
+                
                 <p class="text-muted mt-3 small">Clique para ver a coleção</p>
             </div>
         </div>
