@@ -2,6 +2,26 @@
 
 Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.
 
+## [1.2.0] - 2026-06-10
+### Adicionado (Added)
+- **Sistema de Zebra:** Nova mecânica integrada ao Palpite de Campeão, permitindo que os usuários escolham a surpresa do torneio (com exibição do escudo do time na tabela de palpites).
+- **Controle de Visibilidade de Rodadas:** Nova trava no Painel Admin (Operações de Jogo) que permite aos administradores definirem até qual rodada os usuários podem ver e apostar, ocultando jogos futuros já importados da API.
+- **Regras Expandidas:** Adicionada aba específica no Livro de Regras para detalhar a pontuação de Palpite Campeão e Zebra.
+
+### Modificado (Changed)
+- **Hall da Fama (Sala de Troféus):** O contador do histórico agora contabiliza o número exato de troféus (imagens) conquistados pelo palpiteiro, em vez de agrupar por temporada vencida.
+- **Permissões de Moderação:** Moderadores agora possuem acesso para visualizar e reativar "Partidas Adiadas" diretamente no painel.
+- **Otimização de UI (Painel Admin):** Grid de "Operações de Jogo" reestruturado para alinhar 4 cards perfeitamente em telas grandes (`col-lg-3`).
+- **Formulários Modernizados:** Substituição do antigo plugin `bootstrap-select` pelo `form-select` nativo do Bootstrap 5, garantindo 100% de compatibilidade com o Modo Escuro.
+
+### Corrigido (Fixed)
+- **Bug de Pontuação em Estatísticas:** A tela de estatísticas agora exibe a pontuação total correta (incluindo bônus), corrigindo o erro onde apenas os pontos base eram mostrados.
+- **Conflito de Bibliotecas:** Remoção de importações duplicadas do Bootstrap e jQuery (versões 4 e 5 simultâneas) que causavam travamentos em modais e falhas visuais.
+- **Herança de Layout:** Telas isoladas (como o Palpite Campeão) agora herdam corretamente o `base.html`, resolvendo problemas de Navbar duplicada e falhas no Dark Mode.
+
+### Segurança (Security)
+- **Proteção CSRF Completa:** Implementação de tokens de segurança (`csrf_token`) obrigatórios em absolutamente todos os formulários e rotas POST do sistema, blindando contra falsificação de requisições.
+---
 ## [1.1.0] - 2026-04-07
 ### Adicionado (Added)
 - **Controle de Acesso em Níveis (RBAC):** Sistema de permissões aprimorado com três níveis.
