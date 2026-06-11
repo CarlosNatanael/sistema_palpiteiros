@@ -190,8 +190,8 @@
                                     <h4 class="oI text-center fallback-title" style="display: none; margin: 0;"><i class="bi bi-trophy me-2"></i>{{ campeonato }}</h4>
                                     
                                 {% elif 'mundo' in camp_lower or 'mundial' in camp_lower %}
-                                    <img src="{{ url_for('static', filename='logos/copo_do_mundo.png') }}" alt="{{ campeonato }}" class="campeonato-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                                    <h4 class="oI text-center fallback-title" style="display: none; margin: 0;"><i class="bi bi-trophy me-2"></i>{{ campeonato }}</h4>
+                                    <img src="{{ url_for('static', filename='logos/copa_do_mundo.png') }}" alt="{{ campeonato }}" class="campeonato-logo" style="width: 60px; height: auto; max-height: none;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                                    <h4 class="oI text-center fallback-title" style="display: none; margin: 100;"><i class="bi bi-trophy me-2"></i>{{ campeonato }}</h4>
                                     
                                 {% else %}
                                     <h4 class="oI text-center" style="margin: 0;"><i class="bi bi-trophy me-2"></i>{{ campeonato }}</h4>
