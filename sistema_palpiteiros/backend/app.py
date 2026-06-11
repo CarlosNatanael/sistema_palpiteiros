@@ -35,7 +35,7 @@ def csrf_protect():
         token = session.get('csrf_token', None)
         if not token or token != request.form.get('csrf_token'):
             flash('Ação bloqueada por segurança (Token CSRF inválido).', 'danger')
-            return redirect(request.referrer or url_for('index'))
+            return redirect(url_for('index'))
 
 def generate_csrf_token():
     # Gera um token único por sessão
