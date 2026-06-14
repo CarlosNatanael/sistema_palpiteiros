@@ -43,7 +43,7 @@
       "data_hora": "2026-06-13 22:00", "local": "Boston"
     },
     {
-      "id": 2008, "rodada": 4, "fase": "grupos",
+      "id": 2008, "rodada": 3, "fase": "grupos",
       "time1_nome": "Austrália", "time1_sigla": "AUS", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/aus_48x48.png",
       "time2_nome": "Turquia", "time2_sigla": "TUR", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/tur_48x48.png",
       "data_hora": "2026-06-14 01:00", "local": "Vancouver Place"
