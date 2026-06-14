@@ -425,15 +425,11 @@ def estatisticas():
                            rodada_atual_bonus=rodada_atual_bonus)
 
 def calcular_sequencias_acertos(conn):
-    """Calcula sequências de acertos isolando por campeonato para o bônus."""
+    """Calcula sequências de acertos global e cronológica para o bônus."""
     jogos_api_map = get_jogos_from_api(as_dict=True)
-    rodada_atual_row = conn.execute("SELECT MAX(rodada) as rodada FROM palpites WHERE status != 'Pendente'").fetchone()
-    rodada_atual = rodada_atual_row['rodada'] if rodada_atual_row and rodada_atual_row['rodada'] else 0
     
-    if rodada_atual == 0:
-        return {}
-    
-    palpites_db = conn.execute("SELECT nome, status, game_id FROM palpites WHERE status != 'Pendente' AND rodada = ?", (rodada_atual,)).fetchall()
+    # Busca TODOS os palpites já processados (sem travar na rodada atual)
+    palpites_db = conn.execute("SELECT nome, status, game_id FROM palpites WHERE status != 'Pendente'").fetchall()
     
     palpites_com_data = []
     for palpite in palpites_db:
@@ -441,11 +437,10 @@ def calcular_sequencias_acertos(conn):
         jogo_info = jogos_api_map.get(palpite['game_id'])
         if jogo_info:
             palpite_dict['data_hora'] = jogo_info.get('data_hora', '')
-            palpite_dict['campeonato'] = jogo_info.get('campeonato', 'Geral') # Traz o campeonato
             palpites_com_data.append(palpite_dict)
     
-    # BLINDAGEM: Ordena primeiro pelo nome, depois pelo campeonato, depois pela data
-    palpites_ordenados = sorted(palpites_com_data, key=lambda p: (p['nome'], p['campeonato'], p['data_hora']))
+    # BLINDAGEM: Ordena primeiro pelo nome e depois estritamente pela data/hora do jogo
+    palpites_ordenados = sorted(palpites_com_data, key=lambda p: (p['nome'], p['data_hora']))
     
     sequencias = {}
     for nome_jogador in set(p['nome'] for p in palpites_ordenados):
