@@ -115,7 +115,7 @@
       "data_hora": "2026-06-16 22:00", "local": "Kansas City"
     },
     {
-      "id": 2020, "rodada": 7, "fase": "grupos",
+      "id": 2020, "rodada": 6, "fase": "grupos",
       "time1_nome": "Áustria", "time1_sigla": "AUT", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/aut_48x48.png",
       "time2_nome": "Jordânia", "time2_sigla": "JOR", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/jor_48x48.png",
       "data_hora": "2026-06-17 01:00", "local": "Santa Clara"
@@ -211,7 +211,7 @@
       "data_hora": "2026-06-20 21:00", "local": "Kansas City"
     },
     {
-      "id": 2036, "rodada": 11, "fase": "grupos",
+      "id": 2036, "rodada": 10, "fase": "grupos",
       "time1_nome": "Tunísia", "time1_sigla": "TUN", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/tun_48x48.png",
       "time2_nome": "Japão", "time2_sigla": "JPN", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/jpn_48x48.png",
       "data_hora": "2026-06-21 01:00", "local": "El Gigante de Acero"
