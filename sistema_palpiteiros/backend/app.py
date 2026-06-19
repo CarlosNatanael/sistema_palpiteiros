@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session, g
 from werkzeug.security import generate_password_hash, check_password_hash
-from config import API_BASE_URL, MODERADORES
+from config import API_BASE_URL
 from collections import defaultdict
 from datetime import datetime
 from functools import wraps

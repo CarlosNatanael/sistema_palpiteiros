@@ -209,14 +209,6 @@ main {
 }
 /* Responsive Styles */
 @media (max-width: 991.98px) {
-    .navbar-collapse {
-        background-color: var(--primary-color);
-        border-top: 1px solid var(--secondary-color);
-        padding: 1rem;
-        margin-top: 0.5rem;
-        border-radius: 0 0 0.5rem 0.5rem;
-    }
-    
     .navbar-nav {
         gap: 0.5rem;
     }
