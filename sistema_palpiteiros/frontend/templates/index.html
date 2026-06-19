@@ -18,7 +18,12 @@
                         {% for anuncio in anuncios %}
                         <div class="aviso-card-v2 animate__animated animate__fadeInUp" style="animation-delay: {{ loop.index * 100 }}ms;">
                             <div class="aviso-icon-v2 aviso-{{ anuncio.tipo }}">
-                                {% if anuncio.tipo == 'success' %}
+                                {% if 'Craque' in anuncio.titulo %}
+                                    <i class="bi bi-star-fill"></i>
+                                {% elif 'Bônus' in anuncio.titulo or 'Sequência' in anuncio.titulo %}
+                                    <i class="bi bi-fire"></i>
+                                    
+                                {% elif anuncio.tipo == 'success' %}
                                     <i class="bi bi-check-circle-fill"></i>
                                 {% elif anuncio.tipo == 'warning' %}
                                     <i class="bi bi-exclamation-triangle-fill"></i>
