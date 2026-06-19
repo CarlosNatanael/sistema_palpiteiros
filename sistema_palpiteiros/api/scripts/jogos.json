@@ -187,7 +187,7 @@
       "data_hora": "2026-06-19 21:30", "local": "Filadélfia"
     },
     {
-      "id": 2032, "rodada": 10, "fase": "grupos",
+      "id": 2032, "rodada": 9, "fase": "grupos",
       "time1_nome": "Turquia", "time1_sigla": "TUR", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/tur_48x48.png",
       "time2_nome": "Paraguai", "time2_sigla": "PAR", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/par_48x48.png",
       "data_hora": "2026-06-20 00:00", "local": "Santa Clara"
