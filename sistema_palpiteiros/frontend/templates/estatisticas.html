@@ -75,7 +75,7 @@
                     <table class="table table-hover table-sm align-middle mb-0 text-center" style="font-size: 0.85rem; border-collapse: separate; border-spacing: 0;">
                         <thead class="text-white text-uppercase" style="background-color: #2a2a2a; font-size: 0.75rem; letter-spacing: 0.5px;">
                             <tr>
-                                <th class="py-2" style="width: 50px;">Pos</th>
+                                <!-- <th class="py-2" style="width: 50px;">Pos</th> -->
                                 <th class="py-2 text-start">Palpiteiro</th>
                                 <th class="py-2" style="width: 60px;">Pts</th>
                                 <th class="py-2 text-success" style="width: 70px;">Acertos</th>
@@ -86,7 +86,7 @@
                         <tbody class="border-top-0">
                             {% for estatistica in estatisticas_completas %}
                             <tr class="bg-white" style="border-bottom: 1px solid #eaeaea;">
-                                <td class="fw-bold text-muted py-2">{{ loop.index }}º</td>
+                                <!-- <td class="fw-bold text-muted py-2">{{ loop.index }}º</td> -->
                                 <td class="text-start fw-bold text-dark py-2">{{ estatistica.nome }}</td>
                                 <td class="py-2"><span class="badge bg-success shadow-sm rounded-pill px-2">{{ estatistica.pontos }}</span></td>
                                 <td class="fw-bold text-success py-2">{{ estatistica.acertos }}</td>
