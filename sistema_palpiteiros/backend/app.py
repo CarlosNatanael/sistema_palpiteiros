@@ -482,7 +482,7 @@ def premiar_craque():
             valor TEXT
         )
     ''')
-    chave_config = f'craque_premiado_rodada_{rodada}'
+    chave_config = f'craque_premiado_rodada_{rodada}_{TEMPORADA_ATUAL}'
     ja_premiado = conn.execute("SELECT valor FROM configuracoes WHERE chave = ?", (chave_config,)).fetchone()
     
     if ja_premiado and ja_premiado['valor'] == '1':
