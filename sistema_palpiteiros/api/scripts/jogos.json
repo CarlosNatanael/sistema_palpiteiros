@@ -259,7 +259,7 @@
       "data_hora": "2026-06-22 21:00", "local": "Nova Jersey"
     },
     {
-      "id": 2044, "rodada": 13, "fase": "grupos",
+      "id": 2044, "rodada": 12, "fase": "grupos",
       "time1_nome": "Jordânia", "time1_sigla": "JOR", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/jor_48x48.png",
       "time2_nome": "Argélia", "time2_sigla": "ALG", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/alg_48x48.png",
       "data_hora": "2026-06-23 00:00", "local": "Santa Clara"
