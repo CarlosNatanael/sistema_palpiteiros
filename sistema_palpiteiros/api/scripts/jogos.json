@@ -385,13 +385,13 @@
       "data_hora": "2026-06-26 21:00", "local": "Houston"
     },
     {
-      "id": 2065, "rodada": 17, "fase": "grupos",
+      "id": 2065, "rodada": 16, "fase": "grupos",
       "time1_nome": "Nova Zelândia", "time1_sigla": "NZL", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/nzl_48x48.png",
       "time2_nome": "Bélgica", "time2_sigla": "BEL", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/bel_48x48.png",
       "data_hora": "2026-06-27 00:00", "local": "Vancouver Place"
     },
     {
-      "id": 2066, "rodada": 17, "fase": "grupos",
+      "id": 2066, "rodada": 16, "fase": "grupos",
       "time1_nome": "Egito", "time1_sigla": "EGY", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/egy_48x48.png",
       "time2_nome": "Irã", "time2_sigla": "IRN", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/irn_48x48.png",
       "data_hora": "2026-06-27 00:00", "local": "Seattle Field"
