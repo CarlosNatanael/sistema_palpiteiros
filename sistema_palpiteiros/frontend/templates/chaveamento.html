@@ -17,45 +17,57 @@
                 <div class="bracket">
                     <div class="round dezesseis-avos">
                         <div class="round-header"><i class="bi bi-trophy-fill me-2"></i>16-Avos</div>
-                        {% for confronto in dezesseis_avos %}
-                            {% include 'partials/_confronto.html' %}
-                        {% endfor %}
+                        <div class="round-body">
+                            {% for confronto in dezesseis_avos %}
+                                {% include 'partials/_confronto.html' %}
+                            {% endfor %}
+                        </div>
                     </div>
                     <div class="round oitavas">
                         <div class="round-header"><i class="bi bi-trophy-fill me-2"></i>Oitavas</div>
-                        {% for confronto in oitavas %}
-                            {% include 'partials/_confronto.html' %}
-                        {% endfor %}
+                        <div class="round-body">
+                            {% for confronto in oitavas %}
+                                {% include 'partials/_confronto.html' %}
+                            {% endfor %}
+                        </div>
                     </div>
 
                     <div class="round quartas">
                         <div class="round-header"><i class="bi bi-trophy-fill me-2"></i>Quartas</div>
-                        {% for confronto in quartas %}
-                            {% include 'partials/_confronto.html' %}
-                        {% endfor %}
+                        <div class="round-body">
+                            {% for confronto in quartas %}
+                                {% include 'partials/_confronto.html' %}
+                            {% endfor %}
+                        </div>
                     </div>
 
                     <div class="round semis">
                         <div class="round-header"><i class="bi bi-trophy-fill me-2"></i>Semifinal</div>
-                        {% for confronto in semis %}
-                            {% include 'partials/_confronto.html' %}
-                        {% endfor %}
+                        <div class="round-body">
+                            {% for confronto in semis %}
+                                {% include 'partials/_confronto.html' %}
+                            {% endfor %}
+                        </div>
                     </div>
 
                     <div class="round final">
                         <div class="round-header"><i class="bi bi-trophy-fill me-2"></i>Final</div>
-                        {% for confronto in final %}
-                            {% include 'partials/_confronto.html' %}
-                        {% endfor %}
+                        <div class="round-body">
+                            {% for confronto in final %}
+                                {% include 'partials/_confronto.html' %}
+                            {% endfor %}
+                        </div>
                     </div>
 
                     <div class="round champion">
                         <div class="round-header"><i class="bi bi-trophy-fill me-2"></i>Campeão</div>
-                        <div class="matchup">
-                            <div class="team winner champion-box">
-                                <i class="bi bi-trophy-fill champion-trophy"></i>
-                                <img src="{{ campeao.img }}" class="team-logo" alt="{{ campeao.nome }}">
-                                <span class="team-name">{{ campeao.nome }}</span>
+                        <div class="round-body">
+                            <div class="matchup">
+                                <div class="team winner champion-box">
+                                    <i class="bi bi-trophy-fill champion-trophy"></i>
+                                    <img src="{{ campeao.img }}" class="team-logo" alt="{{ campeao.nome }}">
+                                    <span class="team-name">{{ campeao.nome }}</span>
+                                </div>
                             </div>
                         </div>
                     </div>

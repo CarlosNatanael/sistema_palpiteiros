@@ -4,6 +4,7 @@
     --light-green: #e8f5e9;
     --winner-color: #2e7d32;
     --trophy-gold: #ffd700;
+    --line-color: #c7d2c9;
 }
 
 /* Base Styles */
@@ -53,64 +54,105 @@ main {
     padding-top: 80px;
 }
 
-/* Bracket Container */
+/* ==========================================================================
+   BRACKET — abordagem nova: cada .round é sempre uma coluna (flex column),
+   e as colunas ficam sempre lado a lado dentro de .bracket (flex row) a
+   partir do tablet. Os jogos de cada fase se distribuem com
+   justify-content: space-around para se alinharem visualmente com a fase
+   anterior, criando o efeito de "funil" sem precisar de seletores
+   nth-child amarrados a um número fixo de jogos.
+   ========================================================================== */
+
 .bracket-container {
     width: 100%;
     overflow-x: auto;
-    padding: 1rem 0;
+    padding: 1rem 0 2rem;
     margin: 0 auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--secondary-color) transparent;
+}
+
+.bracket-container::-webkit-scrollbar {
+    height: 8px;
+}
+
+.bracket-container::-webkit-scrollbar-thumb {
+    background-color: var(--secondary-color);
+    border-radius: 4px;
 }
 
 .bracket {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: stretch;
     min-width: fit-content;
     transition: transform 0.3s ease;
     transform-origin: center top;
     padding: 1rem;
+    gap: 2.5rem;
 }
 
 /* Round Styles */
 .round {
     display: flex;
     flex-direction: column;
-    justify-content: center;
     min-width: 280px;
-    margin: 0 1rem;
     position: relative;
 }
 
 .round-header {
-    font-size: 1.25rem;
+    font-size: 1.1rem;
     font-weight: 700;
     text-align: center;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.25rem;
     color: var(--primary-color);
     background-color: var(--light-green);
-    padding: 0.75rem;
+    padding: 0.65rem;
     border-radius: 0.5rem;
     box-shadow: 0 2px 4px rgba(0,0,0,0.05);
     display: flex;
     align-items: center;
     justify-content: center;
+    position: sticky;
+    top: 0;
+    z-index: 2;
 }
 
 .round-header i {
     color: var(--trophy-gold);
 }
 
+/* Linha de jogos dentro de cada fase: cresce em largura, então cada
+   confronto vira um "slot" — isso é o que permite alinhar visualmente
+   com a fase seguinte sem hardcode de quantidade */
+.round-body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    justify-content: space-around;
+    gap: 1.5rem;
+}
+
 /* Matchup Styles */
+.confronto-wrapper {
+    display: flex;
+    align-items: center;
+}
+
 .matchup {
     background: #fff;
     border: 1px solid #ddd;
     border-radius: 0.75rem;
-    margin: 0 auto 1.5rem auto;
     box-shadow: 0 4px 6px rgba(0,0,0,0.05);
     width: 100%;
     max-width: 300px;
     position: relative;
     transition: all 0.3s ease;
     overflow: hidden;
+}
+
+.matchup + .matchup {
+    margin-top: 0.6rem;
 }
 
 .matchup:hover {
@@ -130,7 +172,7 @@ main {
 .team {
     display: flex;
     align-items: center;
-    padding: 0.75rem 1rem;
+    padding: 0.65rem 1rem;
     border-bottom: 1px solid #eee;
     transition: all 0.3s ease;
     position: relative;
@@ -141,8 +183,8 @@ main {
 }
 
 .team-logo {
-    width: 32px;
-    height: 32px;
+    width: 28px;
+    height: 28px;
     margin-right: 12px;
     object-fit: contain;
     flex-shrink: 0;
@@ -150,7 +192,7 @@ main {
 
 .team-name {
     flex-grow: 1;
-    font-size: 0.95rem;
+    font-size: 0.92rem;
     font-weight: 500;
     white-space: nowrap;
     overflow: hidden;
@@ -159,7 +201,7 @@ main {
 
 .team-score {
     font-weight: 700;
-    font-size: 1.1rem;
+    font-size: 1.05rem;
     padding-left: 10px;
     min-width: 20px;
     text-align: center;
@@ -214,79 +256,133 @@ main {
     white-space: normal;
 }
 
-/* Connector Lines - Desktop */
+.round.champion .round-body {
+    justify-content: center;
+}
+
+/* ==========================================================================
+   Desktop: bracket horizontal de verdade. As fases ficam lado a lado
+   e as linhas conectoras usam apenas bordas em pseudo-elementos do
+   confronto-wrapper, calculadas em % (não em px fixo), então funcionam
+   com qualquer quantidade de jogos por fase.
+   ========================================================================== */
 @media (min-width: 992px) {
     .bracket {
-        display: grid;
-        grid-template-columns: repeat(5, 1fr);
-        gap: 20px;
-        padding: 2rem;
+        flex-direction: row;
+        align-items: stretch;
+        gap: 0;
+        padding: 1.5rem 2rem;
     }
-    
+
     .round {
-        margin: 0;
+        margin: 0 1.75rem;
     }
-    
-    .matchup {
-        margin-bottom: 30px;
-        width: 100%;
+
+    .round:first-child {
+        margin-left: 0;
     }
-    
-    /* Connector lines between rounds */
-    .matchup::after {
+
+    .round:last-child {
+        margin-right: 0;
+    }
+
+    .round.champion {
+        justify-content: center;
+        align-self: stretch;
+    }
+
+    .round.champion .round-header {
+        align-self: flex-start;
+    }
+
+    .round.champion .round-body {
+        flex: 1;
+        justify-content: center;
+    }
+
+    /* Linha ligando a Final ao Campeão */
+    .final .confronto-wrapper:last-child::after {
+        border-top: 2px solid var(--line-color);
+    }
+
+    .round-body {
+        gap: 1.5rem;
+    }
+
+    /* Linha curta saindo de cada confronto até a metade do espaço até a
+       próxima fase */
+    .round:not(.champion) .confronto-wrapper {
+        position: relative;
+    }
+
+    .round:not(.champion) .confronto-wrapper::after {
         content: '';
         position: absolute;
-        right: -20px;
+        right: -0.875rem;
         top: 50%;
-        width: 20px;
-        height: 2px;
-        background: #ccc;
-        z-index: -1;
+        width: 0.875rem;
+        height: 0;
+        border-top: 2px solid var(--line-color);
     }
-    
-    .quartas .matchup:nth-child(odd)::before,
-    .semis .matchup:nth-child(odd)::before,
-    .final .matchup::before {
+
+    /* A cada par de confrontos (1º e 2º, 3º e 4º...), desenha uma chave
+       "]" que liga o meio dos dois e sai pela direita até a metade do
+       caminho da próxima fase. Como cada par soma sempre 100% da altura
+       de um confronto da fase seguinte, este bloco fica simétrico
+       independente de quantos pares existirem. */
+    .round:not(.champion) .confronto-wrapper:nth-child(odd):not(:last-child) {
+        position: relative;
+    }
+
+    .round:not(.champion) .confronto-wrapper:nth-child(odd):not(:last-child)::before {
         content: '';
         position: absolute;
-        right: -20px;
+        right: -1.75rem;
         top: 50%;
-        width: 20px;
-        height: calc(100% + 60px);
-        border-right: 2px solid #ccc;
-        border-bottom: 2px solid #ccc;
-        border-radius: 0 0 10px 0;
-        z-index: -1;
+        bottom: calc(-50% - 0.75rem);
+        width: 0.875rem;
+        border-right: 2px solid var(--line-color);
+        border-top-right-radius: 8px;
     }
-    
-    .final .matchup::before {
-        height: calc(50% + 30px);
-        top: 100%;
+
+    .round:not(.champion) .confronto-wrapper:nth-child(even)::before {
+        content: '';
+        position: absolute;
+        right: -1.75rem;
+        bottom: 50%;
+        top: calc(-50% - 0.75rem);
+        width: 0.875rem;
+        border-right: 2px solid var(--line-color);
+        border-bottom-right-radius: 8px;
     }
-    
-    .champion .matchup::before {
-        display: none;
+
+    .round:not(.champion) .confronto-wrapper:nth-child(odd):not(:last-child)::after,
+    .round:not(.champion) .confronto-wrapper:nth-child(even)::after {
+        right: -1.75rem;
+        width: 0.875rem;
     }
 }
 
-/* Responsive Adjustments */
+/* Tablet/desktop pequeno: mantém em coluna mas com largura controlada
+   e header fixo removido (sticky não faz sentido em coluna) */
 @media (max-width: 991.98px) {
     .bracket {
-        flex-direction: column;
         align-items: center;
     }
-    
+
     .round {
-        margin-bottom: 2rem;
         width: 100%;
+        max-width: 340px;
+        margin: 0 auto;
     }
-    
+
     .round-header {
+        position: static;
         margin-bottom: 1rem;
     }
-    
-    .matchup {
-        margin-bottom: 1rem;
+
+    .round-body {
+        gap: 1rem;
     }
 }
 
@@ -315,15 +411,16 @@ main {
     .navbar, footer, .btn-group {
         display: none !important;
     }
-    
+
     main {
         padding-top: 0 !important;
     }
-    
+
     .bracket {
         transform: none !important;
+        flex-direction: row !important;
     }
-    
+
     .matchup {
         break-inside: avoid;
     }

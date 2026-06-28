@@ -1,4 +1,4 @@
-<div class="confronto-wrapper mb-4 p-2 border rounded shadow-sm">
+<div class="confronto-wrapper">
     {% set ida = confronto.ida %}
     {% if ida %}
     <div class="matchup">
@@ -27,7 +27,7 @@
 
     {% set volta = confronto.volta %}
     {% if volta %}
-     <div class="matchup mt-2">
+     <div class="matchup">
         <div class="team">
             <img src="{{ volta.time1_img }}" class="team-logo" alt="{{ volta.time1_nome }}">
             <span class="team-name">{{ volta.time1_nome }}</span>
