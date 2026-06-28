@@ -361,11 +361,14 @@ def chaveamento():
     confrontos_ordenados = sorted(confrontos_mata_mata.values(), 
                                  key=lambda c: c['ida']['id'] if c.get('ida') else 0) # type: ignore
     
-    # Separar por fases
-    oitavas = [c for c in confrontos_ordenados if c.get('ida') and 1 <= c['ida']['confronto_id'] <= 8] # type: ignore
-    quartas = [c for c in confrontos_ordenados if c.get('ida') and 9 <= c['ida']['confronto_id'] <= 12] # type: ignore
-    semis = [c for c in confrontos_ordenados if c.get('ida') and 13 <= c['ida']['confronto_id'] <= 14] # type: ignore
-    final = [c for c in confrontos_ordenados if c.get('ida') and c['ida']['confronto_id'] == 15] # type: ignore
+    # Lógica Dinâmica de Fases (Matemática Reversa)
+    max_id = max([c['ida']['confronto_id'] for c in confrontos_ordenados if c.get('ida')], default=0)
+    
+    dezesseis_avos = [c for c in confrontos_ordenados if c.get('ida') and max_id - 30 <= c['ida']['confronto_id'] <= max_id - 15] # type: ignore
+    oitavas = [c for c in confrontos_ordenados if c.get('ida') and max_id - 14 <= c['ida']['confronto_id'] <= max_id - 7] # type: ignore
+    quartas = [c for c in confrontos_ordenados if c.get('ida') and max_id - 6 <= c['ida']['confronto_id'] <= max_id - 3] # type: ignore
+    semis = [c for c in confrontos_ordenados if c.get('ida') and max_id - 2 <= c['ida']['confronto_id'] <= max_id - 1] # type: ignore
+    final = [c for c in confrontos_ordenados if c.get('ida') and c['ida']['confronto_id'] == max_id] # type: ignore
     
     # Determinar campeão
     campeao = {'nome': 'A definir', 'img': 'https://placehold.co/80x80/eee/006400?text=?'}
@@ -374,7 +377,8 @@ def chaveamento():
         winner_img = final[0]['ida']['time1_img'] if final[0]['ida']['time1_nome'] == winner_name else final[0]['ida']['time2_img'] # type: ignore
         campeao = {'nome': winner_name, 'img': winner_img}
     
-    return render_template('chaveamento.html', 
+    return render_template('chaveamento.html',
+                           dezesseis_avos=dezesseis_avos,
                            oitavas=oitavas,
                            quartas=quartas,
                            semis=semis,

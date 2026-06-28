@@ -15,6 +15,12 @@
             
             <div class="bracket-container">
                 <div class="bracket">
+                    <div class="round dezesseis-avos">
+                        <div class="round-header"><i class="bi bi-trophy-fill me-2"></i>16-Avos</div>
+                        {% for confronto in dezesseis_avos %}
+                            {% include 'partials/_confronto.html' %}
+                        {% endfor %}
+                    </div>
                     <div class="round oitavas">
                         <div class="round-header"><i class="bi bi-trophy-fill me-2"></i>Oitavas</div>
                         {% for confronto in oitavas %}
@@ -57,7 +63,7 @@
             </div>
         </div>
 
-        {% set todos_os_confrontos = oitavas + quartas + semis + final %}
+        {% set todos_os_confrontos = dezesseis_avos + oitavas + quartas + semis + final %}
         {% for confronto in todos_os_confrontos %}
             {% for jogo in [confronto.ida, confronto.volta] if jogo %}
             <div class="modal fade" id="modal-{{ jogo.id }}" tabindex="-1">
