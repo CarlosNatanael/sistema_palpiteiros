@@ -345,7 +345,9 @@ def chaveamento():
     
     # Organizar confrontos do mata-mata
     confrontos_mata_mata = defaultdict(lambda: {'ida': None, 'volta': None})
-    for game_id, jogo_api in jogos_api_map.items(): # type: ignore
+    nomes_campeonatos_mata_mata = set()  # <-- NOVO: rastreia só campeonatos com mata-mata
+
+    for game_id, jogo_api in jogos_api_map.items():
         if jogo_api.get('fase') == 'mata-mata' and jogo_api.get('confronto_id'):
             jogo_completo = jogo_api.copy()
             if game_id in resultados_map:
@@ -353,18 +355,22 @@ def chaveamento():
             jogo_completo['palpites'] = sorted(palpites_por_jogo.get(game_id, []), 
                                               key=lambda p: p['nome'])
             
-            # Lógica Dinâmica: Se a "ida" estiver vazia, recebe o primeiro jogo (seja Ida ou Único)
+            nomes_campeonatos_mata_mata.add(jogo_api.get('campeonato', ''))  # <-- NOVO
+
             if confrontos_mata_mata[jogo_completo['confronto_id']]['ida'] is None:
                 confrontos_mata_mata[jogo_completo['confronto_id']]['ida'] = jogo_completo
             else:
                 confrontos_mata_mata[jogo_completo['confronto_id']]['volta'] = jogo_completo
     
     confrontos_ordenados = sorted(confrontos_mata_mata.values(), 
-                                 key=lambda c: c['ida']['id'] if c.get('ida') else 0) # type: ignore
-    
-    # --- LÓGICA DINÂMICA DE FASES ---
-    nome_campeonato = list(jogos_api_map.values())[0].get('campeonato', '') if jogos_api_map else ''
-    is_copa = 'mundo' in nome_campeonato.lower() or 'mundial' in nome_campeonato.lower()
+                                 key=lambda c: c['ida']['id'] if c.get('ida') else c['volta']['id'])
+    # ^ fallback pro 'volta' caso 'ida' nunca exista (Bug 2)
+
+    # --- LÓGICA DINÂMICA DE FASES (corrigida) ---
+    # Em vez de olhar o primeiro jogo de TODOS os jogos, olha só os campeonatos
+    # que de fato têm jogos de mata-mata
+    is_copa = any('mundo' in nome.lower() or 'mundial' in nome.lower() 
+                  for nome in nomes_campeonatos_mata_mata)
 
     if is_copa:
         # Formato Copa do Mundo (31 jogos)
@@ -383,9 +389,9 @@ def chaveamento():
     
     # Determinar campeão
     campeao = {'nome': 'A definir', 'img': 'https://placehold.co/80x80/eee/006400?text=?'}
-    if final and final[0].get('ida') and final[0]['ida'].get('time_que_avancou'): # type: ignore
-        winner_name = final[0]['ida']['time_que_avancou'] # type: ignore
-        winner_img = final[0]['ida']['time1_img'] if final[0]['ida']['time1_nome'] == winner_name else final[0]['ida']['time2_img'] # type: ignore
+    if final and final[0].get('ida') and final[0]['ida'].get('time_que_avancou'):
+        winner_name = final[0]['ida']['time_que_avancou']
+        winner_img = final[0]['ida']['time1_img'] if final[0]['ida']['time1_nome'] == winner_name else final[0]['ida']['time2_img']
         campeao = {'nome': winner_name, 'img': winner_img}
     
     return render_template('chaveamento.html',

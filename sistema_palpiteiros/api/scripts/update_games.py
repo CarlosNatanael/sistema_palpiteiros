@@ -57,6 +57,15 @@ def atualizar_banco_de_jogos():
         conn = sqlite3.connect(API_DB_PATH)
         cursor = conn.cursor()
 
+        # Garante que a coluna confronto_id existe na tabela (proteção contra
+        # bancos antigos que ainda não tinham essa coluna)
+        cursor.execute("PRAGMA table_info(jogos)")
+        colunas_existentes = [col[1] for col in cursor.fetchall()]
+        if 'confronto_id' not in colunas_existentes:
+            print("Coluna 'confronto_id' não existe na tabela 'jogos'. Criando agora...")
+            cursor.execute("ALTER TABLE jogos ADD COLUMN confronto_id INTEGER")
+            conn.commit()
+
         jogos_inseridos = 0
         jogos_atualizados = 0
 
@@ -76,17 +85,20 @@ def atualizar_banco_de_jogos():
                 else:
                     print(f"⚠️ Aviso: Logo não encontrado no textos.json para: '{jogo['time2_nome']}'")
 
+                # Pega o confronto_id do JSON (pode não existir em jogos de fase de grupos)
+                confronto_id = jogo.get('confronto_id')
+
                 # Inserção ou Atualização no BD
                 cursor.execute("SELECT id FROM jogos WHERE id = ?", (jogo['id'],))
                 data = cursor.fetchone()
 
                 if data is None:
                     cursor.execute("""
-                        INSERT INTO jogos (id, campeonato, rodada, fase, time1_nome, time1_img, time1_sigla,
+                        INSERT INTO jogos (id, campeonato, rodada, fase, confronto_id, time1_nome, time1_img, time1_sigla,
                                            time2_nome, time2_img, time2_sigla, data_hora, local)
-                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                     """, (
-                        jogo['id'], campeonato, jogo['rodada'], jogo['fase'],
+                        jogo['id'], campeonato, jogo['rodada'], jogo['fase'], confronto_id,
                         jogo['time1_nome'], jogo['time1_img'], jogo['time1_sigla'],
                         jogo['time2_nome'], jogo['time2_img'], jogo['time2_sigla'],
                         jogo['data_hora'], jogo['local']
@@ -94,11 +106,11 @@ def atualizar_banco_de_jogos():
                     jogos_inseridos += 1
                 else:
                     cursor.execute("""
-                        UPDATE jogos SET campeonato=?, rodada=?, fase=?, time1_nome=?, time1_img=?, time1_sigla=?,
+                        UPDATE jogos SET campeonato=?, rodada=?, fase=?, confronto_id=?, time1_nome=?, time1_img=?, time1_sigla=?,
                                          time2_nome=?, time2_img=?, time2_sigla=?, data_hora=?, local=?
                         WHERE id=?
                     """, (
-                        campeonato, jogo['rodada'], jogo['fase'],
+                        campeonato, jogo['rodada'], jogo['fase'], confronto_id,
                         jogo['time1_nome'], jogo['time1_img'], jogo['time1_sigla'],
                         jogo['time2_nome'], jogo['time2_img'], jogo['time2_sigla'],
                         jogo['data_hora'], jogo['local'], jogo['id']

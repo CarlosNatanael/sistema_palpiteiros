@@ -1,7 +1,7 @@
 {
   "Copa do Mundo 2026": [
     {
-      "id": 2073, "rodada": 18, "fase": "mata-mata", "confronto_id": 1, 
+      "id": 2073, "rodada": 18, "fase": "mata-mata", "confronto_id": 1,
       "time1_nome": "África do Sul", "time1_sigla": "RSA", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/rsa_48x48.png",
       "time2_nome": "Canadá", "time2_sigla": "CAN", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/can_48x48.png",
       "data_hora": "2026-06-28 16:00", "local": "A definir"
