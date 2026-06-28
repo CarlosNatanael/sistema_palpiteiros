@@ -54,15 +54,6 @@ main {
     padding-top: 80px;
 }
 
-/* ==========================================================================
-   BRACKET — abordagem nova: cada .round é sempre uma coluna (flex column),
-   e as colunas ficam sempre lado a lado dentro de .bracket (flex row) a
-   partir do tablet. Os jogos de cada fase se distribuem com
-   justify-content: space-around para se alinharem visualmente com a fase
-   anterior, criando o efeito de "funil" sem precisar de seletores
-   nth-child amarrados a um número fixo de jogos.
-   ========================================================================== */
-
 .bracket-container {
     width: 100%;
     overflow-x: auto;
@@ -122,9 +113,6 @@ main {
     color: var(--trophy-gold);
 }
 
-/* Linha de jogos dentro de cada fase: cresce em largura, então cada
-   confronto vira um "slot" — isso é o que permite alinhar visualmente
-   com a fase seguinte sem hardcode de quantidade */
 .round-body {
     display: flex;
     flex-direction: column;
@@ -260,12 +248,6 @@ main {
     justify-content: center;
 }
 
-/* ==========================================================================
-   Desktop: bracket horizontal de verdade. As fases ficam lado a lado
-   e as linhas conectoras usam apenas bordas em pseudo-elementos do
-   confronto-wrapper, calculadas em % (não em px fixo), então funcionam
-   com qualquer quantidade de jogos por fase.
-   ========================================================================== */
 @media (min-width: 992px) {
     .bracket {
         flex-direction: row;
@@ -309,8 +291,6 @@ main {
         gap: 1.5rem;
     }
 
-    /* Linha curta saindo de cada confronto até a metade do espaço até a
-       próxima fase */
     .round:not(.champion) .confronto-wrapper {
         position: relative;
     }
@@ -324,12 +304,6 @@ main {
         height: 0;
         border-top: 2px solid var(--line-color);
     }
-
-    /* A cada par de confrontos (1º e 2º, 3º e 4º...), desenha uma chave
-       "]" que liga o meio dos dois e sai pela direita até a metade do
-       caminho da próxima fase. Como cada par soma sempre 100% da altura
-       de um confronto da fase seguinte, este bloco fica simétrico
-       independente de quantos pares existirem. */
     .round:not(.champion) .confronto-wrapper:nth-child(odd):not(:last-child) {
         position: relative;
     }
@@ -424,4 +398,108 @@ main {
     .matchup {
         break-inside: avoid;
     }
+}
+
+body.dark-mode .round-header {
+    background-color: #1a1a1a !important;
+    color: #4ade80 !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+body.dark-mode .round-header i {
+    color: var(--trophy-gold);
+}
+
+body.dark-mode .matchup {
+    background-color: #242424 !important;
+    border-color: #333 !important;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+}
+
+body.dark-mode .matchup:hover {
+    box-shadow: 0 6px 14px rgba(74, 222, 128, 0.15);
+}
+
+body.dark-mode .team {
+    border-color: #333 !important;
+}
+
+body.dark-mode .team-name {
+    color: #e0e0e0;
+}
+
+body.dark-mode .team-score {
+    color: #4ade80 !important;
+}
+
+body.dark-mode .match-info {
+    background-color: #1a1a1a !important;
+    border-color: #333 !important;
+    color: #adb5bd;
+}
+
+body.dark-mode .match-info .badge.bg-light {
+    background-color: #333 !important;
+    color: #e0e0e0 !important;
+}
+
+body.dark-mode .match-info .badge.bg-warning {
+    background-color: #574500 !important;
+    color: #ffd700 !important;
+    border-color: #806600 !important;
+}
+
+body.dark-mode .team.winner {
+    background-color: rgba(74, 222, 128, 0.08);
+}
+
+body.dark-mode .team.winner .team-name {
+    color: #4ade80 !important;
+}
+
+body.dark-mode .team.winner::after {
+    background-color: #4ade80;
+}
+
+body.dark-mode .champion-box {
+    background-color: rgba(255, 215, 0, 0.06);
+    border-color: var(--trophy-gold);
+}
+
+body.dark-mode .champion-box .team-name {
+    color: #4ade80 !important;
+}
+
+body.dark-mode .lead.text-muted {
+    color: #9ca3af !important;
+}
+
+/* Linhas conectoras do bracket no modo escuro */
+@media (min-width: 992px) {
+    body.dark-mode .round:not(.champion) .confronto-wrapper::after,
+    body.dark-mode .round:not(.champion) .confronto-wrapper::before {
+        border-color: #444 !important;
+    }
+}
+
+/* Scrollbar do bracket no modo escuro */
+body.dark-mode .bracket-container {
+    scrollbar-color: #4ade80 transparent;
+}
+
+body.dark-mode .bracket-container::-webkit-scrollbar-thumb {
+    background-color: #4ade80;
+}
+
+/* Botão "Ver Palpites" no modo escuro */
+body.dark-mode .btn-outline-secondary {
+    color: #d0d0d0 !important;
+    border-color: #555 !important;
+    background-color: #2a2a2a !important;
+}
+
+body.dark-mode .btn-outline-secondary:hover {
+    background-color: #4ade80 !important;
+    border-color: #4ade80 !important;
+    color: #1a1a1a !important;
 }
