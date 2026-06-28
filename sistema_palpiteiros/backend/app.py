@@ -353,7 +353,8 @@ def chaveamento():
             jogo_completo['palpites'] = sorted(palpites_por_jogo.get(game_id, []), 
                                               key=lambda p: p['nome'])
             
-            if jogo_completo['rodada'] % 2 != 0:
+            # Lógica Dinâmica: Se a "ida" estiver vazia, recebe o primeiro jogo (seja Ida ou Único)
+            if confrontos_mata_mata[jogo_completo['confronto_id']]['ida'] is None:
                 confrontos_mata_mata[jogo_completo['confronto_id']]['ida'] = jogo_completo
             else:
                 confrontos_mata_mata[jogo_completo['confronto_id']]['volta'] = jogo_completo
@@ -361,14 +362,24 @@ def chaveamento():
     confrontos_ordenados = sorted(confrontos_mata_mata.values(), 
                                  key=lambda c: c['ida']['id'] if c.get('ida') else 0) # type: ignore
     
-    # Lógica Dinâmica de Fases (Matemática Reversa)
-    max_id = max([c['ida']['confronto_id'] for c in confrontos_ordenados if c.get('ida')], default=0)
-    
-    dezesseis_avos = [c for c in confrontos_ordenados if c.get('ida') and max_id - 30 <= c['ida']['confronto_id'] <= max_id - 15] # type: ignore
-    oitavas = [c for c in confrontos_ordenados if c.get('ida') and max_id - 14 <= c['ida']['confronto_id'] <= max_id - 7] # type: ignore
-    quartas = [c for c in confrontos_ordenados if c.get('ida') and max_id - 6 <= c['ida']['confronto_id'] <= max_id - 3] # type: ignore
-    semis = [c for c in confrontos_ordenados if c.get('ida') and max_id - 2 <= c['ida']['confronto_id'] <= max_id - 1] # type: ignore
-    final = [c for c in confrontos_ordenados if c.get('ida') and c['ida']['confronto_id'] == max_id] # type: ignore
+    # --- LÓGICA DINÂMICA DE FASES ---
+    nome_campeonato = list(jogos_api_map.values())[0].get('campeonato', '') if jogos_api_map else ''
+    is_copa = 'mundo' in nome_campeonato.lower() or 'mundial' in nome_campeonato.lower()
+
+    if is_copa:
+        # Formato Copa do Mundo (31 jogos)
+        dezesseis_avos = [c for c in confrontos_ordenados if c.get('ida') and 1 <= c['ida']['confronto_id'] <= 16]
+        oitavas = [c for c in confrontos_ordenados if c.get('ida') and 17 <= c['ida']['confronto_id'] <= 24]
+        quartas = [c for c in confrontos_ordenados if c.get('ida') and 25 <= c['ida']['confronto_id'] <= 28]
+        semis = [c for c in confrontos_ordenados if c.get('ida') and 29 <= c['ida']['confronto_id'] <= 30]
+        final = [c for c in confrontos_ordenados if c.get('ida') and c['ida']['confronto_id'] == 31]
+    else:
+        # Formato Clássico Oitavas (15 jogos)
+        dezesseis_avos = []
+        oitavas = [c for c in confrontos_ordenados if c.get('ida') and 1 <= c['ida']['confronto_id'] <= 8]
+        quartas = [c for c in confrontos_ordenados if c.get('ida') and 9 <= c['ida']['confronto_id'] <= 12]
+        semis = [c for c in confrontos_ordenados if c.get('ida') and 13 <= c['ida']['confronto_id'] <= 14]
+        final = [c for c in confrontos_ordenados if c.get('ida') and c['ida']['confronto_id'] == 15]
     
     # Determinar campeão
     campeao = {'nome': 'A definir', 'img': 'https://placehold.co/80x80/eee/006400?text=?'}

@@ -13,7 +13,11 @@
             <span class="team-score">{{ ida.placar_time2 if ida.placar_time2 is not none else '-' }}</span>
         </div>
         <div class="match-info">
-            <span class="badge bg-light text-dark">Ida</span>
+            {% if confronto.volta %}
+                <span class="badge bg-light text-dark">Ida</span>
+            {% else %}
+                <span class="badge bg-warning text-dark border border-warning shadow-sm">Jogo Único</span>
+            {% endif %}
             <button type="button" class="btn btn-sm btn-outline-secondary ms-2" data-bs-toggle="modal" data-bs-target="#modal-{{ ida.id }}">
                 Ver Palpites
             </button>

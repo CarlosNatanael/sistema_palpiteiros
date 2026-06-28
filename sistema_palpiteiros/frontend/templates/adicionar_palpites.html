@@ -87,7 +87,7 @@
                             </select>
                         </div>
                         
-                        {% if jogo.fase == 'mata-mata' and jogo.rodada is odd %}
+                        {% if jogo.fase == 'mata-mata' %}
                         <div class="result-prediction-group mt-2">
                             <label for="quem_avanca_{{ jogo.id }}">Quem Avança no Confronto?</label>
                             <select id="quem_avanca_{{ jogo.id }}" name="quem_avanca_{{ jogo.id }}" class="form-select">

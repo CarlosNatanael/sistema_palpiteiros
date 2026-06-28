@@ -32,7 +32,7 @@
                     <th>Palpiteiro</th>
                     <th>Placar</th>
                     <th>Resultado</th>
-                    {% if jogo.rodada is odd %}
+                    {% if jogo.fase == 'mata-mata' %}
                         <th>Avança</th>
                     {% endif %}
                     <th>Status</th>
@@ -44,7 +44,7 @@
                     <td>{{ palpite.nome }}</td>
                     <td><strong>{{ palpite.gol_time1 }} x {{ palpite.gol_time2 }}</strong></td>
                     <td>{{ palpite.resultado }}</td>
-                    {% if jogo.rodada is odd %}
+                    {% if jogo.fase == 'mata-mata' %}
                         <td>{{ palpite.quem_avanca or 'N/A' }}</td>
                     {% endif %}
                     <td>

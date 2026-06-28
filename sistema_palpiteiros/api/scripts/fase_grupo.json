@@ -1,0 +1,436 @@
+{
+  "Copa do Mundo 2026": [
+    {
+      "id": 2001, "rodada": 1, "fase": "grupos",
+      "time1_nome": "México", "time1_sigla": "MEX", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/optimized/yJF9xqmUGenD8108FJbg9A_48x48.png",
+      "time2_nome": "África do Sul", "time2_sigla": "RSA", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/optimized/EGwD4_SUlmwZWbnHhcmTPA_48x48.png",
+      "data_hora": "2026-06-11 16:00", "local": "Azteca"
+    },
+    {
+      "id": 2002, "rodada": 1, "fase": "grupos",
+      "time1_nome": "Coreia do Sul", "time1_sigla": "KOR", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/optimized/Uu5pwNmMHGd5bCooKrS3Lw_48x48.png",
+      "time2_nome": "Tchéquia", "time2_sigla": "CZE", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/optimized/8AluO-WxpcHtC0KKHmFgvg_48x48.png",
+      "data_hora": "2026-06-11 23:00", "local": "Akron"
+    },
+    {
+      "id": 2003, "rodada": 2, "fase": "grupos",
+      "time1_nome": "Canadá", "time1_sigla": "CAN", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/optimized/H23oIEP6qK-zNc3O8abnIA_48x48.png",
+      "time2_nome": "Bósnia", "time2_sigla": "BIH", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/optimized/em3xOvyKQEgz1IIYI8GO9w_48x48.png",
+      "data_hora": "2026-06-12 16:00", "local": "Toronto Field"
+    },
+    {
+      "id": 2004, "rodada": 2, "fase": "grupos",
+      "time1_nome": "Estados Unidos", "time1_sigla": "USA", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/optimized/wj9uZvn_vZrelLFGH8fnPA_48x48.png",
+      "time2_nome": "Paraguai", "time2_sigla": "PAR", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/optimized/-FN-y84Al3dbth0hW1t5Qg_48x48.png",
+      "data_hora": "2026-06-12 22:00", "local": "Los Angeles"
+    },
+    {
+      "id": 2005, "rodada": 3, "fase": "grupos",
+      "time1_nome": "Catar", "time1_sigla": "QAT", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/optimized/h0FNA5YxLzWChHS5K0o4gw_48x48.png",
+      "time2_nome": "Suíça", "time2_sigla": "SUI", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/optimized/1hy9ek4dOIffYULM6k1fqg_48x48.png",
+      "data_hora": "2026-06-13 16:00", "local": "Santa Clara"
+    },
+    {
+      "id": 2006, "rodada": 3, "fase": "grupos",
+      "time1_nome": "Brasil", "time1_sigla": "BRA", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/optimized/zKLzoJVYz0bb6oAnPUdwWQ_48x48.png",
+      "time2_nome": "Marrocos", "time2_sigla": "MAR", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/optimized/I3gt2Ew39ux3GGdZ-4JE3g_48x48.png",
+      "data_hora": "2026-06-13 19:00", "local": "Nova Jersey"
+    },
+    {
+      "id": 2007, "rodada": 3, "fase": "grupos",
+      "time1_nome": "Haiti", "time1_sigla": "HAI", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/optimized/AkMdqELoXN2wfYDvtMIQBQ_48x48.png",
+      "time2_nome": "Escócia", "time2_sigla": "SCO", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/optimized/KNmWgtzC7DeN0X-OJEDsMA_48x48.png",
+      "data_hora": "2026-06-13 22:00", "local": "Boston"
+    },
+    {
+      "id": 2008, "rodada": 3, "fase": "grupos",
+      "time1_nome": "Austrália", "time1_sigla": "AUS", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/aus_48x48.png",
+      "time2_nome": "Turquia", "time2_sigla": "TUR", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/tur_48x48.png",
+      "data_hora": "2026-06-14 01:00", "local": "Vancouver Place"
+    },
+    {
+      "id": 2009, "rodada": 4, "fase": "grupos",
+      "time1_nome": "Alemanha", "time1_sigla": "ALE", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/ger_48x48.png",
+      "time2_nome": "Curaçao", "time2_sigla": "CUW", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/cuw_48x48.png",
+      "data_hora": "2026-06-14 14:00", "local": "Houston"
+    },
+    {
+      "id": 2010, "rodada": 4, "fase": "grupos",
+      "time1_nome": "Holanda", "time1_sigla": "HOL", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/ned_48x48.png",
+      "time2_nome": "Japão", "time2_sigla": "JPN", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/jpn_48x48.png",
+      "data_hora": "2026-06-14 17:00", "local": "Dallas"
+    },
+    {
+      "id": 2011, "rodada": 4, "fase": "grupos",
+      "time1_nome": "Costa do Marfim", "time1_sigla": "CIV", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/civ_48x48.png",
+      "time2_nome": "Equador", "time2_sigla": "ECU", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/ecu_48x48.png",
+      "data_hora": "2026-06-14 20:00", "local": "Filadélfia"
+    },
+    {
+      "id": 2012, "rodada": 4, "fase": "grupos",
+      "time1_nome": "Suécia", "time1_sigla": "SUE", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/swe_48x48.png",
+      "time2_nome": "Tunísia", "time2_sigla": "TUN", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/tun_48x48.png",
+      "data_hora": "2026-06-14 23:00", "local": "El Gigante de Acero"
+    },
+  {
+      "id": 2013, "rodada": 5, "fase": "grupos",
+      "time1_nome": "Espanha", "time1_sigla": "ESP", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/esp_48x48.png",
+      "time2_nome": "Cabo Verde", "time2_sigla": "CPV", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/cpv_48x48.png",
+      "data_hora": "2026-06-15 13:00", "local": "Atlanta"
+    },
+    {
+      "id": 2014, "rodada": 5, "fase": "grupos",
+      "time1_nome": "Bélgica", "time1_sigla": "BEL", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/bel_48x48.png",
+      "time2_nome": "Egito", "time2_sigla": "EGY", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/egy_48x48.png",
+      "data_hora": "2026-06-15 16:00", "local": "Seattle Field"
+    },
+    {
+      "id": 2015, "rodada": 5, "fase": "grupos",
+      "time1_nome": "Arábia Saudita", "time1_sigla": "KSA", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/ksa_48x48.png",
+      "time2_nome": "Uruguai", "time2_sigla": "URU", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/uru_48x48.png",
+      "data_hora": "2026-06-15 19:00", "local": "Miami"
+    },
+    {
+      "id": 2016, "rodada": 5, "fase": "grupos",
+      "time1_nome": "Irã", "time1_sigla": "IRN", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/irn_48x48.png",
+      "time2_nome": "Nova Zelândia", "time2_sigla": "NZL", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/nzl_48x48.png",
+      "data_hora": "2026-06-15 22:00", "local": "Los Angeles"
+    },
+    {
+      "id": 2017, "rodada": 6, "fase": "grupos",
+      "time1_nome": "França", "time1_sigla": "FRA", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/fra_48x48.png",
+      "time2_nome": "Senegal", "time2_sigla": "SEN", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/sen_48x48.png",
+      "data_hora": "2026-06-16 16:00", "local": "Nova Jersey"
+    },
+    {
+      "id": 2018, "rodada": 6, "fase": "grupos",
+      "time1_nome": "Iraque", "time1_sigla": "IRQ", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/irq_48x48.png",
+      "time2_nome": "Noruega", "time2_sigla": "NOR", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/nor_48x48.png",
+      "data_hora": "2026-06-16 19:00", "local": "Boston"
+    },
+    {
+      "id": 2019, "rodada": 6, "fase": "grupos",
+      "time1_nome": "Argentina", "time1_sigla": "ARG", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/arg_48x48.png",
+      "time2_nome": "Argélia", "time2_sigla": "ALG", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/alg_48x48.png",
+      "data_hora": "2026-06-16 22:00", "local": "Kansas City"
+    },
+    {
+      "id": 2020, "rodada": 6, "fase": "grupos",
+      "time1_nome": "Áustria", "time1_sigla": "AUT", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/aut_48x48.png",
+      "time2_nome": "Jordânia", "time2_sigla": "JOR", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/jor_48x48.png",
+      "data_hora": "2026-06-17 01:00", "local": "Santa Clara"
+    },
+    {
+      "id": 2021, "rodada": 7, "fase": "grupos",
+      "time1_nome": "Portugal", "time1_sigla": "POR", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/por_48x48.png",
+      "time2_nome": "RD Congo", "time2_sigla": "COD", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/cod_48x48.png",
+      "data_hora": "2026-06-17 14:00", "local": "Houston"
+    },
+    {
+      "id": 2022, "rodada": 7, "fase": "grupos",
+      "time1_nome": "Inglaterra", "time1_sigla": "ENG", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/eng_48x48.png",
+      "time2_nome": "Croácia", "time2_sigla": "CRO", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/cro_48x48.png",
+      "data_hora": "2026-06-17 17:00", "local": "Dallas"
+    },
+    {
+      "id": 2023, "rodada": 7, "fase": "grupos",
+      "time1_nome": "Gana", "time1_sigla": "GHA", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/gha_48x48.png",
+      "time2_nome": "Panamá", "time2_sigla": "PAN", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/pan_48x48.png",
+      "data_hora": "2026-06-17 20:00", "local": "Toronto Field"
+    },
+    {
+      "id": 2024, "rodada": 7, "fase": "grupos",
+      "time1_nome": "Uzbequistão", "time1_sigla": "UZB", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/uzb_48x48.png",
+      "time2_nome": "Colômbia", "time2_sigla": "COL", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/col_48x48.png",
+      "data_hora": "2026-06-17 23:00", "local": "Azteca"
+    },
+    {
+      "id": 2025, "rodada": 8, "fase": "grupos",
+      "time1_nome": "Tchéquia", "time1_sigla": "CZE", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/cze_48x48.png",
+      "time2_nome": "África do Sul", "time2_sigla": "RSA", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/rsa_48x48.png",
+      "data_hora": "2026-06-18 13:00", "local": "Atlanta"
+    },
+    {
+      "id": 2026, "rodada": 8, "fase": "grupos",
+      "time1_nome": "Suíça", "time1_sigla": "SUI", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/sui_48x48.png",
+      "time2_nome": "Bósnia", "time2_sigla": "BIH", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/bih_48x48.png",
+      "data_hora": "2026-06-18 16:00", "local": "Los Angeles"
+    },
+    {
+      "id": 2027, "rodada": 8, "fase": "grupos",
+      "time1_nome": "Canadá", "time1_sigla": "CAN", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/can_48x48.png",
+      "time2_nome": "Catar", "time2_sigla": "QAT", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/qat_48x48.png",
+      "data_hora": "2026-06-18 19:00", "local": "Vancouver Place"
+    },
+    {
+      "id": 2028, "rodada": 8, "fase": "grupos",
+      "time1_nome": "México", "time1_sigla": "MEX", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/mex_48x48.png",
+      "time2_nome": "Coreia do Sul", "time2_sigla": "KOR", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/kor_48x48.png",
+      "data_hora": "2026-06-18 22:00", "local": "Akron"
+    },
+    {
+      "id": 2029, "rodada": 9, "fase": "grupos",
+      "time1_nome": "Estados Unidos", "time1_sigla": "USA", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/usa_48x48.png",
+      "time2_nome": "Austrália", "time2_sigla": "AUS", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/aus_48x48.png",
+      "data_hora": "2026-06-19 16:00", "local": "Seattle Field"
+    },
+    {
+      "id": 2030, "rodada": 9, "fase": "grupos",
+      "time1_nome": "Escócia", "time1_sigla": "SCO", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/sco_48x48.png",
+      "time2_nome": "Marrocos", "time2_sigla": "MAR", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/mar_48x48.png",
+      "data_hora": "2026-06-19 19:00", "local": "Boston"
+    },
+    {
+      "id": 2031, "rodada": 9, "fase": "grupos",
+      "time1_nome": "Brasil", "time1_sigla": "BRA", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/bra_48x48.png",
+      "time2_nome": "Haiti", "time2_sigla": "HAI", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/hai_48x48.png",
+      "data_hora": "2026-06-19 21:30", "local": "Filadélfia"
+    },
+    {
+      "id": 2032, "rodada": 9, "fase": "grupos",
+      "time1_nome": "Turquia", "time1_sigla": "TUR", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/tur_48x48.png",
+      "time2_nome": "Paraguai", "time2_sigla": "PAR", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/par_48x48.png",
+      "data_hora": "2026-06-20 00:00", "local": "Santa Clara"
+    },
+    {
+      "id": 2033, "rodada": 10, "fase": "grupos",
+      "time1_nome": "Holanda", "time1_sigla": "NED", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/ned_48x48.png",
+      "time2_nome": "Suécia", "time2_sigla": "SWE", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/swe_48x48.png",
+      "data_hora": "2026-06-20 14:00", "local": "Houston"
+    },
+    {
+      "id": 2034, "rodada": 10, "fase": "grupos",
+      "time1_nome": "Alemanha", "time1_sigla": "GER", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/ger_48x48.png",
+      "time2_nome": "Costa do Marfim", "time2_sigla": "CIV", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/civ_48x48.png",
+      "data_hora": "2026-06-20 17:00", "local": "Toronto Field"
+    },
+    {
+      "id": 2035, "rodada": 10, "fase": "grupos",
+      "time1_nome": "Equador", "time1_sigla": "ECU", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/ecu_48x48.png",
+      "time2_nome": "Curaçao", "time2_sigla": "CUW", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/cuw_48x48.png",
+      "data_hora": "2026-06-20 21:00", "local": "Kansas City"
+    },
+    {
+      "id": 2036, "rodada": 10, "fase": "grupos",
+      "time1_nome": "Tunísia", "time1_sigla": "TUN", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/tun_48x48.png",
+      "time2_nome": "Japão", "time2_sigla": "JPN", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/jpn_48x48.png",
+      "data_hora": "2026-06-21 01:00", "local": "El Gigante de Acero"
+    },
+    {
+      "id": 2037, "rodada": 11, "fase": "grupos",
+      "time1_nome": "Espanha", "time1_sigla": "ESP", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/esp_48x48.png",
+      "time2_nome": "Arábia Saudita", "time2_sigla": "KSA", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/ksa_48x48.png",
+      "data_hora": "2026-06-21 13:00", "local": "Atlanta"
+    },
+    {
+      "id": 2038, "rodada": 11, "fase": "grupos",
+      "time1_nome": "Bélgica", "time1_sigla": "BEL", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/bel_48x48.png",
+      "time2_nome": "Irã", "time2_sigla": "IRN", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/irn_48x48.png",
+      "data_hora": "2026-06-21 16:00", "local": "Los Angeles"
+    },
+    {
+      "id": 2039, "rodada": 11, "fase": "grupos",
+      "time1_nome": "Uruguai", "time1_sigla": "URU", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/uru_48x48.png",
+      "time2_nome": "Cabo Verde", "time2_sigla": "CPV", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/cpv_48x48.png",
+      "data_hora": "2026-06-21 19:00", "local": "Miami"
+    },
+    {
+      "id": 2040, "rodada": 11, "fase": "grupos",
+      "time1_nome": "Nova Zelândia", "time1_sigla": "NZL", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/nzl_48x48.png",
+      "time2_nome": "Egito", "time2_sigla": "EGY", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/egy_48x48.png",
+      "data_hora": "2026-06-21 22:00", "local": "Vancouver Place"
+    },
+    {
+      "id": 2041, "rodada": 12, "fase": "grupos",
+      "time1_nome": "Argentina", "time1_sigla": "ARG", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/arg_48x48.png",
+      "time2_nome": "Áustria", "time2_sigla": "AUT", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/aut_48x48.png",
+      "data_hora": "2026-06-22 14:00", "local": "Dallas"
+    },
+    {
+      "id": 2042, "rodada": 12, "fase": "grupos",
+      "time1_nome": "França", "time1_sigla": "FRA", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/fra_48x48.png",
+      "time2_nome": "Iraque", "time2_sigla": "IRQ", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/irq_48x48.png",
+      "data_hora": "2026-06-22 18:00", "local": "Filadélfia"
+    },
+    {
+      "id": 2043, "rodada": 12, "fase": "grupos",
+      "time1_nome": "Noruega", "time1_sigla": "NOR", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/nor_48x48.png",
+      "time2_nome": "Senegal", "time2_sigla": "SEN", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/sen_48x48.png",
+      "data_hora": "2026-06-22 21:00", "local": "Nova Jersey"
+    },
+    {
+      "id": 2044, "rodada": 12, "fase": "grupos",
+      "time1_nome": "Jordânia", "time1_sigla": "JOR", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/jor_48x48.png",
+      "time2_nome": "Argélia", "time2_sigla": "ALG", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/alg_48x48.png",
+      "data_hora": "2026-06-23 00:00", "local": "Santa Clara"
+    },
+    {
+      "id": 2045, "rodada": 13, "fase": "grupos",
+      "time1_nome": "Portugal", "time1_sigla": "POR", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/por_48x48.png",
+      "time2_nome": "Uzbequistão", "time2_sigla": "UZB", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/uzb_48x48.png",
+      "data_hora": "2026-06-23 14:00", "local": "Houston"
+    },
+    {
+      "id": 2046, "rodada": 13, "fase": "grupos",
+      "time1_nome": "Inglaterra", "time1_sigla": "ENG", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/eng_48x48.png",
+      "time2_nome": "Gana", "time2_sigla": "GHA", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/gha_48x48.png",
+      "data_hora": "2026-06-23 17:00", "local": "Boston"
+    },
+    {
+      "id": 2047, "rodada": 13, "fase": "grupos",
+      "time1_nome": "Panamá", "time1_sigla": "PAN", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/pan_48x48.png",
+      "time2_nome": "Croácia", "time2_sigla": "CRO", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/cro_48x48.png",
+      "data_hora": "2026-06-23 20:00", "local": "Toronto Field"
+    },
+    {
+      "id": 2048, "rodada": 13, "fase": "grupos",
+      "time1_nome": "Colômbia", "time1_sigla": "COL", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/col_48x48.png",
+      "time2_nome": "RD Congo", "time2_sigla": "COD", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/cod_48x48.png",
+      "data_hora": "2026-06-23 23:00", "local": "Akron"
+    },
+    {
+      "id": 2049, "rodada": 14, "fase": "grupos",
+      "time1_nome": "Suíça", "time1_sigla": "SUI", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/sui_48x48.png",
+      "time2_nome": "Canadá", "time2_sigla": "CAN", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/can_48x48.png",
+      "data_hora": "2026-06-24 16:00", "local": "Vancouver Place"
+    },
+    {
+      "id": 2050, "rodada": 14, "fase": "grupos",
+      "time1_nome": "Bósnia", "time1_sigla": "BIH", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/bih_48x48.png",
+      "time2_nome": "Catar", "time2_sigla": "QAT", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/qat_48x48.png",
+      "data_hora": "2026-06-24 16:00", "local": "Seattle Field"
+    },
+    {
+      "id": 2051, "rodada": 14, "fase": "grupos",
+      "time1_nome": "Marrocos", "time1_sigla": "MAR", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/mar_48x48.png",
+      "time2_nome": "Haiti", "time2_sigla": "HAI", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/hai_48x48.png",
+      "data_hora": "2026-06-24 19:00", "local": "Atlanta"
+    },
+    {
+      "id": 2052, "rodada": 14, "fase": "grupos",
+      "time1_nome": "Escócia", "time1_sigla": "SCO", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/sco_48x48.png",
+      "time2_nome": "Brasil", "time2_sigla": "BRA", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/bra_48x48.png",
+      "data_hora": "2026-06-24 19:00", "local": "Miami"
+    },
+    {
+      "id": 2053, "rodada": 14, "fase": "grupos",
+      "time1_nome": "Tchéquia", "time1_sigla": "CZE", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/cze_48x48.png",
+      "time2_nome": "México", "time2_sigla": "MEX", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/mex_48x48.png",
+      "data_hora": "2026-06-24 22:00", "local": "Azteca"
+    },
+    {
+      "id": 2054, "rodada": 14, "fase": "grupos",
+      "time1_nome": "África do Sul", "time1_sigla": "RSA", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/rsa_48x48.png",
+      "time2_nome": "Coreia do Sul", "time2_sigla": "KOR", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/kor_48x48.png",
+      "data_hora": "2026-06-24 22:00", "local": "El Gigante de Acero"
+    },
+    {
+      "id": 2055, "rodada": 15, "fase": "grupos",
+      "time1_nome": "Equador", "time1_sigla": "ECU", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/ecu_48x48.png",
+      "time2_nome": "Alemanha", "time2_sigla": "GER", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/ger_48x48.png",
+      "data_hora": "2026-06-25 17:00", "local": "Nova Jersey"
+    },
+    {
+      "id": 2056, "rodada": 15, "fase": "grupos",
+      "time1_nome": "Curaçao", "time1_sigla": "CUW", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/cuw_48x48.png",
+      "time2_nome": "Costa do Marfim", "time2_sigla": "CIV", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/civ_48x48.png",
+      "data_hora": "2026-06-25 17:00", "local": "Filadélfia"
+    },
+    {
+      "id": 2057, "rodada": 15, "fase": "grupos",
+      "time1_nome": "Tunísia", "time1_sigla": "TUN", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/tun_48x48.png",
+      "time2_nome": "Holanda", "time2_sigla": "NED", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/ned_48x48.png",
+      "data_hora": "2026-06-25 20:00", "local": "Kansas City"
+    },
+    {
+      "id": 2058, "rodada": 15, "fase": "grupos",
+      "time1_nome": "Japão", "time1_sigla": "JPN", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/jpn_48x48.png",
+      "time2_nome": "Suécia", "time2_sigla": "SWE", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/swe_48x48.png",
+      "data_hora": "2026-06-25 20:00", "local": "Dallas"
+    },
+    {
+      "id": 2059, "rodada": 15, "fase": "grupos",
+      "time1_nome": "Turquia", "time1_sigla": "TUR", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/tur_48x48.png",
+      "time2_nome": "Estados Unidos", "time2_sigla": "USA", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/usa_48x48.png",
+      "data_hora": "2026-06-25 23:00", "local": "Los Angeles"
+    },
+    {
+      "id": 2060, "rodada": 15, "fase": "grupos",
+      "time1_nome": "Paraguai", "time1_sigla": "PAR", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/par_48x48.png",
+      "time2_nome": "Austrália", "time2_sigla": "AUS", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/aus_48x48.png",
+      "data_hora": "2026-06-25 23:00", "local": "Santa Clara"
+    },
+    {
+      "id": 2061, "rodada": 16, "fase": "grupos",
+      "time1_nome": "Senegal", "time1_sigla": "SEN", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/sen_48x48.png",
+      "time2_nome": "Iraque", "time2_sigla": "IRQ", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/irq_48x48.png",
+      "data_hora": "2026-06-26 16:00", "local": "Toronto Field"
+    },
+    {
+      "id": 2062, "rodada": 16, "fase": "grupos",
+      "time1_nome": "Noruega", "time1_sigla": "NOR", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/nor_48x48.png",
+      "time2_nome": "França", "time2_sigla": "FRA", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/fra_48x48.png",
+      "data_hora": "2026-06-26 16:00", "local": "Boston"
+    },
+    {
+      "id": 2063, "rodada": 16, "fase": "grupos",
+      "time1_nome": "Uruguai", "time1_sigla": "URU", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/uru_48x48.png",
+      "time2_nome": "Espanha", "time2_sigla": "ESP", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/esp_48x48.png",
+      "data_hora": "2026-06-26 21:00", "local": "Akron"
+    },
+    {
+      "id": 2064, "rodada": 16, "fase": "grupos",
+      "time1_nome": "Cabo Verde", "time1_sigla": "CPV", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/cpv_48x48.png",
+      "time2_nome": "Arábia Saudita", "time2_sigla": "KSA", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/ksa_48x48.png",
+      "data_hora": "2026-06-26 21:00", "local": "Houston"
+    },
+    {
+      "id": 2065, "rodada": 16, "fase": "grupos",
+      "time1_nome": "Nova Zelândia", "time1_sigla": "NZL", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/nzl_48x48.png",
+      "time2_nome": "Bélgica", "time2_sigla": "BEL", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/bel_48x48.png",
+      "data_hora": "2026-06-27 00:00", "local": "Vancouver Place"
+    },
+    {
+      "id": 2066, "rodada": 16, "fase": "grupos",
+      "time1_nome": "Egito", "time1_sigla": "EGY", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/egy_48x48.png",
+      "time2_nome": "Irã", "time2_sigla": "IRN", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/irn_48x48.png",
+      "data_hora": "2026-06-27 00:00", "local": "Seattle Field"
+    },
+    {
+      "id": 2067, "rodada": 17, "fase": "grupos",
+      "time1_nome": "Croácia", "time1_sigla": "CRO", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/cro_48x48.png",
+      "time2_nome": "Gana", "time2_sigla": "GHA", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/gha_48x48.png",
+      "data_hora": "2026-06-27 18:00", "local": "Filadélfia"
+    },
+    {
+      "id": 2068, "rodada": 17, "fase": "grupos",
+      "time1_nome": "Panamá", "time1_sigla": "PAN", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/pan_48x48.png",
+      "time2_nome": "Inglaterra", "time2_sigla": "ENG", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/eng_48x48.png",
+      "data_hora": "2026-06-27 18:00", "local": "Nova Jersey"
+    },
+    {
+      "id": 2069, "rodada": 17, "fase": "grupos",
+      "time1_nome": "RD Congo", "time1_sigla": "COD", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/cod_48x48.png",
+      "time2_nome": "Uzbequistão", "time2_sigla": "UZB", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/uzb_48x48.png",
+      "data_hora": "2026-06-27 20:30", "local": "Atlanta"
+    },
+    {
+      "id": 2070, "rodada": 17, "fase": "grupos",
+      "time1_nome": "Colômbia", "time1_sigla": "COL", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/col_48x48.png",
+      "time2_nome": "Portugal", "time2_sigla": "POR", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/por_48x48.png",
+      "data_hora": "2026-06-27 20:30", "local": "Miami"
+    },
+    {
+      "id": 2071, "rodada": 17, "fase": "grupos",
+      "time1_nome": "Jordânia", "time1_sigla": "JOR", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/jor_48x48.png",
+      "time2_nome": "Argentina", "time2_sigla": "ARG", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/arg_48x48.png",
+      "data_hora": "2026-06-27 23:00", "local": "Dallas"
+    },
+    {
+      "id": 2072, "rodada": 17, "fase": "grupos",
+      "time1_nome": "Argélia", "time1_sigla": "ALG", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/alg_48x48.png",
+      "time2_nome": "Áustria", "time2_sigla": "AUT", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/aut_48x48.png",
+      "data_hora": "2026-06-27 23:00", "local": "Kansas City"
+    }
+  ]
+}
