@@ -1,0 +1,100 @@
+{
+  "Copa do Mundo 2026": [
+    {
+      "id": 2073, "rodada": 18, "fase": "mata-mata", "confronto_id": 1,
+      "time1_nome": "África do Sul", "time1_sigla": "RSA", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/rsa_48x48.png",
+      "time2_nome": "Canadá", "time2_sigla": "CAN", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/can_48x48.png",
+      "data_hora": "2026-06-28 16:00", "local": "A definir"
+    },
+    {
+      "id": 2074, "rodada": 19, "fase": "mata-mata", "confronto_id": 2,
+      "time1_nome": "Brasil", "time1_sigla": "BRA", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/bra_48x48.png",
+      "time2_nome": "Japão", "time2_sigla": "JPN", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/jpn_48x48.png",
+      "data_hora": "2026-06-29 14:00", "local": "A definir"
+    },
+    {
+      "id": 2075, "rodada": 19, "fase": "mata-mata", "confronto_id": 3,
+      "time1_nome": "Alemanha", "time1_sigla": "GER", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/ger_48x48.png",
+      "time2_nome": "Paraguai", "time2_sigla": "PAR", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/par_48x48.png",
+      "data_hora": "2026-06-29 17:30", "local": "A definir"
+    },
+    {
+      "id": 2076, "rodada": 19, "fase": "mata-mata", "confronto_id": 4,
+      "time1_nome": "Holanda", "time1_sigla": "NED", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/ned_48x48.png",
+      "time2_nome": "Marrocos", "time2_sigla": "MAR", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/mar_48x48.png",
+      "data_hora": "2026-06-29 22:00", "local": "A definir"
+    },
+    {
+      "id": 2077, "rodada": 20, "fase": "mata-mata", "confronto_id": 5,
+      "time1_nome": "Costa do Marfim", "time1_sigla": "CIV", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/civ_48x48.png",
+      "time2_nome": "Noruega", "time2_sigla": "NOR", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/nor_48x48.png",
+      "data_hora": "2026-06-30 14:00", "local": "A definir"
+    },
+    {
+      "id": 2078, "rodada": 20, "fase": "mata-mata", "confronto_id": 6,
+      "time1_nome": "França", "time1_sigla": "FRA", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/fra_48x48.png",
+      "time2_nome": "Suécia", "time2_sigla": "SWE", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/swe_48x48.png",
+      "data_hora": "2026-06-30 18:00", "local": "A definir"
+    },
+    {
+      "id": 2079, "rodada": 20, "fase": "mata-mata", "confronto_id": 7,
+      "time1_nome": "México", "time1_sigla": "MEX", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/mex_48x48.png",
+      "time2_nome": "Equador", "time2_sigla": "ECU", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/ecu_48x48.png",
+      "data_hora": "2026-06-30 22:00", "local": "A definir"
+    },
+    {
+      "id": 2080, "rodada": 21, "fase": "mata-mata", "confronto_id": 8,
+      "time1_nome": "Inglaterra", "time1_sigla": "ENG", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/eng_48x48.png",
+      "time2_nome": "RD Congo", "time2_sigla": "COD", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/cod_48x48.png",
+      "data_hora": "2026-07-01 13:00", "local": "A definir"
+    },
+    {
+      "id": 2081, "rodada": 21, "fase": "mata-mata", "confronto_id": 9,
+      "time1_nome": "Bélgica", "time1_sigla": "BEL", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/bel_48x48.png",
+      "time2_nome": "Senegal", "time2_sigla": "SEN", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/sen_48x48.png",
+      "data_hora": "2026-07-01 17:00", "local": "A definir"
+    },
+    {
+      "id": 2082, "rodada": 21, "fase": "mata-mata", "confronto_id": 10,
+      "time1_nome": "Estados Unidos", "time1_sigla": "USA", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/usa_48x48.png",
+      "time2_nome": "Bósnia", "time2_sigla": "BIH", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/bih_48x48.png",
+      "data_hora": "2026-07-01 21:00", "local": "A definir"
+    },
+    {
+      "id": 2083, "rodada": 22, "fase": "mata-mata", "confronto_id": 11,
+      "time1_nome": "Espanha", "time1_sigla": "ESP", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/esp_48x48.png",
+      "time2_nome": "Áustria", "time2_sigla": "AUT", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/aut_48x48.png",
+      "data_hora": "2026-07-02 16:00", "local": "A definir"
+    },
+    {
+      "id": 2084, "rodada": 22, "fase": "mata-mata", "confronto_id": 12,
+      "time1_nome": "Portugal", "time1_sigla": "POR", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/por_48x48.png",
+      "time2_nome": "Croácia", "time2_sigla": "CRO", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/cro_48x48.png",
+      "data_hora": "2026-07-02 20:00", "local": "A definir"
+    },
+    {
+      "id": 2085, "rodada": 22, "fase": "mata-mata", "confronto_id": 13,
+      "time1_nome": "Suíça", "time1_sigla": "SUI", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/sui_48x48.png",
+      "time2_nome": "Argélia", "time2_sigla": "ALG", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/alg_48x48.png",
+      "data_hora": "2026-07-03 00:00", "local": "A definir"
+    },
+    {
+      "id": 2086, "rodada": 23, "fase": "mata-mata", "confronto_id": 14,
+      "time1_nome": "Austrália", "time1_sigla": "AUS", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/aus_48x48.png",
+      "time2_nome": "Egito", "time2_sigla": "EGY", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/egy_48x48.png",
+      "data_hora": "2026-07-03 15:00", "local": "A definir"
+    },
+    {
+      "id": 2087, "rodada": 23, "fase": "mata-mata", "confronto_id": 15,
+      "time1_nome": "Argentina", "time1_sigla": "ARG", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/arg_48x48.png",
+      "time2_nome": "Cabo Verde", "time2_sigla": "CPV", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/cpv_48x48.png",
+      "data_hora": "2026-07-03 19:00", "local": "A definir"
+    },
+    {
+      "id": 2088, "rodada": 23, "fase": "mata-mata", "confronto_id": 16,
+      "time1_nome": "Colômbia", "time1_sigla": "COL", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/col_48x48.png",
+      "time2_nome": "Gana", "time2_sigla": "GHA", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/gha_48x48.png",
+      "data_hora": "2026-07-03 22:30", "local": "A definir"
+    }
+  ]
+}
