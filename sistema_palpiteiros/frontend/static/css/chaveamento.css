@@ -182,9 +182,10 @@ main {
     flex-grow: 1;
     font-size: 0.92rem;
     font-weight: 500;
-    white-space: nowrap;
-    overflow: hidden;
     text-overflow: ellipsis;
+    white-space: normal !important;
+    word-wrap: break-word !important;
+    line-height: 1.2;
 }
 
 .team-score {

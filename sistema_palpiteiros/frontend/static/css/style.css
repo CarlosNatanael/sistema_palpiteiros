@@ -351,7 +351,7 @@ td {
 /* Responsividade */
 @media (max-width: 600px) {
     .team {
-        width: 100px;
+        width: 340px;
     }
     
     .team-logo {
