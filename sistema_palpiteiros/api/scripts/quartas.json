@@ -1,0 +1,28 @@
+{
+  "Copa do Mundo 2026": [
+    {
+      "id": 2097, "rodada": 28, "fase": "mata-mata", "confronto_id": 25,
+      "time1_nome": "França", "time1_sigla": "FRA", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/fra_48x48.png",
+      "time2_nome": "Marrocos", "time2_sigla": "MAR", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/mar_48x48.png",
+      "data_hora": "2026-07-09 17:00", "local": "Boston"
+    },
+    {
+      "id": 2098, "rodada": 28, "fase": "mata-mata", "confronto_id": 26,
+      "time1_nome": "Espanha", "time1_sigla": "ESP", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/esp_48x48.png",
+      "time2_nome": "Bélgica", "time2_sigla": "BEL", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/bel_48x48.png",
+      "data_hora": "2026-07-10 16:00", "local": "Los Angeles"
+    },
+    {
+      "id": 2099, "rodada": 28, "fase": "mata-mata", "confronto_id": 27,
+      "time1_nome": "Noruega", "time1_sigla": "NOR", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/nor_48x48.png",
+      "time2_nome": "Inglaterra", "time2_sigla": "ENG", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/eng_48x48.png",
+      "data_hora": "2026-07-11 18:00", "local": "Miami"
+    },
+    {
+      "id": 2100, "rodada": 28, "fase": "mata-mata", "confronto_id": 28,
+      "time1_nome": "Argentina", "time1_sigla": "ARG", "time1_img": "https://ssl.gstatic.com/onebox/media/sports/logos/arg_48x48.png",
+      "time2_nome": "Suíça", "time2_sigla": "SUI", "time2_img": "https://ssl.gstatic.com/onebox/media/sports/logos/sui_48x48.png",
+      "data_hora": "2026-07-11 22:00", "local": "Kansas City"
+    }
+  ]
+}
